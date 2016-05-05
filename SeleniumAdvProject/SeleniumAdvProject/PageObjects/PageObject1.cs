@@ -1,15 +1,14 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace SeleniumAdvProject.TestCases
+namespace SeleniumAdvProject.PageObjects
 {
     [TestClass]
-    public class UnitTest1
+    public class PageObject1
     {
         [TestMethod]
         public void TestMethod1()
         {
-            Console.WriteLine("");
         }
     }
 }
