@@ -6,7 +6,7 @@ using OpenQA.Selenium.Support.UI;
 
 namespace SeleniumAdvProject.PageObjects
 {
-    public class LoginPage
+    public class LoginPage:BasePage
     {
         #region Locators
 
@@ -52,9 +52,21 @@ namespace SeleniumAdvProject.PageObjects
             TxtUsername.SendKeys(username);
             TxtPassword.SendKeys(password);
             BtnLogin.Click();
-            return new DashboardPage();
+            DashboardPage dashboardPage = new DashboardPage();
+            dashboardPage.WaitForPageLoadComplete();
+            dashboardPage.WaitForControlExists(By.XPath("//a[@href='#Welcome']"), Constant.WaitTimeoutShortSeconds);
+            return dashboardPage;
         }
         
+        public string LoginInValid(string repository, string username, string password)
+        {
+            DdlRepsitory.SelectByText(repository);
+            TxtUsername.SendKeys(username);
+            TxtPassword.SendKeys(password);
+            BtnLogin.Click();
+            string a = "";
+            return a;
+        }
        
         #endregion
 

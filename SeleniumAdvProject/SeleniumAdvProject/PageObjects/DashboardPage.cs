@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SeleniumAdvProject.PageObjects
 {
-    public class DashboardPage
+    public class DashboardPage:BasePage
     {
         #region Locators
 
