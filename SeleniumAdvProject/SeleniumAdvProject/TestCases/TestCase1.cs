@@ -9,7 +9,7 @@ namespace SeleniumAdvProject.TestCases
         [TestMethod]
         public void TestMethod1()
         {
-            Console.WriteLine("");
+            
         }
     }
 }
