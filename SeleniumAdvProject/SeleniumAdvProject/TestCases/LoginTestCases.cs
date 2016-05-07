@@ -20,7 +20,8 @@ namespace SeleniumAdvProject.TestCases
             //2. Enter valid username and password	
             //3. Click on "Login" button
             DashboardPage dashboardPage = loginPage.Login(Constant.Repository, Constant.UserName, Constant.Password);
-            dashboardPage.WaitForPageLoadComplete();
+            dashboardPage.WaitForControlExists(By.XPath("//a[@href='#Welcome']"));
+            //dashboardPage.WaitForPageLoadComplete();
 
             //VP. Verify that Dashboard Mainpage appears
             Assert.AreEqual(Constant.UserName, dashboardPage.GetUserNameText());
@@ -29,7 +30,7 @@ namespace SeleniumAdvProject.TestCases
          [TestMethod]
       public void TC02()
       {
-          Console.WriteLine("DA_LOGIN_TC002 - Verify that user   fails to login specific repository successfully via Dashboard login page with incorrect credentials");
+          Console.WriteLine("DA_LOGIN_TC002 - Verify that user fails to login specific repository successfully via Dashboard login page with incorrect credentials");
          //1. Navigate to Dashboard login page
          LoginPage loginPage = new LoginPage();
             loginPage.Open();

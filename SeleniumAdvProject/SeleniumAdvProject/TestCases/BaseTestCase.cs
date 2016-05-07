@@ -19,14 +19,14 @@ namespace SeleniumAdvProject.TestCases
 
             // Start Firefox browser and maximize window
 
-            Constant.WebDriver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(300));
+            Constant.WebDriver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(300));          
             Constant.WebDriver.Manage().Window.Maximize();
         }
 
         [TestCleanup]
         public void TestCleanupMethod()
         {
-            Console.WriteLine("Run Test Cleanup");
+            Console.WriteLine("Run Test Cleanup");                     
 
             // Close browser
             Constant.WebDriver.Quit();

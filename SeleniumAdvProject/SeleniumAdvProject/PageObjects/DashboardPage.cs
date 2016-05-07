@@ -29,7 +29,11 @@ namespace SeleniumAdvProject.PageObjects
         {
             return LblUsername.Text;
         }
-        
+
+        public void Logout()
+        {
+
+        }
 
 
         #endregion
