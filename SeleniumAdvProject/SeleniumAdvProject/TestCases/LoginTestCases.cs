@@ -124,6 +124,7 @@ namespace SeleniumAdvProject.TestCases
             loginPage.Open();
 
         }
+        [TestMethod]
         public void TC010()
         {
             Console.WriteLine("DA_LOGIN_TC010 - Verify that the page works correctly for the case when no input entered to Password and Username field");
