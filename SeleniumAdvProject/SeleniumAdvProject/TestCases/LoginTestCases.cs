@@ -11,6 +11,7 @@ namespace SeleniumAdvProject.TestCases
         [TestMethod]
         public void TC01()
         {
+
             Console.WriteLine("DA_LOGIN_TC001 - Verify that user can login specific repository successfully via Dashboard login page with correct credentials");
 
             //1. Navigate to Dashboard login page
@@ -121,6 +122,21 @@ namespace SeleniumAdvProject.TestCases
             //1 Navigate to Dashboard login page
             LoginPage loginPage = new LoginPage();
             loginPage.Open();
+
+        }
+        public void TC010()
+        {
+            Console.WriteLine("DA_LOGIN_TC010 - Verify that the page works correctly for the case when no input entered to Password and Username field");
+
+            //1 Navigate to Dashboard login page
+            LoginPage loginPage = new LoginPage();
+            loginPage.Open();
+
+            //2. Click Login button without entering data into Username and Password field
+            loginPage.LoginWithOutAccount(Constant.Repository);
+            string actualMessage = loginPage.GetDialogText();
+            string expectMessage = "Please enter username";
+            Assert.AreEqual(expectMessage, actualMessage, "There is a bug here. Missing ! behind the text");
 
         }
     }

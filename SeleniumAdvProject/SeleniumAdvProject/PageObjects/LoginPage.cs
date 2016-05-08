@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using SeleniumAdvProject.Common;
 using OpenQA.Selenium.Support.UI;
+using System.Net;
 
 namespace SeleniumAdvProject.PageObjects
 {
@@ -40,8 +41,7 @@ namespace SeleniumAdvProject.PageObjects
         #endregion
 
         #region Methods
-
-         public LoginPage Open()
+        public LoginPage Open()
         {
             Constant.WebDriver.Navigate().GoToUrl(Constant.LoginPageUrl);
             return this;
@@ -66,6 +66,14 @@ namespace SeleniumAdvProject.PageObjects
             BtnLogin.Click();
             string a = "";
             return a;
+        }
+
+        public LoginPage LoginWithOutAccount(string repository)
+        {
+            DdlRepsitory.SelectByText(repository);
+            BtnLogin.Click();
+            return this;
+        
         }
        
         #endregion
