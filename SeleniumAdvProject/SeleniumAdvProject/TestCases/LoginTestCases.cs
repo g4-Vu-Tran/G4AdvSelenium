@@ -138,7 +138,7 @@ namespace SeleniumAdvProject.TestCases
             string actualMessage = loginPage.GetDialogText();
             string expectMessage = "Please enter username";
             Assert.AreEqual(expectMessage, actualMessage, "There is a bug here. Missing ! behind the text");
+         }
 
-        }
     }
 }
