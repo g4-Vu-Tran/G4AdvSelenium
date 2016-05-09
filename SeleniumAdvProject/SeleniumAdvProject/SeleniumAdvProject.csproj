@@ -76,11 +76,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestCases\BaseTestCase.cs" />
     <Compile Include="TestCases\LoginTestCases.cs" />
-    <Compile Include="Ultilities\IWebElementExtension.cs" />
+    <Compile Include="TestCases\MainPageTestCases.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DataObjects\" />
     <Folder Include="Documents\" />
+    <Folder Include="Ultilities\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dlls\Selenium.WebDriverBackedSelenium.dll" />

@@ -17,6 +17,7 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _lblRepository = By.XPath("//a[@href='#Repository']");
         static readonly By _lblCurrentRepository = By.XPath("//a[@href='#Repository']/span");
         static readonly By _lnkLogout = By.XPath("//a[@href='logout.do']");
+        static readonly By _lblSetting = By.XPath(".//li[@class='mn-setting']/a");
 
         #endregion
         #region Elements
@@ -38,6 +39,10 @@ namespace SeleniumAdvProject.PageObjects
             get { return Constant.WebDriver.FindElement(_lnkLogout); }
         }
 
+        public IWebElement LblSetting
+        {
+            get { return Constant.WebDriver.FindElement(_lblSetting); }
+        }
         #endregion
 
         #region Methods
@@ -66,6 +71,30 @@ namespace SeleniumAdvProject.PageObjects
             mouseAction.MoveToElement(Constant.WebDriver.FindElement(By.XPath("//ul[@id='ulListRepositories']//a[.='" + repositoryName + "']"))).Click().Perform();
             return this;
         }
+
+        public DashboardPage GoToNewPage()
+        {
+            Actions mouseAction = new Actions(Constant.WebDriver);
+            mouseAction.MoveToElement(LblSetting).Perform();
+            mouseAction.MoveToElement(Constant.WebDriver.FindElement(By.XPath("//a[@class='add']"))).Click().Perform();
+            WaitForControlExists(By.XPath(".//*[@id='parent']"), 2);
+            return this;
+        }
+
+        public DashboardPage OpenSetting()
+        {
+            Actions mouseAction = new Actions(Constant.WebDriver);
+            mouseAction.MoveToElement(LblSetting).Perform();
+            return this;
+        }
+
+        public Boolean IsSettingExist()
+        {
+            bool _isExist = false;
+            _isExist = LblSetting.Selected;
+            return _isExist;
+        }
+
 
         #endregion
     }
