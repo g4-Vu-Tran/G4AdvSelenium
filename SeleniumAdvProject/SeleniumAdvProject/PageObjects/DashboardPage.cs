@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SeleniumAdvProject.Ultilities;
 
 namespace SeleniumAdvProject.PageObjects
 {
@@ -58,9 +59,8 @@ namespace SeleniumAdvProject.PageObjects
 
         public LoginPage Logout()
         {
-            Actions mouseAction = new Actions(Constant.WebDriver);
-            mouseAction.MoveToElement(LblUsername).Perform();
-            mouseAction.MoveToElement(LnkLogout).Click().Perform();
+            IWebElementExtensions.MoveTo(LblUsername, Constant.WebDriver);
+            IWebElementExtensions.MoveTo(LnkLogout, Constant.WebDriver).Click();
             return new LoginPage();
         }
 

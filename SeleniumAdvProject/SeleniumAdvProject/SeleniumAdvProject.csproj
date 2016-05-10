@@ -77,11 +77,11 @@
     <Compile Include="TestCases\BaseTestCase.cs" />
     <Compile Include="TestCases\LoginTestCases.cs" />
     <Compile Include="TestCases\MainPageTestCases.cs" />
+    <Compile Include="Ultilities\IWebElementExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DataObjects\" />
     <Folder Include="Documents\" />
-    <Folder Include="Ultilities\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dlls\Selenium.WebDriverBackedSelenium.dll" />
