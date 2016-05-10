@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 using SeleniumAdvProject.Common;
+using SeleniumAdvProject.Ultilities;
 using SeleniumAdvProject.DataObjects;
 using OpenQA.Selenium.Support.UI;
 
@@ -56,12 +57,19 @@ namespace SeleniumAdvProject.PageObjects
         #region Methods
         public DashboardPage addPage(Page page)
         {
-            GoToAddNewPage();
             TxtPageName.SendKeys(page.PageName);
             CbbParentPage.SelectByText(page.ParentPage);
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
             CbbDisplayAfter.SelectByText(page.DisplayAfter);
-            CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
+            if (page.IsPublic)
+            {
+                IWebElementExtensions.Check(ChkPublic);
+            }
+            else
+            {
+                IWebElementExtensions.Uncheck(ChkPublic);
+            }
+            BtnOk.Click();
             return new DashboardPage();
         }
         #endregion

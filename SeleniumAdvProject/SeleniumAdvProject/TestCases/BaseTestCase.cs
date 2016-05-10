@@ -19,8 +19,8 @@ namespace SeleniumAdvProject.TestCases
 
             // Start Firefox browser and maximize window
 
-            Constant.WebDriver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(300));          
-            Constant.WebDriver.Manage().Window.Maximize();
+            Constants.WebDriver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(300));          
+            Constants.WebDriver.Manage().Window.Maximize();
         }
 
         [TestCleanup]
@@ -29,7 +29,7 @@ namespace SeleniumAdvProject.TestCases
             Console.WriteLine("Run Test Cleanup");                     
 
             // Close browser
-            Constant.WebDriver.Quit();
+            Constants.WebDriver.Quit();
         }                
     }
 }
