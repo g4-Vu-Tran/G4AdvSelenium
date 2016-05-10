@@ -21,9 +21,7 @@ namespace SeleniumAdvProject.TestCases
             //2. Enter valid username and password	
             //3. Click on "Login" button
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
-            // mainPage.WaitForControlExists(By.XPath("//a[@href='#Welcome']"));
-            //mainPage.WaitForPageLoadComplete();
-
+            
             //VP. Verify that Dashboard Mainpage appears
             Assert.AreEqual(Constants.UserName, mainPage.GetUserNameText());
             

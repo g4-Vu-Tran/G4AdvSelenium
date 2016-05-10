@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SeleniumAdvProject.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,47 +9,48 @@ namespace SeleniumAdvProject.DataObjects
 {
     public class Page
     {
-        private string pageName;
-        private string parentPage;
-        private int numberOfColumns;
-        private string displayAfter;
-        private bool _public;
+        private string _pageName;
+        private string _parentPage;
+        private int _numberOfColumns;
+        private string _displayAfter;
+        private bool _isPublic;
 
         public Page() { }
 
-        public Page(string pageName, string parentPage, int numberOfColumns, string displayAfter, bool _public)
+        public Page(string pageName, string parentPage, int numberOfColumns, string displayAfter, bool isPublic)
         {
-            this.pageName = pageName;
-            this.parentPage = parentPage;
-            this.numberOfColumns = numberOfColumns;
-            this.displayAfter = displayAfter;
-            this._public = _public;
+            this._pageName = pageName;
+            this._parentPage = parentPage;
+            this._numberOfColumns = numberOfColumns;
+            this._displayAfter = displayAfter;
+            this._isPublic = isPublic;
         }
 
         public string DisplayAfter
         {
-            get { return displayAfter; }
-            set { displayAfter = value; }
+            get { return _displayAfter; }
+            set { _displayAfter = value; }
         }
         public int NumberOfColumns
         {
-            get { return numberOfColumns; }
-            set { numberOfColumns = value; }
+            get { return _numberOfColumns; }
+            set { _numberOfColumns = value; }
         }
         public string ParentPage
         {
-            get { return parentPage; }
-            set { parentPage = value; }
+            get { return _parentPage; }
+            set { _parentPage = value; }
         }
         public string PageName
         {
-            get { return pageName; }
-            set { pageName = value; }
+            get { return _pageName; }
+            set { _pageName = value; }
         }
-        public bool _public1
+        public bool IsPublic
         {
-            get { return _public; }
-            set { _public = value; }
+            get { return _isPublic; }
+            set { _isPublic = value; }
         }
+       
     }
 }

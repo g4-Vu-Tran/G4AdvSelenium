@@ -61,10 +61,7 @@ namespace SeleniumAdvProject.TestCases
             //2. Log in specific repository with valid account
             loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
-            //3 Go to Global Setting -> Add page
-            MainPage mainPage = new MainPage();
-            mainPage.GoToAddNewPage();
-
+            //3 Go to Global Setting -> Add page            
             //4 Enter Page Name field
             //5 Click OK button
             //6 Go to Global Setting -> Add page
@@ -72,9 +69,44 @@ namespace SeleniumAdvProject.TestCases
             //8 Click on  Displayed After dropdown list
             //9 Select specific page
             //10 Click OK button
+            Page page = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
+            Page page1 = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, page.PageName, false);
+
+            AddNewPage newPage = new AddNewPage();
+            MainPage mainPage = newPage.addPage(page);
+            mainPage = newPage.addPage(page1);
+
             //VP Check "Another Test" page is positioned besides the "Test" page
 
-           
+
+        }
+        public void TC014()
+        {
+            Console.WriteLine("DA_MP_TC014 - Verify that \"Public\" pages can be visible and accessed by all users of working repository");
+
+            //1 Navigate to Dashboard login page
+            //2 Log in specific repository with valid account         
+            
+            //1 Navigate to Dashboard login page
+            LoginPage loginPage = new LoginPage();
+            loginPage.Open();
+
+            //2. Log in specific repository with valid account
+            loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3 Go to Global Setting -> Add page
+            //4 Enter Page Name field
+            //5 Check Public checkbox
+            //6 Click OK button            
+            Page page = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", true);           
+            AddNewPage newPage = new AddNewPage();
+            MainPage mainPage = newPage.addPage(page);           
+
+            //7 Click on Log out link
+            //8 Log in with another valid account
+            //9 Check newly added page is visibled
+            //VP Check "Another Test" page is positioned besides the "Test" page
+
         }
 
         [TestMethod]
@@ -96,7 +128,7 @@ namespace SeleniumAdvProject.TestCases
             Page page = new Page("Test", "Select parent", 2, "Overview", false);
             AddNewPage addnEditPage = mainPage.GoToAddNewPage();
             addnEditPage.addPage(page);
-           
+
             //7 Go to Global Setting -> Add page
             //8 Enter Page Name field (Test Chilld)
             //9 Click on  Select Parent dropdown list
