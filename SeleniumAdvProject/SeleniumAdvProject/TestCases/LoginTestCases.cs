@@ -20,12 +20,17 @@ namespace SeleniumAdvProject.TestCases
 
             //2. Enter valid username and password	
             //3. Click on "Login" button
-            DashboardPage dashboardPage = loginPage.Login(Constant.Repository, Constant.UserName, Constant.Password);
-            // dashboardPage.WaitForControlExists(By.XPath("//a[@href='#Welcome']"));
-            //dashboardPage.WaitForPageLoadComplete();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+            // mainPage.WaitForControlExists(By.XPath("//a[@href='#Welcome']"));
+            //mainPage.WaitForPageLoadComplete();
 
             //VP. Verify that Dashboard Mainpage appears
-            Assert.AreEqual(Constant.UserName, dashboardPage.GetUserNameText());
+            Assert.AreEqual(Constants.UserName, mainPage.GetUserNameText());
+            
+            //Post-Condition
+            //Logout			
+            //Close Dashboard	
+            mainPage.Logout();
         }
 
         [TestMethod]
@@ -38,9 +43,9 @@ namespace SeleniumAdvProject.TestCases
 
             //2. Enter invalid username and password
             //3. Click on "Login" button
-            string a = loginPage.LoginInValid(Constant.Repository, "abc", "abc");
-            //4. Verify that Dashboard Error message "Username or password is invalid" appears
-            string actualMessage = loginPage.GetDialogText();
+            string actualMessage = loginPage.LoginWithExpectedError(Constants.Repository, "abc", "abc");
+
+            //4. Verify that Dashboard Error message "Username or password is invalid" appears            
             Assert.AreEqual("Username or password is invalid", actualMessage);
         }
 
@@ -53,7 +58,7 @@ namespace SeleniumAdvProject.TestCases
             loginPage.Open();
             //2 Enter valid username and invalid password (administrator / abc)
             //3 Click on "Login" button
-            string a = loginPage.LoginInValid(Constant.Repository, Constant.UserName, "abc");
+            string a = loginPage.LoginWithExpectedError(Constants.Repository, Constants.UserName, "abc");
 
             //4 Verify that Dashboard Error message "Username or password is invalid" appears
             string actualMessage = loginPage.GetDialogText();
@@ -72,22 +77,22 @@ namespace SeleniumAdvProject.TestCases
 
             //2 Enter valid username and password of default repository (administrator / <blank>)
             //3 Click on "Login" button
-            DashboardPage dashboardPage = loginPage.Login(Constant.Repository, Constant.UserName, Constant.Password);
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
             //4 Click on "Logout" button
-            dashboardPage.Logout();
+            mainPage.Logout();
 
             //5 Select a different repository (TestRepository)
             //6 Enter valid username and password of this repository (administrator / <blank>)
-            loginPage.Login(Constant.TestRepository, Constant.UserName, Constant.Password);
+            loginPage.Login(Constants.TestRepository, Constants.UserName, Constants.Password);
 
             //VP Verify that Dashboard Mainpage appears
-            Assert.AreEqual(Constant.UserName, dashboardPage.GetUserNameText());
+            Assert.AreEqual(Constants.UserName, mainPage.GetUserNameText());
 
             //Post-Condition
             //Logout			
             //Close Dashboard	
-            dashboardPage.Logout();
+            mainPage.Logout();
         }
 
         [TestMethod]
@@ -100,18 +105,18 @@ namespace SeleniumAdvProject.TestCases
             loginPage.Open();
 
             //2 Login with valid account for the first repository
-            DashboardPage dashboardPage = loginPage.Login(Constant.Repository, Constant.UserName, Constant.Password);
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
             //4 Choose another repository in Repository list (TestRepository)
-            dashboardPage.SelectRepository(Constant.TestRepository);
+            mainPage.SelectRepository(Constants.TestRepository);
 
             //VP Observe the current page
             //- There is no Login Repository dialog
-            String URL = Constant.WebDriver.Url.ToString();
-            Assert.IsFalse(URL.Equals(Constant.LoginPageUrl));
+            String URL = Constants.WebDriver.Url.ToString();
+            Assert.IsFalse(URL.Equals(Constants.LoginPageUrl));
 
             //- The Repository menu displays name of switched repository
-            Assert.AreEqual(Constant.TestRepository, dashboardPage.GetCurrentRepositoryText());
+            Assert.AreEqual(Constants.TestRepository, mainPage.GetCurrentRepositoryText());
         }
 
         [TestMethod]
@@ -136,7 +141,7 @@ namespace SeleniumAdvProject.TestCases
             loginPage.Open();
 
             //2. Click Login button without entering data into Username and Password field
-            loginPage.LoginWithOutAccount(Constant.Repository);
+            loginPage.LoginWithOutAccount(Constants.Repository);
             string actualMessage = loginPage.GetDialogText();
             string expectMessage = "Please enter username";
             Assert.AreEqual(expectMessage, actualMessage, "There is a bug here. Missing ! behind the text");

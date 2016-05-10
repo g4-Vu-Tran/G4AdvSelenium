@@ -43,6 +43,7 @@
       <HintPath>C:\Users\HuongHuynh\Desktop\fdfgdgdf\net40\Selenium.WebDriverBackedSelenium.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="ThoughtWorks.Selenium.Core, Version=2.47.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Users\HuongHuynh\Desktop\fdfgdgdf\net40\ThoughtWorks.Selenium.Core.dll</HintPath>
@@ -69,26 +70,33 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Common\Constant.cs" />
-    <Compile Include="DataObjects\Page.cs" />
-    <Compile Include="PageObjects\AddnEditPage.cs" />
+    <Compile Include="Common\Constants.cs" />
     <Compile Include="PageObjects\BasePage.cs" />
-    <Compile Include="PageObjects\DashboardPage.cs" />
+    <Compile Include="PageObjects\MainPage.cs" />
     <Compile Include="PageObjects\LoginPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestCases\BaseTestCase.cs" />
     <Compile Include="TestCases\LoginTestCases.cs" />
     <Compile Include="TestCases\MainPageTestCases.cs" />
-    <Compile Include="Ultilities\IWebElementExtensions.cs" />
+    <Compile Include="Ultilities\Controls\Button.cs" />
+    <Compile Include="Ultilities\Controls\ComboBox.cs" />
+    <Compile Include="Ultilities\Controls\Label.cs" />
+    <Compile Include="Ultilities\Controls\Link.cs" />
+    <Compile Include="Ultilities\Controls\TextBox.cs" />
+    <Compile Include="Ultilities\BaseControl.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Documents\" />
+    <Folder Include="DataObjects\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dlls\Selenium.WebDriverBackedSelenium.dll" />
     <Content Include="Dlls\ThoughtWorks.Selenium.Core.dll" />
     <Content Include="Dlls\WebDriver.dll" />
     <Content Include="Dlls\WebDriver.Support.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Documents\Dashboard_Testcases.xls" />
+    <None Include="Documents\How to run.docx" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
