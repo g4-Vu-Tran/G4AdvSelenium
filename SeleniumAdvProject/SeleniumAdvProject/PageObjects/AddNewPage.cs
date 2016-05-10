@@ -7,10 +7,11 @@ using OpenQA.Selenium;
 using SeleniumAdvProject.Common;
 using SeleniumAdvProject.DataObjects;
 using OpenQA.Selenium.Support.UI;
+using SeleniumAdvProject.Ultilities.Controls;
 
 namespace SeleniumAdvProject.PageObjects
 {
-    public class AddNewPage:MainPage
+    public class AddNewPage : MainPage
     {
         #region Locators
         static readonly By _txtPageName = By.XPath("//input[@id='name']");
@@ -23,40 +24,40 @@ namespace SeleniumAdvProject.PageObjects
         #endregion
 
         #region Elements
-        public IWebElement TxtPageName
+        public TextBox TxtPageName
         {
-            get { return Constants.WebDriver.FindElement(_txtPageName); }
+            get { return new TextBox(_txtPageName); }
         }
-        public SelectElement CbbParentPage
+        public ComboBox CbbParentPage
         {
-            get { return new SelectElement(Constants.WebDriver.FindElement(_cbbParentPage)); }
+            get { return new ComboBox(_cbbParentPage); }
         }
-        public SelectElement CbbNumberOfColumns
+        public ComboBox CbbNumberOfColumns
         {
-            get { return new SelectElement(Constants.WebDriver.FindElement(_cbbNumberOfColumns)); }
+            get { return new ComboBox(_cbbNumberOfColumns); }
         }
-        public SelectElement CbbDisplayAfter
+        public ComboBox CbbDisplayAfter
         {
-            get { return new SelectElement(Constants.WebDriver.FindElement(_cbbDisplayAfter)); }
+            get { return new ComboBox(_cbbDisplayAfter); }
         }
-        public IWebElement ChkPublic
+        public Checkbox ChkPublic
         {
-            get { return Constants.WebDriver.FindElement(_chkPublic); }
+            get { return new Checkbox(_cbbDisplayAfter); }
         }
-        public IWebElement BtnOk
+
+        public Button BtnOk
         {
-            get { return Constants.WebDriver.FindElement(_btnOk); }
+            get { return new Button(_btnOk); }
         }
-        public IWebElement BtnCancel
+        public Button BtnCancel
         {
-            get { return Constants.WebDriver.FindElement(_btnCancel); }
+            get { return new Button(_btnCancel); }
         }
         #endregion
 
         #region Methods
         public MainPage addPage(Page page)
         {
-            GoToAddNewPage();
             TxtPageName.SendKeys(page.PageName);
             CbbParentPage.SelectByText(page.ParentPage);
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());

@@ -82,6 +82,7 @@
     <Compile Include="TestCases\LoginTestCases.cs" />
     <Compile Include="TestCases\MainPageTestCases.cs" />
     <Compile Include="Ultilities\Controls\Button.cs" />
+    <Compile Include="Ultilities\Controls\Checkbox.cs" />
     <Compile Include="Ultilities\Controls\ComboBox.cs" />
     <Compile Include="Ultilities\Controls\Label.cs" />
     <Compile Include="Ultilities\Controls\Link.cs" />
