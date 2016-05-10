@@ -70,6 +70,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Common\Constant.cs" />
+    <Compile Include="DataObjects\Page.cs" />
+    <Compile Include="PageObjects\AddnEditPage.cs" />
     <Compile Include="PageObjects\BasePage.cs" />
     <Compile Include="PageObjects\DashboardPage.cs" />
     <Compile Include="PageObjects\LoginPage.cs" />
@@ -80,7 +82,6 @@
     <Compile Include="Ultilities\IWebElementExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DataObjects\" />
     <Folder Include="Documents\" />
   </ItemGroup>
   <ItemGroup>

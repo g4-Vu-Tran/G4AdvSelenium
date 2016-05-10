@@ -21,6 +21,7 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _lblSetting = By.XPath(".//li[@class='mn-setting']/a");
 
         #endregion
+
         #region Elements
 
         public IWebElement LblUsername
@@ -72,13 +73,13 @@ namespace SeleniumAdvProject.PageObjects
             return this;
         }
 
-        public DashboardPage GoToNewPage()
+        public AddnEditPage GoToAddNewPage()
         {
             Actions mouseAction = new Actions(Constant.WebDriver);
             mouseAction.MoveToElement(LblSetting).Perform();
             mouseAction.MoveToElement(Constant.WebDriver.FindElement(By.XPath("//a[@class='add']"))).Click().Perform();
             WaitForControlExists(By.XPath(".//*[@id='parent']"), 2);
-            return this;
+            return new AddnEditPage();
         }
 
         public DashboardPage OpenSetting()

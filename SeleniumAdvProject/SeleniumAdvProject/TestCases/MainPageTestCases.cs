@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SeleniumAdvProject.PageObjects;
 using SeleniumAdvProject.Common;
+using SeleniumAdvProject.DataObjects;
 
 namespace SeleniumAdvProject.TestCases
 {
@@ -22,7 +23,7 @@ namespace SeleniumAdvProject.TestCases
 
             //3. Go to Global Setting -> Add page
             DashboardPage dashBoad = new DashboardPage();
-            dashBoad.GoToNewPage();
+            dashBoad.GoToAddNewPage();
 
             //4. Try to go to Global Setting -> Add page again
             dashBoad.OpenSetting();
@@ -45,7 +46,7 @@ namespace SeleniumAdvProject.TestCases
 
             //3. Go to Global Setting -> Add page
             DashboardPage dashBoad = new DashboardPage();
-            dashBoad.GoToNewPage();
+            dashBoad.GoToAddNewPage();
 
            
         }
@@ -60,20 +61,24 @@ namespace SeleniumAdvProject.TestCases
             loginPage.Open();
 
             //2 Log in specific repository with valid account
-            loginPage.Login(Constant.Repository, Constant.UserName, Constant.Password);
+            DashboardPage dashBoardPage = loginPage.Login(Constant.Repository, Constant.UserName, Constant.Password);
 
             //3. Go to Global Setting -> Add page
-            DashboardPage dashBoad = new DashboardPage();
-            dashBoad.GoToNewPage();
             //4 Enter Page Name field (Test)
             //5 Check Public checkbox
             //6 Click OK button
+            Page page = new Page("Test", "Select parent", 2, "Overview", false);
+            AddnEditPage addnEditPage = dashBoardPage.GoToAddNewPage();
+            addnEditPage.addPage(page);
 
             //7 Go to Global Setting -> Add page
             //8 Enter Page Name field (Test Chilld)
             //9 Click on  Select Parent dropdown list
             //10 Select specific page (Test)
             //11 Click OK button
+            Page page1 = new Page("Test Chilld", "Test", 2, "Overview", false);
+            dashBoardPage.GoToAddNewPage();
+            addnEditPage.addPage(page);
             //12 Click on Log out link
             //13 Log in with another valid account
             //VP Check children is invisibled

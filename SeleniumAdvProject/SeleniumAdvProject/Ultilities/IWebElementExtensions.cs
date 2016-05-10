@@ -24,7 +24,7 @@ namespace SeleniumAdvProject.Ultilities
            }
        }
 
-       public static void UnCheck(this IWebElement element)
+       public static void Uncheck(this IWebElement element)
        {
            if (element.Selected)
            {
