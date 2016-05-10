@@ -25,6 +25,7 @@ namespace SeleniumAdvProject.Ultilities.Controls
         /// <returns></returns>
         private void GetSelectControl()
         {
+            LoadControl();
             selectElement = new SelectElement(element);
         }
 

@@ -22,23 +22,26 @@ namespace SeleniumAdvProject.PageObjects
    
         public ComboBox DdlRepsitory
         {
-            get { return new ComboBox(_ddlRepository); }               
+            get { return new ComboBox(Constants.WebDriver.FindElement(_ddlRepository)); }                  
+            
         }
        
 
         public TextBox TxtUsername
         {
-            get { return new TextBox(_txtUsername); }             
+           get { return new TextBox(Constants.WebDriver.FindElement(_txtUsername)); }             
         }
 
         public TextBox TxtPassword
         {
-             get { return new TextBox(_txtPassword); }                  
+            get { return new TextBox(Constants.WebDriver.FindElement(_txtPassword)); }
+             //get { return new TextBox(_txtPassword); }                  
         }
 
         public Button BtnLogin
         {
-             get { return new Button(_btnLogin); }           
+            get { return new Button(Constants.WebDriver.FindElement(_btnLogin)); }
+             //get { return new Button(_btnLogin); }           
         }
                 
         #endregion

@@ -46,9 +46,17 @@ namespace SeleniumAdvProject.TestCases
             loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
             //3. Go to Global Setting -> Add page
-            MainPage mainPage = new MainPage();
-            mainPage.GoToAddNewPage();
+            //4 Enter Page Name field
+            //5 Click OK button
+            //6 Check "Test" page is displayed besides "Overview" page
+            Page page = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
+            AddNewPage newPage = new AddNewPage();
+            MainPage mainPage = newPage.addPage(page);
+            bool actualResult = mainPage.GetPositionPage(page.PageName) < mainPage.GetPositionPage("Overview") ? true : false;
+            Assert.AreEqual(true, actualResult);
 
+            mainPage.DeletePage(page.PageName);            
+            mainPage.Logout();
         }
         public void TC013()
         {
@@ -77,7 +85,13 @@ namespace SeleniumAdvProject.TestCases
             mainPage = newPage.addPage(page1);
 
             //VP Check "Another Test" page is positioned besides the "Test" page
+            bool actualResult = mainPage.GetPositionPage(page.PageName)<mainPage.GetPositionPage(page1.PageName)?true:false;
+            Assert.AreEqual(true, actualResult);
 
+            //Post-Condition
+            mainPage.DeletePage(page.PageName);
+            mainPage.DeletePage(page1.PageName);
+            mainPage.Logout();
 
         }
         public void TC014()
@@ -102,10 +116,16 @@ namespace SeleniumAdvProject.TestCases
             AddNewPage newPage = new AddNewPage();
             MainPage mainPage = newPage.addPage(page);           
 
-            //7 Click on Log out link
+            //7 Click on Log out link                       
             //8 Log in with another valid account
-            //9 Check newly added page is visibled
-            //VP Check "Another Test" page is positioned besides the "Test" page
+            loginPage = mainPage.Logout();
+            mainPage = loginPage.Login(Constants.Repository, "accont2","");
+
+            //VP Check newly added page is visibled
+            Assert.AreEqual(true, mainPage.IsPageVisible(page.PageName));
+
+            mainPage.DeletePage(page.PageName);
+            mainPage.Logout();
 
         }
 

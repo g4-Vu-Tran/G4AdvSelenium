@@ -17,6 +17,7 @@ namespace SeleniumAdvProject.TestCases
             //1. Navigate to Dashboard login page
             LoginPage loginPage = new LoginPage();
             loginPage.Open();
+            
 
             //2. Enter valid username and password	
             //3. Click on "Login" button
