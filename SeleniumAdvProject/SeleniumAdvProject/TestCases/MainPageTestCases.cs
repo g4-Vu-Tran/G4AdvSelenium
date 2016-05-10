@@ -105,6 +105,7 @@ namespace SeleniumAdvProject.TestCases
             Page page1 = new Page("Test Chilld", "Test", 2, "Overview", false);
             mainPage.GoToAddNewPage();
             addnEditPage.addPage(page);
+
             //12 Click on Log out link
             //13 Log in with another valid account
             //VP Check children is invisibled

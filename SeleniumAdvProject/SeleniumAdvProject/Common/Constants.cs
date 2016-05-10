@@ -6,7 +6,7 @@ namespace SeleniumAdvProject.Common
     public class Constants
     {
         public static IWebDriver WebDriver;
-        public const string LoginPageUrl = "http://192.168.0.101:80/TADashboard/login.jsp";
+        public const string LoginPageUrl = "http://192.168.2.101:54000/TADashboard/login.jsp";
         public const string Repository = "SampleRepository";
         public const string TestRepository = "TestRepository";
         public const string UserName = "administrator";
