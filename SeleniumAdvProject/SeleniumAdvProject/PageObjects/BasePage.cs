@@ -19,10 +19,10 @@ namespace SeleniumAdvProject.PageObjects
        
         public void WaitForPageLoadComplete()
         {
-            WebDriverWait wait = new WebDriverWait(Constant.WebDriver, TimeSpan.FromSeconds(Constant.WaitTimeoutShortSeconds));
+            WebDriverWait wait = new WebDriverWait(Constants.WebDriver, TimeSpan.FromSeconds(Constants.WaitTimeoutShortSeconds));
             try
             {
-                wait.Until(w => ((IJavaScriptExecutor)Constant.WebDriver).ExecuteScript("return document.readyState;").Equals("loaded"));
+                wait.Until(w => ((IJavaScriptExecutor)Constants.WebDriver).ExecuteScript("return document.readyState;").Equals("loaded"));
             }
             catch (WebDriverException e)
             {
@@ -32,22 +32,22 @@ namespace SeleniumAdvProject.PageObjects
         
         public void SwitchToNewFrame(IWebElement element)
         {
-            Constant.WebDriver.SwitchTo().Frame(element);
+            Constants.WebDriver.SwitchTo().Frame(element);
         }
         public void CloseWindow()
         {
-            Constant.WebDriver.Close();
+            Constants.WebDriver.Close();
         }
 
         public void WaitForControlExists(By control, int timeoutInSeconds)
         {
             try
             {
-                Constant.WebDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(timeoutInSeconds));
-                IWebElement element = Constant.WebDriver.FindElement(control);
+                Constants.WebDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(timeoutInSeconds));
+                IWebElement element = Constants.WebDriver.FindElement(control);
                 if (element == null)
                 {
-                    WebDriverWait wait = new WebDriverWait(Constant.WebDriver, TimeSpan.FromSeconds(timeoutInSeconds));
+                    WebDriverWait wait = new WebDriverWait(Constants.WebDriver, TimeSpan.FromSeconds(timeoutInSeconds));
                     wait.Until(drv => drv.FindElement(control));
                 }
             }
@@ -63,18 +63,18 @@ namespace SeleniumAdvProject.PageObjects
             {
                 case "OK":
                 case "YES":
-                    Constant.WebDriver.SwitchTo().Alert().Accept();
+                    Constants.WebDriver.SwitchTo().Alert().Accept();
                     break;
 
                 case "NO":
                 case "CANCEL":
-                    Constant.WebDriver.SwitchTo().Alert().Dismiss();
+                    Constants.WebDriver.SwitchTo().Alert().Dismiss();
                     break;
             }
         }
         public string GetDialogText()
         {
-            string dglMessage= Constant.WebDriver.SwitchTo().Alert().Text;
+            string dglMessage= Constants.WebDriver.SwitchTo().Alert().Text;
             return dglMessage;
 
         }
