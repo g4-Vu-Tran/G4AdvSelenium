@@ -71,6 +71,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Common\Constants.cs" />
+    <Compile Include="DataObjects\Page.cs" />
+    <Compile Include="PageObjects\AddNewPage.cs" />
     <Compile Include="PageObjects\BasePage.cs" />
     <Compile Include="PageObjects\MainPage.cs" />
     <Compile Include="PageObjects\LoginPage.cs" />
@@ -85,9 +87,7 @@
     <Compile Include="Ultilities\Controls\TextBox.cs" />
     <Compile Include="Ultilities\BaseControl.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataObjects\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Dlls\Selenium.WebDriverBackedSelenium.dll" />
     <Content Include="Dlls\ThoughtWorks.Selenium.Core.dll" />

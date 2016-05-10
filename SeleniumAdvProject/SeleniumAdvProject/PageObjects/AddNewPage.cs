@@ -5,13 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 using SeleniumAdvProject.Common;
-using SeleniumAdvProject.Ultilities;
 using SeleniumAdvProject.DataObjects;
 using OpenQA.Selenium.Support.UI;
 
 namespace SeleniumAdvProject.PageObjects
 {
-    public class AddnEditPage:DashboardPage
+    public class AddNewPage:MainPage
     {
         #region Locators
         static readonly By _txtPageName = By.XPath("//input[@id='name']");
@@ -26,51 +25,44 @@ namespace SeleniumAdvProject.PageObjects
         #region Elements
         public IWebElement TxtPageName
         {
-            get { return Constant.WebDriver.FindElement(_txtPageName); }
+            get { return Constants.WebDriver.FindElement(_txtPageName); }
         }
         public SelectElement CbbParentPage
         {
-            get { return new SelectElement(Constant.WebDriver.FindElement(_cbbParentPage)); }
+            get { return new SelectElement(Constants.WebDriver.FindElement(_cbbParentPage)); }
         }
         public SelectElement CbbNumberOfColumns
         {
-            get { return new SelectElement(Constant.WebDriver.FindElement(_cbbNumberOfColumns)); }
+            get { return new SelectElement(Constants.WebDriver.FindElement(_cbbNumberOfColumns)); }
         }
         public SelectElement CbbDisplayAfter
         {
-            get { return new SelectElement(Constant.WebDriver.FindElement(_cbbDisplayAfter)); }
+            get { return new SelectElement(Constants.WebDriver.FindElement(_cbbDisplayAfter)); }
         }
         public IWebElement ChkPublic
         {
-            get { return Constant.WebDriver.FindElement(_chkPublic); }
+            get { return Constants.WebDriver.FindElement(_chkPublic); }
         }
         public IWebElement BtnOk
         {
-            get { return Constant.WebDriver.FindElement(_btnOk); }
+            get { return Constants.WebDriver.FindElement(_btnOk); }
         }
         public IWebElement BtnCancel
         {
-            get { return Constant.WebDriver.FindElement(_btnCancel); }
+            get { return Constants.WebDriver.FindElement(_btnCancel); }
         }
         #endregion
 
         #region Methods
-        public DashboardPage addPage(Page page)
+        public MainPage addPage(Page page)
         {
+            GoToAddNewPage();
             TxtPageName.SendKeys(page.PageName);
             CbbParentPage.SelectByText(page.ParentPage);
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
             CbbDisplayAfter.SelectByText(page.DisplayAfter);
-            if (page.IsPublic)
-            {
-                IWebElementExtensions.Check(ChkPublic);
-            }
-            else
-            {
-                IWebElementExtensions.Uncheck(ChkPublic);
-            }
-            BtnOk.Click();
-            return new DashboardPage();
+            CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
+            return new MainPage();
         }
         #endregion
 

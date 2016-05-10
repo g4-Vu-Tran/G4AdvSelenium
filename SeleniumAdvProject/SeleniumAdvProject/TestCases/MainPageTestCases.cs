@@ -90,14 +90,14 @@ namespace SeleniumAdvProject.TestCases
             loginPage.Open();
 
             //2 Log in specific repository with valid account
-            DashboardPage dashBoardPage = loginPage.Login(Constant.Repository, Constant.UserName, Constant.Password);
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
             //3. Go to Global Setting -> Add page
             //4 Enter Page Name field (Test)
             //5 Check Public checkbox
             //6 Click OK button
             Page page = new Page("Test", "Select parent", 2, "Overview", false);
-            AddnEditPage addnEditPage = dashBoardPage.GoToAddNewPage();
+            A addnEditPage = mainPage.GoToAddNewPage();
             addnEditPage.addPage(page);
            
             //7 Go to Global Setting -> Add page

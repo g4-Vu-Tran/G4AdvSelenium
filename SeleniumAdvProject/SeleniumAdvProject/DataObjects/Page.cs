@@ -12,17 +12,17 @@ namespace SeleniumAdvProject.DataObjects
         private string parentPage;
         private int numberOfColumns;
         private string displayAfter;
-        private bool isPublic;
+        private bool _public;
 
         public Page() { }
 
-        public Page(string pageName, string parentPage, int numberOfColumns, string displayAfter, bool isPublic)
+        public Page(string pageName, string parentPage, int numberOfColumns, string displayAfter, bool _public)
         {
             this.pageName = pageName;
             this.parentPage = parentPage;
             this.numberOfColumns = numberOfColumns;
             this.displayAfter = displayAfter;
-            this.isPublic = isPublic;
+            this._public = _public;
         }
 
         public string DisplayAfter
@@ -45,12 +45,10 @@ namespace SeleniumAdvProject.DataObjects
             get { return pageName; }
             set { pageName = value; }
         }
-
-        public bool IsPublic
+        public bool _public1
         {
-            get { return isPublic; }
-            set { isPublic = value; }
+            get { return _public; }
+            set { _public = value; }
         }
-       
     }
 }
