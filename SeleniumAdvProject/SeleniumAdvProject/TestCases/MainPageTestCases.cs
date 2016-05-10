@@ -23,7 +23,7 @@ namespace SeleniumAdvProject.TestCases
 
             //3. Go to Global Setting -> Add page
             MainPage mainPage = new MainPage();
-            mainPage.GoToNewPage();
+            mainPage.GoToAddNewPage();
 
             //4. Try to go to Global Setting -> Add page again
             mainPage.OpenSetting();
@@ -47,7 +47,7 @@ namespace SeleniumAdvProject.TestCases
 
             //3. Go to Global Setting -> Add page
             MainPage mainPage = new MainPage();
-            mainPage.GoToNewPage();
+            mainPage.GoToAddNewPage();
 
         }
         public void TC013()
@@ -63,7 +63,7 @@ namespace SeleniumAdvProject.TestCases
 
             //3 Go to Global Setting -> Add page
             MainPage mainPage = new MainPage();
-            mainPage.GoToNewPage();
+            mainPage.GoToAddNewPage();
 
             //4 Enter Page Name field
             //5 Click OK button
@@ -73,9 +73,6 @@ namespace SeleniumAdvProject.TestCases
             //9 Select specific page
             //10 Click OK button
             //VP Check "Another Test" page is positioned besides the "Test" page
-
-            DashboardPage dashBoad = new DashboardPage();
-            dashBoad.GoToAddNewPage();
 
            
         }
@@ -97,7 +94,7 @@ namespace SeleniumAdvProject.TestCases
             //5 Check Public checkbox
             //6 Click OK button
             Page page = new Page("Test", "Select parent", 2, "Overview", false);
-            A addnEditPage = mainPage.GoToAddNewPage();
+            AddNewPage addnEditPage = mainPage.GoToAddNewPage();
             addnEditPage.addPage(page);
            
             //7 Go to Global Setting -> Add page
@@ -106,7 +103,7 @@ namespace SeleniumAdvProject.TestCases
             //10 Select specific page (Test)
             //11 Click OK button
             Page page1 = new Page("Test Chilld", "Test", 2, "Overview", false);
-            dashBoardPage.GoToAddNewPage();
+            mainPage.GoToAddNewPage();
             addnEditPage.addPage(page);
             //12 Click on Log out link
             //13 Log in with another valid account

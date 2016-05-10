@@ -92,7 +92,7 @@ namespace SeleniumAdvProject.PageObjects
         {
             LblSetting.MouseOver();
             LnkAdd.Click();
-            return new AddNewPage;
+            return new AddNewPage();
         }
 
         public MainPage OpenSetting()
