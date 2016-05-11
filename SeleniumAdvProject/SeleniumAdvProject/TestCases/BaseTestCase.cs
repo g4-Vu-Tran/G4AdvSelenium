@@ -16,33 +16,26 @@ namespace SeleniumAdvProject.TestCases
     public class BaseTestCase
     {
         [TestInitialize]
+        public IWebDriver _webDriver;
         public void TestInitializeMethod()
         {
             Console.WriteLine("Run Test Initialize");
 
             DesiredCapabilities capabilities = DesiredCapabilities.Firefox();
             capabilities.SetCapability(CapabilityType.BrowserName, "firefox");
-            capabilities.SetCapability(CapabilityType.Version, "30");
+            capabilities.SetCapability(CapabilityType.Version, "44");
             capabilities.SetCapability(CapabilityType.Platform, new Platform(PlatformType.Windows));
-
- //                       Constants.WebDriver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(300));          
-            RemoteWebDriver _rmWebDriver = new RemoteWebDriver(new Uri("http://localhost:8888/wd/hub"), 
-                capabilities,
-                TimeSpan.FromSeconds(Constants.WaitTimeoutShortSeconds));
-                // Start Firefox browser and maximize window
-
-            //onstants.WebDriver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(300));          
-
-            Constants.WebDriver.Manage().Window.Maximize();
+            _webDriver = new RemoteWebDriver(new Uri("http://localhost:8888/wd/hub"), capabilities, TimeSpan.FromSeconds(Constants.WaitTimeoutShortSeconds));
+            _webDriver.Manage().Window.Maximize();
         }
 
         [TestCleanup]
         public void TestCleanupMethod()
         {
-            Console.WriteLine("Run Test Cleanup");                     
+            Console.WriteLine("Run Test Cleanup");
 
             // Close browser
-            Constants.WebDriver.Quit();
-        }                
+            _webDriver.Quit();
+        }
     }
 }

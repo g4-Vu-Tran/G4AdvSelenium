@@ -10,6 +10,8 @@ namespace SeleniumAdvProject.PageObjects
 {
     public class LoginPage:BasePage
     {
+        private IWebDriver _webDriver;
+        
         #region Locators
 
         static readonly By _ddlRepository = By.XPath("//select[@name='repository']");
@@ -18,29 +20,30 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _btnLogin = By.XPath("//div[@class='btn-login']");
         
         #endregion
+
         #region Elements     
    
         public ComboBox DdlRepsitory
         {
-            get { return new ComboBox(Constants.WebDriver.FindElement(_ddlRepository)); }                  
+            get { return new ComboBox(_webDriver.FindElement(_ddlRepository)); }                  
             
         }
        
 
         public TextBox TxtUsername
         {
-           get { return new TextBox(Constants.WebDriver.FindElement(_txtUsername)); }             
+           get { return new TextBox(_webDriver.FindElement(_txtUsername)); }             
         }
 
         public TextBox TxtPassword
         {
-            get { return new TextBox(Constants.WebDriver.FindElement(_txtPassword)); }
+            get { return new TextBox(_webDriver.FindElement(_txtPassword)); }
              //get { return new TextBox(_txtPassword); }                  
         }
 
         public Button BtnLogin
         {
-            get { return new Button(Constants.WebDriver.FindElement(_btnLogin)); }
+            get { return new Button(_webDriver.FindElement(_btnLogin)); }
              //get { return new Button(_btnLogin); }           
         }
                 
@@ -49,7 +52,7 @@ namespace SeleniumAdvProject.PageObjects
         #region Methods
         public LoginPage Open()
         {
-            Constants.WebDriver.Navigate().GoToUrl(Constants.LoginPageUrl);
+            _webDriver.Navigate().GoToUrl(Constants.LoginPageUrl);
             return this;
         }
         public MainPage Login(string repository,string username, string password)

@@ -5,23 +5,17 @@ namespace SeleniumAdvProject.Common
 {
     public class Constants
     {
-        public static IWebDriver WebDriver;
-        public const string LoginPageUrl = "http://192.168.0.101:80/TADashboard/login.jsp";
+        //public static IWebDriver WebDriver;
+        public const string LoginPageUrl = "http://groupba.dyndns.org:54000/TADashboard/login.jsp";
         public const string Repository = "SampleRepository";
         public const string TestRepository = "TestRepository";
         public const string UserName = "administrator";
         public const string Password = "";
-        public const int WaitTimeoutShortSeconds = 60;
+        public const int WaitTimeoutShortSeconds = 5;
         public const int lenghtRandomString = 10;
-
-        //http://groupba.dyndns.org:54000/TADashboard/login.jsp
-        //repo1: SampleRepository
-        //repo2: TestRepository
-        // user: test1, pass: !@#$%^&*()
-        //user: test, pass: admin
-        //user, test@logigear.com, pass rong
-
-
+        public const string UserName1 = "test1";
+        public const string SpecialPassword = "!@#$%^&*()";
+                
         public static string GetXpath(By by)
         {
             string[] words = by.ToString().Split(':');

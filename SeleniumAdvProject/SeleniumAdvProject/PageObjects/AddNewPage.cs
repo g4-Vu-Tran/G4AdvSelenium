@@ -13,6 +13,8 @@ namespace SeleniumAdvProject.PageObjects
 {
     public class AddNewPage : MainPage
     {
+        private IWebDriver _webDriver;
+
         #region Locators
         static readonly By _txtPageName = By.XPath("//input[@id='name']");
         static readonly By _cbbParentPage = By.XPath("//select [@id='parent']");
@@ -26,32 +28,32 @@ namespace SeleniumAdvProject.PageObjects
         #region Elements
         public TextBox TxtPageName
         {
-            get { return new TextBox(Constants.WebDriver.FindElement(_txtPageName)); }
+            get { return new TextBox(_webDriver.FindElement(_txtPageName)); }
         }
         public ComboBox CbbParentPage
         {
-            get { return new ComboBox(Constants.WebDriver.FindElement(_cbbParentPage)); }
+            get { return new ComboBox(_webDriver.FindElement(_cbbParentPage)); }
         }
         public ComboBox CbbNumberOfColumns
         {
-            get { return new ComboBox(Constants.WebDriver.FindElement(_cbbNumberOfColumns)); }
+            get { return new ComboBox(_webDriver.FindElement(_cbbNumberOfColumns)); }
         }
         public ComboBox CbbDisplayAfter
         {
-            get { return new ComboBox(Constants.WebDriver.FindElement(_cbbDisplayAfter)); }
+            get { return new ComboBox(_webDriver.FindElement(_cbbDisplayAfter)); }
         }
         public Checkbox ChkPublic
         {
-            get { return new Checkbox(Constants.WebDriver.FindElement(_chkPublic)); }
+            get { return new Checkbox(_webDriver.FindElement(_chkPublic)); }
         }
 
         public Button BtnOk
         {
-            get { return new Button(Constants.WebDriver.FindElement(_btnOk)); }
+            get { return new Button(_webDriver.FindElement(_btnOk)); }
         }
         public Button BtnCancel
         {
-            get { return new Button(Constants.WebDriver.FindElement(_btnOk)); }
+            get { return new Button(_webDriver.FindElement(_btnOk)); }
         }
         #endregion
 

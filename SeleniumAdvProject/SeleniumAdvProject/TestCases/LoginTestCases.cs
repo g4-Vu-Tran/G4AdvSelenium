@@ -2,6 +2,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SeleniumAdvProject.PageObjects;
 using SeleniumAdvProject.Common;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Remote;
 
 namespace SeleniumAdvProject.TestCases
 {
@@ -9,6 +12,9 @@ namespace SeleniumAdvProject.TestCases
     public class LoginTestCases : BaseTestCase
     {
         [TestMethod]
+
+        private IWebDriver _webDriver;
+
         public void TC01()
         {
 
@@ -17,15 +23,15 @@ namespace SeleniumAdvProject.TestCases
             //1. Navigate to Dashboard login page
             LoginPage loginPage = new LoginPage();
             loginPage.Open();
-            
+
 
             //2. Enter valid username and password	
             //3. Click on "Login" button
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
-            
+
             //VP. Verify that Dashboard Mainpage appears
             Assert.AreEqual(Constants.UserName, mainPage.GetUserNameText());
-            
+
             //Post-Condition
             //Logout			
             //Close Dashboard	
@@ -111,7 +117,7 @@ namespace SeleniumAdvProject.TestCases
 
             //VP Observe the current page
             //- There is no Login Repository dialog
-            String URL = Constants.WebDriver.Url.ToString();
+            String URL = _webDriver.Url.ToString();
             Assert.IsFalse(URL.Equals(Constants.LoginPageUrl));
 
             //- The Repository menu displays name of switched repository
@@ -130,8 +136,28 @@ namespace SeleniumAdvProject.TestCases
         }
 
         [TestMethod]
-        public void TC010()
+        public void TC08()
+        {
+            Console.WriteLine("DA_LOGIN_TC008 - Verify that password with special characters is working correctly");
 
+            //1. Navigate to Dashboard login page
+            LoginPage loginPage = new LoginPage();
+            loginPage.Open();
+
+            //2. Login with account that has special characters password
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName1, Constants.SpecialPassword);
+
+            //VP. Main page is displayed
+            Assert.AreEqual(Constants.UserName, mainPage.GetUserNameText());
+
+            //Post-Condition
+            //Logout			
+            //Close Dashboard	
+            mainPage.Logout();
+        }
+
+        [TestMethod]
+        public void TC010()
         {
             Console.WriteLine("DA_LOGIN_TC010 - Verify that the page works correctly for the case when no input entered to Password and Username field");
 
