@@ -27,7 +27,6 @@ namespace SeleniumAdvProject.PageObjects
 
         #region Elements
 
-        private IWebDriver _webDriver;
         public Link LnkDelete
         {
             get { return new Link(_webDriver.FindElement(_lnkDelete)); }
@@ -64,7 +63,7 @@ namespace SeleniumAdvProject.PageObjects
         #endregion
 
         #region Methods
-                
+
         public string GetUserNameText()
         {
             return LblUsername.Text;

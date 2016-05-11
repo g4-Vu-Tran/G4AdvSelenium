@@ -18,6 +18,7 @@ namespace SeleniumAdvProject.Ultilities
         protected IMouse mouse;
         protected WebDriverWait wait;
         protected ICoordinates coordinates;
+        private IWebDriver _webDriver;
 
         public string XPath { get; set; }
         public By by { get; set; }
@@ -35,8 +36,8 @@ namespace SeleniumAdvProject.Ultilities
         {
             this.by = by;
             XPath = Constants.GetXpath(by);
-            action = new Actions(Constants.WebDriver);
-            mouse = ((IHasInputDevices)Constants.WebDriver).Mouse;
+            action = new Actions(_webDriver);
+            mouse = ((IHasInputDevices)_webDriver).Mouse;
         }
 
 
@@ -48,15 +49,15 @@ namespace SeleniumAdvProject.Ultilities
         {
             XPath = xPath;
             by = By.XPath(xPath);
-            action = new Actions(Constants.WebDriver);
-            mouse = ((IHasInputDevices)Constants.WebDriver).Mouse;
+            action = new Actions(_webDriver);
+            mouse = ((IHasInputDevices)_webDriver).Mouse;
         }
 
         public BaseControl(IWebElement element)
         {
             this.element = element;
-            action = new Actions(Constants.WebDriver);
-            mouse = ((IHasInputDevices)Constants.WebDriver).Mouse;
+            action = new Actions(_webDriver);
+            mouse = ((IHasInputDevices)_webDriver).Mouse;
         }
 
         /// <summary>
@@ -87,7 +88,7 @@ namespace SeleniumAdvProject.Ultilities
             {
                 if (element == null)
                 {
-                    wait = new WebDriverWait(Constants.WebDriver, TimeSpan.FromSeconds(timeoutInSeconds));
+                    wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(timeoutInSeconds));
                     wait.Until(drv => drv.FindElement(by));
                 }
             }
@@ -106,7 +107,7 @@ namespace SeleniumAdvProject.Ultilities
         {
             try
             {
-                wait = new WebDriverWait(Constants.WebDriver, TimeSpan.FromSeconds(timeoutInSeconds));
+                wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(timeoutInSeconds));
                 wait.Until(drv => drv.FindElement(by).Displayed == true);
             }
             catch
@@ -124,7 +125,7 @@ namespace SeleniumAdvProject.Ultilities
             if (by != null)
             {
                 WaitForControlExists(Constants.WaitTimeoutShortSeconds);
-                element = Constants.WebDriver.FindElement(by);
+                element = _webDriver.FindElement(by);
             }
             
         }
@@ -167,7 +168,7 @@ namespace SeleniumAdvProject.Ultilities
         public void MouseOver()
         {
             LoadControl();
-            action = new Actions(Constants.WebDriver);
+            action = new Actions(_webDriver);
             action.MoveToElement(this.element).Build().Perform();
         }
         /// <summary>
@@ -179,7 +180,7 @@ namespace SeleniumAdvProject.Ultilities
             {
                 LoadControl();
             }
-            ((IJavaScriptExecutor)Constants.WebDriver).ExecuteScript("arguments[0].click();", element);
+            ((IJavaScriptExecutor)_webDriver).ExecuteScript("arguments[0].click();", element);
         }
 
         /// <summary>
@@ -373,20 +374,20 @@ namespace SeleniumAdvProject.Ultilities
                 {
                     if (by != null)
                     {
-                        Constants.WebDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(10));
-                        int count = Constants.WebDriver.FindElements(by).Count;
+                        _webDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(10));
+                        int count = _webDriver.FindElements(by).Count;
                         return count > 0 ? true : false;
                     }
                     return element != null ? true : false;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(String.Format("The {0} control doesn't exist in {1} with {2}", by, Constants.WebDriver.Title, ex.Message));
+                    Console.WriteLine(String.Format("The {0} control doesn't exist in {1} with {2}", by, _webDriver.Title, ex.Message));
                     return false;
                 }
                 finally
                 {
-                    Constants.WebDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(Constants.WaitTimeoutShortSeconds));
+                    _webDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(Constants.WaitTimeoutShortSeconds));
                 }
             }
         }

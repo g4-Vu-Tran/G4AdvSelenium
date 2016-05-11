@@ -10,8 +10,7 @@ namespace SeleniumAdvProject.PageObjects
 {
     public class LoginPage:BasePage
     {
-        private IWebDriver _webDriver;
-        
+                
         #region Locators
 
         static readonly By _ddlRepository = By.XPath("//select[@name='repository']");

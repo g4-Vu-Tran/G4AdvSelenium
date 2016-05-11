@@ -15,8 +15,9 @@ namespace SeleniumAdvProject.TestCases
     [TestClass]
     public class BaseTestCase
     {
+        private IWebDriver _webDriver;
         [TestInitialize]
-        public IWebDriver _webDriver;
+
         public void TestInitializeMethod()
         {
             Console.WriteLine("Run Test Initialize");

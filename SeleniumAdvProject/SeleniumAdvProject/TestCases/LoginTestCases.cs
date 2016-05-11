@@ -11,9 +11,8 @@ namespace SeleniumAdvProject.TestCases
     [TestClass]
     public class LoginTestCases : BaseTestCase
     {
-        [TestMethod]
-
         private IWebDriver _webDriver;
+        [TestMethod]
 
         public void TC01()
         {

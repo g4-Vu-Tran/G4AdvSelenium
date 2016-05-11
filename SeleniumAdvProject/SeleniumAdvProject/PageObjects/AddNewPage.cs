@@ -13,7 +13,6 @@ namespace SeleniumAdvProject.PageObjects
 {
     public class AddNewPage : MainPage
     {
-        private IWebDriver _webDriver;
 
         #region Locators
         static readonly By _txtPageName = By.XPath("//input[@id='name']");

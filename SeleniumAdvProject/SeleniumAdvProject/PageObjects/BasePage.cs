@@ -14,17 +14,13 @@ namespace SeleniumAdvProject.PageObjects
 
         public IWebDriver _webDriver;
 
-        public BasePage(IWebDriver _driver)
-        {
-            this._webDriver = _driver;
-        }
-        
+
         public void SwitchToNewOpenedWindow(IWebDriver driver, bool isNewUrl = true)
         {
             driver.Close();
             driver.SwitchTo().Window(driver.WindowHandles.Last());
         }
-       
+
         public void WaitForPageLoadComplete()
         {
             WebDriverWait wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(Constants.WaitTimeoutShortSeconds));
@@ -37,7 +33,7 @@ namespace SeleniumAdvProject.PageObjects
                 Console.WriteLine(e.ToString());
             }
         }
-        
+
         public void SwitchToNewFrame(IWebElement element)
         {
             _webDriver.SwitchTo().Frame(element);
@@ -82,7 +78,7 @@ namespace SeleniumAdvProject.PageObjects
         }
         public string GetDialogText()
         {
-            string dglMessage= _webDriver.SwitchTo().Alert().Text;
+            string dglMessage = _webDriver.SwitchTo().Alert().Text;
             return dglMessage;
 
         }
