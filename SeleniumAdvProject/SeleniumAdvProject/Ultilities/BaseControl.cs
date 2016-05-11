@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SeleniumAdvProject.Ultilities
 {
-    public class BaseControl : IWebElement
+    public class BaseControl : IWebElement 
     {
       protected IWebElement element;
         protected Actions action;
