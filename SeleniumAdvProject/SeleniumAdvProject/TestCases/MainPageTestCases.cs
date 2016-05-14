@@ -10,7 +10,7 @@ namespace SeleniumAdvProject.TestCases
     public class MainPageTestCases : BaseTestCase
     {
         [TestMethod]
-        public void TC011()
+        public void DA_MP_TC011()
         {
             Console.WriteLine("DA_MP_TC011 - Verify that user is unable open more than 1 \"New Page\" dialog");
 
@@ -34,7 +34,7 @@ namespace SeleniumAdvProject.TestCases
         }
 
         [TestMethod]
-        public void TC012()
+        public void DA_MP_TC012()
         {
             Console.WriteLine("DA_MP_TC012 - Verify that user is able to add additional pages besides \"Overview\" page successfully");
 
@@ -50,15 +50,17 @@ namespace SeleniumAdvProject.TestCases
             //5 Click OK button
             //6 Check "Test" page is displayed besides "Overview" page
             Page page = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
-            AddNewPage newPage = new AddNewPage();
+            AddNewPage newPage = new AddNewPage(_webDriver);
             MainPage mainPage = newPage.addPage(page);
             bool actualResult = mainPage.GetPositionPage(page.PageName) < mainPage.GetPositionPage("Overview") ? true : false;
             Assert.AreEqual(true, actualResult);
 
-            mainPage.DeletePage(page.PageName);            
+            mainPage.DeletePage(page.PageName);
             mainPage.Logout();
         }
-        public void TC013()
+
+        [TestMethod]
+        public void DA_MP_TC013()
         {
             Console.WriteLine("DA_MP_TC013 - Verify that the newly added main parent page is positioned at the location specified as set with \"Displayed After\" field of \"New Page\" form on the main page bar/\"Parent Page\" dropped down menu");
 
@@ -80,12 +82,12 @@ namespace SeleniumAdvProject.TestCases
             Page page = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
             Page page1 = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, page.PageName, false);
 
-            AddNewPage newPage = new AddNewPage();
+            AddNewPage newPage = new AddNewPage(_webDriver);
             MainPage mainPage = newPage.addPage(page);
             mainPage = newPage.addPage(page1);
 
             //VP Check "Another Test" page is positioned besides the "Test" page
-            bool actualResult = mainPage.GetPositionPage(page.PageName)<mainPage.GetPositionPage(page1.PageName)?true:false;
+            bool actualResult = mainPage.GetPositionPage(page.PageName) < mainPage.GetPositionPage(page1.PageName) ? true : false;
             Assert.AreEqual(true, actualResult);
 
             //Post-Condition
@@ -94,13 +96,15 @@ namespace SeleniumAdvProject.TestCases
             mainPage.Logout();
 
         }
-        public void TC014()
+
+        [TestMethod]
+        public void DA_MP_TC014()
         {
             Console.WriteLine("DA_MP_TC014 - Verify that \"Public\" pages can be visible and accessed by all users of working repository");
 
             //1 Navigate to Dashboard login page
             //2 Log in specific repository with valid account         
-            
+
             //1 Navigate to Dashboard login page
             LoginPage loginPage = new LoginPage();
             loginPage.Open();
@@ -112,14 +116,14 @@ namespace SeleniumAdvProject.TestCases
             //4 Enter Page Name field
             //5 Check Public checkbox
             //6 Click OK button            
-            Page page = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", true);           
-            AddNewPage newPage = new AddNewPage();
-            MainPage mainPage = newPage.addPage(page);           
+            Page page = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", true);
+            AddNewPage newPage = new AddNewPage(_webDriver);
+            MainPage mainPage = newPage.addPage(page);
 
             //7 Click on Log out link                       
             //8 Log in with another valid account
             loginPage = mainPage.Logout();
-            mainPage = loginPage.Login(Constants.Repository, "accont2","");
+            mainPage = loginPage.Login(Constants.Repository, "accont2", "");
 
             //VP Check newly added page is visibled
             Assert.AreEqual(true, mainPage.IsPageVisible(page.PageName));
@@ -130,12 +134,12 @@ namespace SeleniumAdvProject.TestCases
         }
 
         [TestMethod]
-        public void TC015()
+        public void DA_MP_TC015()
         {
             Console.WriteLine("DA_MP_TC015 - Verify that non \"Public\" pages can only be accessed and visible to their creators with condition that all parent pages above it are \"Public\"");
 
             //1 Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage();
+            LoginPage loginPage = new LoginPage(_webDriver);
             loginPage.Open();
 
             //2 Log in specific repository with valid account
@@ -146,21 +150,26 @@ namespace SeleniumAdvProject.TestCases
             //5 Check Public checkbox
             //6 Click OK button
             Page page = new Page("Test", "Select parent", 2, "Overview", false);
-            AddNewPage addnEditPage = mainPage.GoToAddNewPage();
-            addnEditPage.addPage(page);
+            AddNewPage addNewPage = mainPage.GoToAddNewPage();
+            addNewPage.addPage(page);
 
             //7 Go to Global Setting -> Add page
             //8 Enter Page Name field (Test Chilld)
             //9 Click on  Select Parent dropdown list
             //10 Select specific page (Test)
             //11 Click OK button
-            Page page1 = new Page("Test Chilld", "Test", 2, "Overview", false);
+            Page page1 = new Page("Test Chilld", "Test", 2, "Select page", false);
             mainPage.GoToAddNewPage();
-            addnEditPage.addPage(page);
+            addNewPage.addPage(page1);
 
             //12 Click on Log out link
+            mainPage.Logout();
+
             //13 Log in with another valid account
+            loginPage.Login(Constants.Repository, "test", "admin");
+
             //VP Check children is invisibled
+            Assert.IsTrue(mainPage.IsPageVisible(page1.PageName));
         }
 
     }

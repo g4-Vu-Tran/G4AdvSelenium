@@ -6,7 +6,6 @@ namespace SeleniumAdvProject.Common
     public class Constants
     {
         //public static IWebDriver WebDriver;
-        public const string LoginPageUrl = "http://groupba.dyndns.org:54000/TADashboard/login.jsp";
         public const string Repository = "SampleRepository";
         public const string TestRepository = "TestRepository";
         public const string UserName = "administrator";
@@ -15,6 +14,10 @@ namespace SeleniumAdvProject.Common
         public const int lenghtRandomString = 10;
         public const string UserName1 = "test1";
         public const string SpecialPassword = "!@#$%^&*()";
+
+        //URL
+        public const string LoginPageUrl = "http://groupba.dyndns.org:54000/TADashboard/login.jsp";
+        public const string MainPageUrl = "/TADashboard/2f9njff6y9.page";
                 
         public static string GetXpath(By by)
         {

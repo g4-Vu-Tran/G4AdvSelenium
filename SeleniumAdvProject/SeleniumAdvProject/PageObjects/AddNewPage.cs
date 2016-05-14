@@ -11,7 +11,7 @@ using SeleniumAdvProject.Ultilities.Controls;
 
 namespace SeleniumAdvProject.PageObjects
 {
-    public class AddNewPage : MainPage
+    public class AddNewPage : BasePage
     {
 
         #region Locators
@@ -57,6 +57,12 @@ namespace SeleniumAdvProject.PageObjects
         #endregion
 
         #region Methods
+
+        public AddNewPage(IWebDriver webDriver)
+        {
+            this._webDriver = webDriver;
+        }
+
         public MainPage addPage(Page page)
         {
             TxtPageName.SendKeys(page.PageName);
@@ -64,7 +70,8 @@ namespace SeleniumAdvProject.PageObjects
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
             CbbDisplayAfter.SelectByText(page.DisplayAfter);
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
-            return new MainPage();
+            BtnOk.Click();
+            return new MainPage(_webDriver);
         }
         #endregion
 

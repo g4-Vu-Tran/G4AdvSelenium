@@ -10,7 +10,6 @@ namespace SeleniumAdvProject.PageObjects
 {
     public class LoginPage:BasePage
     {
-                
         #region Locators
 
         static readonly By _ddlRepository = By.XPath("//select[@name='repository']");
@@ -49,6 +48,15 @@ namespace SeleniumAdvProject.PageObjects
         #endregion
 
         #region Methods
+
+        public LoginPage()
+        {
+        }
+
+        public LoginPage(IWebDriver webDriver)
+        {
+            this._webDriver = webDriver;
+        }
         public LoginPage Open()
         {
             _webDriver.Navigate().GoToUrl(Constants.LoginPageUrl);
@@ -60,7 +68,7 @@ namespace SeleniumAdvProject.PageObjects
             TxtUsername.SendKeys(username);
             TxtPassword.SendKeys(password);
             BtnLogin.Click();
-            return new MainPage();            
+            return new MainPage(_webDriver);            
         }
         
         public string LoginWithExpectedError(string repository, string username, string password)
@@ -78,7 +86,11 @@ namespace SeleniumAdvProject.PageObjects
             BtnLogin.Click();
             return this;        
         }
-       
+
+        public IWebDriver GetWebDriver()
+        {
+            return _webDriver;
+        }
         #endregion
 
     }

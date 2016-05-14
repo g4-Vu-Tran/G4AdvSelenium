@@ -64,6 +64,14 @@ namespace SeleniumAdvProject.PageObjects
 
         #region Methods
 
+        public MainPage()
+        {
+        }
+        public MainPage(IWebDriver webDriver)
+        {
+            this._webDriver = webDriver;
+        }
+
         public string GetUserNameText()
         {
             return LblUsername.Text;
@@ -78,16 +86,15 @@ namespace SeleniumAdvProject.PageObjects
         {
             LblUsername.MouseOver();
             LnkLogout.Click();
-            return new LoginPage();
+            return new LoginPage(_webDriver);
         }
 
         public MainPage SelectRepository(String repositoryName)
         {
-
             LblRepository.MouseOver();
-            Actions mouseAction = new Actions(_webDriver);
-            mouseAction.MoveToElement(LblRepository).Perform();
-            mouseAction.MoveToElement(_webDriver.FindElement(By.XPath("//ul[@id='ulListRepositories']//a[.='" + repositoryName + "']"))).Click().Perform();
+            Link lnkRepository = new Link(_webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", repositoryName))));
+            lnkRepository.MouseOver();
+            lnkRepository.Click();
             return this;
         }
         public MainPage DeletePage(string pageName)
@@ -112,7 +119,7 @@ namespace SeleniumAdvProject.PageObjects
         {
             LblSetting.MouseOver();
             LnkAdd.Click();
-            return new AddNewPage();
+            return new AddNewPage(_webDriver);
         }
 
         public MainPage OpenSetting()
@@ -128,10 +135,9 @@ namespace SeleniumAdvProject.PageObjects
             return _isExist;
         }
 
-        public bool IsPageVisible(string pageName)
+        public Boolean IsPageVisible(string pageName)
         {
-            Link page = new Link();
-            page.FindElement(By.XPath(string.Format("//a[.='{0}']", pageName)));
+            Link page = new Link(_webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", pageName))));
             return page.Enabled;
         }
 

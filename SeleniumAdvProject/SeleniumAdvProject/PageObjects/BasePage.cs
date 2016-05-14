@@ -14,7 +14,6 @@ namespace SeleniumAdvProject.PageObjects
 
         public IWebDriver _webDriver;
 
-
         public void SwitchToNewOpenedWindow(IWebDriver driver, bool isNewUrl = true)
         {
             driver.Close();
