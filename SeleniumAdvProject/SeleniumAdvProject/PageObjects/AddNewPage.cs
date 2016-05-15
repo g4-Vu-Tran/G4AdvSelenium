@@ -58,10 +58,7 @@ namespace SeleniumAdvProject.PageObjects
 
         #region Methods
 
-        public AddNewPage(IWebDriver webDriver)
-        {
-            this._webDriver = webDriver;
-        }
+        public AddNewPage(IWebDriver webDriver) : base(webDriver) { }
 
         public MainPage addPage(Page page)
         {

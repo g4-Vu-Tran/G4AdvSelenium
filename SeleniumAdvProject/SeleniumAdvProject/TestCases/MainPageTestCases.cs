@@ -15,14 +15,14 @@ namespace SeleniumAdvProject.TestCases
             Console.WriteLine("DA_MP_TC011 - Verify that user is unable open more than 1 \"New Page\" dialog");
 
             //1 Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage();
+            LoginPage loginPage = new LoginPage(_webDriver);
             loginPage.Open();
 
             //2. Login with valid account
             loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
             //3. Go to Global Setting -> Add page
-            MainPage mainPage = new MainPage();
+            MainPage mainPage = new MainPage(_webDriver);
             mainPage.GoToAddNewPage();
 
             //4. Try to go to Global Setting -> Add page again
@@ -39,7 +39,7 @@ namespace SeleniumAdvProject.TestCases
             Console.WriteLine("DA_MP_TC012 - Verify that user is able to add additional pages besides \"Overview\" page successfully");
 
             //1 Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage();
+            LoginPage loginPage = new LoginPage(_webDriver);
             loginPage.Open();
 
             //2. Login with valid account
@@ -65,7 +65,7 @@ namespace SeleniumAdvProject.TestCases
             Console.WriteLine("DA_MP_TC013 - Verify that the newly added main parent page is positioned at the location specified as set with \"Displayed After\" field of \"New Page\" form on the main page bar/\"Parent Page\" dropped down menu");
 
             //1 Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage();
+            LoginPage loginPage = new LoginPage(_webDriver);
             loginPage.Open();
 
             //2. Log in specific repository with valid account
@@ -106,7 +106,7 @@ namespace SeleniumAdvProject.TestCases
             //2 Log in specific repository with valid account         
 
             //1 Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage();
+            LoginPage loginPage = new LoginPage(_webDriver);
             loginPage.Open();
 
             //2. Log in specific repository with valid account
@@ -158,7 +158,7 @@ namespace SeleniumAdvProject.TestCases
             //9 Click on  Select Parent dropdown list
             //10 Select specific page (Test)
             //11 Click OK button
-            Page page1 = new Page("Test Chilld", "Test", 2, "Select page", false);
+            Page page1 = new Page("Test Child", "Test", 2, "Select page", false);
             mainPage.GoToAddNewPage();
             addNewPage.addPage(page1);
 
@@ -172,5 +172,104 @@ namespace SeleniumAdvProject.TestCases
             Assert.IsTrue(mainPage.IsPageVisible(page1.PageName));
         }
 
+        [TestMethod]
+        public void DA_MP_TC017()
+        {
+            Console.WriteLine("DA_MP_TC017 - Verify that user can remove any main parent page except \"Overview\" page successfully and the order of pages stays persistent as long as there is not children page under it");
+
+            //1 Navigate to Dashboard login page
+            LoginPage loginPage = new LoginPage(_webDriver);
+            loginPage.Open();
+
+            //2 Log in specific repository with valid account
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Add a new parent page (Test)
+            Page parentPage = new Page("Test", "Select parent", 2, "Overview", false);
+            AddNewPage addNewPage = mainPage.GoToAddNewPage();
+            addNewPage.addPage(parentPage);
+
+            //4. Add a children page of newly added page (Test Child) 
+            Page childPage = new Page("Test Child", "Test", 2, "Select page", false);
+            mainPage.GoToAddNewPage();
+            addNewPage.addPage(childPage);
+
+            //5. Click on parent page
+            //6. Click "Delete" link
+            mainPage.DeletePage("Test");
+
+            //VP. Check confirm message "Are you sure you want to remove this page?" appears
+            //7. Click OK button
+            string actualMessage = mainPage.GetDialogText();
+            Assert.AreEqual("Are you sure you want to remove this page?", actualMessage);
+            mainPage.ConfirmDialog("OK");
+
+            //VP. Check warning message "Can not delete page 'Test' since it has children page(s)" appears
+            //8. Click OK button
+            actualMessage = mainPage.GetDialogText();
+            Assert.AreEqual("Cannot delete page 'Test' since it has child page(s).\r\n", actualMessage);
+            mainPage.ConfirmDialog("OK");
+
+            //9. Click on  children page
+            //10. Click "Delete" link
+            mainPage.DeletePage("Test/Test Child");
+
+            //VP. Check confirm message "Are you sure you want to remove this page?" appears
+            //11. Click OK button
+            actualMessage = mainPage.GetDialogText();
+            Assert.AreEqual("Are you sure you want to remove this page?", actualMessage);
+            mainPage.ConfirmDialog("OK");
+
+            //VP. Check children page is deleted
+            //12. Click on  parent page
+            //13. Click "Delete" link
+            mainPage.DeletePage("Test");
+
+            //VP. Check confirm message "Are you sure you want to remove this page?" appears
+            //14. Click OK button
+            actualMessage = mainPage.GetDialogText();
+            Assert.AreEqual("Are you sure you want to remove this page?", actualMessage);
+            mainPage.ConfirmDialog("OK");
+
+            //VP. Check parent page is deleted
+            //15. Click on "Overview" page
+            mainPage.ClickMenuItem("Overview");
+            //VP. Check "Delete" link disappears
+        }
+
+        [TestMethod]
+        public void DA_MP_TC018()
+        {
+            Console.WriteLine("DA_MP_TC017 - Verify that user is able to add additional sibbling pages to the parent page successfully");
+
+            //1 Navigate to Dashboard login page
+            LoginPage loginPage = new LoginPage(_webDriver);
+            loginPage.Open();
+
+            //2 Log in specific repository with valid account
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Add a new parent page (Test)
+            Page parentPage = new Page("Test", "Select parent", 2, "Overview", false);
+            AddNewPage addNewPage = mainPage.GoToAddNewPage();
+            addNewPage.addPage(parentPage);
+
+            //4. Add a children page of newly added page (Test Child) 
+            Page childPage1 = new Page("Test Child1", "Test", 2, "Select page", false);
+            mainPage.GoToAddNewPage();
+            addNewPage.addPage(childPage1);
+
+            //Go to Global Setting -> Add page
+            //Enter Page Name
+            //Click on  Parent Page dropdown list
+            //Select a parent page
+            //Click OK button
+            Page childPage2 = new Page("Test Child2", "Test", 2, "Select page", false);
+            mainPage.GoToAddNewPage();
+            addNewPage.addPage(childPage2);
+
+            //VP. Check "Test Child 2" is added successfully
+
+        }
     }
 }

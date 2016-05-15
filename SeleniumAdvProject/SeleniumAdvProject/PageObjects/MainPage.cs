@@ -14,95 +14,26 @@ namespace SeleniumAdvProject.PageObjects
     {
 
         #region Locators
-
-        static readonly By _lblUsername = By.XPath("//a[@href='#Welcome']");
-        static readonly By _lblRepository = By.XPath("//a[@href='#Repository']");
-        static readonly By _lblCurrentRepository = By.XPath("//a[@href='#Repository']/span");
-        static readonly By _lnkLogout = By.XPath("//a[@href='logout.do']");
-        static readonly By _lblSetting = By.XPath(".//li[@class='mn-setting']/a");
-        static readonly By _lnkAdd = By.XPath("//a[@class='add']");
         static readonly By _lnkDelete = By.XPath("//a[@class='delete']");
-
         #endregion
 
         #region Elements
-
         public Link LnkDelete
         {
             get { return new Link(_webDriver.FindElement(_lnkDelete)); }
         }
-        public Label LblUsername
-        {
-            get { return new Label(_webDriver.FindElement(_lblUsername)); }
-        }
-        public Label LblRepository
-        {
-            get { return new Label(_webDriver.FindElement(_lblRepository)); }
-        }
-
-        public Label LblCurrentRepository
-        {
-            get { return new Label(_webDriver.FindElement(_lblCurrentRepository)); }
-        }
-        public Label LblSetting
-        {
-            get { return new Label(_webDriver.FindElement(_lblSetting)); }
-        }
-
-        public Link LnkLogout
-        {
-            get { return new Link(_webDriver.FindElement(_lnkLogout)); }
-
-        }
-
-        public Link LnkAdd
-        {
-            get { return new Link(_webDriver.FindElement(_lnkAdd)); }
-        }
-
         #endregion
 
         #region Methods
+        public MainPage(IWebDriver webDriver) : base(webDriver) { }
 
-        public MainPage()
+        public MainPage DeletePage(string path)
         {
-        }
-        public MainPage(IWebDriver webDriver)
-        {
-            this._webDriver = webDriver;
-        }
-
-        public string GetUserNameText()
-        {
-            return LblUsername.Text;
-        }
-
-        public string GetCurrentRepositoryText()
-        {
-            return LblCurrentRepository.Text;
-        }
-
-        public LoginPage Logout()
-        {
-            LblUsername.MouseOver();
-            LnkLogout.Click();
-            return new LoginPage(_webDriver);
-        }
-
-        public MainPage SelectRepository(String repositoryName)
-        {
-            LblRepository.MouseOver();
-            Link lnkRepository = new Link(_webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", repositoryName))));
-            lnkRepository.MouseOver();
-            lnkRepository.Click();
-            return this;
-        }
-        public MainPage DeletePage(string pageName)
-        {
-            Link page = new Link();
-            page.FindElement(By.XPath(string.Format("//a[.='{0}']", pageName)));
-            page.Click();
-            LblSetting.MouseOver();
+            //Link page = new Link();
+            //page.FindElement(By.XPath(string.Format("//a[.='{0}']", pageName)));
+            //page.Click();
+            ClickMenuItem(path);
+            LblGlobalSetting.MouseOver();
             LnkDelete.Click();
             return this;
         }
@@ -115,23 +46,16 @@ namespace SeleniumAdvProject.PageObjects
 
         }
 
-        public AddNewPage GoToAddNewPage()
-        {
-            LblSetting.MouseOver();
-            LnkAdd.Click();
-            return new AddNewPage(_webDriver);
-        }
-
         public MainPage OpenSetting()
         {
-            LblSetting.MouseOver();
+            LblGlobalSetting.MouseOver();
             return this;
         }
 
         public Boolean IsSettingExist()
         {
             bool _isExist = false;
-            _isExist = LblSetting.Exists;
+            _isExist = LblGlobalSetting.Exists;
             return _isExist;
         }
 

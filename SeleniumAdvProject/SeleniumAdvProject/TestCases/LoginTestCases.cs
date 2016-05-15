@@ -23,7 +23,6 @@ namespace SeleniumAdvProject.TestCases
             LoginPage loginPage = new LoginPage(_webDriver);
             loginPage.Open();
 
-
             //2. Enter valid username and password	
             //3. Click on "Login" button
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
@@ -42,7 +41,7 @@ namespace SeleniumAdvProject.TestCases
         {
             Console.WriteLine("DA_LOGIN_TC002 - Verify that user fails to login specific repository successfully via Dashboard login page with incorrect credentials");
             //1. Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage();
+            LoginPage loginPage = new LoginPage(_webDriver);
             loginPage.Open();
 
             //2. Enter invalid username and password
@@ -58,7 +57,7 @@ namespace SeleniumAdvProject.TestCases
         {
             Console.WriteLine("DA_LOGIN_TC003 - Verify that user fails to log in specific repository successfully via Dashboard login page with correct username and incorrect password");
             //1 Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage();
+            LoginPage loginPage = new LoginPage(_webDriver);
             loginPage.Open();
             //2 Enter valid username and invalid password (administrator / abc)
             //3 Click on "Login" button
@@ -144,7 +143,7 @@ namespace SeleniumAdvProject.TestCases
             mainPage.Logout();
 
             //4. Login with the above account but enter lowercase password
-            loginPage.Login(Constants.Repository,"test", "admin");
+            loginPage.Login(Constants.Repository, "test", "admin");
 
             //VP. Observe the current page
             Assert.IsTrue(actualURL.Contains(Constants.MainPageUrl));
@@ -156,7 +155,7 @@ namespace SeleniumAdvProject.TestCases
             Console.WriteLine("DA_LOGIN_TC008 - Verify that password with special characters is working correctly");
 
             //1. Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage();
+            LoginPage loginPage = new LoginPage(_webDriver);
             loginPage.Open();
 
             //2. Login with account that has special characters password
@@ -177,7 +176,7 @@ namespace SeleniumAdvProject.TestCases
             Console.WriteLine("DA_LOGIN_TC010 - Verify that the page works correctly for the case when no input entered to Password and Username field");
 
             //1 Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage();
+            LoginPage loginPage = new LoginPage(_webDriver);
             loginPage.Open();
 
             //2. Click Login button without entering data into Username and Password field
