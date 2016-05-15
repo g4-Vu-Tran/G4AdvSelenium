@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SeleniumAdvProject.PageObjects;
 using SeleniumAdvProject.Common;
 using SeleniumAdvProject.DataObjects;
+using System.Threading;
 
 namespace SeleniumAdvProject.TestCases
 {
@@ -126,7 +127,7 @@ namespace SeleniumAdvProject.TestCases
             mainPage = loginPage.Login(Constants.Repository, "accont2", "");
 
             //VP Check newly added page is visibled
-            Assert.AreEqual(true, mainPage.IsPageVisible(page.PageName));
+            Assert.AreEqual(false, mainPage.IsLinkExist(page.PageName));
 
             mainPage.DeletePage(page.PageName);
             mainPage.Logout();
@@ -149,18 +150,18 @@ namespace SeleniumAdvProject.TestCases
             //4 Enter Page Name field (Test)
             //5 Check Public checkbox
             //6 Click OK button
-            Page page = new Page("Test", "Select parent", 2, "Overview", false);
+            Page parentPage = new Page("Test", "Select parent", 2, "Overview", false);
             AddNewPage addNewPage = mainPage.GoToAddNewPage();
-            addNewPage.addPage(page);
+            addNewPage.addPage(parentPage);
 
             //7 Go to Global Setting -> Add page
             //8 Enter Page Name field (Test Chilld)
             //9 Click on  Select Parent dropdown list
             //10 Select specific page (Test)
             //11 Click OK button
-            Page page1 = new Page("Test Child", "Test", 2, "Select page", false);
+            Page childPage = new Page("TestChild", "Test", 2, "Select page", false);
             mainPage.GoToAddNewPage();
-            addNewPage.addPage(page1);
+            addNewPage.addPage(childPage);
 
             //12 Click on Log out link
             mainPage.Logout();
@@ -169,7 +170,12 @@ namespace SeleniumAdvProject.TestCases
             loginPage.Login(Constants.Repository, "test", "admin");
 
             //VP Check children is invisibled
-            Assert.IsTrue(mainPage.IsPageVisible(page1.PageName));
+            Assert.IsTrue(!mainPage.IsLinkExist(childPage.PageName));
+
+            //Post-Condition
+            mainPage.DeletePage(parentPage.PageName + "/" + childPage.PageName);
+            mainPage.DeletePage(parentPage.PageName);
+            mainPage.Logout();
         }
 
         [TestMethod]
@@ -196,7 +202,7 @@ namespace SeleniumAdvProject.TestCases
 
             //5. Click on parent page
             //6. Click "Delete" link
-            mainPage.DeletePage("Test");
+            mainPage.DeletePage(parentPage.PageName);
 
             //VP. Check confirm message "Are you sure you want to remove this page?" appears
             //7. Click OK button
@@ -212,7 +218,7 @@ namespace SeleniumAdvProject.TestCases
 
             //9. Click on  children page
             //10. Click "Delete" link
-            mainPage.DeletePage("Test/Test Child");
+            mainPage.DeletePage(parentPage.PageName + "/" + childPage.PageName);
 
             //VP. Check confirm message "Are you sure you want to remove this page?" appears
             //11. Click OK button
@@ -221,9 +227,12 @@ namespace SeleniumAdvProject.TestCases
             mainPage.ConfirmDialog("OK");
 
             //VP. Check children page is deleted
+            mainPage.ClickMenuItem(parentPage.PageName,false);
+            Assert.IsTrue(!mainPage.IsLinkExist(childPage.PageName));
+
             //12. Click on  parent page
             //13. Click "Delete" link
-            mainPage.DeletePage("Test");
+            mainPage.DeletePage(parentPage.PageName);
 
             //VP. Check confirm message "Are you sure you want to remove this page?" appears
             //14. Click OK button
@@ -232,44 +241,92 @@ namespace SeleniumAdvProject.TestCases
             mainPage.ConfirmDialog("OK");
 
             //VP. Check parent page is deleted
+            Assert.IsTrue(!mainPage.IsLinkExist(parentPage.PageName));
+
             //15. Click on "Overview" page
-            mainPage.ClickMenuItem("Overview");
             //VP. Check "Delete" link disappears
+            mainPage.ClickMenuItem("Overview");
+            mainPage.LblGlobalSetting.MouseOver();
+            Assert.IsTrue(!mainPage.IsLinkExist("Delete"));
         }
 
         [TestMethod]
         public void DA_MP_TC018()
         {
-            Console.WriteLine("DA_MP_TC017 - Verify that user is able to add additional sibbling pages to the parent page successfully");
+            Console.WriteLine("DA_MP_TC018 - Verify that user is able to add additional sibbling pages to the parent page successfully");
 
-            //1 Navigate to Dashboard login page
+            //1. Navigate to Dashboard login page
             LoginPage loginPage = new LoginPage(_webDriver);
             loginPage.Open();
 
-            //2 Log in specific repository with valid account
+            //2. Log in specific repository with valid account
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
-            //3. Add a new parent page (Test)
+            //3. Go to Global Setting -> Add page
+            //4. Enter Page Name (Test)
+            //5. Click OK button
             Page parentPage = new Page("Test", "Select parent", 2, "Overview", false);
             AddNewPage addNewPage = mainPage.GoToAddNewPage();
             addNewPage.addPage(parentPage);
 
-            //4. Add a children page of newly added page (Test Child) 
-            Page childPage1 = new Page("Test Child1", "Test", 2, "Select page", false);
+            //6. Go to Global Setting -> Add page
+            //7. Enter Page Name (Test Child 1)
+            //8. Click on  Parent Page dropdown list
+            //9. Select a parent page (Test)
+            //10. Click OK button
+            Page childPage1 = new Page("TestChild1", "Test", 2, "Select page", false);
             mainPage.GoToAddNewPage();
             addNewPage.addPage(childPage1);
 
-            //Go to Global Setting -> Add page
-            //Enter Page Name
-            //Click on  Parent Page dropdown list
-            //Select a parent page
-            //Click OK button
-            Page childPage2 = new Page("Test Child2", "Test", 2, "Select page", false);
+            //11. Go to Global Setting -> Add page
+            //12. Enter Page Name (Test Child 2)
+            //13. Click on  Parent Page dropdown list
+            //14. Select a parent page (Test)
+            //15. Click OK button
+            Page childPage2 = new Page("TestChild2", "Test", 2, "Select page", false);
             mainPage.GoToAddNewPage();
             addNewPage.addPage(childPage2);
 
             //VP. Check "Test Child 2" is added successfully
+            Assert.IsTrue(mainPage.IsLinkExist(childPage2.PageName));
 
+            //Post-Condition
+            mainPage.DeletePage(parentPage.PageName + "/" + childPage1.PageName);
+            mainPage.DeletePage(parentPage.PageName + "/" + childPage2.PageName);
+            mainPage.DeletePage(parentPage.PageName);
+            mainPage.Logout();
         }
+
+        [TestMethod]
+        public void DA_MP_TC019()
+        {
+            Console.WriteLine("DA_MP_TC019 - Verify that user is able to add additional sibbling page levels to the parent page successfully.");
+
+            //1. Navigate to Dashboard login page
+            LoginPage loginPage = new LoginPage(_webDriver);
+            loginPage.Open();
+
+            //2. Login with valid account
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Go to Global Setting -> Add page
+            //4. Enter info into all required fields on New Page dialog (Page name: Page 1, Parent page: Overview)
+            //5. Click OK button
+            Page page = new Page("Page1", "Overview", 2, "Select page", false);
+            AddNewPage addNewPage = mainPage.GoToAddNewPage();
+            addNewPage.addPage(page);
+
+            //VP. Observe the current page
+            //    User is able to add additional sibbling page levels to parent page successfully. 
+            //    In this case: Overview is parent page of page 1.
+            Assert.IsTrue(!mainPage.IsLinkExist(page.PageName));
+            mainPage.ClickMenuItem("Overview");
+            Assert.IsTrue(mainPage.IsLinkExist(page.PageName));
+
+            //Post-Condition
+            mainPage.DeletePage("Overview/" + page.PageName);
+        }
+
+        
     }
 }

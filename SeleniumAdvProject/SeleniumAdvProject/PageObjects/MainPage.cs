@@ -59,10 +59,11 @@ namespace SeleniumAdvProject.PageObjects
             return _isExist;
         }
 
-        public Boolean IsPageVisible(string pageName)
+        public Boolean IsLinkExist(string linkName)
         {
-            Link page = new Link(_webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", pageName))));
-            return page.Enabled;
+            bool result = false;
+            result = _webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", linkName))).Displayed;
+            return result;
         }
 
         #endregion
