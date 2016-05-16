@@ -54,6 +54,8 @@ namespace SeleniumAdvProject.PageObjects
         #endregion
 
         #region Methods
+
+        public BasePage() { }
         public BasePage(IWebDriver webDriver)
         {
             this._webDriver = webDriver;

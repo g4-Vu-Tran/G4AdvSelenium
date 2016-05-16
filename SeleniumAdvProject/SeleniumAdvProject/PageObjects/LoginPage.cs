@@ -38,6 +38,8 @@ namespace SeleniumAdvProject.PageObjects
 
         #region Methods
 
+        public LoginPage() { }
+
         public LoginPage(IWebDriver webDriver) : base(webDriver) { }
 
         public LoginPage Open()
