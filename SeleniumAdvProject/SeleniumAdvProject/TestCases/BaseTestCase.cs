@@ -17,45 +17,21 @@ namespace SeleniumAdvProject.TestCases
     [TestClass]
     public class BaseTestCase
     {
-        public IWebDriver _webDriver;
-
-        public IWebDriver WebDriver
-        {
-            get { return _webDriver; }
-            set { _webDriver = value; }
-        }
-
-        //public BaseTestCase() { }
-
-        //public BaseTestCase(IWebDriver webDriver)
-        //{
-        //    this._webDriver = webDriver;
-        //}
-        //public void SetUpBrowser(string browserName)
-        //{
-        //    if (browserName.Equals("IE"))
-        //        _webDriver = new InternetExplorerDriver();
-        //    else if (browserName.Equals("Chrome"))
-        //        _webDriver = new ChromeDriver();
-        //    else
-        //        _webDriver = new FirefoxDriver();
-
-        //    _webDriver.Manage().Window.Maximize();
-        //    _webDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(Constants.WaitTimeoutShortSeconds));
-        //}
+        protected IWebDriver _webDriver;
 
         [TestInitialize]
         public void TestInitializeMethod()
         {
             Console.WriteLine("Run Test Initialize");
 
-            //DesiredCapabilities capabilities = DesiredCapabilities.Firefox();            
-            //capabilities.SetCapability(CapabilityType.BrowserName, "firefox");
-            //capabilities.SetCapability(CapabilityType.Version, "46.0.1");
-            //capabilities.SetCapability(CapabilityType.Platform, new Platform(PlatformType.Windows));
+            DesiredCapabilities capabilities = DesiredCapabilities.Firefox();
+            capabilities.SetCapability(CapabilityType.BrowserName, "firefox");
+            capabilities.SetCapability(CapabilityType.Version, "46.0.1");
+            capabilities.SetCapability(CapabilityType.Platform, new Platform(PlatformType.Windows));
+            _webDriver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), capabilities, TimeSpan.FromSeconds(300));
 
-            //_webDriver = new RemoteWebDriver(new Uri("http://localhost:8888/wd/hub"), capabilities, TimeSpan.FromSeconds(Constants.WaitTimeoutShortSeconds));
-            //_webDriver.Manage().Window.Maximize();            
+           //_webDriver = new FirefoxDriver();
+            _webDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(10));
             _webDriver.Manage().Window.Maximize();
             _webDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(Constants.WaitTimeoutShortSeconds));          
         }

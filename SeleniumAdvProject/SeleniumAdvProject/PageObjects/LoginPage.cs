@@ -8,60 +8,53 @@ using SeleniumAdvProject.Ultilities.Controls;
 
 namespace SeleniumAdvProject.PageObjects
 {
-    public class LoginPage:BasePage
+    public class LoginPage : BasePage
     {
-                
         #region Locators
-
         static readonly By _ddlRepository = By.XPath("//select[@name='repository']");
         static readonly By _txtUsername = By.XPath("//input[@id='username']");
         static readonly By _txtPassword = By.XPath("//input[@id='password']");
         static readonly By _btnLogin = By.XPath("//div[@class='btn-login']");
-        
         #endregion
 
         #region Elements     
-   
         public ComboBox DdlRepsitory
         {
-            get { return new ComboBox(this.WebDriver.FindElement(_ddlRepository)); } 
+            get { return new ComboBox(_webDriver.FindElement(_ddlRepository)); }
         }
-       
-
         public TextBox TxtUsername
         {
            get { return new TextBox(this.WebDriver.FindElement(_txtUsername)); }             
         }
-
         public TextBox TxtPassword
         {
-            get { return new TextBox(this.WebDriver.FindElement(_txtPassword)); }
-             //get { return new TextBox(_txtPassword); }                  
+            get { return new TextBox(_webDriver.FindElement(_txtPassword)); }
         }
-
         public Button BtnLogin
         {
-            get { return new Button(this.WebDriver.FindElement(_btnLogin)); }
-             //get { return new Button(_btnLogin); }           
+            get { return new Button(_webDriver.FindElement(_btnLogin)); }
         }
-                
         #endregion
 
         #region Methods
 
-        public LoginPage()
+        public LoginPage() { }
+
+        public LoginPage(IWebDriver webDriver) : base(webDriver) { }
+
         public LoginPage Open()
         {
             this.WebDriver.Navigate().GoToUrl(Constants.LoginPageUrl);
             return this;
         }
-        public MainPage Login(string repository,string username, string password)
+
+        public MainPage Login(string repository, string username, string password)
         {
             DdlRepsitory.SelectByText(repository);
             TxtUsername.SendKeys(username);
             TxtPassword.SendKeys(password);
             BtnLogin.Click();
-            return new MainPage();            
+            return new MainPage(_webDriver);
         }
         
         public string LoginWithExpectedError(string repository, string username, string password)
@@ -80,6 +73,10 @@ namespace SeleniumAdvProject.PageObjects
             return this;        
         }
        
+        public IWebDriver GetWebDriver()
+        {
+            return _webDriver;
+        }
         #endregion
 
     }

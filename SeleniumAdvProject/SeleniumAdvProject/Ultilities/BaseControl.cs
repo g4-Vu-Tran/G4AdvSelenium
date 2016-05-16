@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Interactions.Internal;
+using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using SeleniumAdvProject.Common;
 using System;
@@ -11,14 +12,14 @@ using System.Threading.Tasks;
 
 namespace SeleniumAdvProject.Ultilities
 {
-    public class BaseControl : IWebElement 
+    public class BaseControl : IWebElement
     {
-      protected IWebElement element;
+        protected IWebElement element;
         protected Actions action;
         protected IMouse mouse;
         protected WebDriverWait wait;
         protected ICoordinates coordinates;
-        private IWebDriver _webDriver;
+        protected IWebDriver _webDriver;
 
         public string XPath { get; set; }
         public By by { get; set; }
@@ -56,8 +57,11 @@ namespace SeleniumAdvProject.Ultilities
         public BaseControl(IWebElement element)
         {
             this.element = element;
+            this._webDriver = ((RemoteWebElement)element).WrappedDriver;
             action = new Actions(_webDriver);
             mouse = ((IHasInputDevices)_webDriver).Mouse;
+            //Get WebDriver to look for elements and execute javaScript
+
         }
 
         /// <summary>
@@ -112,7 +116,7 @@ namespace SeleniumAdvProject.Ultilities
             }
             catch
             {
-                
+
                 throw new Exception(string.Format("No element '{0}' have been found.", by));
             }
         }
@@ -121,13 +125,13 @@ namespace SeleniumAdvProject.Ultilities
         /// Loads the control.
         /// </summary>
         public void LoadControl()
-        {            
+        {
             if (by != null)
             {
                 WaitForControlExists(Constants.WaitTimeoutShortSeconds);
                 element = _webDriver.FindElement(by);
             }
-            
+
         }
 
         public List<string> CssClasses
@@ -162,7 +166,7 @@ namespace SeleniumAdvProject.Ultilities
         public void Click()
         {
             LoadControl();
-            element.Click();  
+            element.Click();
         }
 
         public void MouseOver()
@@ -272,7 +276,7 @@ namespace SeleniumAdvProject.Ultilities
         public void SendSpecialKeys(string specialKey, string normalKey)
         {
             LoadControl();
-            
+
             switch (specialKey)
             {
                 case "Control":
@@ -291,7 +295,7 @@ namespace SeleniumAdvProject.Ultilities
                 default:
                     break;
             }
-            
+
         }
         /// <summary>
         /// Gets a <see cref="Size"/> object containing the height and width of this element.

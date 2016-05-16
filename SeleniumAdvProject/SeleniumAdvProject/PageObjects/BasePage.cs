@@ -6,24 +6,123 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SeleniumAdvProject.Ultilities.Controls;
 
 namespace SeleniumAdvProject.PageObjects
 {
     public class BasePage
     {
+        protected IWebDriver _webDriver;
 
-        private IWebDriver _webDriver;
+        #region Locators
+        static readonly By _lblUsername = By.XPath("//a[@href='#Welcome']");
+        static readonly By _lblRepository = By.XPath("//a[@href='#Repository']");
+        static readonly By _lblCurrentRepository = By.XPath("//a[@href='#Repository']/span");
+        static readonly By _lnkLogout = By.XPath("//a[@href='logout.do']");
+        static readonly By _lblGlobalSetting = By.XPath("//li[@class='mn-setting']/a");
+        static readonly By _lnkAddPage = By.XPath("//a[@class='add' and .='Add Page']");
+        static readonly By _lnkCreateProfile = By.XPath("//a[@class='add' and .='Create Profile']");
+        static readonly By _lnkCreatePanel = By.XPath("//a[@class='add' and .='Create Panel']");
+        static readonly By _btnChoosepanel = By.XPath("//a[@id='btnChoosepanel']");
+        #endregion
 
-        public IWebDriver WebDriver{
-            get { return _webDriver; }
-            set { _webDriver = value; }
-    }
+        #region Elements
+        public Label LblRepository
+        {
+            get { return new Label(_webDriver.FindElement(_lblRepository)); }
+        }
+        public Label LblCurrentRepository
+        {
+            get { return new Label(_webDriver.FindElement(_lblCurrentRepository)); }
+        }
+        public Label LblGlobalSetting
+        {
+            get { return new Label(_webDriver.FindElement(_lblGlobalSetting)); }
+        }
+        public Link LnkAddPage
+        {
+            get { return new Link(_webDriver.FindElement(_lnkAddPage)); }
+        }
+        public Link LnkLogout
+        {
+            get { return new Link(_webDriver.FindElement(_lnkLogout)); }
+        }
+        public Link LblUsername
+        {
+            get { return new Link(_webDriver.FindElement(_lblUsername)); }
+        }
+        #endregion
+
+        #region Methods
+
         public BasePage() { }
-
         public BasePage(IWebDriver webDriver)
         {
             this._webDriver = webDriver;
         }
+
+
+        #region Navigate Methods
+        public void ClickMenuItem(string path, bool isClicked = true)
+        {
+            path = path + "/";
+            string node;
+            Link LnkName = new Link();
+            while (path.IndexOf("/") != -1)
+            {
+                node = path.Substring(0, path.IndexOf("/"));
+                path = path.Substring(node.Length + 1, path.Length - node.Length - 1);
+
+                LnkName = new Link(_webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", node))));
+                LnkName.MouseOver();
+            }
+
+            if (isClicked)
+            {
+                LnkName.Click();
+            }
+        }
+
+        public MainPage GoToPage(string path, bool isClicked = true)
+        {
+            ClickMenuItem(path);
+            return new MainPage(_webDriver);
+        }
+
+        public AddNewPage GoToAddNewPage()
+        {
+            LblGlobalSetting.MouseOver();
+            LnkAddPage.Click();
+            return new AddNewPage(_webDriver);
+        }
+
+        public LoginPage Logout()
+        {
+            LblUsername.MouseOver();
+            LnkLogout.Click();
+            return new LoginPage(_webDriver);
+        }
+
+        public MainPage SelectRepository(String repositoryName)
+        {
+            LblRepository.MouseOver();
+            Link lnkRepository = new Link(_webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", repositoryName))));
+            lnkRepository.Click();
+            return new MainPage(_webDriver);
+        }
+
+        #endregion
+
+        #region Get Text Methods
+        public string GetUserNameText()
+        {
+            return LblUsername.Text;
+        }
+        public string GetCurrentRepositoryText()
+        {
+            return LblCurrentRepository.Text;
+        }
+        #endregion
 
         public void SwitchToNewOpenedWindow(IWebDriver driver, bool isNewUrl = true)
         {
@@ -43,7 +142,6 @@ namespace SeleniumAdvProject.PageObjects
                 Console.WriteLine(e.ToString());
             }
         }
-
         public void SwitchToNewFrame(IWebElement element)
         {
             _webDriver.SwitchTo().Frame(element);
@@ -52,7 +150,6 @@ namespace SeleniumAdvProject.PageObjects
         {
             _webDriver.Close();
         }
-
         public void WaitForControlExists(By control, int timeoutInSeconds)
         {
             try
@@ -92,5 +189,6 @@ namespace SeleniumAdvProject.PageObjects
             return dglMessage;
 
         }
+        #endregion
     }
 }

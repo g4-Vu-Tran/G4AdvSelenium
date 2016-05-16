@@ -14,87 +14,26 @@ namespace SeleniumAdvProject.PageObjects
     {
 
         #region Locators
-
-        static readonly By _lblUsername = By.XPath("//a[@href='#Welcome']");
-        static readonly By _lblRepository = By.XPath("//a[@href='#Repository']");
-        static readonly By _lblCurrentRepository = By.XPath("//a[@href='#Repository']/span");
-        static readonly By _lnkLogout = By.XPath("//a[@href='logout.do']");
-        static readonly By _lblSetting = By.XPath(".//li[@class='mn-setting']/a");
-        static readonly By _lnkAdd = By.XPath("//a[@class='add']");
         static readonly By _lnkDelete = By.XPath("//a[@class='delete']");
-
         #endregion
 
         #region Elements
-
         public Link LnkDelete
         {
             get { return new Link(this.WebDriver.FindElement(_lnkDelete)); }
         }
-        public Label LblUsername
-        {
-            get { return new Label(this.WebDriver.FindElement(_lblUsername)); }
-        }
-        public Label LblRepository
-        {
-            get { return new Label(this.WebDriver.FindElement(_lblRepository)); }
-        }
-
-        public Label LblCurrentRepository
-        {
-            get { return new Label(this.WebDriver.FindElement(_lblCurrentRepository)); }
-        }
-        public Label LblSetting
-        {
-            get { return new Label(this.WebDriver.FindElement(_lblSetting)); }
-        }
-
-        public Link LnkLogout
-        {
-            get { return new Link(this.WebDriver.FindElement(_lnkLogout)); }
-
-        }
-        public Link LnkAdd
-        {
-            get { return new Link(this.WebDriver.FindElement(_lnkAdd)); }
-        }
-
         #endregion
 
         #region Methods
+        public MainPage(IWebDriver webDriver) : base(webDriver) { }
 
-        public string GetUserNameText()
+        public MainPage DeletePage(string path)
         {
-            return LblUsername.Text;
-        }
-
-        public string GetCurrentRepositoryText()
-        {
-            return LblCurrentRepository.Text;
-        }
-
-        public LoginPage Logout()
-        {
-            LblUsername.MouseOver();
-            LnkLogout.Click();
-            return new LoginPage();
-        }
-
-        public MainPage SelectRepository(String repositoryName)
-        {
-
-            LblRepository.MouseOver();
-            Link lnkReposioryName = new Link();
-            lnkReposioryName.FindElement(By.XPath("//ul[@id='ulListRepositories']//a[.='" + repositoryName + "']"));
-            lnkReposioryName.DoubleClick();
-            return this;
-        }
-        public MainPage DeletePage(string pageName)
-        {
-            Link page = new Link();
-            page.FindElement(By.XPath(string.Format("//a[.='{0}']", pageName)));
-            page.Click();
-            LblSetting.MouseOver();
+            //Link page = new Link();
+            //page.FindElement(By.XPath(string.Format("//a[.='{0}']", pageName)));
+            //page.Click();
+            ClickMenuItem(path);
+            LblGlobalSetting.MouseOver();
             LnkDelete.Click();
             return this;
         }
@@ -107,31 +46,24 @@ namespace SeleniumAdvProject.PageObjects
 
         }
 
-        public AddNewPage GoToAddNewPage()
-        {
-            LblSetting.MouseOver();
-            LnkAdd.Click();
-            return new AddNewPage();
-        }
-
         public MainPage OpenSetting()
         {
-            LblSetting.MouseOver();
+            LblGlobalSetting.MouseOver();
             return this;
         }
 
         public Boolean IsSettingExist()
         {
             bool _isExist = false;
-            _isExist = LblSetting.Exists;
+            _isExist = LblGlobalSetting.Exists;
             return _isExist;
         }
 
-        public bool IsPageVisible(string pageName)
+        public Boolean IsLinkExist(string linkName)
         {
-            Link page = new Link();
-            page.FindElement(By.XPath(string.Format("//a[.='{0}']", pageName)));
-            return page.Enabled;
+            bool result = false;
+            result = _webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", linkName))).Displayed;
+            return result;
         }
 
         #endregion
