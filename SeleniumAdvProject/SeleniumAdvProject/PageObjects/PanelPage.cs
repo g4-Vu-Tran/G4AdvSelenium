@@ -33,7 +33,7 @@ namespace SeleniumAdvProject.PageObjects
         }
         public Button BtnCancel
         {
-            get { return new Button(_webDriver.FindElement(_btnOk)); }
+            get { return new Button(_webDriver.FindElement(_btnCancel)); }
         }
         #endregion
 

@@ -39,9 +39,13 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual(true, actualResult, "Data Profile is not sorted correctly");
 
             panelPage.BtnCancel.Click();
+
             //Post-Condition
             //Logout			
             //Close Dashboard
+
+            panelPage.ConfirmDialog("OK");
+            panelPage.BtnCancel.Click();
             mainPage.DeletePage(page1.PageName, "Yes");
             mainPage.Logout();
         }       
