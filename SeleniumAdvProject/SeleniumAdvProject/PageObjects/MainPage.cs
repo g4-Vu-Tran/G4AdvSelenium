@@ -25,16 +25,17 @@ namespace SeleniumAdvProject.PageObjects
         #endregion
 
         #region Methods
+
+        public MainPage() { }
         public MainPage(IWebDriver webDriver) : base(webDriver) { }
 
-        public MainPage DeletePage(string path)
-        {
-            //Link page = new Link();
-            //page.FindElement(By.XPath(string.Format("//a[.='{0}']", pageName)));
-            //page.Click();
+        public MainPage DeletePage(string path, string confirmDelete = "No")
+        {           
             ClickMenuItem(path);
             LblGlobalSetting.MouseOver();
             LnkDelete.Click();
+            ConfirmDialog(confirmDelete);
+            WaitForPageLoadComplete();
             return this;
         }
 
@@ -64,6 +65,13 @@ namespace SeleniumAdvProject.PageObjects
             bool result = false;
             result = _webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", linkName))).Displayed;
             return result;
+        }
+
+        public bool IsPageDisplayAfter(string pageName1, string pageName2)
+        {
+            Label pageTab = new Label(_webDriver.FindElement(By.XPath(string.Format("//div[@id='main-menu']/div/ul/li[.='{0}']/preceding-sibling::li[1]", pageName1))));
+            string tempPage = pageTab.Text;
+            return tempPage.Equals(pageName2);            
         }
 
         #endregion

@@ -265,6 +265,7 @@ namespace SeleniumAdvProject.Ultilities
         public void SendKeys(string text)
         {
             LoadControl();
+            element.Clear();
             element.SendKeys(text);
         }
 

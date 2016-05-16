@@ -16,6 +16,7 @@ namespace SeleniumAdvProject.Common
         public const string SpecialPassword = "!@#$%^&*()";
 
         //URL
+        //public const string LoginPageUrl = "192.168.0.105/TADashboard/login.jsp";
         public const string LoginPageUrl = "http://groupba.dyndns.org:54000/TADashboard/login.jsp";
         public const string MainPageUrl = "/TADashboard/2f9njff6y9.page";
                 

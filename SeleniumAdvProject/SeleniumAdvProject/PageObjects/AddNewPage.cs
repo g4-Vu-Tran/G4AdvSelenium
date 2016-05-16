@@ -58,17 +58,42 @@ namespace SeleniumAdvProject.PageObjects
 
         #region Methods
 
+        public AddNewPage() { }
         public AddNewPage(IWebDriver webDriver) : base(webDriver) { }
 
-        public MainPage addPage(Page page)
+        public MainPage AddPage(Page page)
         {
+            MainPage mainPage = new MainPage(_webDriver);
+            mainPage.GoToAddNewPage();
             TxtPageName.SendKeys(page.PageName);
             CbbParentPage.SelectByText(page.ParentPage);
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
             CbbDisplayAfter.SelectByText(page.DisplayAfter);
+            if(page.IsPublic)
+                ChkPublic.Check();
+            else
+                ChkPublic.Uncheck();            
+            BtnOk.Click();            
+            WaitForControlExists(By.XPath(string.Format("//a[.='{0}']",page.PageName)),Constants.WaitTimeoutShortSeconds);
+            return mainPage;
+        }
+        public MainPage EditPage(Page page)
+        {
+            MainPage mainPage = new MainPage(_webDriver);
+            ClickMenuItem(page.PageName);
+            mainPage.LblGlobalSetting.MouseOver();
+            mainPage.LnkEditMenu.Click();
+            TxtPageName.SendKeys(page.PageName);
+            CbbParentPage.SelectByText(page.ParentPage);
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
+            CbbDisplayAfter.SelectByText(page.DisplayAfter);
+            if (page.IsPublic)
+                ChkPublic.Check();
+            else
+                ChkPublic.Uncheck();
             BtnOk.Click();
-            return new MainPage(_webDriver);
+            WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", page.PageName)), Constants.WaitTimeoutShortSeconds);
+            return mainPage;
         }
         #endregion
 

@@ -57,5 +57,14 @@ namespace SeleniumAdvProject.Ultilities.Controls
             GetSelectControl();
             return selectElement.SelectedOption.Text;
         }
+        public IList<string> OptionStrings
+        {
+            get
+            {
+                GetSelectControl();
+                IList<IWebElement> options = selectElement.Options;
+                return options.Select(option => option.Text).ToList();
+            }
+        }
     }
 }

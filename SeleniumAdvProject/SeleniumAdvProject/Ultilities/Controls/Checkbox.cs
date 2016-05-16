@@ -13,18 +13,20 @@ namespace SeleniumAdvProject.Ultilities.Controls
         public Checkbox(string xPath) : base(By.XPath(xPath)) { }
         public Checkbox(IWebElement element) : base(element) { }
         public Checkbox(By by) : base(by) { }
-        public void Check(IWebElement element)
+                
+        public void Check()
         {
-            if (!element.Selected)
+            if (Selected == false)
             {
-                element.Click();
+                Click();
             }
         }
-        public void Uncheck(IWebElement element)
+                
+        public void Uncheck()
         {
-            if (element.Selected)
+            if (Selected == true)
             {
-                element.Click();
+                Click();
             }
         }
     }

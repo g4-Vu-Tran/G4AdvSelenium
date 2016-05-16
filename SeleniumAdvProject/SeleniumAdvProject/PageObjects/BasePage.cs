@@ -21,6 +21,7 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _lnkLogout = By.XPath("//a[@href='logout.do']");
         static readonly By _lblGlobalSetting = By.XPath("//li[@class='mn-setting']/a");
         static readonly By _lnkAddPage = By.XPath("//a[@class='add' and .='Add Page']");
+        static readonly By _lnkEditMenu = By.XPath("//a[@class='edit' and .='Edit']");
         static readonly By _lnkCreateProfile = By.XPath("//a[@class='add' and .='Create Profile']");
         static readonly By _lnkCreatePanel = By.XPath("//a[@class='add' and .='Create Panel']");
         static readonly By _btnChoosepanel = By.XPath("//a[@id='btnChoosepanel']");
@@ -37,12 +38,21 @@ namespace SeleniumAdvProject.PageObjects
         }
         public Label LblGlobalSetting
         {
-            get { return new Label(_webDriver.FindElement(_lblGlobalSetting)); }
+            get { return new Label(_webDriver.FindElement(_lblGlobalSetting)); }         
         }
         public Link LnkAddPage
         {
             get { return new Link(_webDriver.FindElement(_lnkAddPage)); }
         }
+        public Link LnkCreatePanel
+        {
+            get { return new Link(_webDriver.FindElement(_lnkCreatePanel)); }
+        }
+        public Link LnkEditMenu
+        {
+            get { return new Link(_webDriver.FindElement(_lnkEditMenu)); }
+        }
+
         public Link LnkLogout
         {
             get { return new Link(_webDriver.FindElement(_lnkLogout)); }
@@ -91,9 +101,17 @@ namespace SeleniumAdvProject.PageObjects
 
         public AddNewPage GoToAddNewPage()
         {
-            LblGlobalSetting.MouseOver();
-            LnkAddPage.Click();
-            return new AddNewPage(_webDriver);
+            MainPage mPage = new MainPage(_webDriver);
+            mPage.LblGlobalSetting.MouseOver();
+            mPage.LnkAddPage.Click();
+            return new AddNewPage();
+        }
+        public PanelPage OpenPanelPage()
+        {
+            MainPage mPage = new MainPage(_webDriver);
+            mPage.LblGlobalSetting.MouseOver();
+            mPage.LnkCreatePanel.Click();
+            return new PanelPage(_webDriver);
         }
 
         public LoginPage Logout()
