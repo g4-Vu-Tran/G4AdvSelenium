@@ -11,8 +11,9 @@ namespace SeleniumAdvProject.TestCases
     [TestClass]
     public class LoginTestCases : BaseTestCase
     {
-        private IWebDriver _webDriver;
-        [TestMethod]
+        _webDriver = new FirefoxDriver ();
+        
+        [TestMethod]  
 
         public void TC01()
         {
@@ -20,9 +21,8 @@ namespace SeleniumAdvProject.TestCases
             Console.WriteLine("DA_LOGIN_TC001 - Verify that user can login specific repository successfully via Dashboard login page with correct credentials");
 
             //1. Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage();
+            LoginPage loginPage = new LoginPage(FirefoxDriver);
             loginPage.Open();
-
 
             //2. Enter valid username and password	
             //3. Click on "Login" button

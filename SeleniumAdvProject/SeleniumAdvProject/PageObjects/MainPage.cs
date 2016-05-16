@@ -29,35 +29,34 @@ namespace SeleniumAdvProject.PageObjects
 
         public Link LnkDelete
         {
-            get { return new Link(_webDriver.FindElement(_lnkDelete)); }
+            get { return new Link(this.WebDriver.FindElement(_lnkDelete)); }
         }
         public Label LblUsername
         {
-            get { return new Label(_webDriver.FindElement(_lblUsername)); }
+            get { return new Label(this.WebDriver.FindElement(_lblUsername)); }
         }
         public Label LblRepository
         {
-            get { return new Label(_webDriver.FindElement(_lblRepository)); }
+            get { return new Label(this.WebDriver.FindElement(_lblRepository)); }
         }
 
         public Label LblCurrentRepository
         {
-            get { return new Label(_webDriver.FindElement(_lblCurrentRepository)); }
+            get { return new Label(this.WebDriver.FindElement(_lblCurrentRepository)); }
         }
         public Label LblSetting
         {
-            get { return new Label(_webDriver.FindElement(_lblSetting)); }
+            get { return new Label(this.WebDriver.FindElement(_lblSetting)); }
         }
 
         public Link LnkLogout
         {
-            get { return new Link(_webDriver.FindElement(_lnkLogout)); }
+            get { return new Link(this.WebDriver.FindElement(_lnkLogout)); }
 
         }
-
         public Link LnkAdd
         {
-            get { return new Link(_webDriver.FindElement(_lnkAdd)); }
+            get { return new Link(this.WebDriver.FindElement(_lnkAdd)); }
         }
 
         #endregion
@@ -85,9 +84,9 @@ namespace SeleniumAdvProject.PageObjects
         {
 
             LblRepository.MouseOver();
-            Actions mouseAction = new Actions(_webDriver);
-            mouseAction.MoveToElement(LblRepository).Perform();
-            mouseAction.MoveToElement(_webDriver.FindElement(By.XPath("//ul[@id='ulListRepositories']//a[.='" + repositoryName + "']"))).Click().Perform();
+            Link lnkReposioryName = new Link();
+            lnkReposioryName.FindElement(By.XPath("//ul[@id='ulListRepositories']//a[.='" + repositoryName + "']"));
+            lnkReposioryName.DoubleClick();
             return this;
         }
         public MainPage DeletePage(string pageName)

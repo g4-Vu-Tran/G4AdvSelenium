@@ -24,34 +24,35 @@ namespace SeleniumAdvProject.PageObjects
    
         public ComboBox DdlRepsitory
         {
-            get { return new ComboBox(_webDriver.FindElement(_ddlRepository)); }                  
-            
+            get { return new ComboBox(this.WebDriver.FindElement(_ddlRepository)); } 
         }
        
 
         public TextBox TxtUsername
         {
-           get { return new TextBox(_webDriver.FindElement(_txtUsername)); }             
+           get { return new TextBox(this.WebDriver.FindElement(_txtUsername)); }             
         }
 
         public TextBox TxtPassword
         {
-            get { return new TextBox(_webDriver.FindElement(_txtPassword)); }
+            get { return new TextBox(this.WebDriver.FindElement(_txtPassword)); }
              //get { return new TextBox(_txtPassword); }                  
         }
 
         public Button BtnLogin
         {
-            get { return new Button(_webDriver.FindElement(_btnLogin)); }
+            get { return new Button(this.WebDriver.FindElement(_btnLogin)); }
              //get { return new Button(_btnLogin); }           
         }
                 
         #endregion
 
         #region Methods
+
+        public LoginPage()
         public LoginPage Open()
         {
-            _webDriver.Navigate().GoToUrl(Constants.LoginPageUrl);
+            this.WebDriver.Navigate().GoToUrl(Constants.LoginPageUrl);
             return this;
         }
         public MainPage Login(string repository,string username, string password)

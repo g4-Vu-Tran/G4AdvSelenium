@@ -12,8 +12,18 @@ namespace SeleniumAdvProject.PageObjects
     public class BasePage
     {
 
-        public IWebDriver _webDriver;
+        private IWebDriver _webDriver;
 
+        public IWebDriver WebDriver{
+            get { return _webDriver; }
+            set { _webDriver = value; }
+    }
+        public BasePage() { }
+
+        public BasePage(IWebDriver webDriver)
+        {
+            this._webDriver = webDriver;
+        }
 
         public void SwitchToNewOpenedWindow(IWebDriver driver, bool isNewUrl = true)
         {
