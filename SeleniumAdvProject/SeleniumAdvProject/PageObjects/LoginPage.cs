@@ -24,7 +24,7 @@ namespace SeleniumAdvProject.PageObjects
         }
         public TextBox TxtUsername
         {
-           get { return new TextBox(this.WebDriver.FindElement(_txtUsername)); }             
+            get { return new TextBox(_webDriver.FindElement(_txtUsername)); }             
         }
         public TextBox TxtPassword
         {
@@ -44,7 +44,7 @@ namespace SeleniumAdvProject.PageObjects
 
         public LoginPage Open()
         {
-            this.WebDriver.Navigate().GoToUrl(Constants.LoginPageUrl);
+            _webDriver.Navigate().GoToUrl(Constants.LoginPageUrl);
             return this;
         }
 

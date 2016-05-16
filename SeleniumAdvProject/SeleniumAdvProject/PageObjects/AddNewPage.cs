@@ -27,32 +27,32 @@ namespace SeleniumAdvProject.PageObjects
         #region Elements
         public TextBox TxtPageName
         {
-            get { return new TextBox(this.WebDriver.FindElement(_txtPageName)); }
+            get { return new TextBox(_webDriver.FindElement(_txtPageName)); }
         }
         public ComboBox CbbParentPage
         {
-            get { return new ComboBox(this.WebDriver.FindElement(_cbbParentPage)); }
+            get { return new ComboBox(_webDriver.FindElement(_cbbParentPage)); }
         }
         public ComboBox CbbNumberOfColumns
         {
-            get { return new ComboBox(this.WebDriver.FindElement(_cbbNumberOfColumns)); }
+            get { return new ComboBox(_webDriver.FindElement(_cbbNumberOfColumns)); }
         }
         public ComboBox CbbDisplayAfter
         {
-            get { return new ComboBox(this.WebDriver.FindElement(_cbbDisplayAfter)); }
+            get { return new ComboBox(_webDriver.FindElement(_cbbDisplayAfter)); }
         }
         public Checkbox ChkPublic
         {
-            get { return new Checkbox(this.WebDriver.FindElement(_chkPublic)); }
+            get { return new Checkbox(_webDriver.FindElement(_chkPublic)); }
         }
 
         public Button BtnOk
         {
-            get { return new Button(this.WebDriver.FindElement(_btnOk)); }
+            get { return new Button(_webDriver.FindElement(_btnOk)); }
         }
         public Button BtnCancel
         {
-            get { return new Button(this.WebDriver.FindElement(_btnOk)); }
+            get { return new Button(_webDriver.FindElement(_btnOk)); }
         }
         #endregion
 

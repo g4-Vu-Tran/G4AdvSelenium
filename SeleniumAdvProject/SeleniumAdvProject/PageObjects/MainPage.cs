@@ -20,7 +20,7 @@ namespace SeleniumAdvProject.PageObjects
         #region Elements
         public Link LnkDelete
         {
-            get { return new Link(this.WebDriver.FindElement(_lnkDelete)); }
+            get { return new Link(_webDriver.FindElement(_lnkDelete)); }
         }
         #endregion
 
