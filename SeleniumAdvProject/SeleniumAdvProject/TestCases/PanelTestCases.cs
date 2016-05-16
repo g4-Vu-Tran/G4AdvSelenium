@@ -42,10 +42,7 @@ namespace SeleniumAdvProject.TestCases
 
             //Post-Condition
             //Logout			
-            //Close Dashboard
-
-            panelPage.ConfirmDialog("OK");
-            panelPage.BtnCancel.Click();
+            //Close Dashboard            
             mainPage.DeletePage(page1.PageName, "Yes");
             mainPage.Logout();
         }       
