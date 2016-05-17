@@ -35,8 +35,7 @@ namespace SeleniumAdvProject.Ultilities
         /// <param name="by">By element (By.ID or By.xPath)</param>
         public BaseControl(By by)
         {
-            this.by = by;
-            XPath = Constants.GetXpath(by);
+            this.by = by;           
             action = new Actions(_webDriver);
             mouse = ((IHasInputDevices)_webDriver).Mouse;
         }
@@ -48,7 +47,6 @@ namespace SeleniumAdvProject.Ultilities
         /// <param name="xPath">The xpath of the element.</param>
         public BaseControl(string xPath)
         {
-            XPath = xPath;
             by = By.XPath(xPath);
             action = new Actions(_webDriver);
             mouse = ((IHasInputDevices)_webDriver).Mouse;

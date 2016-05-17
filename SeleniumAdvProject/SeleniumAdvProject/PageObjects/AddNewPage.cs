@@ -62,9 +62,7 @@ namespace SeleniumAdvProject.PageObjects
         public AddNewPage(IWebDriver webDriver) : base(webDriver) { }
 
         public MainPage AddPage(Page page)
-        {
-            MainPage mainPage = new MainPage(_webDriver);
-            mainPage.GoToAddNewPage();
+        {         
             TxtPageName.SendKeys(page.PageName);
             CbbParentPage.SelectByText(page.ParentPage);
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
@@ -75,14 +73,10 @@ namespace SeleniumAdvProject.PageObjects
                 ChkPublic.Uncheck();            
             BtnOk.Click();            
             WaitForControlExists(By.XPath(string.Format("//a[.='{0}']",page.PageName)),Constants.WaitTimeoutShortSeconds);
-            return mainPage;
+            return new MainPage(_webDriver);
         }
         public MainPage EditPage(Page page)
-        {
-            MainPage mainPage = new MainPage(_webDriver);
-            ClickMenuItem(page.PageName);
-            mainPage.LblGlobalSetting.MouseOver();
-            mainPage.LnkEditMenu.Click();
+        {            
             TxtPageName.SendKeys(page.PageName);
             CbbParentPage.SelectByText(page.ParentPage);
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
@@ -93,7 +87,7 @@ namespace SeleniumAdvProject.PageObjects
                 ChkPublic.Uncheck();
             BtnOk.Click();
             WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", page.PageName)), Constants.WaitTimeoutShortSeconds);
-            return mainPage;
+            return new MainPage(_webDriver);
         }
         #endregion
 

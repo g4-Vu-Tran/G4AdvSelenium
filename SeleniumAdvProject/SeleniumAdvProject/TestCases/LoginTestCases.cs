@@ -28,7 +28,7 @@ namespace SeleniumAdvProject.TestCases
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
             //VP. Verify that Dashboard Mainpage appears
-            Assert.AreEqual(Constants.UserName, mainPage.GetUserNameText());
+            Assert.AreEqual(Constants.UserName, mainPage.GetUserNameText(),"Login is not successfully");
 
             //Post-Condition
             //Logout			
@@ -49,7 +49,7 @@ namespace SeleniumAdvProject.TestCases
             string actualMessage = loginPage.LoginWithExpectedError(Constants.Repository, "abc", "abc");
 
             //4. Verify that Dashboard Error message "Username or password is invalid" appears            
-            Assert.AreEqual("Username or password is invalid", actualMessage);
+            Assert.AreEqual("Username or password is invalid", actualMessage,string.Format("Message incorrect {0}",actualMessage));
         }
 
         [TestMethod]
@@ -65,7 +65,7 @@ namespace SeleniumAdvProject.TestCases
 
             //4 Verify that Dashboard Error message "Username or password is invalid" appears
             string actualMessage = loginPage.GetDialogText();
-            Assert.AreEqual("Username or password is invalid", actualMessage);
+            Assert.AreEqual("Username or password is invalid", actualMessage, string.Format("Message incorrect {0}", actualMessage));
 
         }
 
@@ -90,7 +90,7 @@ namespace SeleniumAdvProject.TestCases
             loginPage.Login(Constants.TestRepository, Constants.UserName, Constants.Password);
 
             //VP Verify that Dashboard Mainpage appears
-            Assert.AreEqual(Constants.UserName, mainPage.GetUserNameText());
+            Assert.AreEqual(Constants.UserName, mainPage.GetUserNameText(), "Main page does not appear");
 
             //Post-Condition
             //Logout			

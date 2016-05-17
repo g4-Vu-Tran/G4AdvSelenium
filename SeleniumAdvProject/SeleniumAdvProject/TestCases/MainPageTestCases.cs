@@ -20,14 +20,12 @@ namespace SeleniumAdvProject.TestCases
             loginPage.Open();
 
             //2. Login with valid account
-            loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
-            //3. Go to Global Setting -> Add page
-            MainPage mainPage = new MainPage(_webDriver);
-            mainPage.GoToAddNewPage();
-
+            //3. Go to Global Setting -> Add page  
             //4. Try to go to Global Setting -> Add page again
             mainPage.OpenSetting();
+
             //VP. User cannot go to Global Setting -> Add page while "New Page" dialog appears
             bool actualResult = mainPage.IsSettingExist();
             Assert.AreEqual(false, actualResult, "User cannot go to Global Setting while \"New Page\" dialog appears");
@@ -40,19 +38,17 @@ namespace SeleniumAdvProject.TestCases
             Console.WriteLine("DA_MP_TC012 - Verify that user is able to add additional pages besides \"Overview\" page successfully");
 
             //1 Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
+            LoginPage loginPage = new LoginPage(_webDriver).Open();           
 
             //2. Login with valid account
-            loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
             //3. Go to Global Setting -> Add page
             //4 Enter Page Name field
             //5 Click OK button
             //6 Check "Test" page is displayed besides "Overview" page
             Page page = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
-            AddNewPage newPage = new AddNewPage(_webDriver);
-            MainPage mainPage = newPage.AddPage(page);
+            mainPage.OpenAddNewPage().AddPage(page);            
             bool actualResult = mainPage.GetPositionPage(page.PageName) < mainPage.GetPositionPage("Overview") ? true : false;
             Assert.AreEqual(true, actualResult);
 
@@ -82,17 +78,15 @@ namespace SeleniumAdvProject.TestCases
             //10 Click OK button
             Page page = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
             Page page1 = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, page.PageName, false);
+            mainPage.OpenAddNewPage().AddPage(page);
+            mainPage.OpenAddNewPage().AddPage(page1);
 
-            AddNewPage newPage = new AddNewPage(_webDriver);
-            mainPage = newPage.AddPage(page);
-            mainPage = newPage.AddPage(page1);
-            
             //VP Check "Another Test" page is positioned besides the "Test" page                       
-            Assert.AreEqual(true, mainPage.IsPageDisplayAfter(page1.PageName,page.PageName));
+            Assert.AreEqual(true, mainPage.IsPageDisplayAfter(page1.PageName,page.PageName),"The {0} page is not beside the {1} page",page1.PageName,page.PageName);
 
             //Post-Condition
-            mainPage.DeletePage(page.PageName,"Yes");
-            mainPage.DeletePage(page1.PageName,"Yes");
+            mainPage.DeletePage(page.PageName);
+            mainPage.DeletePage(page1.PageName);
             mainPage.Logout();
 
         }
@@ -118,8 +112,7 @@ namespace SeleniumAdvProject.TestCases
             //6 Click OK button 
             //7 Click on Log out link   
             Page page = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", true);
-            AddNewPage newPage = new AddNewPage(_webDriver);
-            mainPage = newPage.AddPage(page);
+            mainPage.OpenAddNewPage().AddPage(page);
             loginPage = mainPage.Logout();
                                             
             //8 Log in with another valid account           
@@ -128,7 +121,7 @@ namespace SeleniumAdvProject.TestCases
             //VP Check newly added page is visibled
             Assert.AreEqual(true, mainPage.IsLinkExist(page.PageName));
 
-            mainPage.DeletePage(page.PageName,"Yes");
+            mainPage.DeletePage(page.PageName);
             mainPage.Logout();
 
         }
@@ -150,8 +143,7 @@ namespace SeleniumAdvProject.TestCases
             //5 Check Public checkbox
             //6 Click OK button
             Page parentPage = new Page("Test", "Select parent", 2, "Overview", false);
-            AddNewPage addNewPage = new AddNewPage(_webDriver);
-            mainPage = addNewPage.AddPage(parentPage);
+            mainPage.OpenAddNewPage().AddPage(parentPage);
 
             //7 Go to Global Setting -> Add page
             //8 Enter Page Name field (Test Chilld)
@@ -159,7 +151,7 @@ namespace SeleniumAdvProject.TestCases
             //10 Select specific page (Test)
             //11 Click OK button
             Page childPage = new Page("TestChild", "Test", 2, "Select page", false);
-            mainPage = addNewPage.AddPage(childPage);
+            mainPage.OpenAddNewPage().AddPage(childPage);
 
             //12 Click on Log out link
             mainPage.Logout();
@@ -192,15 +184,14 @@ namespace SeleniumAdvProject.TestCases
             //4 Enter Page Name
             //5 Click OK button           
             Page page1 = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
-            AddNewPage addNewPage = new AddNewPage(_webDriver);
-            mainPage = addNewPage.AddPage(page1);
+            mainPage.OpenAddNewPage().AddPage(page1);
 
             //6 Go to Global Setting -> Add page
             //7 Enter Page Name
             //8 Check Public checkbox
             //9 Click OK button
             Page page2 = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", true);
-            mainPage = addNewPage.AddPage(page2);
+            mainPage.OpenAddNewPage().AddPage(page2);
             
             //10 Click on "Test" page
             //11 Click on "Edit" link
@@ -215,8 +206,8 @@ namespace SeleniumAdvProject.TestCases
             //20 Click Log out link
             page1.IsPublic = true;
             page2.IsPublic = false;
-            mainPage = addNewPage.EditPage(page1);
-            mainPage = addNewPage.EditPage(page2);
+            mainPage.OpenEditPage(page1.PageName).EditPage(page1);
+            mainPage.OpenEditPage(page2.PageName).EditPage(page2);
             loginPage = mainPage.Logout();
             
             //21 Log in with another valid account
@@ -227,11 +218,11 @@ namespace SeleniumAdvProject.TestCases
             //VP Check "Another Test" page is invisible
             Assert.AreEqual(true, mainPage.IsLinkExist(page2.PageName),string.Format("{0} page is visible",page2.PageName));
 
-            mainPage.DeletePage(page1.PageName, "Yes");           
+            mainPage.DeletePage(page1.PageName);           
             loginPage= mainPage.Logout();
 
             mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
-            mainPage.DeletePage(page2.PageName, "Yes");
+            mainPage.DeletePage(page2.PageName);
             mainPage.Logout();
         }
         [TestMethod]
@@ -257,7 +248,7 @@ namespace SeleniumAdvProject.TestCases
 
             //5. Click on parent page
             //6. Click "Delete" link
-            mainPage.DeletePage(parentPage.PageName);
+            mainPage.DeletePage(parentPage.PageName,"No");
 
             //VP. Check confirm message "Are you sure you want to remove this page?" appears
             //7. Click OK button
@@ -273,7 +264,7 @@ namespace SeleniumAdvProject.TestCases
 
             //9. Click on  children page
             //10. Click "Delete" link
-            mainPage.DeletePage(parentPage.PageName + "/" + childPage.PageName);
+            mainPage.DeletePage(parentPage.PageName + "/" + childPage.PageName,"No");
 
             //VP. Check confirm message "Are you sure you want to remove this page?" appears
             //11. Click OK button
@@ -321,8 +312,7 @@ namespace SeleniumAdvProject.TestCases
             //4. Enter Page Name (Test)
             //5. Click OK button
             Page parentPage = new Page("Test", "Select parent", 2, "Overview", false);
-            AddNewPage addNewPage = mainPage.GoToAddNewPage();
-            addNewPage.AddPage(parentPage);
+            mainPage.OpenAddNewPage().AddPage(parentPage);
 
             //6. Go to Global Setting -> Add page
             //7. Enter Page Name (Test Child 1)
@@ -330,8 +320,7 @@ namespace SeleniumAdvProject.TestCases
             //9. Select a parent page (Test)
             //10. Click OK button
             Page childPage1 = new Page("TestChild1", "Test", 2, "Select page", false);
-            mainPage.GoToAddNewPage();
-            addNewPage.AddPage(childPage1);
+            mainPage.OpenAddNewPage().AddPage(childPage1);
 
             //11. Go to Global Setting -> Add page
             //12. Enter Page Name (Test Child 2)
@@ -339,8 +328,7 @@ namespace SeleniumAdvProject.TestCases
             //14. Select a parent page (Test)
             //15. Click OK button
             Page childPage2 = new Page("TestChild2", "Test", 2, "Select page", false);
-            mainPage.GoToAddNewPage();
-            addNewPage.AddPage(childPage2);
+            mainPage.OpenAddNewPage().AddPage(childPage2);
 
             //VP. Check "Test Child 2" is added successfully
             Assert.IsTrue(mainPage.IsLinkExist(childPage2.PageName));
@@ -368,8 +356,7 @@ namespace SeleniumAdvProject.TestCases
             //4. Enter info into all required fields on New Page dialog (Page name: Page 1, Parent page: Overview)
             //5. Click OK button
             Page page = new Page("Page1", "Overview", 2, "Select page", false);
-            AddNewPage addNewPage = mainPage.GoToAddNewPage();
-            addNewPage.AddPage(page);
+            mainPage.OpenAddNewPage().AddPage(page);
 
             //VP. Observe the current page
             //    User is able to add additional sibbling page levels to parent page successfully. 

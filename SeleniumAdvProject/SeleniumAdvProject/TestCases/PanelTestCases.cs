@@ -28,11 +28,15 @@ namespace SeleniumAdvProject.TestCases
             //3 Go to Global Setting -> Add page
             //4 Enter page name to Page Name field.
             //5 Click OK button
-            //6 Go to Global Setting -> Create Panel
             Page page1 = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
-            AddNewPage addNewPage = new AddNewPage(_webDriver);
-            mainPage = addNewPage.AddPage(page1);            
-            PanelPage panelPage = mainPage.OpenPanelPage();
+            mainPage.OpenAddNewPage().AddPage(page1);
+
+            //6 Go to Global Setting -> Create Panel     
+            //7 Enter display name into Display Name textbox
+            //8 Select any value in Series dropdown list
+            //9Click OK button on PanelConfiguration popup and then click on Chose Panel menu icon
+
+             PanelPage panelPage = mainPage.OpenPanelPage();
 
             //VP Verify that all pre-set panels are populated and sorted correctly
             bool actualResult = panelPage.IsTheListIsSorted(panelPage.CbbDataProfile, "ASC");

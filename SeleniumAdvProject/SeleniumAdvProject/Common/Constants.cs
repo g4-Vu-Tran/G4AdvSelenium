@@ -18,41 +18,8 @@ namespace SeleniumAdvProject.Common
         //URL
         //public const string LoginPageUrl = "192.168.0.105/TADashboard/login.jsp";
         public const string LoginPageUrl = "http://groupba.dyndns.org:54000/TADashboard/login.jsp";
-        public const string MainPageUrl = "/TADashboard/2f9njff6y9.page";
-                
-        public static string GetXpath(By by)
-        {
-            string[] words = by.ToString().Split(':');
-
-            string xtype;
-            switch (words[0])
-            {
-                case "By.Name":
-                    xtype = "@name";
-                    break;
-
-                case "By.Id":
-                    xtype = "@id";
-                    break;
-
-                case "By.LinkText":
-                    xtype = "text()";
-                    break;
-
-                case "By.XPath":
-                    xtype = "xpath";
-                    break;
-
-                case "By.CssSelector":
-                    return null;
-
-                default:
-                    xtype = "xpath";
-                    break;
-            }
-
-            return xtype == "xpath" ? words[1].Trim() : string.Format("//[{0}='{1}']", xtype, words[1]);
-        }
+        public const string MainPageUrl = "/TADashboard/2f9njff6y9.page";                
+       
     }
 
 }
