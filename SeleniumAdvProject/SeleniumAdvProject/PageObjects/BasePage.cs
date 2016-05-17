@@ -70,8 +70,7 @@ namespace SeleniumAdvProject.PageObjects
         {
             this._webDriver = webDriver;
         }
-
-
+        
         #region Navigate Methods
         public void ClickMenuItem(string path, bool isClicked = true)
         {
@@ -99,18 +98,23 @@ namespace SeleniumAdvProject.PageObjects
             return new MainPage(_webDriver);
         }
 
-        public AddNewPage GoToAddNewPage()
+        public AddNewPage OpenAddNewPage()
         {
-            MainPage mPage = new MainPage(_webDriver);
-            mPage.LblGlobalSetting.MouseOver();
-            mPage.LnkAddPage.Click();
-            return new AddNewPage();
+            LblGlobalSetting.MouseOver();
+            LnkAddPage.Click();
+            return new AddNewPage(_webDriver);
+        }
+        public AddNewPage OpenEditPage(string pageName)
+        {   
+            ClickMenuItem(pageName);
+            LblGlobalSetting.MouseOver();
+            LnkEditMenu.Click();
+            return new AddNewPage(_webDriver);
         }
         public PanelPage OpenPanelPage()
-        {
-            MainPage mPage = new MainPage(_webDriver);
-            mPage.LblGlobalSetting.MouseOver();
-            mPage.LnkCreatePanel.Click();
+        {           
+            LblGlobalSetting.MouseOver();
+            LnkCreatePanel.Click();
             return new PanelPage(_webDriver);
         }
 

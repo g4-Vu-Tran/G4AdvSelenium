@@ -29,7 +29,7 @@ namespace SeleniumAdvProject.PageObjects
         public MainPage() { }
         public MainPage(IWebDriver webDriver) : base(webDriver) { }
 
-        public MainPage DeletePage(string path, string confirmDelete = "No")
+        public MainPage DeletePage(string path, string confirmDelete = "Yes")
         {           
             ClickMenuItem(path);
             LblGlobalSetting.MouseOver();
@@ -73,7 +73,7 @@ namespace SeleniumAdvProject.PageObjects
             string tempPage = pageTab.Text;
             return tempPage.Equals(pageName2);            
         }
-
+        
         #endregion
     }
 }
