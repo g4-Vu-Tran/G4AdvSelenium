@@ -14,10 +14,14 @@ namespace SeleniumAdvProject.Common
         public const int lenghtRandomString = 10;
         public const string UserName1 = "test1";
         public const string SpecialPassword = "!@#$%^&*()";
+        public const string SpecialUserName = "@()";
+        public const string UpperCasePassword = "TEST";
+        public const string UpperCaseUserName = "ADMIN";
+        public const string LowerCaseUser = "admin";
 
         //URL
-        //public const string LoginPageUrl = "192.168.0.105/TADashboard/login.jsp";
-        public const string LoginPageUrl = "http://groupba.dyndns.org:54000/TADashboard/login.jsp";
+        public const string LoginPageUrl = "http://192.168.13.102:54000/TADashboard/login.jsp";
+        //public const string LoginPageUrl = "http://groupba.dyndns.org:54000/TADashboard/login.jsp";
         public const string MainPageUrl = "/TADashboard/2f9njff6y9.page";                
        
     }

@@ -132,21 +132,50 @@ namespace SeleniumAdvProject.TestCases
             loginPage.Open();
 
             //2. Login with the account has uppercase password
-            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.LowerCaseUser, Constants.UpperCasePassword);
 
             //VP. Observe the current page
             // Main page is displayed
-            String actualURL = _webDriver.Url.ToString();
-            Assert.IsTrue(actualURL.Contains(Constants.MainPageUrl));
+
+            Assert.AreEqual(Constants.LowerCaseUser, mainPage.GetUserNameText(), "User can login with uppercase password");
 
             //3. Logout TA Dashboard
             mainPage.Logout();
 
             //4. Login with the above account but enter lowercase password
-            loginPage.Login(Constants.Repository, "test", "admin");
+            loginPage.Login(Constants.Repository, "test", "test");
+
+            //VP. Dashboard Error message "Username or password is invalid" appears
+            string actualMessage = loginPage.GetDialogText();
+            Assert.AreEqual("Username or password is invalid", actualMessage, string.Format("Message incorrect {0}", actualMessage)); 
+        }
+
+        [TestMethod]
+        public void DA_LOGIN_TC007()
+        {
+            Console.WriteLine("DA_LOGIN_TC007 - Verify that \"Username\" input is not case sensitive");
+
+            //1. Navigate to Dashboard login page
+            LoginPage loginPage = new LoginPage(_webDriver);
+            loginPage.Open();
+
+            //2. Login with the account has uppercase username
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UpperCaseUserName, Constants.Password);
 
             //VP. Observe the current page
-            Assert.IsTrue(actualURL.Contains(Constants.MainPageUrl));
+            // Main page is displayed
+
+            Assert.AreEqual(Constants.UpperCaseUserName, mainPage.GetUserNameText(), "User can login with uppercase username");
+
+            //3. Logout TA Dashboard
+            mainPage.Logout();
+
+            //4. Login with the above account but enter lowercase username
+            loginPage.Login(Constants.Repository, Constants.LowerCaseUser, Constants.Password);
+
+            //VP. Main page is displayed
+            bool actualDisplays = mainPage.IsLinkExist("Overview");
+            Assert.AreEqual(true, actualDisplays, "Main page displays with lowercase username");
         }
 
         [TestMethod]
@@ -162,7 +191,7 @@ namespace SeleniumAdvProject.TestCases
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName1, Constants.SpecialPassword);
 
             //VP. Main page is displayed
-            Assert.AreEqual(Constants.UserName, mainPage.GetUserNameText());
+            Assert.AreEqual(Constants.UserName, mainPage.GetUserNameText(), "User can login with special character password");
 
             //Post-Condition
             //Logout			
@@ -170,6 +199,27 @@ namespace SeleniumAdvProject.TestCases
             mainPage.Logout();
         }
 
+        [TestMethod]
+        public void DA_LOGIN_TC009()
+        {
+            Console.WriteLine("DA_LOGIN_TC009 - Verify that username with special characters is working correctly");
+
+            //1. Navigate to Dashboard login page
+            LoginPage loginPage = new LoginPage(_webDriver);
+            loginPage.Open();
+
+            //2. Login with account that has special characters password
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.SpecialUserName, Constants.Password);
+
+            //VP. Main page is displayed
+            Assert.AreEqual(Constants.SpecialUserName, mainPage.GetUserNameText(), "Username with special character works correctly");
+
+            //Post-Condition
+            //Logout			
+            //Close Dashboard	
+            mainPage.Logout();
+        }
+        
         [TestMethod]
         public void DA_LOGIN_TC010()
         {
