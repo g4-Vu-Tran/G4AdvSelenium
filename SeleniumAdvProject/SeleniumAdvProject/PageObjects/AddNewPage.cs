@@ -8,6 +8,7 @@ using SeleniumAdvProject.Common;
 using SeleniumAdvProject.DataObjects;
 using OpenQA.Selenium.Support.UI;
 using SeleniumAdvProject.Ultilities.Controls;
+using System.Threading;
 
 namespace SeleniumAdvProject.PageObjects
 {
@@ -65,6 +66,7 @@ namespace SeleniumAdvProject.PageObjects
         {         
             TxtPageName.SendKeys(page.PageName);
             CbbParentPage.SelectByText(page.ParentPage);
+            Thread.Sleep(500);
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
             CbbDisplayAfter.SelectByText(page.DisplayAfter);
             if(page.IsPublic)
@@ -79,6 +81,7 @@ namespace SeleniumAdvProject.PageObjects
         {            
             TxtPageName.SendKeys(page.PageName);
             CbbParentPage.SelectByText(page.ParentPage);
+            Thread.Sleep(500);
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
             CbbDisplayAfter.SelectByText(page.DisplayAfter);
             if (page.IsPublic)
@@ -87,6 +90,13 @@ namespace SeleniumAdvProject.PageObjects
                 ChkPublic.Uncheck();
             BtnOk.Click();
             WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", page.PageName)), Constants.WaitTimeoutShortSeconds);
+            return new MainPage(_webDriver);
+        }
+
+        public MainPage CancelPage()
+        {
+
+            BtnCancel.Click();
             return new MainPage(_webDriver);
         }
         #endregion
