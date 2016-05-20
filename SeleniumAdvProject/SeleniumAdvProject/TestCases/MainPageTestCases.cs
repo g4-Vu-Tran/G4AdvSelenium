@@ -412,5 +412,162 @@ namespace SeleniumAdvProject.TestCases
             mainPage.Logout();
 
         }
+
+        [TestMethod]
+        public void DA_MP_TC023()
+        {
+            Console.WriteLine("DA_MP_TC023 - Verify that user is able to edit the parent page of the sibbling page successfully");
+
+            //1. Navigate to Dashboard login page
+            LoginPage loginPage = new LoginPage(_webDriver);
+            loginPage.Open();
+
+            //2. Login with valid account
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Go to Global Setting -> Add page
+            //4. Enter info into all required fields on New Page dialog
+            Page page = new Page("Page1", "Select parent", 2, "Overview", false);
+            mainPage.OpenAddNewPage().AddPage(page);
+
+            //5. Go to Global Setting -> Add page
+            //6. Enter info into all required fields on New Page dialog
+            Page pageSibling = new Page("Page2", "Page1", 2, "Select page", false);
+            mainPage.OpenAddNewPage().AddPage(pageSibling);
+
+            //5. Go to the first created page
+            //6. Click Edit link
+            //7. Enter another name into Page Name field
+            //8. Click Ok button on Edit Page dialog
+            Page pageEdit = new Page("Page3", "Select parent", 2, "Overview", false);
+            mainPage.OpenEditPage(page.PageName).EditPage(pageEdit);
+
+            //VP: User is able to edit the parent page of the sibbling page successfully
+            Assert.IsTrue(mainPage.IsLinkExist(pageEdit.PageName), "User can edit the parent page of sibling page");
+
+            //Post-Condition
+            mainPage.DeletePage(page.PageName + "/" + pageSibling.PageName);
+            mainPage.DeletePage(page.PageName);
+            mainPage.Logout();
+
+        }
+
+        [TestMethod]
+        public void DA_MP_TC024()
+        {
+            Console.WriteLine("DA_MP_TC024 - Verify that \"Bread Crums\" navigation is correct");
+
+            //1. Navigate to Dashboard login page
+            LoginPage loginPage = new LoginPage(_webDriver);
+            loginPage.Open();
+
+            //2. Login with valid account
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Go to Global Setting -> Add page
+            //4. Enter info into all required fields on New Page dialog
+            Page page = new Page("Page1", "Select parent", 2, "Overview", false);
+            mainPage.OpenAddNewPage().AddPage(page);
+
+            string page1URL = mainPage.GetURL();
+
+            //5. Go to Global Setting -> Add page
+            //6. Enter info into all required fields on New Page dialog
+            Page pageSibling = new Page("Page2", "Page1", 2, "Select page", false);
+            mainPage.OpenAddNewPage().AddPage(pageSibling);
+
+            string page2URL = mainPage.GetURL();
+
+            //5. Click the first breadcrums (Page1)
+            //VP: The first page is navigated
+            mainPage.ClickMenuItem(page.PageName);
+            string actualPage1 = mainPage.GetURL();
+            Assert.AreEqual(page1URL, actualPage1, "The first page is navigated");
+
+            //6. Click the second breadcrums
+            //VP: The second page is navigated
+            mainPage.ClickMenuItem(pageSibling.PageName);
+            string actualPage2 = mainPage.GetURL();
+            Assert.AreEqual(page2URL, actualPage2, "The second page is navigated");
+
+            //Post-Condition
+            mainPage.DeletePage(page.PageName + "/" + pageSibling.PageName);
+            mainPage.DeletePage(page.PageName);
+            mainPage.Logout();
+
+        }
+
+        [TestMethod]
+        public void DA_MP_TC025()
+        {
+            Console.WriteLine("DA_MP_TC025 - Verify that page listing is correct when user edit \"Display After\" field of a specific page");
+
+            //1. Navigate to Dashboard login page
+            LoginPage loginPage = new LoginPage(_webDriver);
+            loginPage.Open();
+
+            //2. Login with valid account
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Go to Global Setting -> Add page
+            //4. Enter info into all required fields on New Page dialog
+            Page page = new Page("Page1", "Select parent", 2, "Overview", false);
+            mainPage.OpenAddNewPage().AddPage(page);
+
+            //5. Go to Global Setting -> Add page
+            //6. Enter info into all required fields on New Page dialog
+            Page page2 = new Page("Page2", "Select parent", 2, "Page1", false);
+            mainPage.OpenAddNewPage().AddPage(page2);
+
+
+            //5. Click Edit link for the second created page
+            //6. Change value Display After for the second created page to after Overview page
+            //7. Click Ok button on Edit Page dialog
+            Page pageEdit = new Page("", "", 2, "Overview", false);
+            mainPage.OpenEditPage(page2.PageName).EditPage(pageEdit);
+
+            //VP: Position of the second page follow Overview page
+            bool actualResult = mainPage.GetPositionPage(page2.PageName) < mainPage.GetPositionPage("Overview") ? true : false;
+            Assert.AreEqual(true, actualResult);
+
+            //Post-Condition
+            mainPage.DeletePage(page.PageName);
+            mainPage.DeletePage(page2.PageName);
+            mainPage.Logout();
+
+        }
+
+        [TestMethod]
+        public void DA_MP_TC026()
+        {
+            Console.WriteLine("DA_MP_TC026 - Verify that page column is correct when user edit \"Number of Columns\" field of a specific page");
+
+            //1. Navigate to Dashboard login page
+            LoginPage loginPage = new LoginPage(_webDriver);
+            loginPage.Open();
+
+            //2. Login with valid account
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Go to Global Setting -> Add page
+            //4. Enter info into all required fields on New Page dialog
+            //Page name: Page 1; Number of Columns: 2
+            Page page = new Page("Page1", "Select parent", 2, "Overview", false);
+            mainPage.OpenAddNewPage().AddPage(page);
+
+            //5. Go to Global Setting -> Edit link
+            //6. Edit Number of Columns for the above created page (Number of Columns: 3)
+            //7. Click OK button
+
+            Page editPage = new Page("", "", 3, "", false);
+            mainPage.OpenEditPage(page.PageName).EditPage(editPage);
+
+            //VP. There are 3 columns on the above created page
+
+            //Post-Condition
+            mainPage.DeletePage(page.PageName);
+            mainPage.Logout();
+
+        }
     }
 }
