@@ -91,7 +91,7 @@ namespace SeleniumAdvProject.Ultilities
                 if (element == null)
                 {
                     wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(timeoutInSeconds));
-                    wait.Until(drv => drv.FindElement(by));
+                    wait.Until(drv => drv.FindElement(this.by));
                 }
             }
             catch
@@ -124,10 +124,10 @@ namespace SeleniumAdvProject.Ultilities
         /// </summary>
         public void LoadControl()
         {
-            if (by != null)
+            if (this.by != null)
             {
                 WaitForControlExists(Constants.WaitTimeoutShortSeconds);
-                element = _webDriver.FindElement(by);
+                element = _webDriver.FindElement(this.by);
             }
 
         }
@@ -263,8 +263,16 @@ namespace SeleniumAdvProject.Ultilities
         public void SendKeys(string text)
         {
             LoadControl();
-            element.Clear();
-            element.SendKeys(text);
+            if (element.Enabled)
+            {
+                if (text != null)
+                {
+                    element.Clear();
+                    element.SendKeys(text);
+                }
+            }
+            
+            
         }
 
         /// <summary>

@@ -24,7 +24,10 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _lnkEditMenu = By.XPath("//a[@class='edit' and .='Edit']");
         static readonly By _lnkCreateProfile = By.XPath("//a[@class='add' and .='Create Profile']");
         static readonly By _lnkCreatePanel = By.XPath("//a[@class='add' and .='Create Panel']");
-        static readonly By _btnChoosepanel = By.XPath("//a[@id='btnChoosepanel']");
+        static readonly By _btnChoosePanel = By.XPath("//a[@id='btnChoosepanel']");
+        static readonly By _lnkAdminister = By.XPath("//a[.='Administer']");
+        static readonly By _lnkPanel = By.XPath("//a[.='Panels']");
+        
         #endregion
 
         #region Elements
@@ -53,6 +56,10 @@ namespace SeleniumAdvProject.PageObjects
             get { return new Link(_webDriver.FindElement(_lnkEditMenu)); }
         }
 
+        public Button BtnChoosePanel
+        {
+            get { return new Button(_webDriver.FindElement(_btnChoosePanel)); }
+        }
         public Link LnkLogout
         {
             get { return new Link(_webDriver.FindElement(_lnkLogout)); }
@@ -60,6 +67,14 @@ namespace SeleniumAdvProject.PageObjects
         public Link LblUsername
         {
             get { return new Link(_webDriver.FindElement(_lblUsername)); }
+        }
+        public Link LnkAdminister
+        {
+            get { return new Link(_webDriver.FindElement(_lnkAdminister)); }
+        }
+        public Link LnkPanel
+        {
+            get { return new Link(_webDriver.FindElement(_lnkPanel)); }
         }
         #endregion
 
@@ -111,13 +126,19 @@ namespace SeleniumAdvProject.PageObjects
             LnkEditMenu.Click();
             return new AddNewPage(_webDriver);
         }
-        public PanelPage OpenPanelPage()
+        public AddNewPanelPopup OpenAddNewPanelPopup()
         {           
             LblGlobalSetting.MouseOver();
             LnkCreatePanel.Click();
-            return new PanelPage(_webDriver);
+            return new AddNewPanelPopup(_webDriver);
         }
-
+        public PanelsPage OpenPanelsPage()
+        {
+            LnkAdminister.MouseOver();
+            LnkPanel.Click();
+            return new PanelsPage(_webDriver);
+        }
+        
         public LoginPage Logout()
         {
             LblUsername.MouseOver();
@@ -132,7 +153,10 @@ namespace SeleniumAdvProject.PageObjects
             lnkRepository.Click();
             return new MainPage(_webDriver);
         }
-
+        public Boolean IsLinkExist(string linkName)
+        {
+            return _webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", linkName))).Displayed;
+        }
         #endregion
 
         #region Get Text Methods
@@ -189,6 +213,10 @@ namespace SeleniumAdvProject.PageObjects
                 throw new Exception("No element have been found.");
 
             }
+        }
+        public void RefreshCurrentPage()
+        {
+            _webDriver.Navigate().Refresh();
         }
         public void ConfirmDialog(string buttonName)
         {

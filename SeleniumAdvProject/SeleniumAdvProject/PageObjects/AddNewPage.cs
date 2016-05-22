@@ -11,7 +11,7 @@ using SeleniumAdvProject.Ultilities.Controls;
 
 namespace SeleniumAdvProject.PageObjects
 {
-    public class AddNewPage : BasePage
+    public class AddNewPage : Popup
     {
 
         #region Locators
@@ -19,9 +19,7 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _cbbParentPage = By.XPath("//select [@id='parent']");
         static readonly By _cbbNumberOfColumns = By.XPath("//select[@id='columnnumber']");
         static readonly By _cbbDisplayAfter = By.XPath("//select[@id='afterpage']");
-        static readonly By _chkPublic = By.XPath("//input[@id='ispublic']");
-        static readonly By _btnOk = By.XPath("//input[@id='OK']");
-        static readonly By _btnCancel = By.XPath("//input[@id='Cancel']");
+        static readonly By _chkPublic = By.XPath("//input[@id='ispublic']");        
         #endregion
 
         #region Elements
@@ -45,15 +43,6 @@ namespace SeleniumAdvProject.PageObjects
         {
             get { return new Checkbox(_webDriver.FindElement(_chkPublic)); }
         }
-
-        public Button BtnOk
-        {
-            get { return new Button(_webDriver.FindElement(_btnOk)); }
-        }
-        public Button BtnCancel
-        {
-            get { return new Button(_webDriver.FindElement(_btnOk)); }
-        }
         #endregion
 
         #region Methods
@@ -71,7 +60,7 @@ namespace SeleniumAdvProject.PageObjects
                 ChkPublic.Check();
             else
                 ChkPublic.Uncheck();            
-            BtnOk.Click();            
+             BtnOk.Click();            
             WaitForControlExists(By.XPath(string.Format("//a[.='{0}']",page.PageName)),Constants.WaitTimeoutShortSeconds);
             return new MainPage(_webDriver);
         }
