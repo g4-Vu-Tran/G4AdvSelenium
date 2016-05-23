@@ -51,6 +51,11 @@ namespace SeleniumAdvProject.PageObjects
         public AddNewPage() { }
         public AddNewPage(IWebDriver webDriver) : base(webDriver) { }
 
+        /// <summary>
+        /// Adds the page.
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <returns></returns>
         public MainPage AddPage(Page page)
         {         
             TxtPageName.SendKeys(page.PageName);
@@ -66,6 +71,11 @@ namespace SeleniumAdvProject.PageObjects
             WaitForControlExists(By.XPath(string.Format("//a[.='{0}']",page.PageName)),Constants.WaitTimeoutShortSeconds);
             return new MainPage(_webDriver);
         }
+        /// <summary>
+        /// Edits the page.
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <returns></returns>
         public MainPage EditPage(Page page)
         {            
             TxtPageName.SendKeys(page.PageName);
@@ -82,6 +92,10 @@ namespace SeleniumAdvProject.PageObjects
             return new MainPage(_webDriver);
         }
 
+        /// <summary>
+        /// Cancels the page.
+        /// </summary>
+        /// <returns></returns>
         public MainPage CancelPage()
         {
 

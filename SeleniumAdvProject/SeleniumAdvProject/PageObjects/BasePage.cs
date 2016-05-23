@@ -170,12 +170,20 @@ namespace SeleniumAdvProject.PageObjects
         }
         #endregion
 
+        /// <summary>
+        /// Switches to new opened window.
+        /// </summary>
+        /// <param name="driver">The driver.</param>
+        /// <param name="isNewUrl">if set to <c>true</c> [is new URL].</param>
         public void SwitchToNewOpenedWindow(IWebDriver driver, bool isNewUrl = true)
         {
             driver.Close();
             driver.SwitchTo().Window(driver.WindowHandles.Last());
         }
 
+        /// <summary>
+        /// Waits for page load complete.
+        /// </summary>
         public void WaitForPageLoadComplete()
         {
             WebDriverWait wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(Constants.WaitTimeoutShortSeconds));
@@ -188,14 +196,28 @@ namespace SeleniumAdvProject.PageObjects
                 Console.WriteLine(e.ToString());
             }
         }
+        /// <summary>
+        /// Switches to new frame.
+        /// </summary>
+        /// <param name="element">The element.</param>
         public void SwitchToNewFrame(IWebElement element)
         {
             _webDriver.SwitchTo().Frame(element);
         }
+        /// <summary>
+        /// Closes the window.
+        /// </summary>
         public void CloseWindow()
         {
             _webDriver.Close();
         }
+
+        /// <summary>
+        /// Waits for control exists.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="timeoutInSeconds">The timeout in seconds.</param>
+        /// <exception cref="System.Exception">No element have been found.</exception>
         public void WaitForControlExists(By control, int timeoutInSeconds)
         {
             try
@@ -214,10 +236,19 @@ namespace SeleniumAdvProject.PageObjects
 
             }
         }
+
+        /// <summary>
+        /// Refreshes the current page.
+        /// </summary>
         public void RefreshCurrentPage()
         {
             _webDriver.Navigate().Refresh();
         }
+
+        /// <summary>
+        /// Confirms the dialog.
+        /// </summary>
+        /// <param name="buttonName">Name of the button.</param>
         public void ConfirmDialog(string buttonName)
         {
             switch (buttonName.ToUpper())
@@ -233,6 +264,11 @@ namespace SeleniumAdvProject.PageObjects
                     break;
             }
         }
+
+        /// <summary>
+        /// Gets the dialog text.
+        /// </summary>
+        /// <returns></returns>
         public string GetDialogText()
         {
             string dglMessage = _webDriver.SwitchTo().Alert().Text;
@@ -240,6 +276,10 @@ namespace SeleniumAdvProject.PageObjects
 
         }
 
+        /// <summary>
+        /// Gets the URL.
+        /// </summary>
+        /// <returns></returns>
         public string GetURL()
         {
             string url = _webDriver.Url;

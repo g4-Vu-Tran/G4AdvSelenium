@@ -19,6 +19,10 @@ namespace SeleniumAdvProject.DataObjects
         private string[] _dataLabel;
         private string _style;
         private bool _showTitle;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Chart"/> class.
+        /// </summary>
         public Chart() 
         {
             this._style = "2D";
@@ -27,6 +31,13 @@ namespace SeleniumAdvProject.DataObjects
             this._showTitle = false;
             this._dataLabel = new string[]{};
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Chart"/> class.
+        /// </summary>
+        /// <param name="displayName">The display name.</param>
+        /// <param name="series">The series.</param>
+        /// <param name="pageName">Name of the page.</param>
         public Chart(string displayName, string series, string pageName)
         {
             this._displayName = displayName;
@@ -36,6 +47,10 @@ namespace SeleniumAdvProject.DataObjects
             this._height = 400;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Chart"/> class.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
         public Chart(Chart chart):base(chart._dataProfile,chart._displayName,chart._pageName, chart._height,chart._folder) 
         {             
             this._chartTitle = chart.ChartTitle;
@@ -49,6 +64,25 @@ namespace SeleniumAdvProject.DataObjects
             this._style = chart.Style;
             this._showTitle = chart.ShowTitle;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Chart"/> class.
+        /// </summary>
+        /// <param name="dataProfile">The data profile.</param>
+        /// <param name="displayName">The display name.</param>
+        /// <param name="pageName">Name of the page.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="folder">The folder.</param>
+        /// <param name="chartTitle">The chart title.</param>
+        /// <param name="chartType">Type of the chart.</param>
+        /// <param name="category">The category.</param>
+        /// <param name="categoryCaption">The category caption.</param>
+        /// <param name="series">The series.</param>
+        /// <param name="seriesCaption">The series caption.</param>
+        /// <param name="legend">The legend.</param>
+        /// <param name="dataLabel">The data label.</param>
+        /// <param name="style">The style.</param>
+        /// <param name="showTitle">if set to <c>true</c> [show title].</param>
         public Chart(string dataProfile, string displayName, string pageName, int height, string folder, string chartTitle,
             string chartType, string category, string categoryCaption, string series,string seriesCaption, string legend,
             string[] dataLabel, string style, bool showTitle):base(dataProfile,displayName,pageName,height,folder)
