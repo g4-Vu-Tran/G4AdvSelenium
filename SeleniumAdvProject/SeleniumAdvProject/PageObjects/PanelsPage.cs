@@ -36,16 +36,14 @@ namespace SeleniumAdvProject.PageObjects
         public PanelsPage() { }
         public PanelsPage(IWebDriver webDriver) : base(webDriver) { }
 
-        public AddNewPanelPopup OpenAddNewPanelPopup()
+        public AddNewPanelPage OpenAddNewPanelPopup()
         {
             LnkAddNew.Click();
-            return new AddNewPanelPopup(_webDriver);
+            return new AddNewPanelPage(_webDriver);
         }
         public PanelsPage AddNewPanel(Chart chart)
         {            
-            AddNewPanelPopup panelPage = OpenAddNewPanelPopup();
-            PanelConfigurationPopup plCongiuration = panelPage.AddChart(chart);
-            plCongiuration.SettingPanel(chart.PageName, chart.Height, chart.Folder);
+            OpenAddNewPanelPopup().AddChart(chart);
             return this;
         }
         

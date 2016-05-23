@@ -31,7 +31,10 @@ namespace SeleniumAdvProject.DataObjects
         {
             this._displayName = displayName;
             this._series = series;
-            this._pageName = pageName;            
+            this._pageName = pageName;
+            this._style = "2D";
+            this._height = 400;
+            this._dataLabel = new string[] {null}; 
         }
 
         public Chart(Chart chart):base(chart._dataProfile,chart._displayName,chart._pageName, chart._height,chart._folder) 

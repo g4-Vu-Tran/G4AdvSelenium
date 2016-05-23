@@ -118,7 +118,7 @@ namespace SeleniumAdvProject.TestCases
             //7 Click on OK button 
             Chart chart = new Chart("Logigear#$%","Name",null);
             PanelsPage panelPage=mainPage.OpenPanelsPage();
-            AddNewPanelPopup addPanelPopup = panelPage.OpenAddNewPanelPopup();
+            AddNewPanelPage addPanelPopup = panelPage.OpenAddNewPanelPopup();
             addPanelPopup.AddChart(chart);
 
             //VP Message "Invalid display name. The name can't contain high ASCII characters or any of following characters: /:*?<>|"#{[]{};" is displayed

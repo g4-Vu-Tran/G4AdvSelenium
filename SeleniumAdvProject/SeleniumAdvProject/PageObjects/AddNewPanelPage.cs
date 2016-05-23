@@ -11,18 +11,17 @@ using SeleniumAdvProject.Ultilities.Controls;
 
 namespace SeleniumAdvProject.PageObjects
 {
-    public class AddNewPanelPopup : Popup
+    public class AddNewPanelPage : Popup
     {
-        #region Locators       
+        #region Locators     
+  
         static readonly By _cbbDataProfile = By.XPath("//select [@id='cbbProfile']");
         static readonly By _txtDisplayName = By.XPath("//input[@id='txtDisplayName']");
         static readonly By _txtChartTitle = By.XPath("//input[@id='txtChartTitle']");
         static readonly By _chbShowTitle = By.XPath("//input[@id='chkShowTitle']");
         static readonly By _cbbChartType = By.XPath("//select[@id='cbbChartType']");
         static readonly By _cbbCategory = By.XPath("//select[@id='cbbCategoryField']");
-        //static readonly By _cbbSeries = By.XPath("//select[@id='cbbSeriesField']");
-        static readonly By _cbbSeries = By.XPath("//select[@id='cbbSeriesField']/optgroup[@label='Action']");
-        //select[@id='cbbSeriesField']/optgroup[@label='Action']
+        static readonly By _cbbSeries = By.XPath("//select[@id='cbbSeriesField']/optgroup[@label='Action']");        
         static readonly By _txtCategoryCaption = By.XPath("//input[@id='txtCategoryXAxis']");
         static readonly By _txtSeriesCaption = By.XPath("//input[@id='txtValueYAxis']");
         static readonly By _chbSeries = By.XPath("//input[@id='chkSeriesName']");
@@ -43,10 +42,10 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _cbbSelectPage = By.XPath("//select[@id='cbbPages']");
         static readonly By _txtHeight = By.XPath("//input[@id='txtHeight']");
         static readonly By _txtFolder = By.XPath("//input[@id='txtFolder']");
+        static readonly By _btnOKConfigurationPanel = By.XPath(" //input[@id='OK' and contains(@onclick,'Dashboard.addPanelToPage')]");        
         #endregion
 
-        #region Elements
-       
+        #region Elements       
         public ComboBox CbbDataProfile
         {
             get { return new ComboBox(_webDriver.FindElement(_cbbDataProfile)); }
@@ -156,13 +155,16 @@ namespace SeleniumAdvProject.PageObjects
         public RadioButton TxtFolder
         {
             get { return new RadioButton(_webDriver.FindElement(_txtFolder)); }
-        }       
-
+        }
+         public Button BtnOKConfigurationPanel
+        {
+            get { return new Button(_webDriver.FindElement(_btnOKConfigurationPanel)); }
+        }        
         #endregion
 
         #region Methods
-        public AddNewPanelPopup() { }
-        public AddNewPanelPopup(IWebDriver webDriver) : base(webDriver) { }
+        public AddNewPanelPage() { }
+        public AddNewPanelPage(IWebDriver webDriver) : base(webDriver) { }
 
         #region Private Methods
 
@@ -188,7 +190,7 @@ namespace SeleniumAdvProject.PageObjects
         }
         private void SelectDataLabels(string[] dataLabel)
         {
-            if (dataLabel == null)
+            if ((dataLabel[0]==null)&&( dataLabel.Length==1))
                 return;
             for (int i = 0; i < dataLabel.Length; i++)
             {
@@ -215,7 +217,7 @@ namespace SeleniumAdvProject.PageObjects
         }
         
         #endregion
-        public PanelConfigurationPopup AddChart(Chart pChart)
+        public MainPage AddChart(Chart pChart)
         {            
             RbChart.Click();
             CbbDataProfile.SelectByText(pChart.DataProfile);
@@ -234,29 +236,19 @@ namespace SeleniumAdvProject.PageObjects
             SelectDataLabels(pChart.DataLabel);
             SelectStyle(pChart.Style);
             BtnOk.Click();
-            return new PanelConfigurationPopup(_webDriver);
+            SettingPanel(pChart.PageName, pChart.Height, pChart.Folder);
+            return new MainPage(_webDriver);
         }
-        //public PanelsPage AddChart(Chart pChart)
-        //{
-        //    RbChart.Click();
-        //    CbbDataProfile.SelectByText(pChart.DataProfile);
-        //    TxtDisplayName.SendKeys(pChart.DisplayName);
-        //    TxtChartTitle.SendKeys(pChart.ChartTitle);
-        //    CbbChartType.SelectByText(pChart.ChartType);
-        //    if (pChart.ShowTitle)
-        //        ChbShowTitle.Check();
-        //    else
-        //        ChbShowTitle.Uncheck();
-        //    CbbCategory.SelectByText(pChart.Category);
-        //    TxtCategoryCaption.SendKeys(pChart.CategoryCaption);
-        //    CbbSeries.SelectByTextFromGroup(pChart.Series);
-        //    TxtSeriesCaption.SendKeys(pChart.SeriesCaption);
-        //    SelectLegend(pChart.Legend);
-        //    SelectDataLabels(pChart.DataLabel);
-        //    SelectStyle(pChart.Style);
-        //    BtnOk.Click();
-        //    return new PanelsPage(_webDriver);
-        //}
+        public void SettingPanel(string selectPage, int height, string folder)
+        {
+            if (CbbSelectPage.Exists)
+            {
+                CbbSelectPage.SelectByText(selectPage);
+                TxtHeight.SendKeys(height.ToString());
+                TxtFolder.SendKeys(folder);                
+                BtnOKConfigurationPanel.Click();
+            }
+        }
 
         public bool IsTheListIsSorted(ComboBox combobox,string sortType)
 		{

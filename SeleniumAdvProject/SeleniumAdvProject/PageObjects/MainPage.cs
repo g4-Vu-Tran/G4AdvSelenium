@@ -43,9 +43,7 @@ namespace SeleniumAdvProject.PageObjects
         public MainPage AddNewPanel(Chart chart)
         {
             ClickMenuItem(chart.PageName);
-            AddNewPanelPopup panelPage = OpenAddNewPanelPopup();
-            PanelConfigurationPopup plCongiuration = panelPage.AddChart(chart);
-            plCongiuration.SettingPanel(chart.PageName,chart.Height,chart.Folder);
+            OpenAddNewPanelPopup().AddChart(chart);
             return this;
         }
 
@@ -67,8 +65,7 @@ namespace SeleniumAdvProject.PageObjects
         {
             return LblGlobalSetting.Exists;
         }
-
-       
+             
 
         public bool IsPageDisplayAfter(string pageName1, string pageName2)
         {

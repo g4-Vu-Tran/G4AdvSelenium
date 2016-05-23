@@ -126,11 +126,11 @@ namespace SeleniumAdvProject.PageObjects
             LnkEditMenu.Click();
             return new AddNewPage(_webDriver);
         }
-        public AddNewPanelPopup OpenAddNewPanelPopup()
+        public AddNewPanelPage OpenAddNewPanelPopup()
         {           
             LblGlobalSetting.MouseOver();
             LnkCreatePanel.Click();
-            return new AddNewPanelPopup(_webDriver);
+            return new AddNewPanelPage(_webDriver);
         }
         public PanelsPage OpenPanelsPage()
         {
