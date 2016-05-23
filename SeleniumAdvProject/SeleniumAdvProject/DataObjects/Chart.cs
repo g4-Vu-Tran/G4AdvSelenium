@@ -23,9 +23,9 @@ namespace SeleniumAdvProject.DataObjects
         {
             this._style = "2D";
             this._height =400;
-            this._dataLabel = new string[] {"None"}; 
+            //this._dataLabel = new string[] {"None"}; 
             this._showTitle = false;
-            this._dataLabel = null;
+            this._dataLabel = new string[]{};
         }
         public Chart(string displayName, string series, string pageName)
         {
@@ -34,7 +34,6 @@ namespace SeleniumAdvProject.DataObjects
             this._pageName = pageName;
             this._style = "2D";
             this._height = 400;
-            this._dataLabel = new string[] {null}; 
         }
 
         public Chart(Chart chart):base(chart._dataProfile,chart._displayName,chart._pageName, chart._height,chart._folder) 

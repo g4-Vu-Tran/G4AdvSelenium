@@ -87,6 +87,7 @@
     <Compile Include="TestCases\PanelTestCases.cs" />
     <Compile Include="TestCases\LoginTestCases.cs" />
     <Compile Include="TestCases\MainPageTestCases.cs" />
+    <Compile Include="Ultilities\Controls\Div.cs" />
     <Compile Include="Ultilities\Controls\RadioButton.cs" />
     <Compile Include="Ultilities\Controls\Button.cs" />
     <Compile Include="Ultilities\Controls\Checkbox.cs" />

@@ -73,9 +73,8 @@ namespace SeleniumAdvProject.TestCases
             PanelsPage panelPage = mainPage.OpenPanelsPage();
             panelPage.OpenAddNewPanelPopup();
 
-            //VP All control/form are disabled or locked when Add New Panel dialog is opening
-            panelPage.LnkCheckAll.Click();
-            Assert.AreEqual(panelPage.LnkCheckAll.Enabled, true, "Controls are disabled");
+            //VP All control/form are disabled or locked when Add New Panel dialog is opening            
+            Assert.AreEqual(mainPage.DivOvelayClass.Exists, true, "Controls are disabled");
         }
         [TestMethod]
         public void DA_PANEL_TC029()
@@ -122,18 +121,18 @@ namespace SeleniumAdvProject.TestCases
             addPanelPopup.AddChart(chart);
 
             //VP Message "Invalid display name. The name can't contain high ASCII characters or any of following characters: /:*?<>|"#{[]{};" is displayed
-            Assert.AreEqual("Invalid display name. The name cannot contain high ASCII characters or any of the following characters:&nbsp/:*?<>|\"#[]{}=%;",
+            Assert.AreEqual("Invalid display name. The name cannot contain high ASCII characters or any of the following characters: /:*?<>|\"#[]{}=%;",
             mainPage.GetDialogText(), "Failed! Actual message: {0}",mainPage.GetDialogText());   
      
             //8 Close Warning Message box
             mainPage.ConfirmDialog("OK");
-            addPanelPopup.BtnCancel.Click();
 
             //9 Click Add New link
             //10 Enter value into Display Name field with special character is @            
-            chart = new Chart("Logigear@","Name","Excution Dashboard");
+            chart = new Chart("Logigear@","Name",null);
             addPanelPopup.AddChart(chart);
 
+            bool a = panelPage.IsLinkExist("Logigear@");
             //VP The new panel is created
             Assert.AreEqual(true,panelPage.IsLinkExist("Logigear@"),"Page Logigear@ cannot be created");            
         }

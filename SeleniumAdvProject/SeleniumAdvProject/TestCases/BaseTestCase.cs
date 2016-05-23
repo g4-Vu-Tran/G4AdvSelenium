@@ -35,9 +35,7 @@ namespace SeleniumAdvProject.TestCases
             _webDriver.Manage().Window.Maximize();
             _webDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(Constants.WaitTimeoutShortSeconds));          
         }
-
-
-
+        
         [TestCleanup]
         
         public void TestCleanupMethod()

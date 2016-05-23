@@ -190,7 +190,7 @@ namespace SeleniumAdvProject.PageObjects
         }
         private void SelectDataLabels(string[] dataLabel)
         {
-            if ((dataLabel[0]==null)&&( dataLabel.Length==1))
+            if ((dataLabel == null))
                 return;
             for (int i = 0; i < dataLabel.Length; i++)
             {
@@ -241,7 +241,7 @@ namespace SeleniumAdvProject.PageObjects
         }
         public void SettingPanel(string selectPage, int height, string folder)
         {
-            if (CbbSelectPage.Exists)
+            if (selectPage!=null)
             {
                 CbbSelectPage.SelectByText(selectPage);
                 TxtHeight.SendKeys(height.ToString());

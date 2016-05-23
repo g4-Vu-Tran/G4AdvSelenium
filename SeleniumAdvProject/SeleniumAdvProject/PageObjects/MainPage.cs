@@ -16,12 +16,17 @@ namespace SeleniumAdvProject.PageObjects
 
         #region Locators
         static readonly By _lnkDelete = By.XPath("//a[@class='delete']");
+        static readonly By _divvOvelayClass = By.XPath("//div[@class='ui-dialog-overlay custom-overlay']");
         #endregion
 
         #region Elements
         public Link LnkDelete
         {
             get { return new Link(_webDriver.FindElement(_lnkDelete)); }
+        }
+        public Div DivOvelayClass
+        {
+            get { return new Div(_webDriver.FindElement(_divvOvelayClass)); }
         }
         #endregion
 
@@ -69,9 +74,9 @@ namespace SeleniumAdvProject.PageObjects
 
         public bool IsPageDisplayAfter(string pageName1, string pageName2)
         {
-            Label pageTab = new Label(_webDriver.FindElement(By.XPath(string.Format("//div[@id='main-menu']/div/ul/li[.='{0}']/preceding-sibling::li[1]", pageName1))));
+            Label pageTab = new Label(_webDriver.FindElement(By.XPath(string.Format("//div[@id='main-menu']/div/ul/li[.='{0}']/preceding-sibling::li[1]", pageName2,pageName1))));
             string tempPage = pageTab.Text;
-            return tempPage.Equals(pageName2);            
+            return tempPage.Equals(pageName1);            
         }
                 
         #endregion
