@@ -17,7 +17,7 @@ namespace SeleniumAdvProject.TestCases
     [TestClass]
     public class BaseTestCase
     {
-        protected IWebDriver _webDriver;
+        public IWebDriver _webDriver;
 
         [TestInitialize]
         public void TestInitializeMethod()

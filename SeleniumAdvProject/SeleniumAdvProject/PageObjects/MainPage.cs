@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using SeleniumAdvProject.Common;
+using SeleniumAdvProject.DataObjects;
 using SeleniumAdvProject.Ultilities.Controls;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,15 @@ namespace SeleniumAdvProject.PageObjects
             return this;
         }
 
+        public MainPage AddNewPanel(Chart chart)
+        {
+            ClickMenuItem(chart.PageName);
+            AddNewPanelPopup panelPage = OpenAddNewPanelPopup();
+            PanelConfigurationPopup plCongiuration = panelPage.AddChart(chart);
+            plCongiuration.SettingPanel(chart.PageName,chart.Height,chart.Folder);
+            return this;
+        }
+
         public int GetPositionPage(string pageName)
         {
             Link page = new Link();
@@ -55,17 +65,10 @@ namespace SeleniumAdvProject.PageObjects
 
         public Boolean IsSettingExist()
         {
-            bool _isExist = false;
-            _isExist = LblGlobalSetting.Exists;
-            return _isExist;
+            return LblGlobalSetting.Exists;
         }
 
-        public Boolean IsLinkExist(string linkName)
-        {
-            bool result = false;
-            result = _webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", linkName))).Displayed;
-            return result;
-        }
+       
 
         public bool IsPageDisplayAfter(string pageName1, string pageName2)
         {
@@ -73,7 +76,7 @@ namespace SeleniumAdvProject.PageObjects
             string tempPage = pageTab.Text;
             return tempPage.Equals(pageName2);            
         }
-        
+                
         #endregion
     }
 }
