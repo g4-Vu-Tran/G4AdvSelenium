@@ -285,6 +285,12 @@ namespace SeleniumAdvProject.PageObjects
             string url = _webDriver.Url;
             return url;
         }
+
+        public void ClickLinkText(string linkText)
+        {
+            Link lnkDynamic = new Link(_webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", linkText))));
+            lnkDynamic.Click();
+        }
         #endregion
     }
 }

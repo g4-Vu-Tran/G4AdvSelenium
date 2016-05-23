@@ -244,6 +244,7 @@ namespace SeleniumAdvProject.PageObjects
             SettingPanel(pChart.PageName, pChart.Height, pChart.Folder);
             return new MainPage(_webDriver);
         }
+
         /// <summary>
         /// Settings the panel.
         /// </summary>
@@ -287,8 +288,7 @@ namespace SeleniumAdvProject.PageObjects
                 {
                     if(listValues[i].CompareTo(listValues[i+1]) <= 0)
                          flag = true;
-                }
-				
+                }				
 			}
             return flag;
 		}

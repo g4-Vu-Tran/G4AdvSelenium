@@ -14,14 +14,14 @@ namespace SeleniumAdvProject.TestCases
     public class PanelTestCase : BaseTestCase
     {
 
-        [TestMethod]
+        //[TestMethod]
         public void DA_PANEL_TC027()
         {
-            Console.WriteLine("DA_LOGIN_TC027 - Verify that when \"Choose panels\" form is expanded all pre-set panels are populated and sorted correctly");
+            Console.WriteLine("DA_PANEL_TC027 - Verify that when \"Choose panels\" form is expanded all pre-set panels are populated and sorted correctly");
 
             //1 Navigate to Dashboard login page
             //2 Login with valid account
-                        LoginPage loginPage = new LoginPage(_webDriver);
+            LoginPage loginPage = new LoginPage(_webDriver);
             loginPage.Open();
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
             //3 Go to Global Setting -> Add page
@@ -56,7 +56,7 @@ namespace SeleniumAdvProject.TestCases
         [TestMethod]
         public void DA_PANEL_TC028()
         {
-            Console.WriteLine("DA_LOGIN_TC028 - Verify that when \"Add New Panel\" form is on focused all other control/form is disabled or locked.");
+            Console.WriteLine("DA_PANEL_TC028 - Verify that when \"Add New Panel\" form is on focused all other control/form is disabled or locked.");
 
             //1 Navigate to Dashboard login page
             //2 Login with valid account
@@ -79,7 +79,7 @@ namespace SeleniumAdvProject.TestCases
         [TestMethod]
         public void DA_PANEL_TC029()
         {
-            Console.WriteLine("DA_LOGIN_TC029 - Verify that user is unable to create new panel when (*) required field is not filled");
+            Console.WriteLine("DA_PANEL_TC029 - Verify that user is unable to create new panel when (*) required field is not filled");
 
             //1 Navigate to Dashboard login page
             //2 Select specific repository
@@ -102,7 +102,7 @@ namespace SeleniumAdvProject.TestCases
         [TestMethod]
         public void DA_PANEL_TC030()
         {
-            Console.WriteLine("DA_LOGIN_TC030 - Verify that no special character except '@' character is allowed to be inputted into \"Display Name\" field");
+            Console.WriteLine("DA_PANEL_TC030 - Verify that no special character except '@' character is allowed to be inputted into \"Display Name\" field");
 
             //1 Navigate to Dashboard login page
             //2 Login with valid account
@@ -135,6 +135,53 @@ namespace SeleniumAdvProject.TestCases
             bool a = panelPage.IsLinkExist("Logigear@");
             //VP The new panel is created
             Assert.AreEqual(true,panelPage.IsLinkExist("Logigear@"),"Page Logigear@ cannot be created");            
+        }
+
+        //[TestMethod]
+        public void DA_PANEL_TC042()
+        {
+            Console.WriteLine("DA_PANEL_TC042 - Verify that all pages are listed correctly under the \"Select page *\" dropped down menu of \"Panel Configuration\" form/ control");
+
+            //1 Navigate to Dashboard login page
+            //2 Select a specific repository 
+            //3 Enter valid Username and Password
+            //4 Click 'Login' button
+            LoginPage loginPage = new LoginPage(_webDriver);
+            MainPage mainPage = loginPage.Open().Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //5 Click 'Add Page' button
+            //6 Enter Page Name
+            //7 Click 'OK' button
+            //8 Click 'Add Page' button
+            //9 Enter Page Name
+            //10 Click 'OK' button
+            //11 Click 'Add Page' button
+            //12 Enter Page Name
+            //13 Click 'OK' button
+            Page page1 = new Page("main_hung1", "Select parent", 2, "Overview", false);
+            Page page2 = new Page("main_hung2", "Select parent", 2, "Overview", false);
+            Page page3 = new Page("main_hung3", "Select parent", 2, "Overview", false);            
+            mainPage.OpenAddNewPage().AddPage(page1);
+            mainPage.OpenAddNewPage().AddPage(page2);
+            mainPage.OpenAddNewPage().AddPage(page3);
+
+            //14 Click 'Choose panels' button
+            //15 Click on any Chart panel instance
+            mainPage.BtnChoosePanel.Click();            
+            mainPage.ClickLinkText("Test Case Execution Results");
+            //16 Click 'Select Page*' drop-down menu
+
+            //17 Check that 'Select Page*' drop-down menu contains 3 items: 'main_hung1', 'main_hung2' and 'main_hung3'
+
+
+            // Assert.AreEqual(true, panelPage.IsLinkExist("Logigear@"), "Page Logigear@ cannot be created");
+
+            //Post-Condition
+            mainPage.DeletePage(page1.PageName);
+            mainPage.DeletePage(page2.PageName);
+            mainPage.DeletePage(page3.PageName);
+
+            mainPage.Logout();
         }
     }
 }

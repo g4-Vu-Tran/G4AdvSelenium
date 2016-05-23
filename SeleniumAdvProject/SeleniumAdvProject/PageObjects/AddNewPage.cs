@@ -98,7 +98,6 @@ namespace SeleniumAdvProject.PageObjects
         /// <returns></returns>
         public MainPage CancelPage()
         {
-
             BtnCancel.Click();
             return new MainPage(_webDriver);
         }

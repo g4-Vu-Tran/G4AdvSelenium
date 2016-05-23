@@ -90,6 +90,7 @@ namespace SeleniumAdvProject.Ultilities.Controls
                 if (option.Text.Trim().Equals(text))
                 {
                     option.Click();
+                    return;
                 }
             }
         }
