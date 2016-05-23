@@ -239,6 +239,12 @@ namespace SeleniumAdvProject.PageObjects
             return dglMessage;
 
         }
+
+        public string GetURL()
+        {
+            string url = _webDriver.Url;
+            return url;
+        }
         #endregion
     }
 }
