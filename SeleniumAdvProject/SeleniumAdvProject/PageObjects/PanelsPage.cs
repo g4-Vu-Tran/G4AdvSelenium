@@ -31,16 +31,27 @@ namespace SeleniumAdvProject.PageObjects
             get { return new Link(_webDriver.FindElement(_lnkCheckAll)); }
         }
         #endregion
+
         #region Methods
 
         public PanelsPage() { }
         public PanelsPage(IWebDriver webDriver) : base(webDriver) { }
 
+        /// <summary>
+        /// Opens the add new panel popup.
+        /// </summary>
+        /// <returns></returns>
         public AddNewPanelPage OpenAddNewPanelPopup()
         {
             LnkAddNew.Click();
             return new AddNewPanelPage(_webDriver);
         }
+
+        /// <summary>
+        /// Adds the new panel.
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        /// <returns></returns>
         public PanelsPage AddNewPanel(Chart chart)
         {            
             OpenAddNewPanelPopup().AddChart(chart);

@@ -217,6 +217,11 @@ namespace SeleniumAdvProject.PageObjects
         }
         
         #endregion
+        /// <summary>
+        /// Adds the chart.
+        /// </summary>
+        /// <param name="pChart">The p chart.</param>
+        /// <returns></returns>
         public MainPage AddChart(Chart pChart)
         {            
             RbChart.Click();
@@ -239,6 +244,12 @@ namespace SeleniumAdvProject.PageObjects
             SettingPanel(pChart.PageName, pChart.Height, pChart.Folder);
             return new MainPage(_webDriver);
         }
+        /// <summary>
+        /// Settings the panel.
+        /// </summary>
+        /// <param name="selectPage">The select page.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="folder">The folder.</param>
         public void SettingPanel(string selectPage, int height, string folder)
         {
             if (CbbSelectPage.Exists)
@@ -250,6 +261,12 @@ namespace SeleniumAdvProject.PageObjects
             }
         }
 
+        /// <summary>
+        /// Determines whether [is the list is sorted] [the specified combobox].
+        /// </summary>
+        /// <param name="combobox">The combobox.</param>
+        /// <param name="sortType">Type of the sort.</param>
+        /// <returns></returns>
         public bool IsTheListIsSorted(ComboBox combobox,string sortType)
 		{
              IList<string> listValues =combobox.OptionStrings;

@@ -52,6 +52,10 @@ namespace SeleniumAdvProject.Ultilities
             mouse = ((IHasInputDevices)_webDriver).Mouse;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseControl"/> class.
+        /// </summary>
+        /// <param name="element">The element.</param>
         public BaseControl(IWebElement element)
         {
             this.element = element;
@@ -132,6 +136,12 @@ namespace SeleniumAdvProject.Ultilities
 
         }
 
+        /// <summary>
+        /// Gets the CSS classes.
+        /// </summary>
+        /// <value>
+        /// The CSS classes.
+        /// </value>
         public List<string> CssClasses
         {
             get
@@ -141,6 +151,11 @@ namespace SeleniumAdvProject.Ultilities
             }
         }
 
+        /// <summary>
+        /// Determines whether the specified CSS class has class.
+        /// </summary>
+        /// <param name="cssClass">The CSS class.</param>
+        /// <returns></returns>
         public bool HasClass(string cssClass)
         {
             return CssClasses.Contains(cssClass);
@@ -167,6 +182,9 @@ namespace SeleniumAdvProject.Ultilities
             element.Click();
         }
 
+        /// <summary>
+        /// Mouses the over.
+        /// </summary>
         public void MouseOver()
         {
             LoadControl();
