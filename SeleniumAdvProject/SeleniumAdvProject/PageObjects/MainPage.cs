@@ -30,8 +30,8 @@ namespace SeleniumAdvProject.PageObjects
         public MainPage(IWebDriver webDriver) : base(webDriver) { }
 
         public MainPage DeletePage(string path, string confirmDelete = "Yes")
-        {           
-            ClickMenuItem(path);
+        {
+            GoToPage(path);
             LblGlobalSetting.MouseOver();
             LnkDelete.Click();
             ConfirmDialog(confirmDelete);
@@ -60,10 +60,16 @@ namespace SeleniumAdvProject.PageObjects
             return _isExist;
         }
 
-        public Boolean IsLinkExist(string linkName)
+        public Boolean IsPageExist(string pathOfPage)
         {
             bool result = false;
-            result = _webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", linkName))).Displayed;
+            string[] arrNode = pathOfPage.Split('/');
+            string xpathOfPage = string.Format("//a[.='{0}']", CommonAction.EncodeSpace(arrNode[0]));
+            for (int i = 1; i < arrNode.Length; i++)
+            {
+                xpathOfPage += string.Format("/..//a[.='{0}']", CommonAction.EncodeSpace(arrNode[i]));
+            }
+            result = _webDriver.FindElement(By.XPath(xpathOfPage)).Displayed;
             return result;
         }
 
@@ -71,9 +77,9 @@ namespace SeleniumAdvProject.PageObjects
         {
             Label pageTab = new Label(_webDriver.FindElement(By.XPath(string.Format("//div[@id='main-menu']/div/ul/li[.='{0}']/preceding-sibling::li[1]", pageName1))));
             string tempPage = pageTab.Text;
-            return tempPage.Equals(pageName2);            
+            return tempPage.Equals(pageName2);
         }
-        
+
         #endregion
     }
 }

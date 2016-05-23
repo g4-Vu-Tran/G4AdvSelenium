@@ -28,7 +28,7 @@ namespace SeleniumAdvProject.TestCases
             //3 Go to Global Setting -> Add page
             //4 Enter page name to Page Name field.
             //5 Click OK button
-            Page page1 = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
+            Page page1 = new Page(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
             mainPage.OpenAddNewPage().AddPage(page1);
 
             //6 Go to Global Setting -> Create Panel     

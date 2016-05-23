@@ -63,24 +63,31 @@ namespace SeleniumAdvProject.PageObjects
         public AddNewPage(IWebDriver webDriver) : base(webDriver) { }
 
         public MainPage AddPage(Page page)
-        {         
+        {
             TxtPageName.SendKeys(page.PageName);
+            IJavaScriptExecutor js = _webDriver as IJavaScriptExecutor;
+            if (js != null)
+            {
+                string innerHtml = (string)js.ExecuteScript("return arguments[0].outerHTML;", _webDriver.FindElement(By.XPath("//a[.='Overview']/../ul")));
+            }
+            CbbParentPage.SelectByText("regexp:\\s+Page child42");
             CbbParentPage.SelectByText(page.ParentPage);
             Thread.Sleep(500);
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
             CbbDisplayAfter.SelectByText(page.DisplayAfter);
-            if(page.IsPublic)
+            if (page.IsPublic)
                 ChkPublic.Check();
             else
-                ChkPublic.Uncheck();            
-            BtnOk.Click();            
-            WaitForControlExists(By.XPath(string.Format("//a[.='{0}']",page.PageName)),Constants.WaitTimeoutShortSeconds);
+                ChkPublic.Uncheck();
+
+            BtnOk.Click();
+            Thread.Sleep(1000);
             return new MainPage(_webDriver);
         }
         public MainPage EditPage(Page page)
-        {            
+        {
             TxtPageName.SendKeys(page.PageName);
-            CbbParentPage.SelectByText(page.ParentPage);
+            CbbParentPage.SelectByText(CommonAction.EncodeSpace(page.ParentPage));
             Thread.Sleep(500);
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
             CbbDisplayAfter.SelectByText(page.DisplayAfter);

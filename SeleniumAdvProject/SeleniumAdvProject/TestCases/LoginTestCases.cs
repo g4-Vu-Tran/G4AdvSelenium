@@ -174,7 +174,7 @@ namespace SeleniumAdvProject.TestCases
             loginPage.Login(Constants.Repository, Constants.LowerCaseUser, Constants.Password);
 
             //VP. Main page is displayed
-            bool actualDisplays = mainPage.IsLinkExist("Overview");
+            bool actualDisplays = mainPage.IsPageExist("Overview");
             Assert.AreEqual(true, actualDisplays, "Main page displays with lowercase username");
         }
 

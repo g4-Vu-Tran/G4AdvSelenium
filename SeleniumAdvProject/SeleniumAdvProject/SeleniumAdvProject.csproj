@@ -70,7 +70,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Common\ActionCommon.cs" />
+    <Compile Include="Common\CommonAction.cs" />
     <Compile Include="Common\Constants.cs" />
     <Compile Include="DataObjects\Page.cs" />
     <Compile Include="PageObjects\PanelPage.cs" />
