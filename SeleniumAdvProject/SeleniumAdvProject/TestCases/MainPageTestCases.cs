@@ -11,32 +11,16 @@ namespace SeleniumAdvProject.TestCases
     [TestClass]
     public class MainPageTestCases : BaseTestCase
     {
+
+        /// <summary>
+        /// Verify that user is unable open more than 1 "New Page" dialog
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC011()
         {
             Console.WriteLine("DA_MP_TC011 - Verify that user is unable open more than 1 \"New Page\" dialog");
-
-            //1 Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
-
-            //2. Login with valid account
-            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
-
-            //3. Go to Global Setting -> Add page  
-            //4. Try to go to Global Setting -> Add page again
-            mainPage.OpenSetting();
-
-            //VP. User cannot go to Global Setting -> Add page while "New Page" dialog appears
-            bool actualResult = mainPage.IsSettingExist();
-            Assert.AreEqual(false, actualResult, "User cannot go to Global Setting while \"New Page\" dialog appears");
-
-        }
-
-        [TestMethod]
-        public void DA_MP_TC012()
-        {
-            Console.WriteLine("DA_MP_TC012 - Verify that user is able to add additional pages besides \"Overview\" page successfully");
 
             //1 Navigate to Dashboard login page
             LoginPage loginPage = new LoginPage(_webDriver).Open();
@@ -44,46 +28,80 @@ namespace SeleniumAdvProject.TestCases
             //2. Login with valid account
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
-            //3. Go to Global Setting -> Add page
-            //4 Enter Page Name field
-            //5 Click OK button
-            //6 Check "Test" page is displayed besides "Overview" page
-            Page page = new Page(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
-            mainPage.OpenAddNewPage().AddPage(page);
-            bool actualResult = mainPage.GetPositionPage(page.PageName) < mainPage.GetPositionPage("Overview") ? true : false;
-            Assert.AreEqual(true, actualResult);
+            //3. Go to Global Setting -> Add page  
+            //4. Try to go to Global Setting -> Add page again
+            //VP. User cannot go to Global Setting -> Add page while "New Page" dialog appears
+            mainPage.OpenSetting();
+            Assert.IsFalse(mainPage.IsSettingExist(), "User cannot go to Global Setting while \"New Page\" dialog appears");
 
+        }
+
+        /// <summary>
+        /// Verify that user is able to add additional pages besides "Overview" page successfully
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
+        [TestMethod]
+        public void DA_MP_TC012()
+        {
+            Console.WriteLine("DA_MP_TC012 - Verify that user is able to add additional pages besides \"Overview\" page successfully");
+
+            //Set variables
+            string pageName = CommonAction.GenrateRandomString(Constants.lenghtRandomString);
+
+            //1. Navigate to Dashboard login page
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+
+            //2. Login with valid account
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Go to Global Setting -> Add page
+            //4. Enter Page Name field
+            //5. Click OK button
+            Page page = new Page(pageName, "Select parent", 2, "Overview", false);
+            mainPage.OpenAddNewPage().AddPage(page);
+
+            //VP. Check "Test" page is displayed besides "Overview" page
+            bool actualResult = mainPage.GetPositionPage(page.PageName) < mainPage.GetPositionPage("Overview") ? true : false;
+            Assert.IsTrue(actualResult, "\"Test\" page is not displayed besides \"Overview\" page");
+
+            //Post condition
             mainPage.DeletePage(page.PageName);
             mainPage.Logout();
         }
 
+        /// <summary>
+        /// Verify that the newly added main parent page is positioned at the location specified 
+        /// as set with "Displayed After" field of "New Page" form on the main page bar"Parent Page" dropped down menu
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC013()
         {
-            Console.WriteLine("DA_MP_TC013 - Verify that the newly added main parent page is positioned at the location specified as set with \"Displayed After\" field of \"New Page\" form on the main page bar/\"Parent Page\" dropped down menu");
+            Console.WriteLine("DA_MP_TC013 - Verify that the newly added main parent page is positioned at the location specified as set with \"Displayed After\" field of \"New Page\" form on the main page bar \"Parent Page\" dropped down menu");
 
-            //1 Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
-
+            //1. Navigate to Dashboard login page
             //2. Log in specific repository with valid account
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
-            //3 Go to Global Setting -> Add page            
-            //4 Enter Page Name field
-            //5 Click OK button
-            //6 Go to Global Setting -> Add page
-            //7 Enter Page Name field
-            //8 Click on  Displayed After dropdown list
-            //9 Select specific page
-            //10 Click OK button
+            //3. Go to Global Setting -> Add page            
+            //4. Enter Page Name field
+            //5. Click OK button
             Page page = new Page(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
-            Page page1 = new Page(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, page.PageName, false);
             mainPage.OpenAddNewPage().AddPage(page);
+
+            //6. Go to Global Setting -> Add page
+            //7. Enter Page Name field
+            //8. Click on  Displayed After dropdown list
+            //9. Select specific page
+            //10. Click OK button
+            Page page1 = new Page(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, page.PageName, false);
             mainPage.OpenAddNewPage().AddPage(page1);
 
-            //VP Check "Another Test" page is positioned besides the "Test" page                       
-            Assert.AreEqual(true, mainPage.IsPageDisplayAfter(page1.PageName, page.PageName), "The {0} page is not beside the {1} page", page1.PageName, page.PageName);
+            //VP. Check "Another Test" page is positioned besides the "Test" page                       
+            Assert.IsTrue(mainPage.IsPageDisplayAfter(page1.PageName, page.PageName), "The {0} page is not beside the {1} page", page1.PageName, page.PageName);
 
             //Post-Condition
             mainPage.DeletePage(page.PageName);
@@ -92,36 +110,37 @@ namespace SeleniumAdvProject.TestCases
 
         }
 
+        /// <summary>
+        /// Verify that "Public" pages can be visible and accessed by all users of working repository
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC014()
         {
             Console.WriteLine("DA_MP_TC014 - Verify that \"Public\" pages can be visible and accessed by all users of working repository");
 
-            //1 Navigate to Dashboard login page
-            //2 Log in specific repository with valid account         
-
-            //1 Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
+            //1. Navigate to Dashboard login page
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
 
             //2. Log in specific repository with valid account
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
-            //3 Go to Global Setting -> Add page
-            //4 Enter Page Name field
-            //5 Check Public checkbox
-            //6 Click OK button 
-            //7 Click on Log out link   
+            //3. Go to Global Setting -> Add page
+            //4. Enter Page Name field
+            //5. Check Public checkbox
+            //6. Click OK button 
+            //7. Click on Log out link   
             Page page = new Page(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", true);
             mainPage.OpenAddNewPage().AddPage(page);
             loginPage = mainPage.Logout();
 
-            //8 Log in with another valid account           
+            //8. Log in with another valid account  
+            //VP. Check newly added page is visibled
             mainPage = loginPage.Login(Constants.Repository, Constants.UserName1, Constants.SpecialPassword);
+            Assert.IsTrue(!mainPage.IsPageExist(page.PageName), string.Format("{0} is not visibled", page.PageName));
 
-            //VP Check newly added page is visibled
-            Assert.AreEqual(true, mainPage.IsPageExist(page.PageName));
-
+            //Post-Condition
             mainPage.DeletePage(page.PageName);
             mainPage.Logout();
 
