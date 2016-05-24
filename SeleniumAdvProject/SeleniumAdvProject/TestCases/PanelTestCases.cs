@@ -35,7 +35,7 @@ namespace SeleniumAdvProject.TestCases
             //8 Select any value in Series dropdown list
             //9 Click OK button on PanelConfiguration popup and then click on Chose Panel menu icon
            
-            Chart chart =new Chart(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Name" ,page1.PageName);
+            Chart chart =new Chart(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Name" ,page1.PageName);
 
             //Chart chart = new Chart("Action Implementation By Status", ActionCommon.GenrateRandomString(Constants.lenghtRandomString), page1.PageName, 0, null, null, "Pie", null, null, "Name", null, "None", dataLabel, "2D", false);
             mainPage.AddNewPanel(chart);

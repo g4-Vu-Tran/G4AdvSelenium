@@ -58,7 +58,7 @@ namespace SeleniumAdvProject.PageObjects
         /// <returns></returns>
         public MainPage AddNewPanel(Chart chart)
         {
-            ClickMenuItem(chart.PageName);
+            GoToPage(chart.PageName);
             OpenAddNewPanelPopup().AddChart(chart);
             return this;
         }
