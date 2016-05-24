@@ -17,14 +17,14 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _btnLogin = By.XPath("//div[@class='btn-login']");
         #endregion
 
-        #region Elements
+        #region Elements     
         public ComboBox DdlRepsitory
         {
             get { return new ComboBox(_webDriver.FindElement(_ddlRepository)); }
         }
         public TextBox TxtUsername
         {
-            get { return new TextBox(_webDriver.FindElement(_txtUsername)); }
+            get { return new TextBox(_webDriver.FindElement(_txtUsername)); }             
         }
         public TextBox TxtPassword
         {
@@ -42,12 +42,23 @@ namespace SeleniumAdvProject.PageObjects
 
         public LoginPage(IWebDriver webDriver) : base(webDriver) { }
 
+        /// <summary>
+        /// Opens this instance.
+        /// </summary>
+        /// <returns></returns>
         public LoginPage Open()
         {
             _webDriver.Navigate().GoToUrl(Constants.LoginPageUrl);
             return this;
         }
 
+        /// <summary>
+        /// Logins the specified repository.
+        /// </summary>
+        /// <param name="repository">The repository.</param>
+        /// <param name="username">The username.</param>
+        /// <param name="password">The password.</param>
+        /// <returns></returns>
         public MainPage Login(string repository, string username, string password)
         {
             DdlRepsitory.SelectByText(repository);
@@ -57,7 +68,14 @@ namespace SeleniumAdvProject.PageObjects
             WaitForControlExists(By.XPath("//a[.='Overview']"), 500);
             return new MainPage(_webDriver);
         }
-
+        
+        /// <summary>
+        /// Logins the with expected error.
+        /// </summary>
+        /// <param name="repository">The repository.</param>
+        /// <param name="username">The username.</param>
+        /// <param name="password">The password.</param>
+        /// <returns></returns>
         public string LoginWithExpectedError(string repository, string username, string password)
         {
             DdlRepsitory.SelectByText(repository);
@@ -67,13 +85,22 @@ namespace SeleniumAdvProject.PageObjects
             return this.GetDialogText();
         }
 
+        /// <summary>
+        /// Logins the with out account.
+        /// </summary>
+        /// <param name="repository">The repository.</param>
+        /// <returns></returns>
         public LoginPage LoginWithOutAccount(string repository)
         {
             DdlRepsitory.SelectByText(repository);
             BtnLogin.Click();
-            return this;
+            return this;        
         }
-
+       
+        /// <summary>
+        /// Gets the web driver.
+        /// </summary>
+        /// <returns></returns>
         public IWebDriver GetWebDriver()
         {
             return _webDriver;

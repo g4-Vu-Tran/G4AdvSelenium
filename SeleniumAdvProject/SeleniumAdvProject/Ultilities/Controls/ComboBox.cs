@@ -28,7 +28,14 @@ namespace SeleniumAdvProject.Ultilities.Controls
             LoadControl();
             selectElement = new SelectElement(element);
         }
-
+        public bool Enabled
+        {
+            get
+            {
+                LoadControl();
+                return element.Selected;
+            }
+        }
         /// <summary>
         /// Selects the by text.
         /// </summary>
@@ -36,7 +43,14 @@ namespace SeleniumAdvProject.Ultilities.Controls
         public void SelectByText(string text)
         {
             GetSelectControl();
-            selectElement.SelectByText(text);
+            if (Enabled)
+            {                
+                if (text != null)
+                    selectElement.SelectByText(text);
+              
+            }
+            
+            
         }
         /// <summary>
         /// Selects the index of the by.
@@ -57,6 +71,7 @@ namespace SeleniumAdvProject.Ultilities.Controls
             GetSelectControl();
             return selectElement.SelectedOption.Text;
         }
+               
         public IList<string> OptionStrings
         {
             get
@@ -65,6 +80,25 @@ namespace SeleniumAdvProject.Ultilities.Controls
                 IList<IWebElement> options = selectElement.Options;
                 return options.Select(option => option.Text).ToList();
             }
+        }
+
+        public void SelectByTextFromGroup(string text)
+        {            
+            IList<IWebElement> options = element.FindElements(By.TagName("option"));
+            foreach (IWebElement option in options)
+            {
+                if (option.Text.Trim().Equals(text))
+                {
+                    option.Click();
+                    return;
+                }
+            }
+        }
+
+        public string GetTextByIndex(int index)
+        {
+            IList<string> text = OptionStrings;
+            return text[index];
         }
     }
 }

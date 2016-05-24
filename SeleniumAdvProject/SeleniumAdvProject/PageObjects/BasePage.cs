@@ -24,7 +24,10 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _lnkEditMenu = By.XPath("//a[@class='edit' and .='Edit']");
         static readonly By _lnkCreateProfile = By.XPath("//a[@class='add' and .='Create Profile']");
         static readonly By _lnkCreatePanel = By.XPath("//a[@class='add' and .='Create Panel']");
-        static readonly By _btnChoosepanel = By.XPath("//a[@id='btnChoosepanel']");
+        static readonly By _btnChoosePanel = By.XPath("//a[@id='btnChoosepanel']");
+        static readonly By _lnkAdminister = By.XPath("//a[.='Administer']");
+        static readonly By _lnkPanel = By.XPath("//a[.='Panels']");
+        
         #endregion
 
         #region Elements
@@ -38,7 +41,7 @@ namespace SeleniumAdvProject.PageObjects
         }
         public Label LblGlobalSetting
         {
-            get { return new Label(_webDriver.FindElement(_lblGlobalSetting)); }
+            get { return new Label(_webDriver.FindElement(_lblGlobalSetting)); }         
         }
         public Link LnkAddPage
         {
@@ -53,6 +56,10 @@ namespace SeleniumAdvProject.PageObjects
             get { return new Link(_webDriver.FindElement(_lnkEditMenu)); }
         }
 
+        public Button BtnChoosePanel
+        {
+            get { return new Button(_webDriver.FindElement(_btnChoosePanel)); }
+        }
         public Link LnkLogout
         {
             get { return new Link(_webDriver.FindElement(_lnkLogout)); }
@@ -60,6 +67,14 @@ namespace SeleniumAdvProject.PageObjects
         public Link LblUsername
         {
             get { return new Link(_webDriver.FindElement(_lblUsername)); }
+        }
+        public Link LnkAdminister
+        {
+            get { return new Link(_webDriver.FindElement(_lnkAdminister)); }
+        }
+        public Link LnkPanel
+        {
+            get { return new Link(_webDriver.FindElement(_lnkPanel)); }
         }
         #endregion
 
@@ -70,7 +85,7 @@ namespace SeleniumAdvProject.PageObjects
         {
             this._webDriver = webDriver;
         }
-
+        
         #region Navigate Methods
         public void GoToLink(string path, bool isClicked = false)
         {
@@ -101,17 +116,23 @@ namespace SeleniumAdvProject.PageObjects
             return new AddNewPage(_webDriver);
         }
         public AddNewPage OpenEditPage(string pageName)
-        {
+        {   
             GoToLink(pageName, true);
             LblGlobalSetting.MouseOver();
             LnkEditMenu.Click();
             return new AddNewPage(_webDriver);
         }
-        public PanelPage OpenPanelPage()
-        {
+        public AddNewPanelPage OpenAddNewPanelPopup()
+        {           
             LblGlobalSetting.MouseOver();
             LnkCreatePanel.Click();
-            return new PanelPage(_webDriver);
+            return new AddNewPanelPage(_webDriver);
+        }
+        public PanelsPage OpenPanelsPage()
+        {
+            LnkAdminister.MouseOver();
+            LnkPanel.Click();
+            return new PanelsPage(_webDriver);
         }
 
         public LoginPage Logout()
@@ -128,7 +149,10 @@ namespace SeleniumAdvProject.PageObjects
             lnkRepository.Click();
             return new MainPage(_webDriver);
         }
-
+        public Boolean IsLinkExist(string linkName)
+        {
+            return _webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", linkName))).Displayed;
+        }
         #endregion
 
         #region Get Text Methods
@@ -142,12 +166,20 @@ namespace SeleniumAdvProject.PageObjects
         }
         #endregion
 
+        /// <summary>
+        /// Switches to new opened window.
+        /// </summary>
+        /// <param name="driver">The driver.</param>
+        /// <param name="isNewUrl">if set to <c>true</c> [is new URL].</param>
         public void SwitchToNewOpenedWindow(IWebDriver driver, bool isNewUrl = true)
         {
             driver.Close();
             driver.SwitchTo().Window(driver.WindowHandles.Last());
         }
 
+        /// <summary>
+        /// Waits for page load complete.
+        /// </summary>
         public void WaitForPageLoadComplete()
         {
             WebDriverWait wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(Constants.WaitTimeoutShortSeconds));
@@ -160,14 +192,28 @@ namespace SeleniumAdvProject.PageObjects
                 Console.WriteLine(e.ToString());
             }
         }
+        /// <summary>
+        /// Switches to new frame.
+        /// </summary>
+        /// <param name="element">The element.</param>
         public void SwitchToNewFrame(IWebElement element)
         {
             _webDriver.SwitchTo().Frame(element);
         }
+        /// <summary>
+        /// Closes the window.
+        /// </summary>
         public void CloseWindow()
         {
             _webDriver.Close();
         }
+
+        /// <summary>
+        /// Waits for control exists.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="timeoutInSeconds">The timeout in seconds.</param>
+        /// <exception cref="System.Exception">No element have been found.</exception>
         public void WaitForControlExists(By control, int timeoutInSeconds)
         {
             try
@@ -186,6 +232,19 @@ namespace SeleniumAdvProject.PageObjects
 
             }
         }
+
+        /// <summary>
+        /// Refreshes the current page.
+        /// </summary>
+        public void RefreshCurrentPage()
+        {
+            _webDriver.Navigate().Refresh();
+        }
+
+        /// <summary>
+        /// Confirms the dialog.
+        /// </summary>
+        /// <param name="buttonName">Name of the button.</param>
         public void ConfirmDialog(string buttonName)
         {
             switch (buttonName.ToUpper())
@@ -201,6 +260,11 @@ namespace SeleniumAdvProject.PageObjects
                     break;
             }
         }
+
+        /// <summary>
+        /// Gets the dialog text.
+        /// </summary>
+        /// <returns></returns>
         public string GetDialogText()
         {
             string dglMessage = _webDriver.SwitchTo().Alert().Text;
@@ -208,10 +272,20 @@ namespace SeleniumAdvProject.PageObjects
 
         }
 
+        /// <summary>
+        /// Gets the URL.
+        /// </summary>
+        /// <returns></returns>
         public string GetURL()
         {
             string url = _webDriver.Url;
             return url;
+        }
+
+        public void ClickLinkText(string linkText)
+        {
+            Link lnkDynamic = new Link(_webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", linkText))));
+            lnkDynamic.Click();
         }
         #endregion
     }

@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace SeleniumAdvProject.PageObjects
 {
-    public class AddNewPage : BasePage
+    public class AddNewPage : Popup
     {
 
         #region Locators
@@ -21,8 +21,6 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _cbbNumberOfColumns = By.XPath("//select[@id='columnnumber']");
         static readonly By _cbbDisplayAfter = By.XPath("//select[@id='afterpage']");
         static readonly By _chkPublic = By.XPath("//input[@id='ispublic']");
-        static readonly By _btnOk = By.XPath("//input[@id='OK']");
-        static readonly By _btnCancel = By.XPath("//input[@id='Cancel']");
         #endregion
 
         #region Elements
@@ -46,15 +44,6 @@ namespace SeleniumAdvProject.PageObjects
         {
             get { return new Checkbox(_webDriver.FindElement(_chkPublic)); }
         }
-
-        public Button BtnOk
-        {
-            get { return new Button(_webDriver.FindElement(_btnOk)); }
-        }
-        public Button BtnCancel
-        {
-            get { return new Button(_webDriver.FindElement(_btnOk)); }
-        }
         #endregion
 
         #region Methods
@@ -62,30 +51,33 @@ namespace SeleniumAdvProject.PageObjects
         public AddNewPage() { }
         public AddNewPage(IWebDriver webDriver) : base(webDriver) { }
 
+        /// <summary>
+        /// Adds the page.
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <returns></returns>
         public MainPage AddPage(Page page)
-        {
+        {         
             TxtPageName.SendKeys(page.PageName);
-            IJavaScriptExecutor js = _webDriver as IJavaScriptExecutor;
-            if (js != null)
-            {
-                string innerHtml = (string)js.ExecuteScript("return arguments[0].outerHTML;", _webDriver.FindElement(By.XPath("//a[.='Overview']/../ul")));
-            }
-            CbbParentPage.SelectByText("regexp:\\s+Page child42");
             CbbParentPage.SelectByText(page.ParentPage);
             Thread.Sleep(500);
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
             CbbDisplayAfter.SelectByText(page.DisplayAfter);
-            if (page.IsPublic)
+            if(page.IsPublic)
                 ChkPublic.Check();
             else
-                ChkPublic.Uncheck();
-
-            BtnOk.Click();
-            Thread.Sleep(1000);
+                ChkPublic.Uncheck();            
+            BtnOk.Click();            
+            WaitForControlExists(By.XPath(string.Format("//a[.='{0}']",page.PageName)),Constants.WaitTimeoutShortSeconds);
             return new MainPage(_webDriver);
         }
+        /// <summary>
+        /// Edits the page.
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <returns></returns>
         public MainPage EditPage(Page page)
-        {
+        {            
             TxtPageName.SendKeys(page.PageName);
             CbbParentPage.SelectByText(CommonAction.EncodeSpace(page.ParentPage));
             Thread.Sleep(500);
@@ -100,9 +92,12 @@ namespace SeleniumAdvProject.PageObjects
             return new MainPage(_webDriver);
         }
 
+        /// <summary>
+        /// Cancels the page.
+        /// </summary>
+        /// <returns></returns>
         public MainPage CancelPage()
         {
-
             BtnCancel.Click();
             return new MainPage(_webDriver);
         }

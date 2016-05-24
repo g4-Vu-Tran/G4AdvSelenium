@@ -72,8 +72,12 @@
   <ItemGroup>
     <Compile Include="Common\CommonAction.cs" />
     <Compile Include="Common\Constants.cs" />
+    <Compile Include="DataObjects\Chart.cs" />
+    <Compile Include="DataObjects\Panel.cs" />
     <Compile Include="DataObjects\Page.cs" />
-    <Compile Include="PageObjects\PanelPage.cs" />
+    <Compile Include="PageObjects\PanelsPage.cs" />
+    <Compile Include="PageObjects\Popup.cs" />
+    <Compile Include="PageObjects\AddNewPanelPage.cs" />
     <Compile Include="PageObjects\AddNewPage.cs" />
     <Compile Include="PageObjects\BasePage.cs" />
     <Compile Include="PageObjects\MainPage.cs" />
@@ -83,6 +87,8 @@
     <Compile Include="TestCases\PanelTestCases.cs" />
     <Compile Include="TestCases\LoginTestCases.cs" />
     <Compile Include="TestCases\MainPageTestCases.cs" />
+    <Compile Include="Ultilities\Controls\Div.cs" />
+    <Compile Include="Ultilities\Controls\RadioButton.cs" />
     <Compile Include="Ultilities\Controls\Button.cs" />
     <Compile Include="Ultilities\Controls\Checkbox.cs" />
     <Compile Include="Ultilities\Controls\ComboBox.cs" />
