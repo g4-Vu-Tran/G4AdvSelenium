@@ -13,21 +13,21 @@ namespace SeleniumAdvProject.PageObjects
 {
     public class AddNewPanelPage : Popup
     {
-        #region Locators     
-  
+        #region Locators
+
         static readonly By _cbbDataProfile = By.XPath("//select [@id='cbbProfile']");
         static readonly By _txtDisplayName = By.XPath("//input[@id='txtDisplayName']");
         static readonly By _txtChartTitle = By.XPath("//input[@id='txtChartTitle']");
         static readonly By _chbShowTitle = By.XPath("//input[@id='chkShowTitle']");
         static readonly By _cbbChartType = By.XPath("//select[@id='cbbChartType']");
         static readonly By _cbbCategory = By.XPath("//select[@id='cbbCategoryField']");
-        static readonly By _cbbSeries = By.XPath("//select[@id='cbbSeriesField']/optgroup[@label='Action']");        
+        static readonly By _cbbSeries = By.XPath("//select[@id='cbbSeriesField']/optgroup[@label='Action']");
         static readonly By _txtCategoryCaption = By.XPath("//input[@id='txtCategoryXAxis']");
         static readonly By _txtSeriesCaption = By.XPath("//input[@id='txtValueYAxis']");
         static readonly By _chbSeries = By.XPath("//input[@id='chkSeriesName']");
         static readonly By _chbCategories = By.XPath("//input[@id='chkCategoriesName']");
         static readonly By _chbValue = By.XPath("//input[@id='chkValue']");
-        static readonly By _chbPercentage = By.XPath("//input[@id='chkPercentage']");       
+        static readonly By _chbPercentage = By.XPath("//input[@id='chkPercentage']");
         static readonly By _rbChart = By.XPath("//input[@id='radPanelType0']");
         static readonly By _rbIndicator = By.XPath("//input[@id='radPanelType1']");
         static readonly By _rbReport = By.XPath("//input[@id='radPanelType2']");
@@ -42,10 +42,10 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _cbbSelectPage = By.XPath("//select[@id='cbbPages']");
         static readonly By _txtHeight = By.XPath("//input[@id='txtHeight']");
         static readonly By _txtFolder = By.XPath("//input[@id='txtFolder']");
-        static readonly By _btnOKConfigurationPanel = By.XPath(" //input[@id='OK' and contains(@onclick,'Dashboard.addPanelToPage')]");        
+        static readonly By _btnOKConfigurationPanel = By.XPath(" //input[@id='OK' and contains(@onclick,'Dashboard.addPanelToPage')]");
         #endregion
 
-        #region Elements       
+        #region Elements
         public ComboBox CbbDataProfile
         {
             get { return new ComboBox(_webDriver.FindElement(_cbbDataProfile)); }
@@ -81,8 +81,8 @@ namespace SeleniumAdvProject.PageObjects
         public RadioButton RbHeadMap
         {
             get { return new RadioButton(_webDriver.FindElement(_rbHeadMap)); }
-        }       
-       
+        }
+
         public ComboBox CbbCategory
         {
             get { return new ComboBox(_webDriver.FindElement(_cbbCategory)); }
@@ -90,7 +90,7 @@ namespace SeleniumAdvProject.PageObjects
         public ComboBox CbbSeries
         {
             get { return new ComboBox(_webDriver.FindElement(_cbbSeries)); }
-        }        
+        }
         public RadioButton Rb2D
         {
             get { return new RadioButton(_webDriver.FindElement(_rb2D)); }
@@ -98,8 +98,8 @@ namespace SeleniumAdvProject.PageObjects
         public RadioButton Rb3D
         {
             get { return new RadioButton(_webDriver.FindElement(_rb3D)); }
-        }    
-      
+        }
+
         public TextBox TxtCategoryCaption
         {
             get { return new TextBox(_webDriver.FindElement(_txtCategoryCaption)); }
@@ -127,7 +127,7 @@ namespace SeleniumAdvProject.PageObjects
         public RadioButton RbNone
         {
             get { return new RadioButton(_webDriver.FindElement(_rbNone)); }
-        }       
+        }
         public RadioButton RbTop
         {
             get { return new RadioButton(_webDriver.FindElement(_rbTop)); }
@@ -156,10 +156,10 @@ namespace SeleniumAdvProject.PageObjects
         {
             get { return new RadioButton(_webDriver.FindElement(_txtFolder)); }
         }
-         public Button BtnOKConfigurationPanel
+        public Button BtnOKConfigurationPanel
         {
             get { return new Button(_webDriver.FindElement(_btnOKConfigurationPanel)); }
-        }        
+        }
         #endregion
 
         #region Methods
@@ -168,6 +168,10 @@ namespace SeleniumAdvProject.PageObjects
 
         #region Private Methods
 
+        /// <summary>
+        /// Selects the legend.
+        /// </summary>
+        /// <param name="legend">The legend.</param>
         private void SelectLegend(string legend)
         {
             switch (legend)
@@ -188,6 +192,11 @@ namespace SeleniumAdvProject.PageObjects
                     break;
             }
         }
+
+        /// <summary>
+        /// Selects the data labels.
+        /// </summary>
+        /// <param name="dataLabel">The data label.</param>
         private void SelectDataLabels(string[] dataLabel)
         {
             if ((dataLabel == null))
@@ -202,8 +211,12 @@ namespace SeleniumAdvProject.PageObjects
                     ChbValue.Click();
                 if (dataLabel[i].Equals("Percentage"))
                     ChbPercentage.Click();
-            }  
+            }
         }
+        /// <summary>
+        /// Selects the style.
+        /// </summary>
+        /// <param name="style">The style.</param>
         private void SelectStyle(string style)
         {
             switch (style)
@@ -215,7 +228,38 @@ namespace SeleniumAdvProject.PageObjects
                     break;
             }
         }
-        
+
+
+        /// <summary>
+        /// Gets the category status.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string GetCategoryStatus()
+        {
+            return _webDriver.FindElement(By.XPath("//select[@id='cbbCategoryField']")).GetAttribute("disabled");
+        }
+
+        /// <summary>
+        /// Gets the category caption status.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string GetCategoryCaptionStatus()
+        {
+            return TxtCategoryCaption.GetAttribute("disabled");
+        }
+
+        /// <summary>
+        /// Gets the Series status.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string GetSeriesStatus()
+        {
+            return CbbSeries.GetAttribute("disabled");
+        }
+
         #endregion
         /// <summary>
         /// Adds the chart.
@@ -223,13 +267,13 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="pChart">The p chart.</param>
         /// <returns></returns>
         public MainPage AddChart(Chart pChart)
-        {            
+        {
             RbChart.Click();
             CbbDataProfile.SelectByText(pChart.DataProfile);
             TxtDisplayName.SendKeys(pChart.DisplayName);
             TxtChartTitle.SendKeys(pChart.ChartTitle);
             CbbChartType.SelectByText(pChart.ChartType);
-            if(pChart.ShowTitle)
+            if (pChart.ShowTitle)
                 ChbShowTitle.Check();
             else
                 ChbShowTitle.Uncheck();
@@ -253,14 +297,15 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="folder">The folder.</param>
         public void SettingPanel(string selectPage, int height, string folder)
         {
-            if (selectPage!=null)
+            if (selectPage != null)
             {
                 CbbSelectPage.SelectByText(selectPage);
                 TxtHeight.SendKeys(height.ToString());
-                TxtFolder.SendKeys(folder);                
+                TxtFolder.SendKeys(folder);
                 BtnOKConfigurationPanel.Click();
             }
         }
+
 
         /// <summary>
         /// Determines whether [is the list is sorted] [the specified combobox].
@@ -268,30 +313,30 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="combobox">The combobox.</param>
         /// <param name="sortType">Type of the sort.</param>
         /// <returns></returns>
-        public bool IsTheListIsSorted(ComboBox combobox,string sortType)
-		{
-             IList<string> listValues =combobox.OptionStrings;
-            			
-			int rowCount = listValues.Count;
+        public bool IsTheListIsSorted(ComboBox combobox, string sortType)
+        {
+            IList<string> listValues = combobox.OptionStrings;
+
+            int rowCount = listValues.Count;
             bool flag = false;
 
-			// start from 1 to skip the table header row run to 'i < rowCount - 1' because we check
-			// a pair of row at a time
-			for (int i = 1; i < rowCount-1; i++)
-			{
+            // start from 1 to skip the table header row run to 'i < rowCount - 1' because we check
+            // a pair of row at a time
+            for (int i = 1; i < rowCount - 1; i++)
+            {
                 if (sortType == "DESC")
                 {
-                     if(listValues[i].CompareTo(listValues[i+1]) >= 0)
-                         flag = true;
+                    if (listValues[i].CompareTo(listValues[i + 1]) >= 0)
+                        flag = true;
                 }
                 else if (sortType == "ASC")
                 {
-                    if(listValues[i].CompareTo(listValues[i+1]) <= 0)
-                         flag = true;
-                }				
-			}
+                    if (listValues[i].CompareTo(listValues[i + 1]) <= 0)
+                        flag = true;
+                }
+            }
             return flag;
-		}
+        }
 
         #endregion
 

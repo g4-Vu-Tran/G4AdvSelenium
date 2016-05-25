@@ -645,37 +645,5 @@ namespace SeleniumAdvProject.TestCases
 
         }
 
-        [TestMethod]
-        public void DA_MP_TC026()
-        {
-            Console.WriteLine("DA_MP_TC026 - Verify that page column is correct when user edit \"Number of Columns\" field of a specific page");
-
-            //1. Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
-
-            //2. Login with valid account
-            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
-
-            //3. Go to Global Setting -> Add page
-            //4. Enter info into all required fields on New Page dialog
-            //Page name: Page 1; Number of Columns: 2
-            Page page = new Page("Page1", "Select parent", 2, "Overview", false);
-            mainPage.OpenAddNewPage().AddPage(page);
-
-            //5. Go to Global Setting -> Edit link
-            //6. Edit Number of Columns for the above created page (Number of Columns: 3)
-            //7. Click OK button
-
-            Page editPage = new Page("", "", 3, "", false);
-            mainPage.OpenEditPage(page.PageName).EditPage(editPage);
-
-            //VP. There are 3 columns on the above created page
-
-            //Post-Condition
-            mainPage.DeletePage(page.PageName);
-            mainPage.Logout();
-
-        }
     }
 }

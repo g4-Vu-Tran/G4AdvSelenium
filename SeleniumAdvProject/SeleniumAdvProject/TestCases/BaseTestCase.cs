@@ -36,7 +36,7 @@ namespace SeleniumAdvProject.TestCases
             Console.WriteLine("Run Test Cleanup");
 
             // Close browser
-            _webDriver.Quit();
+            //_webDriver.Quit();
         }
     }
 }

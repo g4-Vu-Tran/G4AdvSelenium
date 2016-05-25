@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SeleniumAdvProject.PageObjects
 {
-    public class PanelsPage:BasePage
+    public class PanelsPage : BasePage
     {
         #region Locators
         static readonly By _lnkAddNew = By.XPath("//a[.='Add New']");
@@ -53,11 +53,11 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="chart">The chart.</param>
         /// <returns></returns>
         public PanelsPage AddNewPanel(Chart chart)
-        {            
+        {
             OpenAddNewPanelPopup().AddChart(chart);
             return this;
         }
-        
+
         #endregion
     }
 }

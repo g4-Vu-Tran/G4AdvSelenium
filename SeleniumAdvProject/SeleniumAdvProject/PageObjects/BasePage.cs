@@ -27,7 +27,8 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _btnChoosePanel = By.XPath("//a[@id='btnChoosepanel']");
         static readonly By _lnkAdminister = By.XPath("//a[.='Administer']");
         static readonly By _lnkPanel = By.XPath("//a[.='Panels']");
-        
+        static readonly By _btnCreateNewPanel = By.XPath("//span[.='Create new panel']");
+
         #endregion
 
         #region Elements
@@ -35,13 +36,17 @@ namespace SeleniumAdvProject.PageObjects
         {
             get { return new Label(_webDriver.FindElement(_lblRepository)); }
         }
+        public Button BtnCreateNewPanel
+        {
+            get { return new Button(_webDriver.FindElement(_btnCreateNewPanel)); }
+        }
         public Label LblCurrentRepository
         {
             get { return new Label(_webDriver.FindElement(_lblCurrentRepository)); }
         }
         public Label LblGlobalSetting
         {
-            get { return new Label(_webDriver.FindElement(_lblGlobalSetting)); }         
+            get { return new Label(_webDriver.FindElement(_lblGlobalSetting)); }
         }
         public Link LnkAddPage
         {
@@ -85,7 +90,7 @@ namespace SeleniumAdvProject.PageObjects
         {
             this._webDriver = webDriver;
         }
-        
+
         #region Navigate Methods
         public void GoToLink(string path, bool isClicked = false)
         {
@@ -116,14 +121,14 @@ namespace SeleniumAdvProject.PageObjects
             return new AddNewPage(_webDriver);
         }
         public AddNewPage OpenEditPage(string pageName)
-        {   
+        {
             GoToLink(pageName, true);
             LblGlobalSetting.MouseOver();
             LnkEditMenu.Click();
             return new AddNewPage(_webDriver);
         }
         public AddNewPanelPage OpenAddNewPanelPopup()
-        {           
+        {
             LblGlobalSetting.MouseOver();
             LnkCreatePanel.Click();
             return new AddNewPanelPage(_webDriver);
@@ -149,10 +154,17 @@ namespace SeleniumAdvProject.PageObjects
             lnkRepository.Click();
             return new MainPage(_webDriver);
         }
+
+        /// <summary>
+        /// Determines whether [is link exist] [the specified link name].
+        /// </summary>
+        /// <param name="linkName">Name of the link.</param>
+        /// <returns></returns>
         public Boolean IsLinkExist(string linkName)
         {
             return _webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", linkName))).Displayed;
         }
+
         #endregion
 
         #region Get Text Methods

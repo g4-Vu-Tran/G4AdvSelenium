@@ -16,7 +16,7 @@ namespace SeleniumAdvProject.PageObjects
 
         #region Locators
         static readonly By _lnkDelete = By.XPath("//a[@class='delete']");
-        static readonly By _divvOvelayClass = By.XPath("//div[@class='ui-dialog-overlay custom-overlay']");        
+        static readonly By _divvOvelayClass = By.XPath("//div[@class='ui-dialog-overlay custom-overlay']");
         #endregion
 
         #region Elements
@@ -42,7 +42,7 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="confirmDelete">The confirm delete.</param>
         /// <returns></returns>
         public MainPage DeletePage(string path, string confirmDelete = "Yes")
-        {           
+        {
             GoToPage(path);
             LblGlobalSetting.MouseOver();
             LnkDelete.Click();
@@ -87,6 +87,30 @@ namespace SeleniumAdvProject.PageObjects
         }
 
         /// <summary>
+        /// Opens the choose panel.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public MainPage OpenChoosePanel()
+        {
+            BtnChoosePanel.Click();
+            return this;
+        }
+
+        /// <summary>
+        /// Opens the new panel popup.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public MainPage OpenNewPanelPopup()
+        {
+            WaitForControlExists(By.XPath("//span[.='Create new panel']"), Constants.WaitTimeoutShortSeconds);
+            BtnCreateNewPanel.Click();
+            return this;
+        }
+
+
+        /// <summary>
         /// Determines whether [is setting exist].
         /// </summary>
         /// <returns></returns>
@@ -118,11 +142,11 @@ namespace SeleniumAdvProject.PageObjects
         /// <returns></returns>
         public bool IsPageDisplayAfter(string pageName1, string pageName2)
         {
-            Label pageTab = new Label(_webDriver.FindElement(By.XPath(string.Format("//div[@id='main-menu']/div/ul/li[.='{0}']/preceding-sibling::li[1]", pageName2,pageName1))));
+            Label pageTab = new Label(_webDriver.FindElement(By.XPath(string.Format("//div[@id='main-menu']/div/ul/li[.='{0}']/preceding-sibling::li[1]", pageName2, pageName1))));
             string tempPage = pageTab.Text;
-            return tempPage.Equals(pageName1);            
+            return tempPage.Equals(pageName1);
         }
-        
+
         #endregion
     }
 }
