@@ -8,6 +8,7 @@ using SeleniumAdvProject.Common;
 using SeleniumAdvProject.DataObjects;
 using OpenQA.Selenium.Support.UI;
 using SeleniumAdvProject.Ultilities.Controls;
+using System.Threading;
 
 namespace SeleniumAdvProject.PageObjects
 {
@@ -237,7 +238,8 @@ namespace SeleniumAdvProject.PageObjects
         /// Author: Tu Nguyen
         public string GetCategoryStatus()
         {
-            return _webDriver.FindElement(By.XPath("//select[@id='cbbCategoryField']")).GetAttribute("disabled");
+            IWebElement element = _webDriver.FindElement(_cbbCategory);
+            return element.GetAttribute("disabled");
         }
 
         /// <summary>

@@ -41,7 +41,7 @@ namespace SeleniumAdvProject.PageObjects
         /// Opens the add new panel popup.
         /// </summary>
         /// <returns></returns>
-        public AddNewPanelPage OpenAddNewPanelPopup()
+        public AddNewPanelPage OpenAddNewPanelPopupFromLink()
         {
             LnkAddNew.Click();
             return new AddNewPanelPage(_webDriver);
@@ -54,7 +54,7 @@ namespace SeleniumAdvProject.PageObjects
         /// <returns></returns>
         public PanelsPage AddNewPanel(Chart chart)
         {
-            OpenAddNewPanelPopup().AddChart(chart);
+            OpenAddNewPanelPopupFromLink().AddChart(chart);
             return this;
         }
 

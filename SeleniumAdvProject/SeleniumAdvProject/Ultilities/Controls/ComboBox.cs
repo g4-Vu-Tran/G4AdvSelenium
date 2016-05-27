@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace SeleniumAdvProject.Ultilities.Controls
 {
-    public class ComboBox:BaseControl
+    public class ComboBox : BaseControl
     {
         private SelectElement selectElement;
         public ComboBox() { }
-      
+
         public ComboBox(string xPath) : base(By.XPath(xPath)) { }
-        
+
         public ComboBox(By by) : base(by) { }
 
         public ComboBox(IWebElement element) : base(element) { }
-       
+
         /// <summary>
         /// get elect the control
         /// </summary>
@@ -28,7 +28,7 @@ namespace SeleniumAdvProject.Ultilities.Controls
             LoadControl();
             selectElement = new SelectElement(element);
         }
-        public bool Enabled
+        public bool isEnabled
         {
             get
             {
@@ -36,6 +36,7 @@ namespace SeleniumAdvProject.Ultilities.Controls
                 return element.Selected;
             }
         }
+
         /// <summary>
         /// Selects the by text.
         /// </summary>
@@ -43,14 +44,14 @@ namespace SeleniumAdvProject.Ultilities.Controls
         public void SelectByText(string text)
         {
             GetSelectControl();
-            if (Enabled)
-            {                
+            if (isEnabled)
+            {
                 if (text != null)
                     selectElement.SelectByText(text);
-              
+
             }
-            
-            
+
+
         }
         /// <summary>
         /// Selects the index of the by.
@@ -93,7 +94,7 @@ namespace SeleniumAdvProject.Ultilities.Controls
         /// </summary>
         /// <param name="text">The text.</param>
         public void SelectByTextFromGroup(string text)
-        {            
+        {
             IList<IWebElement> options = element.FindElements(By.TagName("option"));
             foreach (IWebElement option in options)
             {

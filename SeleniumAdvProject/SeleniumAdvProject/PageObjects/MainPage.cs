@@ -64,6 +64,20 @@ namespace SeleniumAdvProject.PageObjects
         }
 
         /// <summary>
+        /// Opens the new panel popup.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public MainPage OpenNewPanelPopUp()
+        {
+            BtnChoosePanel.Click();
+            BtnCreateNewPanel.Click();
+            return this;
+        }
+
+           
+
+        /// <summary>
         /// Gets the position page.
         /// </summary>
         /// <param name="pageName">Name of the page.</param>
@@ -85,30 +99,6 @@ namespace SeleniumAdvProject.PageObjects
             LblGlobalSetting.MouseOver();
             return this;
         }
-
-        /// <summary>
-        /// Opens the choose panel.
-        /// </summary>
-        /// <returns></returns>
-        /// Author: Tu Nguyen
-        public MainPage OpenChoosePanel()
-        {
-            BtnChoosePanel.Click();
-            return this;
-        }
-
-        /// <summary>
-        /// Opens the new panel popup.
-        /// </summary>
-        /// <returns></returns>
-        /// Author: Tu Nguyen
-        public MainPage OpenNewPanelPopup()
-        {
-            WaitForControlExists(By.XPath("//span[.='Create new panel']"), Constants.WaitTimeoutShortSeconds);
-            BtnCreateNewPanel.Click();
-            return this;
-        }
-
 
         /// <summary>
         /// Determines whether [is setting exist].
