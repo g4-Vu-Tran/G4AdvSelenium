@@ -16,7 +16,7 @@ namespace SeleniumAdvProject.PageObjects
 
         #region Locators
         static readonly By _lnkDelete = By.XPath("//a[@class='delete']");
-        static readonly By _divvOvelayClass = By.XPath("//div[@class='ui-dialog-overlay custom-overlay']");        
+        static readonly By _divvOvelayClass = By.XPath("//div[@class='ui-dialog-overlay custom-overlay']");
         #endregion
 
         #region Elements
@@ -32,18 +32,32 @@ namespace SeleniumAdvProject.PageObjects
 
         #region Methods
 
+        /// <summary>
+        /// Constructor of MainPage class
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2015</date>
         public MainPage() { }
+
+        /// <summary>
+        /// Constructor of MainPage class
+        /// </summary>
+        /// <param name="webDriver">IWebDriver</param>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2015</date>
         public MainPage(IWebDriver webDriver) : base(webDriver) { }
 
         /// <summary>
-        /// Deletes the page.
+        /// Delete the page
         /// </summary>
-        /// <param name="path">The path.</param>
-        /// <param name="confirmDelete">The confirm delete.</param>
-        /// <returns></returns>
-        public MainPage DeletePage(string path, string confirmDelete = "Yes")
-        {           
-            GoToPage(path);
+        /// <param name="pathOfPage">The path to go to the current page</param>
+        /// <param name="confirmDelete">Define action Delete: click on Yes or No button, or not click on the button </param>
+        /// <returns>Main Page</returns>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2015</date>
+        public MainPage DeletePage(string pathOfPage, string confirmDelete = "Yes")
+        {
+            GoToPage(pathOfPage);
             LblGlobalSetting.MouseOver();
             LnkDelete.Click();
             ConfirmDialog(confirmDelete);
@@ -87,16 +101,23 @@ namespace SeleniumAdvProject.PageObjects
         }
 
         /// <summary>
-        /// Determines whether [is setting exist].
+        /// Verify Global Setting icon is exist
         /// </summary>
-        /// <returns></returns>
+        /// <returns>True/False</returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public Boolean IsSettingExist()
         {
-            bool _isExist = false;
-            _isExist = LblGlobalSetting.Exists;
-            return _isExist;
+            return LblGlobalSetting.Exists;
         }
 
+        /// <summary>
+        /// Verify Page is exist
+        /// </summary>
+        /// <param name="pathOfPage">The path to go to the current page</param>
+        /// <returns>True/False</returns>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2015</date>
         public Boolean IsPageExist(string pathOfPage)
         {
             bool result = false;
@@ -118,11 +139,23 @@ namespace SeleniumAdvProject.PageObjects
         /// <returns></returns>
         public bool IsPageDisplayAfter(string pageName1, string pageName2)
         {
-            Label pageTab = new Label(_webDriver.FindElement(By.XPath(string.Format("//div[@id='main-menu']/div/ul/li[.='{0}']/preceding-sibling::li[1]", pageName2,pageName1))));
+            Label pageTab = new Label(_webDriver.FindElement(By.XPath(string.Format("//div[@id='main-menu']/div/ul/li[.='{0}']/preceding-sibling::li[1]", pageName2, pageName1))));
             string tempPage = pageTab.Text;
-            return tempPage.Equals(pageName1);            
+            return tempPage.Equals(pageName1);
         }
-        
+
+        /// <summary>
+        /// Verify Main Page is displayed
+        /// </summary>
+        /// <returns>True/False</returns>
+        /// <author>Vu Tran</author>
+        /// <date>05/26/2015</date>
+        public bool Displayed()
+        {
+            bool isMainPageUrl = _webDriver.Url.EndsWith(Constants.MainPageUrl);
+            return isMainPageUrl && LblUsername.Exists;
+        }
+
         #endregion
     }
 }

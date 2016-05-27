@@ -102,7 +102,7 @@ namespace SeleniumAdvProject.TestCases
             loginPage.Login(Constants.TestRepository, Constants.UserName, Constants.Password);
 
             //VP. Verify that Dashboard Mainpage appears
-            Assert.AreEqual(Constants.UserName, mainPage.GetUserNameText(), "Main page does not appear");
+            Assert.IsTrue(mainPage.Displayed(), "Main page does not appear");
 
             //Post-Condition
             mainPage.Logout();
@@ -129,10 +129,8 @@ namespace SeleniumAdvProject.TestCases
 
             //VP Observe the current page
             //- There is no Login Repository dialog
-            String actualURL = _webDriver.Url.ToString();
-            Assert.IsFalse(actualURL.Equals(Constants.LoginPageUrl), "There is Login Repository dialog");
-
             //- The Repository menu displays name of switched repository
+            Assert.IsFalse(loginPage.Displayed(), "Login Repository dialog is displaying");
             Assert.AreEqual(Constants.TestRepository, mainPage.GetCurrentRepositoryText(), "The Repository menu displays name switched repository is not exist");
         }
 
@@ -150,11 +148,11 @@ namespace SeleniumAdvProject.TestCases
             LoginPage loginPage = new LoginPage(_webDriver).Open();
 
             //2. Login with the account has uppercase password
-            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.LowerCaseUser, Constants.UpperCasePassword);
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.UpperCasePassword);
 
             //VP. Observe the current page
             // Main page is displayed
-            Assert.AreEqual(Constants.LowerCaseUser, mainPage.GetUserNameText(), "User can login with uppercase password");
+            Assert.IsTrue(mainPage.Displayed(), "Main page is NOT displaying");
 
             //3. Logout TA Dashboard
             mainPage.Logout();
