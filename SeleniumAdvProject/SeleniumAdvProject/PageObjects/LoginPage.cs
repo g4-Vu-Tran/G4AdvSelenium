@@ -17,14 +17,14 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _btnLogin = By.XPath("//div[@class='btn-login']");
         #endregion
 
-        #region Elements     
+        #region Elements
         public ComboBox DdlRepsitory
         {
             get { return new ComboBox(_webDriver.FindElement(_ddlRepository)); }
         }
         public TextBox TxtUsername
         {
-            get { return new TextBox(_webDriver.FindElement(_txtUsername)); }             
+            get { return new TextBox(_webDriver.FindElement(_txtUsername)); }
         }
         public TextBox TxtPassword
         {
@@ -68,7 +68,7 @@ namespace SeleniumAdvProject.PageObjects
             WaitForControlExists(By.XPath("//a[.='Overview']"), 500);
             return new MainPage(_webDriver);
         }
-        
+
         /// <summary>
         /// Logins the with expected error.
         /// </summary>
@@ -94,9 +94,9 @@ namespace SeleniumAdvProject.PageObjects
         {
             DdlRepsitory.SelectByText(repository);
             BtnLogin.Click();
-            return this;        
+            return this;
         }
-       
+
         /// <summary>
         /// Gets the web driver.
         /// </summary>
@@ -106,6 +106,18 @@ namespace SeleniumAdvProject.PageObjects
             return _webDriver;
         }
         #endregion
+
+        /// <summary>
+        /// Verify Login page is displayed
+        /// </summary>
+        /// <returns>True/False</returns>
+        /// <author>Vu Tran</author>
+        /// <date>05/26/2015</date>
+        public bool Displayed()
+        {
+            Button BtnLogin = new Button(_webDriver, _btnLogin);
+            return BtnLogin.Displayed;
+        }
 
     }
 }

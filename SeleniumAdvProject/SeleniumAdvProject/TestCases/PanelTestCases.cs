@@ -14,6 +14,11 @@ namespace SeleniumAdvProject.TestCases
     public class PanelTestCase : BaseTestCase
     {
 
+        /// <summary>
+        /// Verify that when "Choose panels" form is expanded all pre-set panels are populated and sorted correctly
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         //[TestMethod]
         public void DA_PANEL_TC027()
         {
@@ -53,6 +58,11 @@ namespace SeleniumAdvProject.TestCases
             //mainPage.Logout();
         }
 
+        /// <summary>
+        /// Verify that when "Add New Panel" form is on focused all other control/form is disabled or locked
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_PANEL_TC028()
         {
@@ -76,6 +86,12 @@ namespace SeleniumAdvProject.TestCases
             //VP All control/form are disabled or locked when Add New Panel dialog is opening            
             Assert.AreEqual(mainPage.DivOvelayClass.Exists, true, "Controls are disabled");
         }
+
+        /// <summary>
+        /// Verify that user is unable to create new panel when (*) required field is not filled
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_PANEL_TC029()
         {
@@ -99,6 +115,12 @@ namespace SeleniumAdvProject.TestCases
             //VP Warning message: "Display Name is required field" show up
             Assert.AreEqual("Display Name is a required field.", mainPage.GetDialogText(), "Failed! Actual message: {0}", mainPage.GetDialogText());
         }
+
+        /// <summary>
+        /// Verify that no special character except '@' character is allowed to be inputted into "Display Name" field
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_PANEL_TC030()
         {

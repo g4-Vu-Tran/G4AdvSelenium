@@ -35,11 +35,25 @@ namespace SeleniumAdvProject.Ultilities
         /// <param name="by">By element (By.ID or By.xPath)</param>
         public BaseControl(By by)
         {
-            this.by = by;           
+            this.by = by;
             action = new Actions(_webDriver);
             mouse = ((IHasInputDevices)_webDriver).Mouse;
         }
 
+        /// <summary>
+        /// Constructor of BaseControl class
+        /// </summary>
+        /// <param name="webDriver">IWebDriver</param>
+        /// <param name="by">By element</param>
+        /// <author>Vu Tran</author>
+        /// <date>05/26/2015</date>
+        public BaseControl(IWebDriver webDriver, By by)
+        {
+            this.by = by;
+            this._webDriver = webDriver;
+            action = new Actions(_webDriver);
+            mouse = ((IHasInputDevices)_webDriver).Mouse;
+        }
 
         /// <summary>
         /// Create new selenium control with xPath
@@ -183,7 +197,7 @@ namespace SeleniumAdvProject.Ultilities
         }
 
         /// <summary>
-        /// Mouses the over.
+        /// Move mouse over the control
         /// </summary>
         public void MouseOver()
         {
@@ -289,8 +303,8 @@ namespace SeleniumAdvProject.Ultilities
                     element.SendKeys(text);
                 }
             }
-            
-            
+
+
         }
 
         /// <summary>
