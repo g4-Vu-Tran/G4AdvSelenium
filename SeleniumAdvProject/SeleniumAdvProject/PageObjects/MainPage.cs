@@ -16,7 +16,7 @@ namespace SeleniumAdvProject.PageObjects
 
         #region Locators
         static readonly By _lnkDelete = By.XPath("//a[@class='delete']");
-        static readonly By _divvOvelayClass = By.XPath("//div[@class='ui-dialog-overlay custom-overlay']");
+        static readonly By _divvOvelayClass = By.XPath("//div[@class='ui-dialog-overlay custom-overlay']");        
         #endregion
 
         #region Elements
@@ -56,7 +56,7 @@ namespace SeleniumAdvProject.PageObjects
         /// <author>Vu Tran</author>
         /// <date>05/25/2015</date>
         public MainPage DeletePage(string pathOfPage, string confirmDelete = "Yes")
-        {
+        {           
             GoToPage(pathOfPage);
             LblGlobalSetting.MouseOver();
             LnkDelete.Click();
@@ -76,6 +76,20 @@ namespace SeleniumAdvProject.PageObjects
             OpenAddNewPanelPopup().AddChart(chart);
             return this;
         }
+
+        /// <summary>
+        /// Opens the new panel popup.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public MainPage OpenNewPanelPopUp()
+        {
+            BtnChoosePanel.Click();
+            BtnCreateNewPanel.Click();
+            return this;
+        }
+
+           
 
         /// <summary>
         /// Gets the position page.
@@ -141,9 +155,9 @@ namespace SeleniumAdvProject.PageObjects
         {
             Label pageTab = new Label(_webDriver.FindElement(By.XPath(string.Format("//div[@id='main-menu']/div/ul/li[.='{0}']/preceding-sibling::li[1]", pageName2, pageName1))));
             string tempPage = pageTab.Text;
-            return tempPage.Equals(pageName1);
+            return tempPage.Equals(pageName1);            
         }
-
+        
         /// <summary>
         /// Verify Main Page is displayed
         /// </summary>
