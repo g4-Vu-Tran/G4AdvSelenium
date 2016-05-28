@@ -140,7 +140,7 @@ namespace SeleniumAdvProject.TestCases
         [TestMethod]
         public void DA_PANEL_TC031()
         {
-            Console.WriteLine("DA_PANEL_TC031 - Verify that \"Category", "Series\" and \"Caption\" field are enabled and disabled correctly corresponding to each type of the \"Chart Type\"");
+            Console.WriteLine("DA_PANEL_TC031 - Verify that \"Category\", \"Series\" and \"Caption\" field are enabled and disabled correctly corresponding to each type of the \"Chart Type\"");
 
             //1 Navigate to Dashboard login page
             //2 Select a specific repository 
@@ -159,72 +159,88 @@ namespace SeleniumAdvProject.TestCases
 
             //8. Click 'Choose Panels' button below 'main_hung' button        
             //9. Click 'Create new panel' button
-            mainPage.OpenNewPanelPopUp();
-           
+            mainPage.OpenNewPanelPopUp(page.PageName);
+
             //10. Click 'Chart Type' drop-down menu
             //11. Select 'Pie' Chart Type
-            AddNewPanelPage addPanelPopup = new AddNewPanelPage();
-            
+            AddNewPanelPage addPanelPopup = new AddNewPanelPage(_webDriver);
+            addPanelPopup.SelectChartType("Pie");
+
             //VP: Check that 'Category' and 'Caption' are disabled, 'Series' is enabled
             string actualCategoryStatus = addPanelPopup.GetCategoryStatus();
-            //string actualSeriesStatus = addPanelPopup.GetSeriesStatus();
-            //string actualCategoryCaption = addPanelPopup.GetCategoryCaptionStatus();
+            string actualCategoryCaptionStatus = addPanelPopup.GetCategoryCaptionStatus();
+            string actualSeriesStatus = addPanelPopup.GetSeriesStatus();
+            string actualSeriesCaptionStatus = addPanelPopup.GetSeriesCaptionStatus();
 
-            //Assert.AreEqual("disabled", actualCategoryStatus, "Category combobox is disabled");
-            //Assert.AreEqual("disabled", actualCategoryCaption, "Category Caption textbox is disabled");
-            //Assert.AreEqual("disabled", actualSeriesStatus, "Series combobox is enabled");
+            Assert.AreEqual("disabled", actualCategoryStatus, "Category combobox is " + actualCategoryStatus);
+            Assert.AreEqual("disabled", actualCategoryCaptionStatus, "Category Caption textbox is " + actualCategoryCaptionStatus);
+            Assert.AreEqual("enabled", actualSeriesStatus, "Series combobox is " + actualSeriesStatus);
+            Assert.AreEqual("disabled", actualSeriesCaptionStatus, "Series Caption textbox is " + actualSeriesCaptionStatus);
 
             //12. Click 'Chart Type' drop-down menu
             //13. Select 'Single Bar' Chart Type
-            //addPanelPopup.CbbCategory.SelectByText("Single Bar");
+            addPanelPopup.SelectChartType("Single Bar");
 
-            ////VP: Check that 'Category' is disabled, 'Series' and 'Caption' are enabled
-            //bool actualCategoryStatus1 = addPanelPopup.CbbCategory.Enabled;
-            //bool actualSeriesStatus1 = addPanelPopup.CbbSeries.Enabled;
-            //bool actualCategoryCaption1 = addPanelPopup.TxtCategoryCaption.Enabled;
+            //VP: Check that 'Category' is disabled, 'Series' and 'Caption' are enabled
+            string actualCategoryStatus1 = addPanelPopup.GetCategoryStatus();
+            string actualCategoryCaptionStatus1 = addPanelPopup.GetCategoryCaptionStatus();
+            string actualSeriesStatus1 = addPanelPopup.GetSeriesStatus();
+            string actualSeriesCaptionStatus1 = addPanelPopup.GetSeriesCaptionStatus();
 
-            //Assert.AreEqual(false, actualCategoryStatus1, "Category combobox is disabled");
-            //Assert.AreEqual(true, actualCategoryCaption1, "Category Caption textbox is enabled");
-            //Assert.AreEqual(true, actualSeriesStatus1, "Series combobox is enabled");
+            Assert.AreEqual("disabled", actualCategoryStatus1, "Category combobox is " + actualCategoryStatus1);
+            Assert.AreEqual("enabled", actualCategoryCaptionStatus1, "Category Caption textbox is " + actualCategoryCaptionStatus1);
+            Assert.AreEqual("enabled", actualSeriesStatus1, "Series combobox is " + actualSeriesStatus1);
+            Assert.AreEqual("enabled", actualSeriesCaptionStatus1, "Series Caption textbox is " + actualSeriesCaptionStatus1);
 
-            ////14. Click 'Chart Type' drop-down menu
-            ////15. Select 'Stacked Bar' Chart Type
-            //addPanelPopup.CbbCategory.SelectByText("Stacked Bar");
+            //14. Click 'Chart Type' drop-down menu
+            //15. Select 'Stacked Bar' Chart Type
+            addPanelPopup.SelectChartType("Stacked Bar");
 
-            ////VP: Check that 'Category' ,'Series' and 'Caption' are enabled
-            //bool actualCategoryStatus2 = addPanelPopup.CbbCategory.Enabled;
-            //bool actualSeriesStatus2 = addPanelPopup.CbbSeries.Enabled;
-            //bool actualCategoryCaption2 = addPanelPopup.TxtCategoryCaption.Enabled;
+            //VP: Check that 'Category' ,'Series' and 'Caption' are enabled
+            string actualCategoryStatus2 = addPanelPopup.GetCategoryStatus();
+            string actualCategoryCaptionStatus2 = addPanelPopup.GetCategoryCaptionStatus();
+            string actualSeriesStatus2 = addPanelPopup.GetSeriesStatus();
+            string actualSeriesCaptionStatus2 = addPanelPopup.GetSeriesCaptionStatus();
 
-            //Assert.AreEqual(true, actualCategoryStatus2, "Category combobox is enabled");
-            //Assert.AreEqual(true, actualCategoryCaption2, "Category Caption textbox is enabled");
-            //Assert.AreEqual(true, actualSeriesStatus2, "Series combobox is enabled");
+            Assert.AreEqual("enabled", actualCategoryStatus2, "Category combobox is " + actualCategoryStatus2);
+            Assert.AreEqual("enabled", actualCategoryCaptionStatus2, "Category Caption textbox is " + actualCategoryCaptionStatus2);
+            Assert.AreEqual("enabled", actualSeriesStatus2, "Series combobox is " + actualSeriesStatus2);
+            Assert.AreEqual("enabled", actualSeriesCaptionStatus2, "Series Caption textbox is " + actualSeriesCaptionStatus2);
 
-            ////16. Click 'Chart Type' drop-down menu
-            ////17. Select 'Group Bar' Chart Type
-            //addPanelPopup.CbbCategory.SelectByText("Group Bar");
+            //16. Click 'Chart Type' drop-down menu
+            //17. Select 'Group Bar' Chart Type
+            addPanelPopup.SelectChartType("Group Bar");
 
-            ////VP: Check that 'Category' ,'Series' and 'Caption' are enabled
-            //bool actualCategoryStatus3 = addPanelPopup.CbbCategory.Enabled;
-            //bool actualSeriesStatus3 = addPanelPopup.CbbSeries.Enabled;
-            //bool actualCategoryCaption3 = addPanelPopup.TxtCategoryCaption.Enabled;
+            //VP: Check that 'Category' ,'Series' and 'Caption' are enabled
+            string actualCategoryStatus3 = addPanelPopup.GetCategoryStatus();
+            string actualCategoryCaptionStatus3 = addPanelPopup.GetCategoryCaptionStatus();
+            string actualSeriesStatus3 = addPanelPopup.GetSeriesStatus();
+            string actualSeriesCaptionStatus3 = addPanelPopup.GetSeriesCaptionStatus();
 
-            //Assert.AreEqual(true, actualCategoryStatus3, "Category combobox is enabled");
-            //Assert.AreEqual(true, actualCategoryCaption3, "Category Caption textbox is enabled");
-            //Assert.AreEqual(true, actualSeriesStatus3, "Series combobox is enabled");
+            Assert.AreEqual("enabled", actualCategoryStatus3, "Category combobox is " + actualCategoryStatus3);
+            Assert.AreEqual("enabled", actualCategoryCaptionStatus3, "Category Caption textbox is " + actualCategoryCaptionStatus3);
+            Assert.AreEqual("enabled", actualSeriesStatus3, "Series combobox is " + actualSeriesStatus3);
+            Assert.AreEqual("enabled", actualSeriesCaptionStatus3, "Series Caption textbox is " + actualSeriesCaptionStatus3);
 
-            ////18. Click 'Chart Type' drop-down menu
-            ////19. Select 'Line' Chart Type
-            //addPanelPopup.CbbCategory.SelectByText("Line");
+            //18. Click 'Chart Type' drop-down menu
+            //19. Select 'Line' Chart Type
+            addPanelPopup.SelectChartType("Line");
 
-            ////VP: Check that 'Category' ,'Series' and 'Caption' are enabled
-            //bool actualCategoryStatus4 = addPanelPopup.CbbCategory.Enabled;
-            //bool actualSeriesStatus4 = addPanelPopup.CbbSeries.Enabled;
-            //bool actualCategoryCaption4 = addPanelPopup.TxtCategoryCaption.Enabled;
+            //VP: Check that 'Category' ,'Series' and 'Caption' are enabled
+            string actualCategoryStatus4 = addPanelPopup.GetCategoryStatus();
+            string actualCategoryCaptionStatus4 = addPanelPopup.GetCategoryCaptionStatus();
+            string actualSeriesStatus4 = addPanelPopup.GetSeriesStatus();
+            string actualSeriesCaptionStatus4 = addPanelPopup.GetSeriesCaptionStatus();
 
-            //Assert.AreEqual(true, actualCategoryStatus4, "Category combobox is enabled");
-            //Assert.AreEqual(true, actualCategoryCaption4, "Category Caption textbox is enabled");
-            //Assert.AreEqual(true, actualSeriesStatus4, "Series combobox is enabled");
+            Assert.AreEqual("enabled", actualCategoryStatus4, "Category combobox is " + actualCategoryStatus4);
+            Assert.AreEqual("enabled", actualCategoryCaptionStatus4, "Category Caption textbox is " + actualCategoryCaptionStatus4);
+            Assert.AreEqual("enabled", actualSeriesStatus4, "Series combobox is " + actualSeriesStatus4);
+            Assert.AreEqual("enabled", actualSeriesCaptionStatus4, "Series Caption textbox is " + actualSeriesCaptionStatus4);
+            
+            //Post-Condition
+            addPanelPopup.CloseWindow();
+            //mainPage.DeletePage(page.PageName);
+            //mainPage.Logout();
         }
         //[TestMethod]
         public void DA_PANEL_TC042()

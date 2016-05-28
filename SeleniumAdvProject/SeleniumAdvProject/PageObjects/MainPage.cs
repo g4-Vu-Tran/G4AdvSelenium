@@ -68,9 +68,11 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <returns></returns>
         /// Author: Tu Nguyen
-        public MainPage OpenNewPanelPopUp()
+        public MainPage OpenNewPanelPopUp(string page)
         {
+            GoToPage(page);
             BtnChoosePanel.Click();
+            WaitForControlExists(By.XPath("//span[.='Create new panel']"), Constants.WaitTimeoutShortSeconds);
             BtnCreateNewPanel.Click();
             return this;
         }
