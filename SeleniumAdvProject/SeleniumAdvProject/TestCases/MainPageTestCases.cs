@@ -146,6 +146,11 @@ namespace SeleniumAdvProject.TestCases
 
         }
 
+        /// <summary>
+        /// Verify that non "Public" pages can only be accessed and visible to their creators with condition that all parent pages above it are "Public"
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC015()
         {
@@ -188,6 +193,11 @@ namespace SeleniumAdvProject.TestCases
             mainPage.Logout();
         }
 
+        /// <summary>
+        /// Verify that user is able to edit the "Public" setting of any page successfully
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC016()
         {
@@ -245,6 +255,12 @@ namespace SeleniumAdvProject.TestCases
             mainPage.DeletePage(page2.PageName);
             mainPage.Logout();
         }
+
+        /// <summary>
+        /// Verify that user can remove any main parent page except "Overview" page successfully and the order of pages stays persistent as long as there is not children page under it
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC017()
         {
@@ -315,6 +331,11 @@ namespace SeleniumAdvProject.TestCases
             // Assert.IsTrue(!mainPage.IsLinkExist("Delete"));
         }
 
+        /// <summary>
+        /// Verify that user is able to add additional sibbling pages to the parent page successfully
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC018()
         {
@@ -358,6 +379,11 @@ namespace SeleniumAdvProject.TestCases
             mainPage.Logout();
         }
 
+        /// <summary>
+        /// Verify that user is able to add additional sibbling page levels to the parent page successfully
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC019()
         {
@@ -385,6 +411,11 @@ namespace SeleniumAdvProject.TestCases
             mainPage.DeletePage("Overview/" + page.PageName);
         }
 
+        /// <summary>
+        /// Verify that user is able to delete sibbling page as long as that page has not children page under it
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC020()
         {
@@ -431,6 +462,11 @@ namespace SeleniumAdvProject.TestCases
             mainPage.DeletePage("Overview/" + page1.PageName);
         }
 
+        /// <summary>
+        /// Verify that user is able to edit the name of the page (Parent/Sibbling) successfully
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC021()
         {
@@ -477,6 +513,11 @@ namespace SeleniumAdvProject.TestCases
             mainPage.DeletePage("Overview/" + page1.PageName);
         }
 
+        /// <summary>
+        /// Verify that user is unable to duplicate the name of sibbling page under the same parent page
+        /// </summary>
+        /// <author>Tu Nguyen</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC022()
         {
@@ -521,6 +562,11 @@ namespace SeleniumAdvProject.TestCases
 
         }
 
+        /// <summary>
+        /// Verify that user is able to edit the parent page of the sibbling page successfully
+        /// </summary>
+        /// <author>Tu Nguyen</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC023()
         {
@@ -560,6 +606,11 @@ namespace SeleniumAdvProject.TestCases
 
         }
 
+        /// <summary>
+        /// Verify that "Bread Crums" navigation is correct
+        /// </summary>
+        /// <author>Tu Nguyen</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC024()
         {
@@ -605,6 +656,11 @@ namespace SeleniumAdvProject.TestCases
 
         }
 
+        /// <summary>
+        /// Verify that page listing is correct when user edit "Display After" field of a specific page
+        /// </summary>
+        /// <author>Tu Nguyen</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC025()
         {
@@ -645,6 +701,11 @@ namespace SeleniumAdvProject.TestCases
 
         }
 
+        /// <summary>
+        /// Verify that page column is correct when user edit "Number of Columns" field of a specific page
+        /// </summary>
+        /// <author>Tu Nguyen</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC026()
         {
