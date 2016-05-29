@@ -87,7 +87,11 @@
     <Compile Include="TestCases\PanelTestCases.cs" />
     <Compile Include="TestCases\LoginTestCases.cs" />
     <Compile Include="TestCases\MainPageTestCases.cs" />
+    <Compile Include="Ultilities\Browser.cs" />
+    <Compile Include="Ultilities\Controls\Td.cs" />
+    <Compile Include="Ultilities\Controls\Tr.cs" />
     <Compile Include="Ultilities\Controls\Div.cs" />
+    <Compile Include="Ultilities\Controls\Table.cs" />
     <Compile Include="Ultilities\Controls\RadioButton.cs" />
     <Compile Include="Ultilities\Controls\Button.cs" />
     <Compile Include="Ultilities\Controls\Checkbox.cs" />
