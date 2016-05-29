@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SeleniumAdvProject.DataObjects
 {
-    public class Chart:Panel
+    public class Chart : Panel
     {
         private string _chartTitle;
         private string _chartType;
@@ -23,13 +23,13 @@ namespace SeleniumAdvProject.DataObjects
         /// <summary>
         /// Initializes a new instance of the <see cref="Chart"/> class.
         /// </summary>
-        public Chart() 
+        public Chart()
         {
             this._style = "2D";
-            this._height =400;
+            this._height = 400;
             //this._dataLabel = new string[] {"None"}; 
             this._showTitle = false;
-            this._dataLabel = new string[]{};
+            this._dataLabel = new string[] { };
         }
 
         /// <summary>
@@ -51,8 +51,9 @@ namespace SeleniumAdvProject.DataObjects
         /// Initializes a new instance of the <see cref="Chart"/> class.
         /// </summary>
         /// <param name="chart">The chart.</param>
-        public Chart(Chart chart):base(chart._dataProfile,chart._displayName,chart._pageName, chart._height,chart._folder) 
-        {             
+        public Chart(Chart chart)
+            : base(chart._dataProfile, chart._displayName, chart._pageName, chart._height, chart._folder)
+        {
             this._chartTitle = chart.ChartTitle;
             this._chartType = chart.ChartType;
             this._category = chart.Category;
@@ -84,8 +85,9 @@ namespace SeleniumAdvProject.DataObjects
         /// <param name="style">The style.</param>
         /// <param name="showTitle">if set to <c>true</c> [show title].</param>
         public Chart(string dataProfile, string displayName, string pageName, int height, string folder, string chartTitle,
-            string chartType, string category, string categoryCaption, string series,string seriesCaption, string legend,
-            string[] dataLabel, string style, bool showTitle):base(dataProfile,displayName,pageName,height,folder)
+            string chartType, string category, string categoryCaption, string series, string seriesCaption, string legend,
+            string[] dataLabel, string style, bool showTitle)
+            : base(dataProfile, displayName, pageName, height, folder)
         {
             this._chartTitle = chartTitle;
             this._chartType = chartType;
@@ -139,16 +141,16 @@ namespace SeleniumAdvProject.DataObjects
             get { return _dataLabel; }
             set { _dataLabel = value; }
         }
-         public string Style
+        public string Style
         {
             get { return _style; }
             set { _style = value; }
         }
-         public bool ShowTitle
+        public bool ShowTitle
         {
             get { return _showTitle; }
             set { _showTitle = value; }
         }
-               
+
     }
 }

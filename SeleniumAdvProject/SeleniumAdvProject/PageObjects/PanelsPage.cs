@@ -58,6 +58,14 @@ namespace SeleniumAdvProject.PageObjects
             return this;
         }
 
+        public PanelsPage AddPanelFromAddNewLink(string from, Chart chart)
+        {
+            LnkAddNew.Click();
+            AddNewPanelPage addNewPanelPage = new AddNewPanelPage();
+            addNewPanelPage.AddChart(chart);
+            return this;
+        }
+
         #endregion
     }
 }

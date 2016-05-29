@@ -148,7 +148,7 @@ namespace SeleniumAdvProject.TestCases
             LoginPage loginPage = new LoginPage(_webDriver).Open();
 
             //2. Login with the account has uppercase password
-            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.UpperCasePassword);
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.LowerCaseUser, Constants.UpperCasePassword);
 
             //VP. Observe the current page
             // Main page is displayed
@@ -183,7 +183,7 @@ namespace SeleniumAdvProject.TestCases
 
             //VP. Observe the current page
             // Main page is displayed
-            Assert.AreEqual(Constants.UpperCaseUserName, mainPage.GetUserNameText(), "User can login with uppercase username");
+            Assert.IsTrue(mainPage.Displayed(), "User login unsuccessfully with uppercase username");
 
             //3. Logout TA Dashboard
             mainPage.Logout();
@@ -191,7 +191,7 @@ namespace SeleniumAdvProject.TestCases
             //4. Login with the above account but enter lowercase username
             //VP. Main page is displayed
             loginPage.Login(Constants.Repository, Constants.LowerCaseUser, Constants.Password);
-            Assert.IsTrue(mainPage.IsPageExist("Overview"), "Main page displays with lowercase username");
+            Assert.IsTrue(mainPage.Displayed(), "User login unsuccessfully with uppercase username");
         }
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace SeleniumAdvProject.TestCases
             //2. Login with account that has special characters password
             //VP. Main page is displayed
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName1, Constants.SpecialPassword);
-            Assert.AreEqual(Constants.UserName, mainPage.GetUserNameText(), "User can login with special character password");
+            Assert.IsTrue(mainPage.Displayed(), "User login unsuccessfully with special characters password");
 
             //Post-Condition
             mainPage.Logout();
@@ -229,10 +229,10 @@ namespace SeleniumAdvProject.TestCases
             //1. Navigate to Dashboard login page
             LoginPage loginPage = new LoginPage(_webDriver).Open();
 
-            //2. Login with account that has special characters password
+            //2. Login with account that has special characters username
             //VP. Main page is displayed
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.SpecialUserName, Constants.Password);
-            Assert.AreEqual(Constants.SpecialUserName, mainPage.GetUserNameText(), "Username with special character works correctly");
+            Assert.IsTrue(mainPage.Displayed(), "User login unsuccessfully with special characters username");
 
             //Post-Condition
             mainPage.Logout();
@@ -258,7 +258,7 @@ namespace SeleniumAdvProject.TestCases
             //    There is a message "Please enter username"
             string actualMsg = loginPage.GetDialogText();
             string expectMsg = "Please enter username";
-            Assert.AreEqual(expectMsg, actualMsg, "There is a bug here. Missing ! behind the text");
+            Assert.AreEqual(expectMsg, actualMsg, string.Format("Message incorrect {0}", actualMsg));
         }
     }
 }

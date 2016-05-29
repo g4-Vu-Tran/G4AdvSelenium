@@ -56,28 +56,29 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <param name="page">The page.</param>
         /// <returns></returns>
-        public MainPage AddPage(Page page)
-        {         
+        public MainPage AddPage(string pathOfPage, Page page)
+        {
             TxtPageName.SendKeys(page.PageName);
-            CbbParentPage.SelectByText(page.ParentPage);
+            CbbParentPage.SelectByText(ConvertParentPage(pathOfPage));
             Thread.Sleep(500);
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
             CbbDisplayAfter.SelectByText(page.DisplayAfter);
-            if(page.IsPublic)
+            if (page.IsPublic)
                 ChkPublic.Check();
             else
-                ChkPublic.Uncheck();            
-            BtnOk.Click();            
-            WaitForControlExists(By.XPath(string.Format("//a[.='{0}']",page.PageName)),Constants.WaitTimeoutShortSeconds);
+                ChkPublic.Uncheck();
+            BtnOk.Click();
+            WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", CommonAction.EncodeSpace(page.PageName))));
             return new MainPage(_webDriver);
         }
+
         /// <summary>
         /// Edits the page.
         /// </summary>
         /// <param name="page">The page.</param>
         /// <returns></returns>
         public MainPage EditPage(Page page)
-        {            
+        {
             TxtPageName.SendKeys(page.PageName);
             CbbParentPage.SelectByText(CommonAction.EncodeSpace(page.ParentPage));
             Thread.Sleep(500);
@@ -100,6 +101,18 @@ namespace SeleniumAdvProject.PageObjects
         {
             BtnCancel.Click();
             return new MainPage(_webDriver);
+        }
+
+        public string ConvertParentPage(string pathOfPage)
+        {
+            string fourSpaces = "\u00a0\u00a0\u00a0\u00a0";
+            string[] arrNode = pathOfPage.Split('/');
+            for (int i = 1; i < arrNode.Length; i++)
+            {
+                arrNode[arrNode.Length - 1] = fourSpaces + arrNode[arrNode.Length - 1];
+            }
+            return arrNode[arrNode.Length - 1];
+
         }
         #endregion
 

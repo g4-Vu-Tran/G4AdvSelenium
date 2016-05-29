@@ -53,19 +53,21 @@ namespace SeleniumAdvProject.PageObjects
         }
 
         /// <summary>
-        /// Logins the specified repository.
+        /// Log in to the TA dashboard
         /// </summary>
-        /// <param name="repository">The repository.</param>
-        /// <param name="username">The username.</param>
-        /// <param name="password">The password.</param>
-        /// <returns></returns>
+        /// <param name="repository">The repository name</param>
+        /// <param name="username">The username</param>
+        /// <param name="password">The password</param>
+        /// <returns>The MainPage object</returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/26/2015</date>
         public MainPage Login(string repository, string username, string password)
         {
             DdlRepsitory.SelectByText(repository);
             TxtUsername.SendKeys(username);
             TxtPassword.SendKeys(password);
             BtnLogin.Click();
-            WaitForControlExists(By.XPath("//a[.='Overview']"), 500);
+            WaitForControlExists(_lblUsername, 500);
             return new MainPage(_webDriver);
         }
 
@@ -116,7 +118,7 @@ namespace SeleniumAdvProject.PageObjects
         public bool Displayed()
         {
             Button BtnLogin = new Button(_webDriver, _btnLogin);
-            return BtnLogin.Displayed;
+            return BtnLogin.isDisplayed();
         }
 
     }

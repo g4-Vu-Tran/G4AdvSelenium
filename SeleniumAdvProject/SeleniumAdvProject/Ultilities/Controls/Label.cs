@@ -13,5 +13,6 @@ namespace SeleniumAdvProject.Ultilities.Controls
         public Label(string xPath) : base(By.XPath(xPath)) { }
         public Label(IWebElement element) : base(element) { }
         public Label(By by) : base(by) { }
+        public Label(IWebDriver webDriver, By by) : base(webDriver, by) { }
     }
 }

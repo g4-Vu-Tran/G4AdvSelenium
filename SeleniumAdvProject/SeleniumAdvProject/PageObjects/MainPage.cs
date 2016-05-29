@@ -16,7 +16,7 @@ namespace SeleniumAdvProject.PageObjects
 
         #region Locators
         static readonly By _lnkDelete = By.XPath("//a[@class='delete']");
-        static readonly By _divvOvelayClass = By.XPath("//div[@class='ui-dialog-overlay custom-overlay']");        
+        static readonly By _divvOvelayClass = By.XPath("//div[@class='ui-dialog-overlay custom-overlay']");
         #endregion
 
         #region Elements
@@ -56,12 +56,19 @@ namespace SeleniumAdvProject.PageObjects
         /// <author>Vu Tran</author>
         /// <date>05/25/2015</date>
         public MainPage DeletePage(string pathOfPage, string confirmDelete = "Yes")
-        {           
-            GoToPage(pathOfPage);
-            LblGlobalSetting.MouseOver();
-            LnkDelete.Click();
+        {
+            ClickDeleteLink(pathOfPage);
             ConfirmDialog(confirmDelete);
             WaitForPageLoadComplete();
+            return this;
+        }
+
+        public MainPage ClickDeleteLink(string pathOfPage)
+        {
+            GoToPage(pathOfPage);
+            LblGlobalSetting.MouseOver();
+            LnkDelete.MouseOver();
+            LnkDelete.Click();
             return this;
         }
 
@@ -89,7 +96,7 @@ namespace SeleniumAdvProject.PageObjects
             return this;
         }
 
-           
+
 
         /// <summary>
         /// Gets the position page.
@@ -122,7 +129,7 @@ namespace SeleniumAdvProject.PageObjects
         /// <date>05/25/2015</date>
         public Boolean IsSettingExist()
         {
-            return LblGlobalSetting.Exists;
+            return LblGlobalSetting.isDisplayed();
         }
 
         /// <summary>
@@ -134,15 +141,16 @@ namespace SeleniumAdvProject.PageObjects
         /// <date>05/25/2015</date>
         public Boolean IsPageExist(string pathOfPage)
         {
-            bool result = false;
             string[] arrNode = pathOfPage.Split('/');
+            string finalNode = arrNode[arrNode.Length - 1];
+            GoToLink(pathOfPage.Substring(0, pathOfPage.Length - finalNode.Length - 1));
             string xpathOfPage = string.Format("//a[.='{0}']", CommonAction.EncodeSpace(arrNode[0]));
             for (int i = 1; i < arrNode.Length; i++)
             {
                 xpathOfPage += string.Format("/..//a[.='{0}']", CommonAction.EncodeSpace(arrNode[i]));
             }
-            result = _webDriver.FindElement(By.XPath(xpathOfPage)).Displayed;
-            return result;
+            Link LnkPage = new Link(_webDriver, By.XPath(xpathOfPage));
+            return LnkPage.isDisplayed();
         }
 
         /// <summary>
@@ -155,9 +163,9 @@ namespace SeleniumAdvProject.PageObjects
         {
             Label pageTab = new Label(_webDriver.FindElement(By.XPath(string.Format("//div[@id='main-menu']/div/ul/li[.='{0}']/preceding-sibling::li[1]", pageName2, pageName1))));
             string tempPage = pageTab.Text;
-            return tempPage.Equals(pageName1);            
+            return tempPage.Equals(pageName1);
         }
-        
+
         /// <summary>
         /// Verify Main Page is displayed
         /// </summary>
@@ -166,8 +174,29 @@ namespace SeleniumAdvProject.PageObjects
         /// <date>05/26/2015</date>
         public bool Displayed()
         {
-            bool isMainPageUrl = _webDriver.Url.EndsWith(Constants.MainPageUrl);
-            return isMainPageUrl && LblUsername.Exists;
+            Label LblUsername = new Label(_webDriver, _lblUsername);
+            return LblUsername.isDisplayed();
+        }
+
+        /// <summary>
+        /// Add the new page
+        /// </summary>
+        /// <param name="page">The page object</param>
+        /// <returns>The MainPage object</returns>
+        /// <author>Vu Tran</author>
+        /// <date>05/26/2015</date>
+        public MainPage AddPage(Page page)
+        {
+            AddNewPage addNewPage = this.OpenAddNewPage();
+            addNewPage.AddPage(page.ParentPage, page);
+            return this;
+        }
+
+        public MainPage EditPage(Page page)
+        {
+            AddNewPage editPage = new AddNewPage(_webDriver);
+            editPage.AddPage(page.ParentPage, page);
+            return this;
         }
 
         #endregion

@@ -23,6 +23,7 @@ namespace SeleniumAdvProject.Ultilities
 
         public string XPath { get; set; }
         public By by { get; set; }
+        public bool Displayed { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseControl"/> class.
@@ -102,7 +103,7 @@ namespace SeleniumAdvProject.Ultilities
         /// Waits for control exists.
         /// </summary>
         /// <param name="timeoutInSeconds">The timeout in seconds.</param>
-        public void WaitForControlExists(int timeoutInSeconds)
+        public void WaitForControlExists(int timeoutInSeconds = Constants.WaitTimeoutShortSeconds)
         {
             try
             {
@@ -142,10 +143,10 @@ namespace SeleniumAdvProject.Ultilities
         /// </summary>
         public void LoadControl()
         {
-            if (this.by != null)
+            if (by != null)
             {
-                WaitForControlExists(Constants.WaitTimeoutShortSeconds);
-                element = _webDriver.FindElement(this.by);
+                WaitForControlExists();
+                element = _webDriver.FindElement(by);
             }
 
         }
@@ -220,21 +221,8 @@ namespace SeleniumAdvProject.Ultilities
         /// <summary>
         /// Gets the value indicating whether or not this element is displayed
         /// </summary>
-        public bool Displayed
-        {
-            get
-            {
-                if (Exists)
-                {
-                    LoadControl();
-                    return element.Displayed;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
+        
+
         /// <summary>
         /// Gets the value indicating whether or not this element is enabled
         /// </summary>
@@ -409,32 +397,38 @@ namespace SeleniumAdvProject.Ultilities
         /// <value>
         ///   <c>true</c> if exists; otherwise, <c>false</c>.
         /// </value>
-        public bool Exists
+        public bool isExists()
         {
-            get
+            try
             {
-                try
+                if (by != null)
                 {
-                    if (by != null)
-                    {
-                        _webDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(10));
-                        int count = _webDriver.FindElements(by).Count;
-                        return count > 0 ? true : false;
-                    }
-                    return element != null ? true : false;
+                    _webDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(10));
+                    int count = _webDriver.FindElements(by).Count;
+                    return count > 0 ? true : false;
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(String.Format("The {0} control doesn't exist in {1} with {2}", by, _webDriver.Title, ex.Message));
-                    return false;
-                }
-                finally
-                {
-                    _webDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(Constants.WaitTimeoutShortSeconds));
-                }
+                return false;
+            }
+            catch (NoSuchElementException ex)
+            {
+                Console.WriteLine(String.Format("The {0} control doesn't exist in {1} with {2}", by, _webDriver.Title, ex.Message));
+                return false;
+            }
+            finally
+            {
+                _webDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(Constants.WaitTimeoutShortSeconds));
             }
         }
 
+        public bool isDisplayed()
+        {
+            if (isExists())
+            {
+                LoadControl();
+                return element.Displayed;
+            }
+            return false;
+        }
         #endregion
 
         #region ISearchContext Members

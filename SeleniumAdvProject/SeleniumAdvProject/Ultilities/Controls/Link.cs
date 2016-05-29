@@ -13,5 +13,6 @@ namespace SeleniumAdvProject.Ultilities.Controls
         public Link(string xPath) : base(By.XPath(xPath)) { }
         public Link(IWebElement element) : base(element) { }
         public Link(By by) : base(by) { }
+        public Link(IWebDriver webDriver, By by) : base(webDriver, by) { }
     }
 }

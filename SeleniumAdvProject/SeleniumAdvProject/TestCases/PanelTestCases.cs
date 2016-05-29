@@ -33,7 +33,7 @@ namespace SeleniumAdvProject.TestCases
             //4 Enter page name to Page Name field.
             //5 Click OK button
             Page page1 = new Page(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
-            mainPage.OpenAddNewPage().AddPage(page1);
+            mainPage.AddPage(page1);
 
             //6 Go to Global Setting -> Create Panel     
             //7 Enter display name into Display Name textbox
@@ -84,7 +84,7 @@ namespace SeleniumAdvProject.TestCases
             panelPage.OpenAddNewPanelPopupFromLink();
 
             //VP All control/form are disabled or locked when Add New Panel dialog is opening            
-            Assert.AreEqual(mainPage.DivOvelayClass.Exists, true, "Controls are disabled");
+            Assert.AreEqual(mainPage.DivOvelayClass.isExists(), true, "Controls are disabled");
         }
 
         /// <summary>
@@ -177,16 +177,16 @@ namespace SeleniumAdvProject.TestCases
             //7. Click 'OK' button
             string pageName = CommonAction.GenrateRandomString(Constants.lenghtRandomString);
             Page page = new Page(pageName, "Select parent", 2, "Overview", false);
-            mainPage.OpenAddNewPage().AddPage(page);
+            mainPage.AddPage(page);
 
             //8. Click 'Choose Panels' button below 'main_hung' button        
             //9. Click 'Create new panel' button
             mainPage.OpenNewPanelPopUp();
-           
+
             //10. Click 'Chart Type' drop-down menu
             //11. Select 'Pie' Chart Type
             AddNewPanelPage addPanelPopup = new AddNewPanelPage();
-            
+
             //VP: Check that 'Category' and 'Caption' are disabled, 'Series' is enabled
             string actualCategoryStatus = addPanelPopup.GetCategoryStatus();
             //string actualSeriesStatus = addPanelPopup.GetSeriesStatus();
@@ -248,6 +248,41 @@ namespace SeleniumAdvProject.TestCases
             //Assert.AreEqual(true, actualCategoryCaption4, "Category Caption textbox is enabled");
             //Assert.AreEqual(true, actualSeriesStatus4, "Series combobox is enabled");
         }
+
+        /// <summary>
+        /// Verify that user is not allowed to create panel with duplicated "Display Name"  			
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/30/2015</date>
+        [TestMethod]
+        public void DA_PANEL_TC032()
+        {
+            Console.WriteLine("DA_PANEL_TC031 - Verify that user is not allowed to create panel with duplicated \"Display Name\"");
+
+            //Set variables
+            Chart chart = new Chart(CommonAction.GeneratePanelName(), "Name", null);
+
+            //1. Navigate to Dashboard login page
+            //2. Login with valid account
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Click on Administer/Panels link
+            PanelsPage panelPage = mainPage.OpenPanelsPage();
+
+            //4. Click on Add new link
+            //5. Enter display name to "Display name" field.
+            //6. Click on OK button
+            panelPage.AddNewPanel(chart);
+
+            //7. Click on Add new link again.
+            //8. Enter display name same with previous display name to "display name" field. 
+            //9. Click on OK button
+            //VP. Warning message: "Dupicated panel already exists. Please enter a different name" show up
+
+
+            
+        }
         //[TestMethod]
         public void DA_PANEL_TC042()
         {
@@ -272,9 +307,9 @@ namespace SeleniumAdvProject.TestCases
             Page page1 = new Page("main_hung1", "Select parent", 2, "Overview", false);
             Page page2 = new Page("main_hung2", "Select parent", 2, "Overview", false);
             Page page3 = new Page("main_hung3", "Select parent", 2, "Overview", false);
-            mainPage.OpenAddNewPage().AddPage(page1);
-            mainPage.OpenAddNewPage().AddPage(page2);
-            mainPage.OpenAddNewPage().AddPage(page3);
+            mainPage.AddPage(page1);
+            mainPage.AddPage(page2);
+            mainPage.AddPage(page3);
 
             //14 Click 'Choose panels' button
             //15 Click on any Chart panel instance
