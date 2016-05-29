@@ -19,7 +19,7 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _lblRepository = By.XPath("//a[@href='#Repository']");
         static readonly By _lblCurrentRepository = By.XPath("//a[@href='#Repository']/span");
         static readonly By _lnkLogout = By.XPath("//a[@href='logout.do']");
-        static readonly By _lblGlobalSetting = By.XPath("//li[@class='mn-setting']/a");
+        static readonly By _lblGlobalSetting = By.XPath("//div[@id='main-menu']//li[@class='mn-setting']/a");
         static readonly By _lnkAddPage = By.XPath("//a[@class='add' and .='Add Page']");
         static readonly By _lnkEditMenu = By.XPath("//a[@class='edit' and .='Edit']");
         static readonly By _lnkCreateProfile = By.XPath("//a[@class='add' and .='Create Profile']");
@@ -27,7 +27,8 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _btnChoosePanel = By.XPath("//a[@id='btnChoosepanel']");
         static readonly By _lnkAdminister = By.XPath("//a[.='Administer']");
         static readonly By _lnkPanel = By.XPath("//a[.='Panels']");
-        
+        static readonly By _btnCreateNewPanel = By.XPath("//span[.='Create new panel']");
+
         #endregion
 
         #region Elements
@@ -35,13 +36,17 @@ namespace SeleniumAdvProject.PageObjects
         {
             get { return new Label(_webDriver.FindElement(_lblRepository)); }
         }
+        public Button BtnCreateNewPanel
+        {
+            get { return new Button(_webDriver.FindElement(_btnCreateNewPanel)); }
+        }
         public Label LblCurrentRepository
         {
             get { return new Label(_webDriver.FindElement(_lblCurrentRepository)); }
         }
         public Label LblGlobalSetting
         {
-            get { return new Label(_webDriver.FindElement(_lblGlobalSetting)); }         
+            get { return new Label(_webDriver.FindElement(_lblGlobalSetting)); }
         }
         public Link LnkAddPage
         {
@@ -85,31 +90,27 @@ namespace SeleniumAdvProject.PageObjects
         {
             this._webDriver = webDriver;
         }
-        
-        #region Navigate Methods
-        public void ClickMenuItem(string path, bool isClicked = true)
-        {
-            path = path + "/";
-            string node;
-            Link LnkName = new Link();
-            while (path.IndexOf("/") != -1)
-            {
-                node = path.Substring(0, path.IndexOf("/"));
-                path = path.Substring(node.Length + 1, path.Length - node.Length - 1);
 
-                LnkName = new Link(_webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", node))));
+        #region Navigate Methods
+        public void GoToLink(string path, bool isClicked = false)
+        {
+
+            string[] arrNode = path.Split('/');
+            Link LnkName = new Link();
+            foreach (string node in arrNode)
+            {
+                LnkName = new Link(_webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", CommonAction.EncodeSpace(node)))));
                 LnkName.MouseOver();
             }
-
             if (isClicked)
             {
                 LnkName.Click();
             }
         }
 
-        public MainPage GoToPage(string path, bool isClicked = true)
+        public MainPage GoToPage(string path)
         {
-            ClickMenuItem(path);
+            GoToLink(path, true);
             return new MainPage(_webDriver);
         }
 
@@ -120,14 +121,14 @@ namespace SeleniumAdvProject.PageObjects
             return new AddNewPage(_webDriver);
         }
         public AddNewPage OpenEditPage(string pageName)
-        {   
-            ClickMenuItem(pageName);
+        {
+            GoToLink(pageName, true);
             LblGlobalSetting.MouseOver();
             LnkEditMenu.Click();
             return new AddNewPage(_webDriver);
         }
         public AddNewPanelPage OpenAddNewPanelPopup()
-        {           
+        {
             LblGlobalSetting.MouseOver();
             LnkCreatePanel.Click();
             return new AddNewPanelPage(_webDriver);
@@ -138,7 +139,7 @@ namespace SeleniumAdvProject.PageObjects
             LnkPanel.Click();
             return new PanelsPage(_webDriver);
         }
-        
+
         public LoginPage Logout()
         {
             LblUsername.MouseOver();
@@ -153,10 +154,17 @@ namespace SeleniumAdvProject.PageObjects
             lnkRepository.Click();
             return new MainPage(_webDriver);
         }
+
+        /// <summary>
+        /// Determines whether [is link exist] [the specified link name].
+        /// </summary>
+        /// <param name="linkName">Name of the link.</param>
+        /// <returns></returns>
         public Boolean IsLinkExist(string linkName)
         {
             return _webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", linkName))).Displayed;
         }
+
         #endregion
 
         #region Get Text Methods

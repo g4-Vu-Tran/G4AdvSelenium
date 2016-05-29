@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SeleniumAdvProject.Ultilities.Controls
 {
-    public class ComboBox:BaseControl
+    public class ComboBox : BaseControl
     {
         private SelectElement selectElement;
         public ComboBox() { }
@@ -65,6 +65,12 @@ namespace SeleniumAdvProject.Ultilities.Controls
             return selectElement.SelectedOption.Text;
         }
                
+        /// <summary>
+        /// Gets the option strings.
+        /// </summary>
+        /// <value>
+        /// The option strings.
+        /// </value>
         public IList<string> OptionStrings
         {
             get
@@ -75,6 +81,10 @@ namespace SeleniumAdvProject.Ultilities.Controls
             }
         }
 
+        /// <summary>
+        /// Selects the by text from group.
+        /// </summary>
+        /// <param name="text">The text.</param>
         public void SelectByTextFromGroup(string text)
         {            
             IList<IWebElement> options = element.FindElements(By.TagName("option"));
@@ -88,6 +98,11 @@ namespace SeleniumAdvProject.Ultilities.Controls
             }
         }
 
+        /// <summary>
+        /// Gets the index of the text by.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
         public string GetTextByIndex(int index)
         {
             IList<string> text = OptionStrings;

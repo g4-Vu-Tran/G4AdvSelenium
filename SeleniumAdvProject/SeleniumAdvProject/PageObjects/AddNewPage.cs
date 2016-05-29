@@ -20,7 +20,7 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _cbbParentPage = By.XPath("//select [@id='parent']");
         static readonly By _cbbNumberOfColumns = By.XPath("//select[@id='columnnumber']");
         static readonly By _cbbDisplayAfter = By.XPath("//select[@id='afterpage']");
-        static readonly By _chkPublic = By.XPath("//input[@id='ispublic']");        
+        static readonly By _chkPublic = By.XPath("//input[@id='ispublic']");
         #endregion
 
         #region Elements
@@ -67,7 +67,7 @@ namespace SeleniumAdvProject.PageObjects
                 ChkPublic.Check();
             else
                 ChkPublic.Uncheck();            
-             BtnOk.Click();            
+            BtnOk.Click();            
             WaitForControlExists(By.XPath(string.Format("//a[.='{0}']",page.PageName)),Constants.WaitTimeoutShortSeconds);
             return new MainPage(_webDriver);
         }
@@ -79,7 +79,7 @@ namespace SeleniumAdvProject.PageObjects
         public MainPage EditPage(Page page)
         {            
             TxtPageName.SendKeys(page.PageName);
-            CbbParentPage.SelectByText(page.ParentPage);
+            CbbParentPage.SelectByText(CommonAction.EncodeSpace(page.ParentPage));
             Thread.Sleep(500);
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
             CbbDisplayAfter.SelectByText(page.DisplayAfter);

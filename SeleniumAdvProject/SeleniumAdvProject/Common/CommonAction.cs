@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace SeleniumAdvProject.Common
 {
-    public static class ActionCommon
+    public static class CommonAction
     {
         /// <summary>
         /// Genrates the random string.
@@ -23,6 +23,11 @@ namespace SeleniumAdvProject.Common
         public static string RandomDay(int day)
         {
             return DateTime.Now.AddDays(day).ToString("M/dd/yyy");
+        }
+
+        public static string EncodeSpace(string original)
+        {
+            return original.Replace(' ', '\u00a0');
         }
     }
 }

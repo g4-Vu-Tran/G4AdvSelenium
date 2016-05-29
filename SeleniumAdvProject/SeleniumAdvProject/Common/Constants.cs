@@ -20,7 +20,7 @@ namespace SeleniumAdvProject.Common
         public const string LowerCaseUser = "admin";
 
         //URL
-        public const string LoginPageUrl = "http://192.168.1.180/TADashboard/login.jsp";
+        public const string LoginPageUrl = "http://localhost:54000/TADashboard/login.jsp";
         //public const string LoginPageUrl = "http://groupba.dyndns.org:54000/TADashboard/login.jsp";
         public const string MainPageUrl = "/TADashboard/2f9njff6y9.page";                
        

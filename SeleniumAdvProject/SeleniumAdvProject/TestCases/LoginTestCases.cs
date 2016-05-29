@@ -2,10 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SeleniumAdvProject.PageObjects;
 using SeleniumAdvProject.Common;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.Remote;
-using System.Text.RegularExpressions;
 
 namespace SeleniumAdvProject.TestCases
 {
@@ -13,99 +9,117 @@ namespace SeleniumAdvProject.TestCases
     public class LoginTestCases : BaseTestCase
     {
 
+        /// <summary>
+        /// Verify that user can login specific repository successfully via Dashboard login page with correct credentials
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_LOGIN_TC001()
         {
-
             Console.WriteLine("DA_LOGIN_TC001 - Verify that user can login specific repository successfully via Dashboard login page with correct credentials");
 
             //1. Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
 
             //2. Enter valid username and password	
             //3. Click on "Login" button
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
             //VP. Verify that Dashboard Mainpage appears
-            Assert.AreEqual(Constants.UserName, mainPage.GetUserNameText(),"Login is not successfully");
+            Assert.AreEqual(Constants.UserName, mainPage.GetUserNameText(), "Login is not successfully");
 
             //Post-Condition
-            //Logout			
-            //Close Dashboard	
             mainPage.Logout();
         }
 
+        /// <summary>
+        /// Verify that user fails to login specific repository successfully via Dashboard login page with incorrect credentials
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_LOGIN_TC002()
         {
             Console.WriteLine("DA_LOGIN_TC002 - Verify that user fails to login specific repository successfully via Dashboard login page with incorrect credentials");
+
             //1. Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
 
             //2. Enter invalid username and password
             //3. Click on "Login" button
-            string actualMessage = loginPage.LoginWithExpectedError(Constants.Repository, "abc", "abc");
+            string actualMsg = loginPage.LoginWithExpectedError(Constants.Repository, "abc", "abc");
 
-            //4. Verify that Dashboard Error message "Username or password is invalid" appears            
-            Assert.AreEqual("Username or password is invalid", actualMessage,string.Format("Message incorrect {0}",actualMessage));
+            //4. Verify that Dashboard Error message "Username or password is invalid" appears
+            string expectedMsg = "Username or password is invalid";
+            Assert.AreEqual(expectedMsg, actualMsg, string.Format("Message incorrect {0}", actualMsg));
         }
 
+        /// <summary>
+        /// Verify that user fails to log in specific repository successfully via Dashboard login page with correct username and incorrect password
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_LOGIN_TC003()
         {
             Console.WriteLine("DA_LOGIN_TC003 - Verify that user fails to log in specific repository successfully via Dashboard login page with correct username and incorrect password");
+
             //1 Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+
             //2 Enter valid username and invalid password (administrator / abc)
             //3 Click on "Login" button
-            string a = loginPage.LoginWithExpectedError(Constants.Repository, Constants.UserName, "abc");
+            string actualMsg = loginPage.LoginWithExpectedError(Constants.Repository, Constants.UserName, "abc");
 
             //4 Verify that Dashboard Error message "Username or password is invalid" appears
-            string actualMessage = loginPage.GetDialogText();
-            Assert.AreEqual("Username or password is invalid", actualMessage, string.Format("Message incorrect {0}", actualMessage));
-
+            string expectedMsg = "Username or password is invalid";
+            Assert.AreEqual(expectedMsg, actualMsg, string.Format("Message incorrect {0}", actualMsg));
         }
 
+        /// <summary>
+        /// Verify that user is able to log in different repositories successfully after logging out current repository
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_LOGIN_TC004()
         {
             Console.WriteLine("DA_LOGIN_TC004 - Verify that user is able to log in different repositories successfully after logging out current repository");
 
-            //1 Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
+            //1. Navigate to Dashboard login page
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
 
-            //2 Enter valid username and password of default repository (administrator / <blank>)
-            //3 Click on "Login" button
+            //2. Enter valid username and password of default repository (administrator / <blank>)
+            //3. Click on "Login" button
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
-            //4 Click on "Logout" button
+            //4. Click on "Logout" button
             mainPage.Logout();
 
-            //5 Select a different repository (TestRepository)
-            //6 Enter valid username and password of this repository (administrator / <blank>)
+            //5. Select a different repository (TestRepository)
+            //6. Enter valid username and password of this repository (administrator / <blank>)
             loginPage.Login(Constants.TestRepository, Constants.UserName, Constants.Password);
 
-            //VP Verify that Dashboard Mainpage appears
-            Assert.AreEqual(Constants.UserName, mainPage.GetUserNameText(), "Main page does not appear");
+            //VP. Verify that Dashboard Mainpage appears
+            Assert.IsTrue(mainPage.Displayed(), "Main page does not appear");
 
             //Post-Condition
-            //Logout			
-            //Close Dashboard	
             mainPage.Logout();
         }
 
+        /// <summary>
+        /// Verify that there is no Login dialog when switching between 2 repositories with the same account
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_LOGIN_TC005()
         {
             Console.WriteLine("DA_LOGIN_TC005 - Verify that there is no Login dialog when switching between 2 repositories with the same account");
 
             //1. Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
 
             //2. Login with valid account for the first repository
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
@@ -115,126 +129,136 @@ namespace SeleniumAdvProject.TestCases
 
             //VP Observe the current page
             //- There is no Login Repository dialog
-            String actualURL = _webDriver.Url.ToString();
-            Assert.IsFalse(actualURL.Equals(Constants.LoginPageUrl));
-
             //- The Repository menu displays name of switched repository
-            Assert.AreEqual(Constants.TestRepository, mainPage.GetCurrentRepositoryText());
+            Assert.IsFalse(loginPage.Displayed(), "Login Repository dialog is displaying");
+            Assert.AreEqual(Constants.TestRepository, mainPage.GetCurrentRepositoryText(), "The Repository menu displays name switched repository is not exist");
         }
 
+        /// <summary>
+        /// Verify that "Password" input is case sensitive
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_LOGIN_TC006()
         {
             Console.WriteLine("DA_LOGIN_TC006 - Verify that \"Password\" input is case sensitive");
 
             //1. Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
 
             //2. Login with the account has uppercase password
-            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.LowerCaseUser, Constants.UpperCasePassword);
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.UpperCasePassword);
 
             //VP. Observe the current page
             // Main page is displayed
-
-            Assert.AreEqual(Constants.LowerCaseUser, mainPage.GetUserNameText(), "User can login with uppercase password");
+            Assert.IsTrue(mainPage.Displayed(), "Main page is NOT displaying");
 
             //3. Logout TA Dashboard
             mainPage.Logout();
 
             //4. Login with the above account but enter lowercase password
-            loginPage.Login(Constants.Repository, "test", "test");
+            string actualMsg = loginPage.LoginWithExpectedError(Constants.Repository, "test", "test");
 
             //VP. Dashboard Error message "Username or password is invalid" appears
-            string actualMessage = loginPage.GetDialogText();
-            Assert.AreEqual("Username or password is invalid", actualMessage, string.Format("Message incorrect {0}", actualMessage)); 
+            string expectedMsg = "Username or password is invalid";
+            Assert.AreEqual(expectedMsg, actualMsg, string.Format("Message incorrect {0}", actualMsg));
         }
 
+        /// <summary>
+        /// Verify that "Username" input is not case sensitive
+        /// </summary>
+        /// <author>Tu Nguyen</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_LOGIN_TC007()
         {
             Console.WriteLine("DA_LOGIN_TC007 - Verify that \"Username\" input is not case sensitive");
 
             //1. Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
 
             //2. Login with the account has uppercase username
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UpperCaseUserName, Constants.Password);
 
             //VP. Observe the current page
             // Main page is displayed
-
             Assert.AreEqual(Constants.UpperCaseUserName, mainPage.GetUserNameText(), "User can login with uppercase username");
 
             //3. Logout TA Dashboard
             mainPage.Logout();
 
             //4. Login with the above account but enter lowercase username
-            loginPage.Login(Constants.Repository, Constants.LowerCaseUser, Constants.Password);
-
             //VP. Main page is displayed
-            bool actualDisplays = mainPage.IsLinkExist("Overview");
-            Assert.AreEqual(true, actualDisplays, "Main page displays with lowercase username");
+            loginPage.Login(Constants.Repository, Constants.LowerCaseUser, Constants.Password);
+            Assert.IsTrue(mainPage.IsPageExist("Overview"), "Main page displays with lowercase username");
         }
 
+        /// <summary>
+        /// Verify that password with special characters is working correctly
+        /// </summary>
+        /// <author>Tu Nguyen</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_LOGIN_TC008()
         {
             Console.WriteLine("DA_LOGIN_TC008 - Verify that password with special characters is working correctly");
 
             //1. Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
 
             //2. Login with account that has special characters password
-            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName1, Constants.SpecialPassword);
-
             //VP. Main page is displayed
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName1, Constants.SpecialPassword);
             Assert.AreEqual(Constants.UserName, mainPage.GetUserNameText(), "User can login with special character password");
 
             //Post-Condition
-            //Logout			
-            //Close Dashboard	
             mainPage.Logout();
         }
 
+        /// <summary>
+        /// Verify that username with special characters is working correctly
+        /// </summary>
+        /// <author>Tu Nguyen</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_LOGIN_TC009()
         {
             Console.WriteLine("DA_LOGIN_TC009 - Verify that username with special characters is working correctly");
 
             //1. Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
 
             //2. Login with account that has special characters password
-            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.SpecialUserName, Constants.Password);
-
             //VP. Main page is displayed
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.SpecialUserName, Constants.Password);
             Assert.AreEqual(Constants.SpecialUserName, mainPage.GetUserNameText(), "Username with special character works correctly");
 
             //Post-Condition
-            //Logout			
-            //Close Dashboard	
             mainPage.Logout();
         }
-        
+
+        /// <summary>
+        /// Verify that the page works correctly for the case when no input entered to Password and Username field
+        /// </summary>
+        /// <author>Tu Nguyen</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_LOGIN_TC010()
         {
             Console.WriteLine("DA_LOGIN_TC010 - Verify that the page works correctly for the case when no input entered to Password and Username field");
 
             //1 Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
 
             //2. Click Login button without entering data into Username and Password field
             loginPage.LoginWithOutAccount(Constants.Repository);
-            string actualMessage = loginPage.GetDialogText();
-            string expectMessage = "Please enter username";
-            Assert.AreEqual(expectMessage, actualMessage, "There is a bug here. Missing ! behind the text");
 
+            //VP. Observe the current page
+            //    There is a message "Please enter username"
+            string actualMsg = loginPage.GetDialogText();
+            string expectMsg = "Please enter username";
+            Assert.AreEqual(expectMsg, actualMsg, "There is a bug here. Missing ! behind the text");
         }
     }
 }

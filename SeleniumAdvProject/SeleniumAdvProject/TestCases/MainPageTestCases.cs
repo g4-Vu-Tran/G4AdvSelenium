@@ -4,38 +4,23 @@ using SeleniumAdvProject.PageObjects;
 using SeleniumAdvProject.Common;
 using SeleniumAdvProject.DataObjects;
 using System.Threading;
+using OpenQA.Selenium;
 
 namespace SeleniumAdvProject.TestCases
 {
     [TestClass]
     public class MainPageTestCases : BaseTestCase
     {
+
+        /// <summary>
+        /// Verify that user is unable open more than 1 "New Page" dialog
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC011()
         {
             Console.WriteLine("DA_MP_TC011 - Verify that user is unable open more than 1 \"New Page\" dialog");
-
-            //1 Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
-
-            //2. Login with valid account
-            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
-
-            //3. Go to Global Setting -> Add page  
-            //4. Try to go to Global Setting -> Add page again
-            mainPage.OpenSetting();
-
-            //VP. User cannot go to Global Setting -> Add page while "New Page" dialog appears
-            bool actualResult = mainPage.IsSettingExist();
-            Assert.AreEqual(false, actualResult, "User cannot go to Global Setting while \"New Page\" dialog appears");
-
-        }
-
-        [TestMethod]
-        public void DA_MP_TC012()
-        {
-            Console.WriteLine("DA_MP_TC012 - Verify that user is able to add additional pages besides \"Overview\" page successfully");
 
             //1 Navigate to Dashboard login page
             LoginPage loginPage = new LoginPage(_webDriver).Open();
@@ -43,46 +28,80 @@ namespace SeleniumAdvProject.TestCases
             //2. Login with valid account
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
-            //3. Go to Global Setting -> Add page
-            //4 Enter Page Name field
-            //5 Click OK button
-            //6 Check "Test" page is displayed besides "Overview" page
-            Page page = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
-            mainPage.OpenAddNewPage().AddPage(page);
-            bool actualResult = mainPage.GetPositionPage(page.PageName) < mainPage.GetPositionPage("Overview") ? true : false;
-            Assert.AreEqual(true, actualResult);
+            //3. Go to Global Setting -> Add page  
+            //4. Try to go to Global Setting -> Add page again
+            //VP. User cannot go to Global Setting -> Add page while "New Page" dialog appears
+            mainPage.OpenSetting();
+            Assert.IsFalse(mainPage.IsSettingExist(), "User cannot go to Global Setting while \"New Page\" dialog appears");
 
+        }
+
+        /// <summary>
+        /// Verify that user is able to add additional pages besides "Overview" page successfully
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
+        [TestMethod]
+        public void DA_MP_TC012()
+        {
+            Console.WriteLine("DA_MP_TC012 - Verify that user is able to add additional pages besides \"Overview\" page successfully");
+
+            //Set variables
+            string pageName = CommonAction.GenrateRandomString(Constants.lenghtRandomString);
+
+            //1. Navigate to Dashboard login page
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+
+            //2. Login with valid account
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Go to Global Setting -> Add page
+            //4. Enter Page Name field
+            //5. Click OK button
+            Page page = new Page(pageName, "Select parent", 2, "Overview", false);
+            mainPage.OpenAddNewPage().AddPage(page);
+
+            //VP. Check "Test" page is displayed besides "Overview" page
+            bool actualResult = mainPage.GetPositionPage(page.PageName) < mainPage.GetPositionPage("Overview") ? true : false;
+            Assert.IsTrue(actualResult, "\"Test\" page is not displayed besides \"Overview\" page");
+
+            //Post condition
             mainPage.DeletePage(page.PageName);
             mainPage.Logout();
         }
 
+        /// <summary>
+        /// Verify that the newly added main parent page is positioned at the location specified 
+        /// as set with "Displayed After" field of "New Page" form on the main page bar"Parent Page" dropped down menu
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC013()
         {
-            Console.WriteLine("DA_MP_TC013 - Verify that the newly added main parent page is positioned at the location specified as set with \"Displayed After\" field of \"New Page\" form on the main page bar/\"Parent Page\" dropped down menu");
+            Console.WriteLine("DA_MP_TC013 - Verify that the newly added main parent page is positioned at the location specified as set with \"Displayed After\" field of \"New Page\" form on the main page bar \"Parent Page\" dropped down menu");
 
-            //1 Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
-
+            //1. Navigate to Dashboard login page
             //2. Log in specific repository with valid account
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
-            //3 Go to Global Setting -> Add page            
-            //4 Enter Page Name field
-            //5 Click OK button
-            //6 Go to Global Setting -> Add page
-            //7 Enter Page Name field
-            //8 Click on  Displayed After dropdown list
-            //9 Select specific page
-            //10 Click OK button
-            Page page = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
-            Page page1 = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, page.PageName, false);
+            //3. Go to Global Setting -> Add page            
+            //4. Enter Page Name field
+            //5. Click OK button
+            Page page = new Page(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
             mainPage.OpenAddNewPage().AddPage(page);
+
+            //6. Go to Global Setting -> Add page
+            //7. Enter Page Name field
+            //8. Click on  Displayed After dropdown list
+            //9. Select specific page
+            //10. Click OK button
+            Page page1 = new Page(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, page.PageName, false);
             mainPage.OpenAddNewPage().AddPage(page1);
 
-            //VP Check "Another Test" page is positioned besides the "Test" page                       
-            Assert.AreEqual(true, mainPage.IsPageDisplayAfter(page1.PageName, page.PageName), "The {0} page is not beside the {1} page", page1.PageName, page.PageName);
+            //VP. Check "Another Test" page is positioned besides the "Test" page                       
+            Assert.IsTrue(mainPage.IsPageDisplayAfter(page1.PageName, page.PageName), "The {0} page is not beside the {1} page", page1.PageName, page.PageName);
 
             //Post-Condition
             mainPage.DeletePage(page.PageName);
@@ -91,41 +110,47 @@ namespace SeleniumAdvProject.TestCases
 
         }
 
+        /// <summary>
+        /// Verify that "Public" pages can be visible and accessed by all users of working repository
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC014()
         {
             Console.WriteLine("DA_MP_TC014 - Verify that \"Public\" pages can be visible and accessed by all users of working repository");
 
-            //1 Navigate to Dashboard login page
-            //2 Log in specific repository with valid account         
-
-            //1 Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
+            //1. Navigate to Dashboard login page
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
 
             //2. Log in specific repository with valid account
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
-            //3 Go to Global Setting -> Add page
-            //4 Enter Page Name field
-            //5 Check Public checkbox
-            //6 Click OK button 
-            //7 Click on Log out link   
-            Page page = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", true);
+            //3. Go to Global Setting -> Add page
+            //4. Enter Page Name field
+            //5. Check Public checkbox
+            //6. Click OK button 
+            //7. Click on Log out link   
+            Page page = new Page(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", true);
             mainPage.OpenAddNewPage().AddPage(page);
             loginPage = mainPage.Logout();
 
-            //8 Log in with another valid account           
+            //8. Log in with another valid account  
+            //VP. Check newly added page is visibled
             mainPage = loginPage.Login(Constants.Repository, Constants.UserName1, Constants.SpecialPassword);
+            Assert.IsTrue(!mainPage.IsPageExist(page.PageName), string.Format("{0} is not visibled", page.PageName));
 
-            //VP Check newly added page is visibled
-            Assert.AreEqual(true, mainPage.IsLinkExist(page.PageName));
-
+            //Post-Condition
             mainPage.DeletePage(page.PageName);
             mainPage.Logout();
 
         }
 
+        /// <summary>
+        /// Verify that non "Public" pages can only be accessed and visible to their creators with condition that all parent pages above it are "Public"
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC015()
         {
@@ -160,7 +185,7 @@ namespace SeleniumAdvProject.TestCases
             mainPage = loginPage.Login(Constants.Repository, "test", "admin");
 
             //VP Check children is invisibled
-            Assert.IsTrue(!mainPage.IsLinkExist(childPage.PageName));
+            Assert.IsTrue(!mainPage.IsPageExist(childPage.PageName));
 
             //Post-Condition
             mainPage.DeletePage(parentPage.PageName + "/" + childPage.PageName);
@@ -168,6 +193,11 @@ namespace SeleniumAdvProject.TestCases
             mainPage.Logout();
         }
 
+        /// <summary>
+        /// Verify that user is able to edit the "Public" setting of any page successfully
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC016()
         {
@@ -183,14 +213,14 @@ namespace SeleniumAdvProject.TestCases
             //3. Go to Global Setting -> Add page
             //4 Enter Page Name
             //5 Click OK button           
-            Page page1 = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
+            Page page1 = new Page(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
             mainPage.OpenAddNewPage().AddPage(page1);
 
             //6 Go to Global Setting -> Add page
             //7 Enter Page Name
             //8 Check Public checkbox
             //9 Click OK button
-            Page page2 = new Page(ActionCommon.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", true);
+            Page page2 = new Page(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", true);
             mainPage.OpenAddNewPage().AddPage(page2);
 
             //10 Click on "Test" page
@@ -213,10 +243,10 @@ namespace SeleniumAdvProject.TestCases
             //21 Log in with another valid account
             //VP Check "Test" Page is visible and can be accessed            
             mainPage = loginPage.Login(Constants.Repository, Constants.UserName1, Constants.SpecialPassword);
-            Assert.AreEqual(true, mainPage.IsLinkExist(page1.PageName));
+            Assert.AreEqual(true, mainPage.IsPageExist(page1.PageName));
 
             //VP Check "Another Test" page is invisible
-            Assert.AreEqual(true, mainPage.IsLinkExist(page2.PageName), string.Format("{0} page is visible", page2.PageName));
+            Assert.AreEqual(true, mainPage.IsPageExist(page2.PageName), string.Format("{0} page is visible", page2.PageName));
 
             mainPage.DeletePage(page1.PageName);
             loginPage = mainPage.Logout();
@@ -225,6 +255,12 @@ namespace SeleniumAdvProject.TestCases
             mainPage.DeletePage(page2.PageName);
             mainPage.Logout();
         }
+
+        /// <summary>
+        /// Verify that user can remove any main parent page except "Overview" page successfully and the order of pages stays persistent as long as there is not children page under it
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC017()
         {
@@ -273,8 +309,7 @@ namespace SeleniumAdvProject.TestCases
             mainPage.ConfirmDialog("OK");
 
             //VP. Check children page is deleted
-            mainPage.ClickMenuItem(parentPage.PageName, false);
-            Assert.IsTrue(!mainPage.IsLinkExist(childPage.PageName));
+            Assert.IsTrue(!mainPage.IsPageExist(parentPage.PageName + "/" + childPage.PageName));
 
             //12. Click on  parent page
             //13. Click "Delete" link
@@ -287,23 +322,27 @@ namespace SeleniumAdvProject.TestCases
             mainPage.ConfirmDialog("OK");
 
             //VP. Check parent page is deleted
-            Assert.IsTrue(!mainPage.IsLinkExist(parentPage.PageName));
+            Assert.IsTrue(!mainPage.IsPageExist(parentPage.PageName));
 
             //15. Click on "Overview" page
             //VP. Check "Delete" link disappears
-            mainPage.ClickMenuItem("Overview");
+            mainPage.GoToPage("Overview");
             mainPage.LblGlobalSetting.MouseOver();
-            Assert.IsTrue(!mainPage.IsLinkExist("Delete"));
+            // Assert.IsTrue(!mainPage.IsLinkExist("Delete"));
         }
 
+        /// <summary>
+        /// Verify that user is able to add additional sibbling pages to the parent page successfully
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC018()
         {
             Console.WriteLine("DA_MP_TC018 - Verify that user is able to add additional sibbling pages to the parent page successfully");
 
             //1. Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
 
             //2. Log in specific repository with valid account
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
@@ -331,7 +370,7 @@ namespace SeleniumAdvProject.TestCases
             mainPage.OpenAddNewPage().AddPage(childPage2);
 
             //VP. Check "Test Child 2" is added successfully
-            Assert.IsTrue(mainPage.IsLinkExist(childPage2.PageName));
+            Assert.IsTrue(mainPage.IsPageExist(childPage2.PageName));
 
             //Post-Condition
             mainPage.DeletePage(parentPage.PageName + "/" + childPage1.PageName);
@@ -340,14 +379,18 @@ namespace SeleniumAdvProject.TestCases
             mainPage.Logout();
         }
 
+        /// <summary>
+        /// Verify that user is able to add additional sibbling page levels to the parent page successfully
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC019()
         {
             Console.WriteLine("DA_MP_TC019 - Verify that user is able to add additional sibbling page levels to the parent page successfully.");
 
             //1. Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
 
             //2. Login with valid account
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
@@ -355,20 +398,126 @@ namespace SeleniumAdvProject.TestCases
             //3. Go to Global Setting -> Add page
             //4. Enter info into all required fields on New Page dialog (Page name: Page 1, Parent page: Overview)
             //5. Click OK button
-            Page page = new Page("Page1", "Overview", 2, "Select page", false);
+            Page page = new Page("Page child42", "Overview", 2, "Select page", false);
             mainPage.OpenAddNewPage().AddPage(page);
 
             //VP. Observe the current page
             //    User is able to add additional sibbling page levels to parent page successfully. 
             //    In this case: Overview is parent page of page 1.
-            Assert.IsTrue(!mainPage.IsLinkExist(page.PageName));
-            mainPage.ClickMenuItem("Overview");
-            Assert.IsTrue(mainPage.IsLinkExist(page.PageName));
+            mainPage.GoToLink("Overview");
+            Assert.IsTrue(mainPage.IsPageExist("Overview/" + page.PageName));
 
             //Post-Condition
             mainPage.DeletePage("Overview/" + page.PageName);
         }
 
+        /// <summary>
+        /// Verify that user is able to delete sibbling page as long as that page has not children page under it
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2015</date>
+        [TestMethod]
+        public void DA_MP_TC020()
+        {
+            Console.WriteLine("DA_MP_TC020 - Verify that user is able to delete sibbling page as long as that page has not children page under it");
+
+            //1. Navigate to Dashboard login page
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+
+            //2. Login with valid account
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Go to Global Setting -> Add page
+            //4. Enter info into all required fields on New Page dialog (Page name: Page 1, Parent page: Overview)
+            Page page1 = new Page("Pagechild9", "Overview", 2, "Select page", false);
+            mainPage.OpenAddNewPage().AddPage(page1);
+
+            //5. Go to Global Setting -> Add page
+            //6. Enter info into all required fields on New Page dialog (Page name: Page 2, Parent page: Page 1)
+            Page page2 = new Page("Page child4", "Pagechild3", 2, "Select page", false);
+            mainPage.OpenAddNewPage().AddPage(page2);
+
+            //7. Go to the first created page
+            //8. Click Delete link
+            //9. Click Ok button on Confirmation Delete page
+            //VP. Observe the current page
+            //    There is a message "Can't delete page "page 1" since it has children page"
+            //10. Close confirmation dialog
+            mainPage.DeletePage("Overview/" + page1.PageName, "No");
+            string actualMessage = mainPage.GetDialogText();
+            Assert.AreEqual("Cannot delete page '" + page1.PageName + "' since it has child page(s).\r\n", actualMessage);
+            mainPage.ConfirmDialog("OK");
+
+            //11. Go to the second page
+            //12. Click Delete link
+            //13. Click Ok button on Confirmation Delete page
+            mainPage.DeletePage("Overview/" + page2.PageName);
+
+            //VP. Observe the current page
+            //    Page 2 is deleted successfully
+            mainPage.GoToLink("Overview/" + page1.PageName);
+            Assert.IsTrue(!mainPage.IsPageExist("Overview/" + page1.PageName + "/" + page2.PageName), page2.PageName + "is still exist!");
+
+            //Post-Condition
+            mainPage.DeletePage("Overview/" + page1.PageName);
+        }
+
+        /// <summary>
+        /// Verify that user is able to edit the name of the page (Parent/Sibbling) successfully
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2015</date>
+        [TestMethod]
+        public void DA_MP_TC021()
+        {
+            Console.WriteLine("DA_MP_TC021 - Verify that user is able to edit the name of the page (Parent/Sibbling) successfully");
+
+            //1. Navigate to Dashboard login page
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+
+            //2. Login with valid account
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Go to Global Setting -> Add page
+            //4. Enter info into all required fields on New Page dialog (Page name: Page 1, Parent page: Overview)
+            Page page1 = new Page("Pagechild100", "Overview", 2, "Select page", false);
+            mainPage.OpenAddNewPage().AddPage(page1);
+
+            //5. Go to Global Setting -> Add page
+            //6. Enter info into all required fields on New Page dialog (Page name: Page 2, Parent page: Page 1)
+            Page page2 = new Page("Page child2", "Pagechild1", 2, "Select page", false);
+            mainPage.OpenAddNewPage().AddPage(page2);
+
+            //7. Go to the first created page
+            //8. Click Edit link
+            //9. Enter another name into Page Name field (Page name: Page 3)
+            //10. Click Ok button on Edit Page dialog
+            page1.PageName = "Page child3";
+            mainPage.OpenAddNewPage().EditPage(page1);
+
+            //VP. Observe the current page (User is able to edit the name of parent page successfully)
+            Assert.IsTrue(mainPage.IsPageExist("Overview/" + page1.PageName));
+
+            //11. Go to the second created page
+            //12. Click Edit link
+            //13. Enter another name into Page Name field
+            //14. Click Ok button on Edit Page dialog
+            page2.PageName = "Page child4";
+            mainPage.OpenAddNewPage().EditPage(page2);
+
+            //VP. Observe the current page (User is able to edit the name of sibbling page successfully)
+            Assert.IsTrue(mainPage.IsPageExist("Overview/" + page1.PageName + "/" + page2.PageName));
+
+            //Post-Condition
+            mainPage.DeletePage("Overview/" + page1.PageName + "/" + page2.PageName);
+            mainPage.DeletePage("Overview/" + page1.PageName);
+        }
+
+        /// <summary>
+        /// Verify that user is unable to duplicate the name of sibbling page under the same parent page
+        /// </summary>
+        /// <author>Tu Nguyen</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC022()
         {
@@ -413,6 +562,11 @@ namespace SeleniumAdvProject.TestCases
 
         }
 
+        /// <summary>
+        /// Verify that user is able to edit the parent page of the sibbling page successfully
+        /// </summary>
+        /// <author>Tu Nguyen</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC023()
         {
@@ -443,7 +597,7 @@ namespace SeleniumAdvProject.TestCases
             mainPage.OpenEditPage(page.PageName).EditPage(pageEdit);
 
             //VP: User is able to edit the parent page of the sibbling page successfully
-            Assert.IsTrue(mainPage.IsLinkExist(pageEdit.PageName), "User can edit the parent page of sibling page");
+            Assert.IsTrue(mainPage.IsPageExist(pageEdit.PageName), "User can edit the parent page of sibling page");
 
             //Post-Condition
             mainPage.DeletePage(page.PageName + "/" + pageSibling.PageName);
@@ -452,6 +606,11 @@ namespace SeleniumAdvProject.TestCases
 
         }
 
+        /// <summary>
+        /// Verify that "Bread Crums" navigation is correct
+        /// </summary>
+        /// <author>Tu Nguyen</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC024()
         {
@@ -480,13 +639,13 @@ namespace SeleniumAdvProject.TestCases
 
             //5. Click the first breadcrums (Page1)
             //VP: The first page is navigated
-            mainPage.ClickMenuItem(page.PageName);
+            mainPage.GoToPage(page.PageName);
             string actualPage1 = mainPage.GetURL();
             Assert.AreEqual(page1URL, actualPage1, "The first page is navigated");
 
             //6. Click the second breadcrums
             //VP: The second page is navigated
-            mainPage.ClickMenuItem(pageSibling.PageName);
+            mainPage.GoToPage(pageSibling.PageName);
             string actualPage2 = mainPage.GetURL();
             Assert.AreEqual(page2URL, actualPage2, "The second page is navigated");
 
@@ -497,6 +656,11 @@ namespace SeleniumAdvProject.TestCases
 
         }
 
+        /// <summary>
+        /// Verify that page listing is correct when user edit "Display After" field of a specific page
+        /// </summary>
+        /// <author>Tu Nguyen</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC025()
         {
@@ -537,6 +701,11 @@ namespace SeleniumAdvProject.TestCases
 
         }
 
+        /// <summary>
+        /// Verify that page column is correct when user edit "Number of Columns" field of a specific page
+        /// </summary>
+        /// <author>Tu Nguyen</author>
+        /// <date>05/25/2015</date>
         [TestMethod]
         public void DA_MP_TC026()
         {
