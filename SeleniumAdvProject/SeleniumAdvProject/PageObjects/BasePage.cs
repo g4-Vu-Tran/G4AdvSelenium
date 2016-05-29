@@ -114,12 +114,25 @@ namespace SeleniumAdvProject.PageObjects
             return new MainPage(_webDriver);
         }
 
+        /// <summary>
+        /// Opens the add new page by click on Global Setting>Add Page menu
+        /// </summary>
+        /// <returns> add new page popup </returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public AddNewPage OpenAddNewPage()
         {
             LblGlobalSetting.MouseOver();
             LnkAddPage.Click();
             return new AddNewPage(_webDriver);
         }
+        /// <summary>
+        /// Opens the edit page.
+        /// </summary>
+        /// <param name="pageName">Name of the page.</param>
+        /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public AddNewPage OpenEditPage(string pageName)
         {
             GoToLink(pageName, true);
@@ -127,12 +140,24 @@ namespace SeleniumAdvProject.PageObjects
             LnkEditMenu.Click();
             return new AddNewPage(_webDriver);
         }
+        /// <summary>
+        /// Opens the add new panel popup.
+        /// </summary>
+        /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public AddNewPanelPage OpenAddNewPanelPopup()
         {
             LblGlobalSetting.MouseOver();
             LnkCreatePanel.Click();
             return new AddNewPanelPage(_webDriver);
         }
+        /// <summary>
+        /// Opens the panels page.
+        /// </summary>
+        /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public PanelsPage OpenPanelsPage()
         {
             LnkAdminister.MouseOver();
@@ -140,6 +165,12 @@ namespace SeleniumAdvProject.PageObjects
             return new PanelsPage(_webDriver);
         }
 
+        /// <summary>
+        /// Logouts this instance.
+        /// </summary>
+        /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public LoginPage Logout()
         {
             LblUsername.MouseOver();
@@ -160,6 +191,8 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <param name="linkName">Name of the link.</param>
         /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public Boolean IsLinkExist(string linkName)
         {
             return _webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", linkName))).Displayed;
@@ -192,6 +225,9 @@ namespace SeleniumAdvProject.PageObjects
         /// <summary>
         /// Waits for page load complete.
         /// </summary>
+        /// GetUserNameText
+        /// /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public void WaitForPageLoadComplete()
         {
             WebDriverWait wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(Constants.WaitTimeoutShortSeconds));
@@ -208,6 +244,8 @@ namespace SeleniumAdvProject.PageObjects
         /// Switches to new frame.
         /// </summary>
         /// <param name="element">The element.</param>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public void SwitchToNewFrame(IWebElement element)
         {
             _webDriver.SwitchTo().Frame(element);
@@ -226,6 +264,8 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="control">The control.</param>
         /// <param name="timeoutInSeconds">The timeout in seconds.</param>
         /// <exception cref="System.Exception">No element have been found.</exception>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public void WaitForControlExists(By control, int timeoutInSeconds)
         {
             try
@@ -248,6 +288,8 @@ namespace SeleniumAdvProject.PageObjects
         /// <summary>
         /// Refreshes the current page.
         /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public void RefreshCurrentPage()
         {
             _webDriver.Navigate().Refresh();
@@ -257,6 +299,8 @@ namespace SeleniumAdvProject.PageObjects
         /// Confirms the dialog.
         /// </summary>
         /// <param name="buttonName">Name of the button.</param>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public void ConfirmDialog(string buttonName)
         {
             switch (buttonName.ToUpper())
@@ -277,6 +321,8 @@ namespace SeleniumAdvProject.PageObjects
         /// Gets the dialog text.
         /// </summary>
         /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public string GetDialogText()
         {
             string dglMessage = _webDriver.SwitchTo().Alert().Text;
@@ -288,6 +334,8 @@ namespace SeleniumAdvProject.PageObjects
         /// Gets the URL.
         /// </summary>
         /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public string GetURL()
         {
             string url = _webDriver.Url;

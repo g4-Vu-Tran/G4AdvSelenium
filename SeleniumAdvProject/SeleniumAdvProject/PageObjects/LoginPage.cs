@@ -43,9 +43,10 @@ namespace SeleniumAdvProject.PageObjects
         public LoginPage(IWebDriver webDriver) : base(webDriver) { }
 
         /// <summary>
-        /// Opens this instance.
+        /// Opens Login Page
         /// </summary>
-        /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public LoginPage Open()
         {
             _webDriver.Navigate().GoToUrl(Constants.LoginPageUrl);
@@ -53,12 +54,14 @@ namespace SeleniumAdvProject.PageObjects
         }
 
         /// <summary>
-        /// Logins the specified repository.
+        /// Logins the dashboard web app.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
-        /// <returns></returns>
+        /// <returns>Main Page</returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public MainPage Login(string repository, string username, string password)
         {
             DdlRepsitory.SelectByText(repository);
@@ -70,12 +73,14 @@ namespace SeleniumAdvProject.PageObjects
         }
 
         /// <summary>
-        /// Logins the with expected error.
+        /// Logins dashboard web app with expected error.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
-        /// <returns></returns>
+        /// <returns> The error message</returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public string LoginWithExpectedError(string repository, string username, string password)
         {
             DdlRepsitory.SelectByText(repository);

@@ -23,6 +23,8 @@ namespace SeleniumAdvProject.DataObjects
         /// <summary>
         /// Initializes a new instance of the <see cref="Chart"/> class.
         /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public Chart() 
         {
             this._style = "2D";
@@ -38,6 +40,8 @@ namespace SeleniumAdvProject.DataObjects
         /// <param name="displayName">The display name.</param>
         /// <param name="series">The series.</param>
         /// <param name="pageName">Name of the page.</param>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public Chart(string displayName, string series, string pageName)
         {
             this._displayName = displayName;
@@ -51,6 +55,8 @@ namespace SeleniumAdvProject.DataObjects
         /// Initializes a new instance of the <see cref="Chart"/> class.
         /// </summary>
         /// <param name="chart">The chart.</param>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public Chart(Chart chart):base(chart._dataProfile,chart._displayName,chart._pageName, chart._height,chart._folder) 
         {             
             this._chartTitle = chart.ChartTitle;
@@ -83,6 +89,8 @@ namespace SeleniumAdvProject.DataObjects
         /// <param name="dataLabel">The data label.</param>
         /// <param name="style">The style.</param>
         /// <param name="showTitle">if set to <c>true</c> [show title].</param>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public Chart(string dataProfile, string displayName, string pageName, int height, string folder, string chartTitle,
             string chartType, string category, string categoryCaption, string series,string seriesCaption, string legend,
             string[] dataLabel, string style, bool showTitle):base(dataProfile,displayName,pageName,height,folder)

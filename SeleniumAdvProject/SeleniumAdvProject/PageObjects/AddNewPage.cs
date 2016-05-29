@@ -56,6 +56,8 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <param name="page">The page.</param>
         /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public MainPage AddPage(Page page)
         {         
             TxtPageName.SendKeys(page.PageName);
@@ -76,6 +78,8 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <param name="page">The page.</param>
         /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public MainPage EditPage(Page page)
         {            
             TxtPageName.SendKeys(page.PageName);
