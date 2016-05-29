@@ -124,13 +124,25 @@ namespace SeleniumAdvProject.PageObjects
             return new MainPage(_webDriver);
         }
 
+        /// <summary>
+        /// Opens the add new page by click on Global Setting>Add Page menu
+        /// </summary>
+        /// <returns> add new page popup </returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public AddNewPage OpenAddNewPage()
         {
             LblGlobalSetting.MouseOver();
             LnkAddPage.Click();
             return new AddNewPage(_webDriver);
         }
-
+        /// <summary>
+        /// Opens the edit page.
+        /// </summary>
+        /// <param name="pageName">Name of the page.</param>
+        /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public AddNewPage OpenEditPage(string pageName)
         {
             GoToLink(pageName, true);
@@ -138,12 +150,24 @@ namespace SeleniumAdvProject.PageObjects
             LnkEditPage.Click();
             return new AddNewPage(_webDriver);
         }
+        /// <summary>
+        /// Opens the add new panel popup.
+        /// </summary>
+        /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public AddNewPanelPage OpenAddNewPanelPopup()
         {
             LblGlobalSetting.MouseOver();
             LnkCreatePanel.Click();
             return new AddNewPanelPage(_webDriver);
         }
+        /// <summary>
+        /// Opens the panels page.
+        /// </summary>
+        /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public PanelsPage OpenPanelsPage()
         {
             LnkAdminister.MouseOver();
@@ -151,13 +175,12 @@ namespace SeleniumAdvProject.PageObjects
             return new PanelsPage(_webDriver);
         }
 
-
         /// <summary>
-        /// Log out the TA dashboard
+        /// Logouts this instance.
         /// </summary>
-        /// <returns>the LoginPage object</returns>
-        /// <author>Vu Tran</author>
-        /// <date>05/26/2015</date>
+        /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public LoginPage Logout()
         {
             LblUsername.MouseOver();
@@ -184,10 +207,10 @@ namespace SeleniumAdvProject.PageObjects
         /// <summary>
         /// Verify the link is exist
         /// </summary>
-        /// <param name="linkName">Name of the link</param>
-        /// <returns>True/False</returns>
-        /// <author>Vu Tran</author>
-        /// <date>05/26/2015</date>
+        /// <param name="linkName">Name of the link.</param>
+        /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public Boolean IsLinkExist(string linkName)
         {
             Link Link = new Link(_webDriver, By.XPath(string.Format("//a[.='{0}']", linkName)));

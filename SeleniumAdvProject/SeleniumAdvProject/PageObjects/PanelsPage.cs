@@ -41,6 +41,8 @@ namespace SeleniumAdvProject.PageObjects
         /// Opens the add new panel popup.
         /// </summary>
         /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public AddNewPanelPage OpenAddNewPanelPopupFromLink()
         {
             LnkAddNew.Click();
@@ -52,6 +54,8 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <param name="chart">The chart.</param>
         /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public PanelsPage AddNewPanel(Chart chart)
         {
             OpenAddNewPanelPopupFromLink().AddChart(chart);

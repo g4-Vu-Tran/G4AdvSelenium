@@ -75,8 +75,10 @@ namespace SeleniumAdvProject.PageObjects
         /// <summary>
         /// Adds the new panel.
         /// </summary>
-        /// <param name="chart">The chart.</param>
-        /// <returns></returns>
+        /// <param name="chart">The chart information.</param>
+        /// <returns>Return main page after add new panle successfully</returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public MainPage AddNewPanel(Chart chart)
         {
             GoToPage(chart.PageName);
@@ -89,9 +91,11 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <returns></returns>
         /// Author: Tu Nguyen
-        public MainPage OpenNewPanelPopUp()
+        public MainPage OpenNewPanelPopUp(string page)
         {
+            GoToPage(page);
             BtnChoosePanel.Click();
+            WaitForControlExists(By.XPath("//span[.='Create new panel']"), Constants.WaitTimeoutShortSeconds);
             BtnCreateNewPanel.Click();
             return this;
         }
@@ -103,6 +107,8 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <param name="pageName">Name of the page.</param>
         /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public int GetPositionPage(string pageName)
         {
             Link page = new Link();
@@ -115,6 +121,8 @@ namespace SeleniumAdvProject.PageObjects
         /// Opens the setting.
         /// </summary>
         /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public MainPage OpenSetting()
         {
             LblGlobalSetting.MouseOver();
@@ -158,7 +166,9 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <param name="pageName1">The page name1.</param>
         /// <param name="pageName2">The page name2.</param>
-        /// <returns></returns>
+        /// <returns>return true if page exist and false if not exist</returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public bool IsPageDisplayAfter(string pageName1, string pageName2)
         {
             Label pageTab = new Label(_webDriver.FindElement(By.XPath(string.Format("//div[@id='main-menu']/div/ul/li[.='{0}']/preceding-sibling::li[1]", pageName2, pageName1))));

@@ -238,8 +238,18 @@ namespace SeleniumAdvProject.PageObjects
         /// Author: Tu Nguyen
         public string GetCategoryStatus()
         {
-            IWebElement element = _webDriver.FindElement(_cbbCategory);
-            return element.GetAttribute("disabled");
+            string status = "enabled";
+            string temp = CbbCategory.GetAttribute("disabled");
+            switch (temp)
+            {
+                case "true":
+                    status = "disabled";
+                    break;
+                case "false":
+                    status = "enabled";
+                    break;
+            }
+            return status;
         }
 
         /// <summary>
@@ -249,7 +259,18 @@ namespace SeleniumAdvProject.PageObjects
         /// Author: Tu Nguyen
         public string GetCategoryCaptionStatus()
         {
-            return TxtCategoryCaption.GetAttribute("disabled");
+            string status = "enabled";
+            string temp = TxtCategoryCaption.GetAttribute("disabled");
+            switch (temp)
+            {
+                case "true":
+                    status = "disabled";
+                    break;
+                case "false":
+                    status = "enabled";
+                    break;
+            }
+            return status;
         }
 
         /// <summary>
@@ -259,7 +280,161 @@ namespace SeleniumAdvProject.PageObjects
         /// Author: Tu Nguyen
         public string GetSeriesStatus()
         {
-            return CbbSeries.GetAttribute("disabled");
+            string status = "enabled";
+            string temp = CbbSeries.GetAttribute("disabled");
+            switch (temp)
+            {
+                case "true":
+                    status = "disabled";
+                    break;
+                case "false":
+                    status = "enabled";
+                    break;
+            }
+            return status;
+        }
+
+        /// <summary>
+        /// Gets the series caption status.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string GetSeriesCaptionStatus()
+        {
+            string status = "enabled";
+            string temp = TxtSeriesCaption.GetAttribute("disabled");
+            switch (temp)
+            {
+                case "true":
+                    status = "disabled";
+                    break;
+                case "false":
+                    status = "enabled";
+                    break;
+            }
+            return status;
+        }
+
+        /// <summary>
+        /// Gets the categories CheckBox status.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string GetCategoriesCheckBoxStatus()
+        {
+            string status = "enabled";
+            string temp = ChbCategories.GetAttribute("disabled");
+            switch (temp)
+            {
+                case "true":
+                    status = "disabled";
+                    break;
+                case "false":
+                    status = "enabled";
+                    break;
+            }
+            return status;
+        }
+
+        /// <summary>
+        /// Gets the series CheckBox status.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string GetSeriesCheckBoxStatus()
+        {
+            string status = "enabled";
+            string temp = ChbSeries.GetAttribute("disabled");
+            switch (temp)
+            {
+                case "true":
+                    status = "disabled";
+                    break;
+                case "false":
+                    status = "enabled";
+                    break;
+            }
+            return status;
+        }
+
+        /// <summary>
+        /// Gets the value CheckBox status.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string GetValueCheckBoxStatus()
+        {
+            string status = "enabled";
+            string temp = ChbValue.GetAttribute("disabled");
+            switch (temp)
+            {
+                case "true":
+                    status = "disabled";
+                    break;
+                case "false":
+                    status = "enabled";
+                    break;
+            }
+            return status;
+        }
+
+        /// <summary>
+        /// Gets the percentage CheckBox status.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string GetPercentageCheckBoxStatus()
+        {
+            string status = "enabled";
+            string temp = ChbPercentage.GetAttribute("disabled");
+            switch (temp)
+            {
+                case "true":
+                    status = "disabled";
+                    break;
+                case "false":
+                    status = "enabled";
+                    break;
+            }
+            return status;
+        }
+        /// <summary>
+        /// Selects the type of the chart.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public AddNewPanelPage SelectChartType(string type)
+        {
+            switch (type)
+            {
+                case "Pie":
+                    CbbChartType.SelectByIndex(0);
+                    break;
+                case "Single Bar":
+                    CbbChartType.SelectByIndex(1);
+                    break;
+                case "Stacked Bar":
+                    CbbChartType.SelectByIndex(2);
+                    break;
+                case "Group Bar":
+                    CbbChartType.SelectByIndex(3);
+                    break;
+                case "Line":
+                    CbbChartType.SelectByIndex(4);
+                    break;
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Closes the panel dialog.
+        /// </summary>
+        /// Author: Tu Nguyen
+        public void ClosePanelDialog()
+        {
+            BtnCancel.Click();
         }
 
         #endregion

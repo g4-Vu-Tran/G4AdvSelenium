@@ -28,7 +28,7 @@ namespace SeleniumAdvProject.Ultilities.Controls
             LoadControl();
             selectElement = new SelectElement(element);
         }
-        public bool Enabled
+        public bool isEnabled
         {
             get
             {
@@ -44,7 +44,7 @@ namespace SeleniumAdvProject.Ultilities.Controls
         public void SelectByText(string text)
         {
             GetSelectControl();
-            if (!Enabled)
+            if (element.Selected)
             {
                 if (text != null)
                     selectElement.SelectByText(text);

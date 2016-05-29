@@ -23,7 +23,9 @@ namespace SeleniumAdvProject.DataObjects
         /// <summary>
         /// Initializes a new instance of the <see cref="Chart"/> class.
         /// </summary>
-        public Chart()
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
+        public Chart() 
         {
             this._style = "2D";
             this._height = 400;
@@ -31,13 +33,14 @@ namespace SeleniumAdvProject.DataObjects
             this._showTitle = false;
             this._dataLabel = new string[] { };
         }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Chart"/> class.
         /// </summary>
         /// <param name="displayName">The display name.</param>
         /// <param name="series">The series.</param>
         /// <param name="pageName">Name of the page.</param>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public Chart(string displayName, string series, string pageName)
         {
             this._displayName = displayName;
@@ -47,13 +50,15 @@ namespace SeleniumAdvProject.DataObjects
             this._height = 400;
         }
 
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Chart"/> class.
         /// </summary>
         /// <param name="chart">The chart.</param>
-        public Chart(Chart chart)
-            : base(chart._dataProfile, chart._displayName, chart._pageName, chart._height, chart._folder)
-        {
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
+        public Chart(Chart chart):base(chart._dataProfile,chart._displayName,chart._pageName, chart._height,chart._folder) 
+        {             
             this._chartTitle = chart.ChartTitle;
             this._chartType = chart.ChartType;
             this._category = chart.Category;
@@ -65,7 +70,6 @@ namespace SeleniumAdvProject.DataObjects
             this._style = chart.Style;
             this._showTitle = chart.ShowTitle;
         }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Chart"/> class.
         /// </summary>
@@ -84,6 +88,8 @@ namespace SeleniumAdvProject.DataObjects
         /// <param name="dataLabel">The data label.</param>
         /// <param name="style">The style.</param>
         /// <param name="showTitle">if set to <c>true</c> [show title].</param>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public Chart(string dataProfile, string displayName, string pageName, int height, string folder, string chartTitle,
             string chartType, string category, string categoryCaption, string series, string seriesCaption, string legend,
             string[] dataLabel, string style, bool showTitle)
@@ -141,16 +147,16 @@ namespace SeleniumAdvProject.DataObjects
             get { return _dataLabel; }
             set { _dataLabel = value; }
         }
-        public string Style
+         public string Style
         {
             get { return _style; }
             set { _style = value; }
         }
-        public bool ShowTitle
+         public bool ShowTitle
         {
             get { return _showTitle; }
             set { _showTitle = value; }
         }
-
+               
     }
 }

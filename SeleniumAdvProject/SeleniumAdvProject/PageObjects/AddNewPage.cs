@@ -56,8 +56,10 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <param name="page">The page.</param>
         /// <returns></returns>
-        public MainPage AddPage(string pathOfPage, Page page)
-        {
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
+        public MainPage AddPage(Page page)
+        {         
             TxtPageName.SendKeys(page.PageName);
             CbbParentPage.SelectByText(ConvertParentPage(pathOfPage));
             Thread.Sleep(500);
@@ -66,8 +68,8 @@ namespace SeleniumAdvProject.PageObjects
             if (page.IsPublic)
                 ChkPublic.Check();
             else
-                ChkPublic.Uncheck();
-            BtnOk.Click();
+                ChkPublic.Uncheck();            
+            BtnOk.Click();            
             WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", CommonAction.EncodeSpace(page.PageName))));
             return new MainPage(_webDriver);
         }
@@ -77,8 +79,10 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <param name="page">The page.</param>
         /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public MainPage EditPage(Page page)
-        {
+        {            
             TxtPageName.SendKeys(page.PageName);
             CbbParentPage.SelectByText(CommonAction.EncodeSpace(page.ParentPage));
             Thread.Sleep(500);

@@ -17,14 +17,6 @@ namespace SeleniumAdvProject.DataObjects
 
         public Page() { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Page"/> class.
-        /// </summary>
-        /// <param name="pageName">Name of the page.</param>
-        /// <param name="parentPage">The parent page.</param>
-        /// <param name="numberOfColumns">The number of columns.</param>
-        /// <param name="displayAfter">The display after.</param>
-        /// <param name="isPublic">if set to <c>true</c> [is public].</param>
         public Page(string pageName, string parentPage, int numberOfColumns, string displayAfter, bool isPublic)
         {
             this._pageName = pageName;

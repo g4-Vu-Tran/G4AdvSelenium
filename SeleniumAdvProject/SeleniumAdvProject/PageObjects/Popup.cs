@@ -12,7 +12,7 @@ using SeleniumAdvProject.Ultilities.Controls;
 namespace SeleniumAdvProject.PageObjects
 {
     public class Popup : BasePage
-    {
+    {        
         #region Locators       
         static readonly By _btnOk = By.XPath("//input[@id='OK']");
         static readonly By _btnCancel = By.XPath("//input[@id='Cancel']");
