@@ -252,8 +252,6 @@ namespace SeleniumAdvProject.PageObjects
             return status;
         }
 
-
-
         /// <summary>
         /// Gets the category caption status.
         /// </summary>
@@ -318,6 +316,89 @@ namespace SeleniumAdvProject.PageObjects
         }
 
         /// <summary>
+        /// Gets the categories CheckBox status.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string GetCategoriesCheckBoxStatus()
+        {
+            string status = "enabled";
+            string temp = ChbCategories.GetAttribute("disabled");
+            switch (temp)
+            {
+                case "true":
+                    status = "disabled";
+                    break;
+                case "false":
+                    status = "enabled";
+                    break;
+            }
+            return status;
+        }
+
+        /// <summary>
+        /// Gets the series CheckBox status.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string GetSeriesCheckBoxStatus()
+        {
+            string status = "enabled";
+            string temp = ChbSeries.GetAttribute("disabled");
+            switch (temp)
+            {
+                case "true":
+                    status = "disabled";
+                    break;
+                case "false":
+                    status = "enabled";
+                    break;
+            }
+            return status;
+        }
+
+        /// <summary>
+        /// Gets the value CheckBox status.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string GetValueCheckBoxStatus()
+        {
+            string status = "enabled";
+            string temp = ChbValue.GetAttribute("disabled");
+            switch (temp)
+            {
+                case "true":
+                    status = "disabled";
+                    break;
+                case "false":
+                    status = "enabled";
+                    break;
+            }
+            return status;
+        }
+
+        /// <summary>
+        /// Gets the percentage CheckBox status.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string GetPercentageCheckBoxStatus()
+        {
+            string status = "enabled";
+            string temp = ChbPercentage.GetAttribute("disabled");
+            switch (temp)
+            {
+                case "true":
+                    status = "disabled";
+                    break;
+                case "false":
+                    status = "enabled";
+                    break;
+            }
+            return status;
+        }
+        /// <summary>
         /// Selects the type of the chart.
         /// </summary>
         /// <param name="type">The type.</param>
@@ -347,6 +428,14 @@ namespace SeleniumAdvProject.PageObjects
             return this;
         }
 
+        /// <summary>
+        /// Closes the panel dialog.
+        /// </summary>
+        /// Author: Tu Nguyen
+        public void ClosePanelDialog()
+        {
+            BtnCancel.Click();
+        }
 
         #endregion
         /// <summary>

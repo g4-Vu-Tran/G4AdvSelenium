@@ -159,6 +159,10 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual(true, panelPage.IsLinkExist("Logigear@"), "Page Logigear@ cannot be created");
         }
 
+        /// <summary>
+        /// Verify that "Category", "Series" and "Caption" field are enabled and disabled correctly corresponding to each type of the "Chart Type"
+        /// </summary>
+        /// <author>Tu Nguyen</author>
         [TestMethod]
         public void DA_PANEL_TC031()
         {
@@ -258,12 +262,124 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual("enabled", actualCategoryCaptionStatus4, "Category Caption textbox is " + actualCategoryCaptionStatus4);
             Assert.AreEqual("enabled", actualSeriesStatus4, "Series combobox is " + actualSeriesStatus4);
             Assert.AreEqual("enabled", actualSeriesCaptionStatus4, "Series Caption textbox is " + actualSeriesCaptionStatus4);
-            
+
             //Post-Condition
-            addPanelPopup.CloseWindow();
-            //mainPage.DeletePage(page.PageName);
-            //mainPage.Logout();
+            addPanelPopup.ClosePanelDialog();
+            mainPage.DeletePage(page.PageName);
+            mainPage.Logout();
         }
+
+        /// <summary>
+        /// Verify that all "Data Labels" check boxes are enabled and disabled correctly corresponding to each type of "Chart Type"
+        /// </summary>
+        /// <author>Tu Nguyen</author>
+        [TestMethod]
+        public void DA_PANEL_TC040()
+        {
+            Console.WriteLine("DA_PANEL_TC040 - Verify that all \"Data Labels\" check boxes are enabled and disabled correctly corresponding to each type of \"Chart Type\"");
+
+            //1 Navigate to Dashboard login page
+            //2 Select a specific repository 
+            //3. Enter valid Username and Password
+            //4. Click 'Login' button
+            LoginPage loginPage = new LoginPage(_webDriver);
+            loginPage.Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //5. Click 'Add Page' button
+            //6. Enter Page Name
+            //7. Click 'OK' button
+            string pageName = CommonAction.GenrateRandomString(Constants.lenghtRandomString);
+            Page page = new Page(pageName, "Select parent", 2, "Overview", false);
+            mainPage.OpenAddNewPage().AddPage(page);
+
+            //8. Click 'Choose Panels' button below 'main_hung' button        
+            //9. Click 'Create new panel' button
+            mainPage.OpenNewPanelPopUp(page.PageName);
+
+            //10. Click 'Chart Type' drop-down menu
+            //11. Select 'Pie' Chart Type
+            AddNewPanelPage addPanelPopup = new AddNewPanelPage(_webDriver);
+            addPanelPopup.SelectChartType("Pie");
+
+            //VP: Check that 'Categories' checkbox is disabled, 'Series' checkbox, 'Value' checkbox and 'Percentage' checkbox are enabled
+            string actualCategoriesChbStatus = addPanelPopup.GetCategoriesCheckBoxStatus();
+            string actualSeriesChbStatus = addPanelPopup.GetSeriesCheckBoxStatus();
+            string actualValueChbStatus = addPanelPopup.GetValueCheckBoxStatus();
+            string actualPercentageChbStatus = addPanelPopup.GetPercentageCheckBoxStatus();
+
+            Assert.AreEqual("disabled", actualCategoriesChbStatus, "Categories checkbox is " + actualCategoriesChbStatus);
+            Assert.AreEqual("enabled", actualSeriesChbStatus, "Series checkbox is " + actualSeriesChbStatus);
+            Assert.AreEqual("enabled", actualValueChbStatus, "Value checkbox is " + actualValueChbStatus);
+            Assert.AreEqual("enabled", actualPercentageChbStatus, "Percentage checkbox is " + actualPercentageChbStatus);
+
+            //13. Click 'Chart Type' drop-down menu
+            //14. Select 'Single Bar' Chart Type
+            addPanelPopup.SelectChartType("Single Bar");
+
+            //VP: Check that 'Categories' checkbox is disabled, 'Series' checkbox, 'Value' checkbox and 'Percentage' checkbox are enabled
+            string actualCategoriesChbStatus1 = addPanelPopup.GetCategoriesCheckBoxStatus();
+            string actualSeriesChbStatus1 = addPanelPopup.GetSeriesCheckBoxStatus();
+            string actualValueChbStatus1 = addPanelPopup.GetValueCheckBoxStatus();
+            string actualPercentageChbStatus1 = addPanelPopup.GetPercentageCheckBoxStatus();
+
+            Assert.AreEqual("disabled", actualCategoriesChbStatus1, "Categories checkbox is " + actualCategoriesChbStatus1);
+            Assert.AreEqual("enabled", actualSeriesChbStatus1, "Series checkbox is " + actualSeriesChbStatus1);
+            Assert.AreEqual("enabled", actualValueChbStatus1, "Value checkbox is " + actualValueChbStatus1);
+            Assert.AreEqual("enabled", actualPercentageChbStatus1, "Percentage checkbox is " + actualPercentageChbStatus1);
+
+            //15. Click 'Chart Type' drop-down menu
+            //16. Select 'Stacked Bar' Chart Type
+            addPanelPopup.SelectChartType("Stacked Bar");
+
+            //VP: Check that 'Categories' checkbox, 'Series' checkbox, 'Value' checkbox and 'Percentage' checkbox are enabled
+            string actualCategoriesChbStatus2 = addPanelPopup.GetCategoriesCheckBoxStatus();
+            string actualSeriesChbStatus2 = addPanelPopup.GetSeriesCheckBoxStatus();
+            string actualValueChbStatus2 = addPanelPopup.GetValueCheckBoxStatus();
+            string actualPercentageChbStatus2 = addPanelPopup.GetPercentageCheckBoxStatus();
+
+            Assert.AreEqual("enabled", actualCategoriesChbStatus2, "Categories checkbox is " + actualCategoriesChbStatus2);
+            Assert.AreEqual("enabled", actualSeriesChbStatus2, "Series checkbox is " + actualSeriesChbStatus2);
+            Assert.AreEqual("enabled", actualValueChbStatus2, "Value checkbox is " + actualValueChbStatus2);
+            Assert.AreEqual("enabled", actualPercentageChbStatus2, "Percentage checkbox is " + actualPercentageChbStatus2);
+
+            //17. Click 'Chart Type' drop-down menu
+            //18. Select 'Group Bar' Chart Type
+            addPanelPopup.SelectChartType("Group Bar");
+
+            //VP: Check that 'Categories' checkbox, 'Series' checkbox, 'Value' checkbox and 'Percentage' checkbox are enabled
+            string actualCategoriesChbStatus3 = addPanelPopup.GetCategoriesCheckBoxStatus();
+            string actualSeriesChbStatus3 = addPanelPopup.GetSeriesCheckBoxStatus();
+            string actualValueChbStatus3 = addPanelPopup.GetValueCheckBoxStatus();
+            string actualPercentageChbStatus3 = addPanelPopup.GetPercentageCheckBoxStatus();
+
+            Assert.AreEqual("enabled", actualCategoriesChbStatus3, "Categories checkbox is " + actualCategoriesChbStatus3);
+            Assert.AreEqual("enabled", actualSeriesChbStatus3, "Series checkbox is " + actualSeriesChbStatus3);
+            Assert.AreEqual("enabled", actualValueChbStatus3, "Value checkbox is " + actualValueChbStatus3);
+            Assert.AreEqual("enabled", actualPercentageChbStatus3, "Percentage checkbox is " + actualPercentageChbStatus3);
+
+            //19. Click 'Chart Type' drop-down menu
+            //20. Select 'Line' Chart Type
+            addPanelPopup.SelectChartType("Line");
+
+            //VP: Check that 'Categories' checkbox, 'Series' checkbox, 'Value' checkbox and 'Percentage' checkbox are disabled
+            string actualCategoriesChbStatus4 = addPanelPopup.GetCategoriesCheckBoxStatus();
+            string actualSeriesChbStatus4 = addPanelPopup.GetSeriesCheckBoxStatus();
+            string actualValueChbStatus4 = addPanelPopup.GetValueCheckBoxStatus();
+            string actualPercentageChbStatus4 = addPanelPopup.GetPercentageCheckBoxStatus();
+
+            Assert.AreEqual("disabled", actualCategoriesChbStatus4, "Categories checkbox is " + actualCategoriesChbStatus4);
+            Assert.AreEqual("disabled", actualSeriesChbStatus4, "Series checkbox is " + actualSeriesChbStatus4);
+            Assert.AreEqual("disabled", actualValueChbStatus4, "Value checkbox is " + actualValueChbStatus4);
+            Assert.AreEqual("disabled", actualPercentageChbStatus4, "Percentage checkbox is " + actualPercentageChbStatus4);
+
+            //Post-Condition
+            addPanelPopup.ClosePanelDialog();
+            mainPage.DeletePage(page.PageName);
+            mainPage.Logout();
+
+        }
+
         //[TestMethod]
         public void DA_PANEL_TC042()
         {
