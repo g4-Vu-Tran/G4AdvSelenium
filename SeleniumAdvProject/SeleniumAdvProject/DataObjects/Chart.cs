@@ -33,7 +33,6 @@ namespace SeleniumAdvProject.DataObjects
             this._showTitle = false;
             this._dataLabel = new string[]{};
         }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Chart"/> class.
         /// </summary>
@@ -50,6 +49,7 @@ namespace SeleniumAdvProject.DataObjects
             this._style = "2D";
             this._height = 400;
         }
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Chart"/> class.
@@ -70,7 +70,6 @@ namespace SeleniumAdvProject.DataObjects
             this._style = chart.Style;
             this._showTitle = chart.ShowTitle;
         }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Chart"/> class.
         /// </summary>

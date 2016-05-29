@@ -15,13 +15,6 @@ namespace SeleniumAdvProject.DataObjects
         protected int _height;
         protected string _folder;
         public Panel() { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Panel"/> class.
-        /// </summary>
-        /// <param name="panel">The panel.</param>
-        /// <author>Huong Huynh</author>
-        /// <date>05/25/2015</date>
         public Panel(Panel panel)
         {
             this._dataProfile = panel.DataProfile;
@@ -31,16 +24,6 @@ namespace SeleniumAdvProject.DataObjects
             this._folder = panel.Folder;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Panel"/> class.
-        /// </summary>
-        /// <param name="dataProfile">The data profile.</param>
-        /// <param name="displayName">The display name.</param>
-        /// <param name="pageName">Name of the page.</param>
-        /// <param name="height">The height.</param>
-        /// <param name="folder">The folder.</param>
-        /// <author>Huong Huynh</author>
-        /// <date>05/25/2015</date>
         public Panel(string dataProfile, string displayName, string pageName, int height, string folder)
         {
             this._dataProfile = dataProfile;
