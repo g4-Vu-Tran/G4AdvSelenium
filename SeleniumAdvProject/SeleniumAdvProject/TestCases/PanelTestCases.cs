@@ -186,12 +186,12 @@ namespace SeleniumAdvProject.TestCases
             //8. Click 'Choose Panels' button below 'main_hung' button        
             //9. Click 'Create new panel' button
             mainPage.OpenNewPanelPopUp(page.PageName);
-           
+
             //10. Click 'Chart Type' drop-down menu
             //11. Select 'Pie' Chart Type
             AddNewPanelPage addPanelPopup = new AddNewPanelPage(_webDriver);
             addPanelPopup.SelectChartType("Pie");
-            
+
             //VP: Check that 'Category' and 'Caption' are disabled, 'Series' is enabled
             string actualCategoryStatus = addPanelPopup.GetCategoryStatus();
             string actualCategoryCaptionStatus = addPanelPopup.GetCategoryCaptionStatus();
@@ -420,7 +420,7 @@ namespace SeleniumAdvProject.TestCases
             panelPage.ConfirmDialog("OK");
             panelPage.CancelPanel();
             panelPage.DeleteAllPanels();
-            
+
         }
 
         /// <summary>
@@ -463,6 +463,58 @@ namespace SeleniumAdvProject.TestCases
             panelPage.DeleteAllPanels();
 
         }
+
+        /// <summary>
+        /// Verify that no special character except '@' character is allowed to be inputted into "Chart Title" field			
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/30/2016</date>
+        [TestMethod]
+        public void DA_PANEL_TC035()
+        {
+            Console.WriteLine("DA_PANEL_TC035 - Verify that no special character except '@' character is allowed to be inputted into \"Chart Title\" field");
+
+            //Set variables
+            Chart chart1 = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "!#$%^&*()'", "Name", null, null, null, null, null, null, null, false);
+            Chart chart2 = new Chart(null, CommonAction.GeneratePanelName() + "@", null, 400, null, "Chart@", "Name", null, null, null, null, null, null, null, false);
+
+            //1. Navigate to Dashboard login page
+            //2. Login with valid account
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Click on Administer/Panels link
+            PanelsPage panelPage = mainPage.OpenPanelsPage();
+
+            //4. Click on Add new link
+            //5. Enter value into Display Name field
+            //6. Enter value into Chart Title field with special characters except "@"
+            //7. Click Ok button
+            panelPage.AddNewPanel(chart1);
+
+            //VP. Message "Invalid display name. The name can't contain high ASCII characters or any of following characters: /:*?<>|"#{[]{};" is displayed
+            string actualMsg = panelPage.GetDialogText();
+            string expectedMsg = "Invalid display name. The name can't contain high ASCII characters or any of following characters: /:*?<>|\"#{[]{};";
+            Assert.AreEqual(expectedMsg, actualMsg, string.Format("Message incorrect {0}", actualMsg));
+
+            //8. Close Warning Message box
+            panelPage.ConfirmDialog("OK");
+            panelPage.CancelPanel();
+
+            //9. Click Add New link
+            //10. Enter value into Display Name field
+            //11. Enter value into Chart Title field with special character is @
+            panelPage.AddNewPanel(chart1);
+
+            //VP. The new panel is created
+
+
+            //Post-condition
+
+            panelPage.DeleteAllPanels();
+
+        }
+
         //[TestMethod]
         public void DA_PANEL_TC042()
         {

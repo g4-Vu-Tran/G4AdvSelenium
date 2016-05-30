@@ -169,6 +169,8 @@ namespace SeleniumAdvProject.PageObjects
 
         #region Private Methods
 
+        #region Private Methods
+
         /// <summary>
         /// Selects the legend.
         /// </summary>
@@ -192,6 +194,73 @@ namespace SeleniumAdvProject.PageObjects
                 default:
                     break;
             }
+        }
+
+        /// <summary>
+        /// Gets the legend.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string GetLegend()
+        {
+            string legend = "";
+            string tmp1 = RbNone.GetAttribute("checked");
+            if (tmp1 == "true")
+            {
+                legend = RbNone.Value;
+            }
+            string tmp2 = RbLeft.GetAttribute("checked");
+            if (tmp2 == "true")
+            {
+                legend = RbLeft.Value;
+            }
+            string tmp3 = RbRight.GetAttribute("checked");
+            if (tmp3 == "true")
+            {
+                legend = RbRight.Value;
+            }
+            string tmp4 = RbTop.GetAttribute("checked");
+            if (tmp4 == "true")
+            {
+                legend = RbTop.Value;
+            }
+            string tmp5 = RbBottom.GetAttribute("checked");
+            if (tmp5 == "true")
+            {
+                legend = RbBottom.Value;
+            }
+            return legend;
+        }
+
+        /// <summary>
+        /// Fill Panel Data.
+        /// </summary>
+        /// <param name="profile">The profile.</param>
+        /// <param name="displayName">The display name.</param>
+        /// <param name="chartTitle">The chart title.</param>
+        /// <param name="showTitle">The show title.</param>
+        /// <param name="legend">The legend.</param>
+        /// <param name="style">The style.</param>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public AddNewPanelPage FillPanelData(string profile, string displayName, string chartTitle, string chartType, string showTitle, string legend, string style)
+        {
+            CbbDataProfile.SelectByText(profile);
+            TxtDisplayName.SendKeys(displayName);
+            SelectChartType(chartType);
+            TxtChartTitle.SendKeys(chartTitle);
+            switch (showTitle)
+            {
+                case "on":
+                    ChbShowTitle.Check();
+                    break;
+                case "off":
+                    ChbShowTitle.Uncheck();
+                    break;
+            }
+            SelectLegend(legend);
+            SelectStyle(style);
+            return this;
         }
 
         /// <summary>
@@ -515,10 +584,8 @@ namespace SeleniumAdvProject.PageObjects
             return flag;
         }
 
-        
 
-
-  
+        #endregion
         #endregion
 
 

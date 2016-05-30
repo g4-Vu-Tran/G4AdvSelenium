@@ -108,6 +108,11 @@ namespace SeleniumAdvProject.PageObjects
             AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
             return addPanelPage.IsTheListIsSorted(addPanelPage.CbbDataProfile, orderType);
         }
+
+        public bool IsPanelExist(string panelName)
+        {
+            Link LnkPanel = new Link(_webDriver,string())
+        }
         #endregion
     }
 }
