@@ -518,7 +518,7 @@ namespace SeleniumAdvProject.TestCases
         /// <author>Vu Tran</author>
         /// <date>05/30/2016</date>
         [TestMethod]
-        public void DA_PANEL_TC035()
+        public void DA_PANEL_TC036()
         {
             Console.WriteLine("DA_PANEL_TC036 - Verify that all chart types ( Pie, Single Bar, Stacked Bar, Group Bar, Line ) are listed correctly under \"Chart Type\" dropped down menu.");
 
