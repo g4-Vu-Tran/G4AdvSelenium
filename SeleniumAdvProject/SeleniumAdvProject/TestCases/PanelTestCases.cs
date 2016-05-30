@@ -291,7 +291,7 @@ namespace SeleniumAdvProject.TestCases
             //7. Click 'OK' button
             string pageName = CommonAction.GenrateRandomString(Constants.lenghtRandomString);
             Page page = new Page(pageName, "Select parent", 2, "Overview", false);
-            mainPage.OpenAddNewPage().AddPage(page);
+            mainPage.AddPage(page);
 
             //8. Click 'Choose Panels' button below 'main_hung' button        
             //9. Click 'Create new panel' button
@@ -409,9 +409,17 @@ namespace SeleniumAdvProject.TestCases
             //7. Click on Add new link again.
             //8. Enter display name same with previous display name to "display name" field. 
             //9. Click on OK button
+            panelPage.AddNewPanel(chart);
+
             //VP. Warning message: "Dupicated panel already exists. Please enter a different name" show up
+            string actualMsg = panelPage.GetDialogText();
+            string expectedMsg = string.Format("{0} already exists. Please enter a different name.", chart.DisplayName);
+            Assert.AreEqual(expectedMsg, actualMsg, string.Format("Message incorrect {0}", actualMsg));
 
-
+            //Post-condition
+            panelPage.ConfirmDialog("OK");
+            panelPage.CancelPanel();
+            panelPage.DeleteAllPanels();
             
         }
         //[TestMethod]

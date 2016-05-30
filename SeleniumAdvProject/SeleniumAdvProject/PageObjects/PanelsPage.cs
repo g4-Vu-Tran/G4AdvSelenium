@@ -42,7 +42,7 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <returns></returns>
         /// <author>Huong Huynh</author>
-        /// <date>05/25/2015</date>
+        /// <date>05/25/2016</date>
         public AddNewPanelPage OpenAddNewPanelPopupFromLink()
         {
             LnkAddNew.Click();
@@ -55,18 +55,37 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="chart">The chart.</param>
         /// <returns></returns>
         /// <author>Huong Huynh</author>
-        /// <date>05/25/2015</date>
+        /// <date>05/25/2016</date>
         public PanelsPage AddNewPanel(Chart chart)
         {
             OpenAddNewPanelPopupFromLink().AddChart(chart);
+            WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", chart.DisplayName)));
             return this;
         }
 
-        public PanelsPage AddPanelFromAddNewLink(string from, Chart chart)
+        /// <summary>
+        /// Delete all panels
+        /// </summary>
+        /// <returns>PanelsPage object</returns>
+        /// <author>Vu Tran</author>
+        /// <date>05/30/2016</date>
+        public PanelsPage DeleteAllPanels()
         {
-            LnkAddNew.Click();
-            AddNewPanelPage addNewPanelPage = new AddNewPanelPage();
-            addNewPanelPage.AddChart(chart);
+            LnkCheckAll.Click();
+            LnkDelete.Click();
+            ConfirmDialog("OK");
+            return this;
+        }
+
+        /// Cancels the panel
+        /// </summary>
+        /// <returns>PanelsPage object</returns>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2016</date>
+        public PanelsPage CancelPanel()
+        {
+            AddNewPanelPage addpanel = new AddNewPanelPage(_webDriver);
+            addpanel.BtnCancel.Click();
             return this;
         }
 

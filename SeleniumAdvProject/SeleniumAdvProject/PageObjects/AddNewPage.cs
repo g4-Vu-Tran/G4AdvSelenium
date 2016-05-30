@@ -57,8 +57,8 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="page">The page.</param>
         /// <returns></returns>
         /// <author>Huong Huynh</author>
-        /// <date>05/25/2015</date>
-        public MainPage AddPage(Page page)
+        /// <date>05/25/2016</date>
+        public MainPage AddPage(string pathOfPage, Page page)
         {         
             TxtPageName.SendKeys(page.PageName);
             CbbParentPage.SelectByText(ConvertParentPage(pathOfPage));
@@ -80,8 +80,8 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="page">The page.</param>
         /// <returns></returns>
         /// <author>Huong Huynh</author>
-        /// <date>05/25/2015</date>
-        public MainPage EditPage(Page page)
+        /// <date>05/25/2016</date>
+        public MainPage EditPage(string pathOfPage, Page page)
         {            
             TxtPageName.SendKeys(page.PageName);
             CbbParentPage.SelectByText(CommonAction.EncodeSpace(page.ParentPage));

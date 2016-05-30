@@ -236,8 +236,8 @@ namespace SeleniumAdvProject.TestCases
             //20 Click Log out link
             page1.IsPublic = true;
             page2.IsPublic = false;
-            mainPage.OpenEditPage(page1.PageName).EditPage(page1);
-            mainPage.OpenEditPage(page2.PageName).EditPage(page2);
+            mainPage.EditPage(page1);
+            mainPage.EditPage(page2);
             loginPage = mainPage.Logout();
 
             //21 Log in with another valid account
@@ -604,7 +604,7 @@ namespace SeleniumAdvProject.TestCases
             //7. Enter another name into Page Name field
             //8. Click Ok button on Edit Page dialog
             Page pageEdit = new Page("Page3", "Select parent", 2, "Overview", false);
-            mainPage.OpenEditPage(page.PageName).EditPage(pageEdit);
+            mainPage.EditPage(pageEdit);
 
             //VP: User is able to edit the parent page of the sibbling page successfully
             Assert.IsTrue(mainPage.IsPageExist(pageEdit.PageName), "User can edit the parent page of sibling page");
@@ -698,7 +698,7 @@ namespace SeleniumAdvProject.TestCases
             //6. Change value Display After for the second created page to after Overview page
             //7. Click Ok button on Edit Page dialog
             Page pageEdit = new Page("", "", 2, "Overview", false);
-            mainPage.OpenEditPage(page2.PageName).EditPage(pageEdit);
+            mainPage.EditPage(pageEdit);
 
             //VP: Position of the second page follow Overview page
             bool actualResult = mainPage.GetPositionPage(page2.PageName) < mainPage.GetPositionPage("Overview") ? true : false;
@@ -739,7 +739,7 @@ namespace SeleniumAdvProject.TestCases
             //7. Click OK button
 
             Page editPage = new Page("", "", 3, "", false);
-            mainPage.OpenEditPage(page.PageName).EditPage(editPage);
+            mainPage.EditPage(editPage);
 
             //VP. There are 3 columns on the above created page
 
