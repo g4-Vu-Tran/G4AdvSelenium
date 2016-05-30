@@ -409,7 +409,7 @@ namespace SeleniumAdvProject.TestCases
             //7. Click on Add new link again.
             //8. Enter display name same with previous display name to "display name" field. 
             //9. Click on OK button
-            panelPage.AddNewPanel(chart);
+            panelPage.AddNewPanelWithExpectedError(chart);
 
             //VP. Warning message: "Dupicated panel already exists. Please enter a different name" show up
             string actualMsg = panelPage.GetDialogText();
@@ -490,7 +490,7 @@ namespace SeleniumAdvProject.TestCases
             //5. Enter value into Display Name field
             //6. Enter value into Chart Title field with special characters except "@"
             //7. Click Ok button
-            panelPage.AddNewPanel(chart1);
+            panelPage.AddNewPanelWithExpectedError(chart1);
 
             //VP. Message "Invalid display name. The name can't contain high ASCII characters or any of following characters: /:*?<>|"#{[]{};" is displayed
             string actualMsg = panelPage.GetDialogText();
@@ -504,14 +504,46 @@ namespace SeleniumAdvProject.TestCases
             //9. Click Add New link
             //10. Enter value into Display Name field
             //11. Enter value into Chart Title field with special character is @
-            panelPage.AddNewPanel(chart1);
-
             //VP. The new panel is created
-
+            panelPage.AddNewPanel(chart1);
+            Assert.IsTrue(panelPage.IsPanelExist(chart2.DisplayName), string.Format("{0} is not created successfully ", chart2.DisplayName));
 
             //Post-condition
-
             panelPage.DeleteAllPanels();
+        }
+
+        /// <summary>
+        /// Verify that all chart types ( Pie, Single Bar, Stacked Bar, Group Bar, Line ) are listed correctly under "Chart Type" dropped down menu.			
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/30/2016</date>
+        [TestMethod]
+        public void DA_PANEL_TC035()
+        {
+            Console.WriteLine("DA_PANEL_TC036 - Verify that all chart types ( Pie, Single Bar, Stacked Bar, Group Bar, Line ) are listed correctly under \"Chart Type\" dropped down menu.");
+
+            //Set variables
+            Page page = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Select page", false);
+            Chart chart = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "!#$%^&*()'", "Name", null, null, null, null, null, null, null, false);
+
+            //1. Navigate to Dashboard login page
+            //2. Select a specific repository 
+            //3. Enter valid Username and Password
+            //4. Click 'Login' button
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //5. Click 'Add Page' link
+            //6. Enter Page Name
+            //7. Click 'OK' button
+            mainPage.AddPage(page);
+
+            //8. Click 'Choose Panels' button
+            //9. Click 'Create new panel' button
+            mainPage.OpenAddNewPanelPageFromButton();
+
+            //10. Click 'Chart Type' drop-down menu
+            //VP. Check that 'Chart Type' are listed 5 options: 'Pie', 'Single Bar', 'Stacked Bar', 'Group Bar' and 'Line'
 
         }
 

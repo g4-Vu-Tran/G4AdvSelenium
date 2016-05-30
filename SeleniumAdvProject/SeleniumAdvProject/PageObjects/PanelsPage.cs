@@ -78,6 +78,24 @@ namespace SeleniumAdvProject.PageObjects
         }
 
         /// <summary>
+        /// Adds the new panel with expected error
+        /// </summary>
+        /// <param name="chart">The chart.</param>
+        /// <returns></returns>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2016</date>
+        public PanelsPage AddNewPanelWithExpectedError(Chart chart, bool openPopup = true)
+        {
+            if (openPopup)
+            {
+                OpenAddNewPanelPopupFromLink();
+            }
+            AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
+            addPanelPage.AddChart(chart);
+            return this;
+        }
+
+        /// <summary>
         /// Delete all panels
         /// </summary>
         /// <returns>PanelsPage object</returns>
@@ -111,7 +129,7 @@ namespace SeleniumAdvProject.PageObjects
 
         public bool IsPanelExist(string panelName)
         {
-            Link LnkPanel = new Link(_webDriver,string())
+            return IsLinkExist(panelName);
         }
         #endregion
     }

@@ -372,6 +372,13 @@ namespace SeleniumAdvProject.PageObjects
             Link lnkDynamic = new Link(_webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", linkText))));
             lnkDynamic.Click();
         }
+
+        public AddNewPanelPage OpenAddNewPanelPageFromButton()
+        {
+            BtnChoosePanel.Click();
+            BtnCreateNewPanel.Click();
+            return new AddNewPanelPage(_webDriver);
+        }
         #endregion
     }
 }
