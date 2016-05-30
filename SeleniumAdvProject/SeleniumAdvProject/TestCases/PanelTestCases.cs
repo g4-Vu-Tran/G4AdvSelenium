@@ -384,11 +384,11 @@ namespace SeleniumAdvProject.TestCases
         /// Verify that user is not allowed to create panel with duplicated "Display Name"  			
         /// </summary>
         /// <author>Vu Tran</author>
-        /// <date>05/30/2015</date>
+        /// <date>05/30/2016</date>
         [TestMethod]
         public void DA_PANEL_TC032()
         {
-            Console.WriteLine("DA_PANEL_TC031 - Verify that user is not allowed to create panel with duplicated \"Display Name\"");
+            Console.WriteLine("DA_PANEL_TC032 - Verify that user is not allowed to create panel with duplicated \"Display Name\"");
 
             //Set variables
             Chart chart = new Chart(CommonAction.GeneratePanelName(), "Name", null);
@@ -421,6 +421,47 @@ namespace SeleniumAdvProject.TestCases
             panelPage.CancelPanel();
             panelPage.DeleteAllPanels();
             
+        }
+
+        /// <summary>
+        /// Verify that "Data Profile" listing of "Add New Panel" and "Edit Panel" control/form are in alphabetical order			
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/30/2016</date>
+        [TestMethod]
+        public void DA_PANEL_TC033()
+        {
+            Console.WriteLine("DA_PANEL_TC033 - Verify that \"Data Profile\" listing of \"Add New Panel\" and \"Edit Panel\" control/form are in alphabetical order");
+
+            //Set variables
+            Chart chart = new Chart(CommonAction.GeneratePanelName(), "Name", null);
+
+            //1. Navigate to Dashboard login page
+            //2. Login with valid account
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Click on Administer/Panels link
+            PanelsPage panelPage = mainPage.OpenPanelsPage();
+
+            //4. Click on Add new link
+            //VP. Verify that Data Profile list is in alphabetical order
+            panelPage.OpenAddNewPanelPopupFromLink();
+            Assert.IsTrue(panelPage.IsDataProfileSOrder("ASC"), "Data Profile list is not in alphabetical order");
+
+            //5. Enter a display name to display name field
+            //6. Click on OK button
+            panelPage.AddNewPanel(chart, false);
+
+            //7. Click on Edit link
+            //VP. Verify that Data Profile list is in alphabetical order
+            panelPage.OpenEditPanelPopup(chart.DisplayName);
+            Assert.IsTrue(panelPage.IsDataProfileSOrder("ASC"), "Data Profile list is not in alphabetical order");
+
+            //Post-condition
+            panelPage.CancelPanel();
+            panelPage.DeleteAllPanels();
+
         }
         //[TestMethod]
         public void DA_PANEL_TC042()

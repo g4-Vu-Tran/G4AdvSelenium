@@ -49,6 +49,15 @@ namespace SeleniumAdvProject.PageObjects
             return new AddNewPanelPage(_webDriver);
         }
 
+        public AddNewPanelPage OpenEditPanelPopup(string panelName)
+        {
+            Link LnkPanelName = new Link(_webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", panelName))));
+            LnkPanelName.Click();
+            return new AddNewPanelPage(_webDriver);
+        }
+
+
+
         /// <summary>
         /// Adds the new panel.
         /// </summary>
@@ -56,9 +65,14 @@ namespace SeleniumAdvProject.PageObjects
         /// <returns></returns>
         /// <author>Huong Huynh</author>
         /// <date>05/25/2016</date>
-        public PanelsPage AddNewPanel(Chart chart)
+        public PanelsPage AddNewPanel(Chart chart, bool openPopup = true)
         {
-            OpenAddNewPanelPopupFromLink().AddChart(chart);
+            if (openPopup)
+            {
+                OpenAddNewPanelPopupFromLink();
+            }
+            AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
+            addPanelPage.AddChart(chart);
             WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", chart.DisplayName)));
             return this;
         }
@@ -84,11 +98,16 @@ namespace SeleniumAdvProject.PageObjects
         /// <date>05/25/2016</date>
         public PanelsPage CancelPanel()
         {
-            AddNewPanelPage addpanel = new AddNewPanelPage(_webDriver);
-            addpanel.BtnCancel.Click();
+            AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
+            addPanelPage.BtnCancel.Click();
             return this;
         }
 
+        public bool IsDataProfileSOrder(string orderType)
+        {
+            AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
+            return addPanelPage.IsTheListIsSorted(addPanelPage.CbbDataProfile, orderType);
+        }
         #endregion
     }
 }
