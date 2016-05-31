@@ -370,15 +370,137 @@ namespace SeleniumAdvProject.TestCases
 
             Assert.AreEqual("disabled", actualCategoriesChbStatus4, "Categories checkbox is " + actualCategoriesChbStatus4);
             Assert.AreEqual("disabled", actualSeriesChbStatus4, "Series checkbox is " + actualSeriesChbStatus4);
-            Assert.AreEqual("disabled", actualValueChbStatus4, "Value checkbox is " + actualValueChbStatus4);
             Assert.AreEqual("disabled", actualPercentageChbStatus4, "Percentage checkbox is " + actualPercentageChbStatus4);
-
-            //Post-Condition
-            addPanelPopup.ClosePanelDialog();
-            mainPage.DeletePage(page.PageName);
-            mainPage.Logout();
+            Assert.AreEqual("disabled", actualValueChbStatus4, "Value checkbox is " + actualValueChbStatus4);
 
         }
+
+        /// <summary>
+        /// Verify that all settings within "Add New Panel" and "Edit Panel" form stay unchanged when user switches between "2D" and "3D" radio buttons
+        /// </summary>
+        /// <author>Tu Nguyen</author>
+        [TestMethod]
+        public void DA_PANEL_TC038()
+        {
+            Console.WriteLine("DA_PANEL_TC038 - Verify that all settings within \"Add New Panel\" and \"Edit Panel\" form stay unchanged when user switches between \"2D\" and \"3D\" radio buttons");
+
+            //1 Navigate to Dashboard login page
+            //2 Select a specific repository 
+            //3. Enter valid Username and Password
+            //4. Click 'Login' button
+            LoginPage loginPage = new LoginPage(_webDriver);
+            loginPage.Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //5. Click 'Add Page' button
+            //6. Enter Page Name
+            //7. Click 'OK' button
+            string pageName = CommonAction.GenrateRandomString(Constants.lenghtRandomString);
+            Page page = new Page(pageName, "Select parent", 2, "Overview", false);
+            mainPage.AddPage(page);
+
+            //8. Click 'Choose Panels' button below 'main_hung' button        
+            //9. Click 'Create new panel' button
+            PanelsPage panelPage = new PanelsPage();
+            mainPage.OpenNewPanelPopUp(page.PageName);
+            AddNewPanelPage addPanelPopup = new AddNewPanelPage(_webDriver);
+
+            //10. Click 'Chart Type' drop-down menu
+            //11. Select 'Stacked Bar' Chart Type
+            //12. Select 'Data Profile' drop-down menu
+            //13. Enter 'Display Name' and 'Chart Title'
+            //14. Select 'Show Title' checkbox
+            //15. Select 'Legends' radio button
+            //16. Select 'Style' radio button
+            addPanelPopup.FillPanelData("Test Case Execution", "Tu_Panel", "Tu_Title", "Stacked Bar", "on", "Top", "3D");
+
+            //VP: Settings of 'Chart Type', 'Data Profile', 'Display Name', 'Chart Title', 'Show Title' and 'Legends' stay unchanged
+            string currentChartType = addPanelPopup.CbbChartType.Value;
+            string currentProfile = addPanelPopup.CbbDataProfile.Value;
+            string currentName = addPanelPopup.TxtDisplayName.Value;
+            string currentChartTitle = addPanelPopup.TxtChartTitle.Value;
+            string currentShowTitle = addPanelPopup.ChbShowTitle.Value;
+            string currentLegend = addPanelPopup.GetLegend();
+
+            Assert.AreEqual("Stacked Bar", currentChartType, "Current chart type is " + currentChartType);
+            Assert.AreEqual("Test Case Execution", currentProfile, "Data Profile is " + currentProfile);
+            Assert.AreEqual("Tu_Panel", currentName, "Display name is " + currentName);
+            Assert.AreEqual("Tu_Title", currentChartTitle, "Chart Title is " + currentChartTitle);
+            Assert.AreEqual("on", currentShowTitle, "Show Title is " + currentShowTitle);
+            Assert.AreEqual("Top", currentLegend, "Legend is " + currentLegend);
+
+            //17. Select 'Style' radio button
+            addPanelPopup.Rb2D.Click();
+
+            //VP: Settings of 'Chart Type', 'Data Profile', 'Display Name', 'Chart Title', 'Show Title' and 'Legends' stay unchanged
+            string currentChartType1 = addPanelPopup.CbbChartType.Value;
+            string currentProfile1 = addPanelPopup.CbbDataProfile.Value;
+            string currentName1 = addPanelPopup.TxtDisplayName.Value;
+            string currentChartTitle1 = addPanelPopup.TxtChartTitle.Value;
+            string currentShowTitle1 = addPanelPopup.ChbShowTitle.Value;
+            string currentLegend1 = addPanelPopup.GetLegend();
+
+            Assert.AreEqual("Stacked Bar", currentChartType1, "Current chart type is " + currentChartType1);
+            Assert.AreEqual("Test Case Execution", currentProfile1, "Data Profile is " + currentProfile1);
+            Assert.AreEqual("Tu_Panel", currentName1, "Display name is " + currentName1);
+            Assert.AreEqual("Tu_Title", currentChartTitle1, "Chart Title is " + currentChartTitle1);
+            Assert.AreEqual("on", currentShowTitle1, "Show Title is " + currentShowTitle1);
+            Assert.AreEqual("Top", currentLegend1, "Legend is " + currentLegend1);
+
+            //18. Click OK button
+            //19. Select a page in drop-down menu
+            //20. Enter path of Folder
+            //21. Click OK button
+            addPanelPopup.CbbCategory.SelectByText("Name");
+            addPanelPopup.CbbSeries.SelectByText("Location");
+            addPanelPopup.BtnOk.Click();
+            addPanelPopup.SettingPanel(null, 400, null);
+
+            //22. Click 'Edit Panel' button of panel 'hung_panel'
+            mainPage.OpenEditPanelPopup();
+
+            //23. Select 'Style' radio button
+            addPanelPopup.Rb3D.Click();
+
+            //VP: Check that settings of 'Chart Type', 'Data Profile', 'Display Name', 'Chart Title', 'Show Title' and 'Legends' stay unchanged.
+            string currentChartType2 = addPanelPopup.CbbChartType.Value;
+            string currentProfile2 = addPanelPopup.CbbDataProfile.Value;
+            string currentName2 = addPanelPopup.TxtDisplayName.Value;
+            string currentChartTitle2 = addPanelPopup.TxtChartTitle.Value;
+            string currentShowTitle2 = addPanelPopup.ChbShowTitle.Value;
+            string currentLegend2 = addPanelPopup.GetLegend();
+
+            Assert.AreEqual("Stacked Bar", currentChartType2, "Current chart type is " + currentChartType2);
+            Assert.AreEqual("Test Case Execution", currentProfile2, "Data Profile is " + currentProfile2);
+            Assert.AreEqual("Tu_Panel", currentName2, "Display name is " + currentName2);
+            Assert.AreEqual("Tu_Title", currentChartTitle2, "Chart Title is " + currentChartTitle2);
+            Assert.AreEqual("on", currentShowTitle2, "Show Title is " + currentShowTitle2);
+            Assert.AreEqual("Top", currentLegend2, "Legend is " + currentLegend2);
+
+            //24. Select 'Style' radio button
+            addPanelPopup.Rb2D.Click();
+
+            //VP: Check that settings of 'Chart Type', 'Data Profile', 'Display Name', 'Chart Title', 'Show Title' and 'Legends' stay unchanged.
+            string currentChartType3 = addPanelPopup.CbbChartType.Value;
+            string currentProfile3 = addPanelPopup.CbbDataProfile.Value;
+            string currentName3 = addPanelPopup.TxtDisplayName.Value;
+            string currentChartTitle3 = addPanelPopup.TxtChartTitle.Value;
+            string currentShowTitle3 = addPanelPopup.ChbShowTitle.Value;
+            string currentLegend3 = addPanelPopup.GetLegend();
+
+            Assert.AreEqual("Stacked Bar", currentChartType3, "Current chart type is " + currentChartType3);
+            Assert.AreEqual("Test Case Execution", currentProfile3, "Data Profile is " + currentProfile3);
+            Assert.AreEqual("Tu_Panel", currentName3, "Display name is " + currentName3);
+            Assert.AreEqual("Tu_Title", currentChartTitle3, "Chart Title is " + currentChartTitle3);
+            Assert.AreEqual("on", currentShowTitle3, "Show Title is " + currentShowTitle3);
+            Assert.AreEqual("Top", currentLegend3, "Legend is " + currentLegend3);
+
+            //Post Condition
+            addPanelPopup.ClosePanelDialog();
+            panelPage.DeleteAllPanels();
+
+        }
+
 
         /// <summary>
         /// Verify that user is not allowed to create panel with duplicated "Display Name"  			

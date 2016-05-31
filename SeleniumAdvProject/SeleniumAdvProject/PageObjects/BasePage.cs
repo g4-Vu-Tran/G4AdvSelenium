@@ -28,6 +28,7 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _lnkAdminister = By.XPath("//a[.='Administer']");
         static readonly By _lnkPanel = By.XPath("//a[.='Panels']");
         static readonly By _btnCreateNewPanel = By.XPath("//span[.='Create new panel']");
+        static readonly By _lnkEditPanel = By.XPath("//li[@class='edit' and @title='Edit Panel']");
 
         #endregion
 
@@ -36,6 +37,12 @@ namespace SeleniumAdvProject.PageObjects
         {
             get { return new Label(_webDriver.FindElement(_lblRepository)); }
         }
+
+        public Link LnkEditPanel
+        {
+            get { return new Link(_webDriver.FindElement(_lnkEditPanel)); }
+        }
+
         public Button BtnCreateNewPanel
         {
             get { return new Button(_webDriver.FindElement(_btnCreateNewPanel)); }

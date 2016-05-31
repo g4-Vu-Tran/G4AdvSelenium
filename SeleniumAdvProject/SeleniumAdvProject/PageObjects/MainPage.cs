@@ -63,6 +63,11 @@ namespace SeleniumAdvProject.PageObjects
             return this;
         }
 
+        /// <summary>
+        /// Clicks the delete link.
+        /// </summary>
+        /// <param name="pathOfPage">The path of page.</param>
+        /// <returns></returns>
         public MainPage ClickDeleteLink(string pathOfPage)
         {
             GoToPage(pathOfPage);
@@ -100,7 +105,12 @@ namespace SeleniumAdvProject.PageObjects
             return this;
         }
 
-
+        public AddNewPanelPage OpenEditPanelPopup()
+        {
+            LnkEditPanel.Click();
+            return new AddNewPanelPage(_webDriver);
+        
+        }
 
         /// <summary>
         /// Gets the position page.
