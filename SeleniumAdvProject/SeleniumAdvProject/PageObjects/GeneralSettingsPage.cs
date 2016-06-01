@@ -23,15 +23,15 @@ namespace SeleniumAdvProject.PageObjects
         #region Elements
         public TextBox TxtProfileName
         {
-            get { return new TextBox(_webDriver.FindElement(_txtProfileName)); }
+            get { return new TextBox(FindElement(_txtProfileName)); }
         }
         public ComboBox CbbItemType
         {
-            get { return new ComboBox(_webDriver.FindElement(_cbbItemType)); }
+            get { return new ComboBox(FindElement(_cbbItemType)); }
         }
         public ComboBox CbbRelatedData
         {
-            get { return new ComboBox(_webDriver.FindElement(_cbbRelatedData)); }
+            get { return new ComboBox(FindElement(_cbbRelatedData)); }
         }
         #endregion
 

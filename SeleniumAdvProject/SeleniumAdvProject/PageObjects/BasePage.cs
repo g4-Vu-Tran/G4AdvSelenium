@@ -45,7 +45,7 @@ namespace SeleniumAdvProject.PageObjects
         }
         public Link LnkDataProfiles
         {
-            get { return new Link(_webDriver.FindElement(_lnkDataProfiles)); }
+            get { return new Link(FindElement(_lnkDataProfiles)); }
         }
 
         public Button BtnCreateNewPanel

@@ -24,19 +24,19 @@ namespace SeleniumAdvProject.PageObjects
         #region Elements
         public Link LnkAddNew
         {
-            get { return new Link(_webDriver.FindElement(_lnkAddNew)); }
+            get { return new Link(FindElement(_lnkAddNew)); }
         }
         public Link LnkDelete
         {
-            get { return new Link(_webDriver.FindElement(_lnkDelete)); }
+            get { return new Link(FindElement(_lnkDelete)); }
         }
         public Link LnkCheckAll
         {
-            get { return new Link(_webDriver.FindElement(_lnkCheckAll)); }
+            get { return new Link(FindElement(_lnkCheckAll)); }
         }
         public Link LnkUnCheckAll
         {
-            get { return new Link(_webDriver.FindElement(_lnkUnCheckAll)); }
+            get { return new Link(FindElement(_lnkUnCheckAll)); }
         }
         #endregion
 

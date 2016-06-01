@@ -23,20 +23,19 @@ namespace SeleniumAdvProject.PageObjects
 
         #region Elements
         public Button BtnNext
-        {
-            get { return new Button(_webDriver.FindElement(_btnNext)); }
+        {            get { return new Button(.FindElement(_btnNext)); }
         }
         public Button BtnFinish
         {
-            get { return new Button(_webDriver.FindElement(_btnFinish)); }
+            get { return new Button(FindElement(_btnFinish)); }
         }
         public Button BtnCancel
         {
-            get { return new Button(_webDriver.FindElement(_btnCancel)); }
+            get { return new Button(FindElement(_btnCancel)); }
         }
         public Button BtnBack
         {
-            get { return new Button(_webDriver.FindElement(_btnBack)); }
+            get { return new Button(FindElement(_btnBack)); }
         }
         #endregion
 

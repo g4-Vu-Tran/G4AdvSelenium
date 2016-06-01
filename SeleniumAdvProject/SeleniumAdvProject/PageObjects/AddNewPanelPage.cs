@@ -49,35 +49,35 @@ namespace SeleniumAdvProject.PageObjects
         #region Elements
         public ComboBox CbbDataProfile
         {
-            get { return new ComboBox(_webDriver.FindElement(_cbbDataProfile)); }
+            get { return new ComboBox(FindElement(_cbbDataProfile)); }
         }
         public TextBox TxtDisplayName
         {
-            get { return new TextBox(_webDriver.FindElement(_txtDisplayName)); }
+            get { return new TextBox(FindElement(_txtDisplayName)); }
         }
         public TextBox TxtChartTitle
         {
-            get { return new TextBox(_webDriver.FindElement(_txtChartTitle)); }
+            get { return new TextBox(FindElement(_txtChartTitle)); }
         }
         public Checkbox ChbShowTitle
         {
-            get { return new Checkbox(_webDriver.FindElement(_chbShowTitle)); }
+            get { return new Checkbox(FindElement(_chbShowTitle)); }
         }
         public ComboBox CbbChartType
         {
-            get { return new ComboBox(_webDriver.FindElement(_cbbChartType)); }
+            get { return new ComboBox(FindElement(_cbbChartType)); }
         }
         public RadioButton RbChart
         {
-            get { return new RadioButton(_webDriver.FindElement(_rbChart)); }
+            get { return new RadioButton(FindElement(_rbChart)); }
         }
         public RadioButton RbReport
         {
-            get { return new RadioButton(_webDriver.FindElement(_rbReport)); }
+            get { return new RadioButton(FindElement(_rbReport)); }
         }
         public RadioButton RbIndicator
         {
-            get { return new RadioButton(_webDriver.FindElement(_rbIndicator)); }
+            get { return new RadioButton(FindElement(_rbIndicator)); }
         }
         public RadioButton RbHeadMap
         {
