@@ -26,23 +26,23 @@ namespace SeleniumAdvProject.PageObjects
         #region Elements
         public TextBox TxtPageName
         {
-            get { return new TextBox(_webDriver.FindElement(_txtPageName)); }
+            get { return new TextBox(FindElement(_txtPageName)); }
         }
         public ComboBox CbbParentPage
         {
-            get { return new ComboBox(_webDriver.FindElement(_cbbParentPage)); }
+            get { return new ComboBox(FindElement(_cbbParentPage)); }
         }
         public ComboBox CbbNumberOfColumns
         {
-            get { return new ComboBox(_webDriver.FindElement(_cbbNumberOfColumns)); }
+            get { return new ComboBox(FindElement(_cbbNumberOfColumns)); }
         }
         public ComboBox CbbDisplayAfter
         {
-            get { return new ComboBox(_webDriver.FindElement(_cbbDisplayAfter)); }
+            get { return new ComboBox(FindElement(_cbbDisplayAfter)); }
         }
         public Checkbox ChkPublic
         {
-            get { return new Checkbox(_webDriver.FindElement(_chkPublic)); }
+            get { return new Checkbox(FindElement(_chkPublic)); }
         }
         #endregion
 
@@ -93,7 +93,7 @@ namespace SeleniumAdvProject.PageObjects
             else
                 ChkPublic.Uncheck();
             BtnOk.Click();
-            WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", page.PageName)), Constants.WaitTimeoutShortSeconds);
+            //WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", page.PageName)), Constants.WaitTimeoutShortSeconds);
             return new MainPage(_webDriver);
         }
 

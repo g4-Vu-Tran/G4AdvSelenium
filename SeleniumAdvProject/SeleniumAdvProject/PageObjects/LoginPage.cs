@@ -20,19 +20,19 @@ namespace SeleniumAdvProject.PageObjects
         #region Elements
         public ComboBox DdlRepsitory
         {
-            get { return new ComboBox(_webDriver.FindElement(_ddlRepository)); }
+            get { return new ComboBox(FindElement(_ddlRepository)); }
         }
         public TextBox TxtUsername
         {
-            get { return new TextBox(_webDriver.FindElement(_txtUsername)); }
+            get { return new TextBox(FindElement(_txtUsername)); }
         }
         public TextBox TxtPassword
         {
-            get { return new TextBox(_webDriver.FindElement(_txtPassword)); }
+            get { return new TextBox(FindElement(_txtPassword)); }
         }
         public Button BtnLogin
         {
-            get { return new Button(_webDriver.FindElement(_btnLogin)); }
+            get { return new Button(FindElement(_btnLogin)); }
         }
         #endregion
 
@@ -67,8 +67,7 @@ namespace SeleniumAdvProject.PageObjects
             DdlRepsitory.SelectByText(repository);
             TxtUsername.SendKeys(username);
             TxtPassword.SendKeys(password);
-            BtnLogin.Click();
-            WaitForControlExists(_lblUsername, 500);
+            BtnLogin.Click();           
             return new MainPage(_webDriver);
         }
 

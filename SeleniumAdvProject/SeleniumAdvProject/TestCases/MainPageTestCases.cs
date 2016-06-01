@@ -62,7 +62,7 @@ namespace SeleniumAdvProject.TestCases
             mainPage.AddPage(page);
 
             //VP. Check "Test" page is displayed besides "Overview" page
-            bool actualResult = mainPage.GetPositionPage(page.PageName) < mainPage.GetPositionPage("Overview") ? true : false;
+            bool actualResult = mainPage.IsPageDisplayAfter("Overview", page.PageName);            
             Assert.IsTrue(actualResult, "\"Test\" page is not displayed besides \"Overview\" page");
 
             //Post condition

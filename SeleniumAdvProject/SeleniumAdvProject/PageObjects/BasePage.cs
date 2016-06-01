@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SeleniumAdvProject.Ultilities.Controls;
+using SeleniumAdvProject.Ultilities;
 
 namespace SeleniumAdvProject.PageObjects
 {
-    public class BasePage
+    public class BasePage:Browser
     {
-        protected IWebDriver _webDriver;
-
+        
         #region Locators
         protected static readonly By _lblUsername = By.XPath("//a[@href='#Welcome']");
         static readonly By _lblRepository = By.XPath("//a[@href='#Repository']");
@@ -35,71 +35,67 @@ namespace SeleniumAdvProject.PageObjects
         #region Elements
         public Label LblRepository
         {
-            get { return new Label(_webDriver.FindElement(_lblRepository)); }
+            get { return new Label(FindElement(_lblRepository));}
         }
 
         public Link LnkEditPanel
         {
-            get { return new Link(_webDriver.FindElement(_lnkEditPanel)); }
+            get { return new Link(FindElement(_lnkEditPanel)); }
         }
 
         public Button BtnCreateNewPanel
         {
-            get { return new Button(_webDriver.FindElement(_btnCreateNewPanel)); }
+            get { return new Button(FindElement(_btnCreateNewPanel)); }
         }
         public Label LblCurrentRepository
         {
-            get { return new Label(_webDriver.FindElement(_lblCurrentRepository)); }
+            get { return new Label(FindElement(_lblCurrentRepository)); }
         }
         public Label LblGlobalSetting
         {
-            get { return new Label(_webDriver.FindElement(_lblGlobalSetting)); }
+            get { return new Label(FindElement(_lblGlobalSetting)); }
         }
         public Link LnkAddPage
         {
-            get { return new Link(_webDriver.FindElement(_lnkAddPage)); }
+            get { return new Link(FindElement(_lnkAddPage)); }
         }
         public Link LnkCreatePanel
         {
-            get { return new Link(_webDriver.FindElement(_lnkCreatePanel)); }
+            get { return new Link(FindElement(_lnkCreatePanel)); }
         }
         public Link LnkEditPage
         {
-            get { return new Link(_webDriver.FindElement(_lnkEditPage)); }
+            get { return new Link(FindElement(_lnkEditPage)); }
         }
 
         public Button BtnChoosePanel
         {
-            get { return new Button(_webDriver.FindElement(_btnChoosePanel)); }
+            get { return new Button(FindElement(_btnChoosePanel)); }
         }
         public Link LnkLogout
         {
-            get { return new Link(_webDriver.FindElement(_lnkLogout)); }
+            get { return new Link(FindElement(_lnkLogout)); }
         }
         public Link LblUsername
         {
-            get { return new Link(_webDriver.FindElement(_lblUsername)); }
+            get { return new Link(FindElement(_lblUsername)); }
         }
         public Link LnkAdminister
         {
-            get { return new Link(_webDriver.FindElement(_lnkAdminister)); }
+            get { return new Link(FindElement(_lnkAdminister)); }
         }
         public Link LnkPanel
         {
-            get { return new Link(_webDriver.FindElement(_lnkPanel)); }
+            get { return new Link(FindElement(_lnkPanel)); }
         }
         #endregion
 
         #region Methods
 
         public BasePage() { }
-        public BasePage(IWebDriver webDriver)
-        {
-            this._webDriver = webDriver;
-        }
-
+        public BasePage(IWebDriver webDriver) : base(webDriver) { }
+      
         #region Navigate Methods
-
 
         /// <summary>
         /// Go to the page link follow path of page

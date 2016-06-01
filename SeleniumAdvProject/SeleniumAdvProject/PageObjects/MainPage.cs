@@ -22,11 +22,11 @@ namespace SeleniumAdvProject.PageObjects
         #region Elements
         public Link LnkDelete
         {
-            get { return new Link(_webDriver.FindElement(_lnkDelete)); }
+            get { return new Link(FindElement(_lnkDelete)); }
         }
         public Div DivOvelayClass
         {
-            get { return new Div(_webDriver.FindElement(_divvOvelayClass)); }
+            get { return new Div(FindElement(_divvOvelayClass)); }
         }
         #endregion
 
@@ -100,7 +100,7 @@ namespace SeleniumAdvProject.PageObjects
         {
             GoToPage(page);
             BtnChoosePanel.Click();
-            WaitForControlExists(By.XPath("//span[.='Create new panel']"), Constants.WaitTimeoutShortSeconds);
+           // WaitForControlExists(By.XPath("//span[.='Create new panel']"), Constants.WaitTimeoutShortSeconds);
             BtnCreateNewPanel.Click();
             return this;
         }
@@ -121,8 +121,7 @@ namespace SeleniumAdvProject.PageObjects
         /// <date>05/25/2015</date>
         public int GetPositionPage(string pageName)
         {
-            Link page = new Link();
-            page.FindElement(By.XPath(string.Format("//a[.='{0}']", pageName)));
+            Link page = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", pageName))));            
             return page.Location.X;
 
         }
@@ -181,7 +180,7 @@ namespace SeleniumAdvProject.PageObjects
         /// <date>05/25/2015</date>
         public bool IsPageDisplayAfter(string pageName1, string pageName2)
         {
-            Label pageTab = new Label(_webDriver.FindElement(By.XPath(string.Format("//div[@id='main-menu']/div/ul/li[.='{0}']/preceding-sibling::li[1]", pageName2, pageName1))));
+            Label pageTab = new Label(FindElement(By.XPath(string.Format("//div[@id='main-menu']/div/ul/li[.='{0}']/preceding-sibling::li[1]", pageName2, pageName1))));
             string tempPage = pageTab.Text;
             return tempPage.Equals(pageName1);
         }

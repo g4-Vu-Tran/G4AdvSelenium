@@ -4,6 +4,7 @@ using SeleniumAdvProject.Common;
 using SeleniumAdvProject.Ultilities.Controls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,12 +29,41 @@ namespace SeleniumAdvProject.Ultilities
         #endregion
 
         #region Method
+
+        public IWebElement FindElement(By by, int waitingTime = 60)
+        {
+            IWebElement iElement = null;
+            while (waitingTime > 0)
+            {
+                 Stopwatch stopwatch = new Stopwatch();
+                 stopwatch.Start();
+                try
+                {
+                    var wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(waitingTime));
+                    wait.Until(ExpectedConditions.ElementIsVisible(by));
+                    iElement=_webDriver.FindElement(by);
+                    break;
+                }
+                catch(StaleElementReferenceException){
+                    waitingTime=stopwatch.Elapsed.Seconds;
+                    FindElement(by, waitingTime);
+                }
+                catch (NullReferenceException)
+                {
+                    waitingTime = stopwatch.Elapsed.Seconds;
+                    FindElement(by, waitingTime);
+                }
+                stopwatch.Stop();
+            }         
+            return iElement;
+        }
         /// <summary>
         /// Switches to new opened window.
         /// </summary>
         /// <param name="driver">The driver.</param>
         /// <param name="isNewUrl">if set to <c>true</c> [is new URL].</param>
         /// <author>Huong Huynh</author>
+
         public void SwitchToNewOpenedWindow(IWebDriver driver, bool isNewUrl = true)
         {
             driver.Close();

@@ -8,7 +8,6 @@ namespace SeleniumAdvProject.TestCases
     [TestClass]
     public class LoginTestCases : BaseTestCase
     {
-
         /// <summary>
         /// Verify that user can login specific repository successfully via Dashboard login page with correct credentials
         /// </summary>

@@ -20,15 +20,15 @@ namespace SeleniumAdvProject.PageObjects
         #region Elements
         public Link LnkAddNew
         {
-            get { return new Link(_webDriver.FindElement(_lnkAddNew)); }
+            get { return new Link(FindElement(_lnkAddNew)); }
         }
         public Link LnkDelete
         {
-            get { return new Link(_webDriver.FindElement(_lnkDelete)); }
+            get { return new Link(FindElement(_lnkDelete)); }
         }
         public Link LnkCheckAll
         {
-            get { return new Link(_webDriver.FindElement(_lnkCheckAll)); }
+            get { return new Link(FindElement(_lnkCheckAll)); }
         }
         #endregion
 
@@ -51,7 +51,7 @@ namespace SeleniumAdvProject.PageObjects
 
         public AddNewPanelPage OpenEditPanelPopup(string panelName)
         {
-            Link LnkPanelName = new Link(_webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", panelName))));
+            Link LnkPanelName = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", panelName))));
             LnkPanelName.Click();
             return new AddNewPanelPage(_webDriver);
         }
@@ -73,7 +73,7 @@ namespace SeleniumAdvProject.PageObjects
             }
             AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
             addPanelPage.AddChart(chart);
-            WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", chart.DisplayName)));
+           // WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", chart.DisplayName)));
             return this;
         }
 

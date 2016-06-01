@@ -81,85 +81,85 @@ namespace SeleniumAdvProject.PageObjects
         }
         public RadioButton RbHeadMap
         {
-            get { return new RadioButton(_webDriver.FindElement(_rbHeadMap)); }
+            get { return new RadioButton(FindElement(_rbHeadMap)); }
         }
 
         public ComboBox CbbCategory
         {
-            get { return new ComboBox(_webDriver.FindElement(_cbbCategory)); }
+            get { return new ComboBox(FindElement(_cbbCategory)); }
         }
         public ComboBox CbbSeries
         {
-            get { return new ComboBox(_webDriver.FindElement(_cbbSeries)); }
+            get { return new ComboBox(FindElement(_cbbSeries)); }
         }
         public RadioButton Rb2D
         {
-            get { return new RadioButton(_webDriver.FindElement(_rb2D)); }
+            get { return new RadioButton(FindElement(_rb2D)); }
         }
         public RadioButton Rb3D
         {
-            get { return new RadioButton(_webDriver.FindElement(_rb3D)); }
+            get { return new RadioButton(FindElement(_rb3D)); }
         }
 
         public TextBox TxtCategoryCaption
         {
-            get { return new TextBox(_webDriver.FindElement(_txtCategoryCaption)); }
+            get { return new TextBox(FindElement(_txtCategoryCaption)); }
         }
         public TextBox TxtSeriesCaption
         {
-            get { return new TextBox(_webDriver.FindElement(_txtSeriesCaption)); }
+            get { return new TextBox(FindElement(_txtSeriesCaption)); }
         }
         public Checkbox ChbSeries
         {
-            get { return new Checkbox(_webDriver.FindElement(_chbSeries)); }
+            get { return new Checkbox(FindElement(_chbSeries)); }
         }
         public Checkbox ChbCategories
         {
-            get { return new Checkbox(_webDriver.FindElement(_chbCategories)); }
+            get { return new Checkbox(FindElement(_chbCategories)); }
         }
         public Checkbox ChbValue
         {
-            get { return new Checkbox(_webDriver.FindElement(_chbValue)); }
+            get { return new Checkbox(FindElement(_chbValue)); }
         }
         public Checkbox ChbPercentage
         {
-            get { return new Checkbox(_webDriver.FindElement(_chbPercentage)); }
+            get { return new Checkbox(FindElement(_chbPercentage)); }
         }
         public RadioButton RbNone
         {
-            get { return new RadioButton(_webDriver.FindElement(_rbNone)); }
+            get { return new RadioButton(FindElement(_rbNone)); }
         }
         public RadioButton RbTop
         {
-            get { return new RadioButton(_webDriver.FindElement(_rbTop)); }
+            get { return new RadioButton(FindElement(_rbTop)); }
         }
         public RadioButton RbRight
         {
-            get { return new RadioButton(_webDriver.FindElement(_rbRight)); }
+            get { return new RadioButton(FindElement(_rbRight)); }
         }
         public RadioButton RbBottom
         {
-            get { return new RadioButton(_webDriver.FindElement(_rbBottom)); }
+            get { return new RadioButton(FindElement(_rbBottom)); }
         }
         public RadioButton RbLeft
         {
-            get { return new RadioButton(_webDriver.FindElement(_rlLeft)); }
+            get { return new RadioButton(FindElement(_rlLeft)); }
         }
         public ComboBox CbbSelectPage
         {
-            get { return new ComboBox(_webDriver.FindElement(_cbbSelectPage)); }
+            get { return new ComboBox(FindElement(_cbbSelectPage)); }
         }
         public TextBox TxtHeight
         {
-            get { return new TextBox(_webDriver.FindElement(_txtHeight)); }
+            get { return new TextBox(FindElement(_txtHeight)); }
         }
         public RadioButton TxtFolder
         {
-            get { return new RadioButton(_webDriver.FindElement(_txtFolder)); }
+            get { return new RadioButton(FindElement(_txtFolder)); }
         }
         public Button BtnOKConfigurationPanel
         {
-            get { return new Button(_webDriver.FindElement(_btnOKConfigurationPanel)); }
+            get { return new Button(FindElement(_btnOKConfigurationPanel)); }
         }
         #endregion
 
