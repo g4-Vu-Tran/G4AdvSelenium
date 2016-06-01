@@ -240,6 +240,58 @@ namespace SeleniumAdvProject.PageObjects
         }
 
         /// <summary>
+        /// Gets the style.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string GetStyle()
+        {
+            string style = "";
+            string tmp1 = Rb2D.GetAttribute("checked");
+            if (tmp1 == "true")
+            {
+                style = Rb2D.Value;
+            }
+            string tmp2 = Rb3D.GetAttribute("checked");
+            if (tmp2 == "true")
+            {
+                style = Rb3D.Value;
+            }
+            return style;
+        
+        }
+
+        /// <summary>
+        /// Gets the type.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string GetType()
+        {
+            string type = "";
+            string tmp1 = RbChart.GetAttribute("checked");
+            if (tmp1 == "true")
+            {
+                type = RbChart.Value;
+            }
+            string tmp2 = RbIndicator.GetAttribute("checked");
+            if (tmp2 == "true")
+            {
+                type = RbIndicator.Value;
+            }
+            string tmp3 = RbReport.GetAttribute("checked");
+            if (tmp3 == "true")
+            {
+                type = RbReport.Value;
+            }
+            string tmp4 = RbHeadMap.GetAttribute("checked");
+            if (tmp4 == "true")
+            {
+                type = RbHeadMap.Value;
+            }
+            return type;
+        }
+        /// <summary>
         /// Fill Panel Data.
         /// </summary>
         /// <param name="profile">The profile.</param>
@@ -267,6 +319,68 @@ namespace SeleniumAdvProject.PageObjects
             }
             SelectLegend(legend);
             SelectStyle(style);
+            return this;
+        }
+
+        /// <summary>
+        /// Selects the type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// Author: Tu Nguyen
+        private void SelectType(string type)
+        {
+            switch (type)
+            {
+                case "Chart":
+                    RbChart.Click();
+                    break;
+                case "Indicator":
+                    RbIndicator.Click();
+                    break;
+                case "Report":
+                    RbReport.Click();
+                    break;
+                case "Heat Map":
+                    RbHeadMap.Click();
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Fills all panel data.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="dataProfile">The data profile.</param>
+        /// <param name="displayName">The display name.</param>
+        /// <param name="chartTitle">The chart title.</param>
+        /// <param name="showTitle">The show title.</param>
+        /// <param name="chartType">Type of the chart.</param>
+        /// <param name="style">The style.</param>
+        /// <param name="category">The category.</param>
+        /// <param name="series">The series.</param>
+        /// <param name="dataLabel">The data label.</param>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public AddNewPanelPage FillAllPanelData(string type, string dataProfile, string displayName, string chartTitle, string showTitle, string chartType, string style, string category, string series, string[] dataLabel)
+        {
+            SelectType(type);
+            CbbDataProfile.SelectByText(dataProfile);
+            TxtDisplayName.SendKeys(displayName);
+            TxtChartTitle.SendKeys(chartTitle);
+            switch (showTitle)
+            {
+                case "on":
+                    ChbShowTitle.Check();
+                    break;
+                case "off":
+                    ChbShowTitle.Uncheck();
+                    break;
+            }
+            SelectChartType(chartType);
+            SelectStyle(style);
+            CbbCategory.SelectByText(category);
+            CbbSeries.SelectByText(series);
+            SelectDataLabels(dataLabel);
             return this;
         }
 
