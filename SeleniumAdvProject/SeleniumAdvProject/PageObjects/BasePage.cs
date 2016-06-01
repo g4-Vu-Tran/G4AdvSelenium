@@ -27,6 +27,7 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _btnChoosePanel = By.XPath("//a[@id='btnChoosepanel']");
         static readonly By _lnkAdminister = By.XPath("//a[.='Administer']");
         static readonly By _lnkPanel = By.XPath("//a[.='Panels']");
+        static readonly By _lnkDataProfiles = By.XPath("//a[.='Data Profiles']");
         static readonly By _btnCreateNewPanel = By.XPath("//span[.='Create new panel']");
         static readonly By _lnkEditPanel = By.XPath("//li[@class='edit' and @title='Edit Panel']");
 
@@ -41,6 +42,10 @@ namespace SeleniumAdvProject.PageObjects
         public Link LnkEditPanel
         {
             get { return new Link(FindElement(_lnkEditPanel)); }
+        }
+        public Link LnkDataProfiles
+        {
+            get { return new Link(_webDriver.FindElement(_lnkDataProfiles)); }
         }
 
         public Button BtnCreateNewPanel
@@ -158,7 +163,7 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <returns></returns>
         /// <author>Huong Huynh</author>
-        /// <date>05/25/2015</date>
+        /// <date>05/25/2016</date>
         public AddNewPanelPage OpenAddNewPanelPopup()
         {
             LblGlobalSetting.MouseOver();
@@ -170,7 +175,7 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <returns></returns>
         /// <author>Huong Huynh</author>
-        /// <date>05/25/2015</date>
+        /// <date>05/25/2016</date>
         public PanelsPage OpenPanelsPage()
         {
             LnkAdminister.MouseOver();
@@ -179,11 +184,24 @@ namespace SeleniumAdvProject.PageObjects
         }
 
         /// <summary>
+        /// Go to the Data Profile page.
+        /// </summary>
+        /// <returns></returns>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2016</date>
+        public DataProfilePage GoToDataProfilePage()
+        {
+            LnkAdminister.MouseOver();
+            LnkDataProfiles.Click();
+            return new DataProfilePage(_webDriver);
+        }
+
+        /// <summary>
         /// Logouts this instance.
         /// </summary>
         /// <returns></returns>
         /// <author>Huong Huynh</author>
-        /// <date>05/25/2015</date>
+        /// <date>05/25/2016</date>
         public LoginPage Logout()
         {
             LblUsername.MouseOver();
@@ -198,7 +216,7 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="repositoryName">Name of the repository</param>
         /// <returns>The MainPage object</returns>
         /// <author>Vu Tran</author>
-        /// <date>05/26/2015</date>
+        /// <date>05/26/2016</date>
         public MainPage SelectRepository(String repositoryName)
         {
             LblRepository.MouseOver();
@@ -213,7 +231,7 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="linkName">Name of the link.</param>
         /// <returns></returns>
         /// <author>Huong Huynh</author>
-        /// <date>05/25/2015</date>
+        /// <date>05/25/2016</date>
         public Boolean IsLinkExist(string linkName)
         {
             Link Link = new Link(_webDriver, By.XPath(string.Format("//a[.='{0}']", linkName)));
@@ -381,6 +399,20 @@ namespace SeleniumAdvProject.PageObjects
             BtnChoosePanel.Click();
             BtnCreateNewPanel.Click();
             return new AddNewPanelPage(_webDriver);
+        }
+
+
+        public bool isAlertPresent()
+        {
+            try
+            {
+                _webDriver.SwitchTo().Alert();
+                return true;
+            }
+            catch (NoAlertPresentException)
+            {
+                return false;
+            }
         }
         #endregion
     }

@@ -501,6 +501,54 @@ namespace SeleniumAdvProject.TestCases
 
         }
 
+        /// <summary>
+        /// Verify that all settings within "Add New Panel" and "Edit Panel" form stay unchanged when user switches between "Legends" radio buttons
+        /// </summary>
+        /// Author: Tu Nguyen
+        [TestMethod]
+        public void DA_PANEL_TC039()
+        {
+            Console.WriteLine("DA_PANEL_TC039 - Verify that all settings within \"Add New Panel\" and \"Edit Panel\" form stay unchanged when user switches between \"Legends\" radio buttons");
+
+            //1 Navigate to Dashboard login page
+            //2 Select specific repository
+            //3 Enter valid username and password
+            //4 Click on Login button
+            LoginPage loginPage = new LoginPage(_webDriver);
+            loginPage.Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3 Click Administer/Panels link            
+            //5 Click Add New link
+            Chart chart = new Chart();
+            PanelsPage panelPage = mainPage.OpenPanelsPage();
+            panelPage.OpenAddNewPanelPopupFromLink();
+            AddNewPanelPage addPanelPopup = new AddNewPanelPage(_webDriver);
+            addPanelPopup.FillAllPanelData("Chart", "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "2D", "Name", "Location", null);
+            string currentType = addPanelPopup.GetType();
+            string currentProfile = addPanelPopup.CbbDataProfile.Value;
+            string currentName = addPanelPopup.TxtDisplayName.Value;
+            string currentChartTitle = addPanelPopup.TxtChartTitle.Value;
+            string currentShowTitle = addPanelPopup.ChbShowTitle.Value;
+            string currentChartType = addPanelPopup.CbbChartType.Value;
+            string currentStyle = addPanelPopup.GetStyle();
+            string currentCategory = addPanelPopup.CbbCategory.Value;
+            string currentSeries = addPanelPopup.CbbSeries.Value;
+
+            //6. Click None radio button for Legend
+            addPanelPopup.RbNone.Click();
+
+            //VP: All settings are unchange in Add New Panel dialog
+            Assert.AreEqual("Chart", currentType, "Current Type is " + currentType);
+            Assert.AreEqual("Test Case Execution", currentProfile, "Current Profile is " + currentProfile);
+            Assert.AreEqual("Tu_Panel", currentName, "Current Display Name is " + currentName);
+            Assert.AreEqual("Tu_Title", currentChartTitle, "Current Chart Title is " + currentChartTitle);
+            Assert.AreEqual("on", currentShowTitle, "Current Show Title is " + currentShowTitle);
+            Assert.AreEqual("Stacked Bar", currentChartType, "Current Chart Type is " + currentChartType);
+            Assert.AreEqual("2D", currentStyle, "Current Style is " + currentStyle);
+            Assert.AreEqual("Name", currentCategory, "Current Category is " + currentCategory);
+            Assert.AreEqual("Location", currentSeries, "Current Series is " + currentSeries);
+        }
 
         /// <summary>
         /// Verify that user is not allowed to create panel with duplicated "Display Name"  			
@@ -587,6 +635,58 @@ namespace SeleniumAdvProject.TestCases
         }
 
         /// <summary>
+        /// Verify that newly created data profiles are populated correctly under the "Data Profile" dropped down menu in  "Add New Panel" and "Edit Panel" control/form			
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/30/2016</date>
+        [TestMethod]
+        public void DA_PANEL_TC034()
+        {
+            Console.WriteLine("DA_PANEL_TC034 - Verify that newly created data profiles are populated correctly under the \"Data Profile\" dropped down menu in  \"Add New Panel\" and \"Edit Panel\" control/form");
+
+            //Set variables
+            Chart chart = new Chart(CommonAction.GeneratePanelName(), "Name", null);
+            string dataProfileName = CommonAction.GenerateDataProfileName();
+
+            //1. Navigate to Dashboard login page
+            //2. Login with valid account
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+
+            //2. Click on Administer/Data Profiles link
+            //3. Click on add new link
+            //4. Enter name to Name textbox
+            //5. Click on Finish button
+            mainPage.GoToDataProfilePage()
+                    .GoToGeneralSettingPage()
+                    .SetGeneralSettingsValue(dataProfileName, null, null, "Finish");
+
+            //6. Click on Administer/Panels link
+            PanelsPage panelPage = mainPage.OpenPanelsPage();
+
+            //7. Click on add new link
+            //VP. Verify that "giang - data" data profiles are populated correctly under the "Data Profile" dropped down menu.
+            AddNewPanelPage addNewPanelPage = panelPage.OpenAddNewPanelPopupFromLink();
+            Assert.IsTrue(addNewPanelPage.IsDataProfileExists(dataProfileName), string.Format("{0} is not populated correctly under the \"Data Profile\" dropped down menu",dataProfileName));
+
+            //8. Enter display name to Display Name textbox
+            //9. Click Ok button to create a panel
+            panelPage.AddNewPanel(chart, false);
+
+            //10. Click on edit link
+            //VP. Verify that "giang - data" data profiles are populated correctly under the "Data Profile" dropped down menu.
+            panelPage.OpenEditPanelPopup(chart.DisplayName);
+            Assert.IsTrue(addNewPanelPage.IsDataProfileExists(dataProfileName), string.Format("{0} is not populated correctly under the \"Data Profile\" dropped down menu", dataProfileName));
+            
+            //Post-condition
+            panelPage.CancelPanel();
+            panelPage.DeleteAllPanels();
+
+
+        }
+
+        /// <summary>
         /// Verify that no special character except '@' character is allowed to be inputted into "Chart Title" field			
         /// </summary>
         /// <author>Vu Tran</author>
@@ -632,6 +732,7 @@ namespace SeleniumAdvProject.TestCases
 
             //Post-condition
             panelPage.DeleteAllPanels();
+            mainPage.GoToDataProfilePage().DeleteAllDataProfiles();
         }
 
         /// <summary>
