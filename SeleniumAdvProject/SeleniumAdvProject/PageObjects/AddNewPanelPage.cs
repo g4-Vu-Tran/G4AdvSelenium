@@ -171,6 +171,13 @@ namespace SeleniumAdvProject.PageObjects
 
         #region Private Methods
 
+
+        public bool IsDataProfileExists(string dataProfileName)
+        {
+            IList<string> dataProfiles = CbbDataProfile.OptionStrings;
+            return dataProfiles.Contains(dataProfileName);
+        }
+
         /// <summary>
         /// Selects the legend.
         /// </summary>

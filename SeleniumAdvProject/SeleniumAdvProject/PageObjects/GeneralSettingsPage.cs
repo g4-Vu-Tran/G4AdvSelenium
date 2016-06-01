@@ -40,7 +40,7 @@ namespace SeleniumAdvProject.PageObjects
 
         public GeneralSettingsPage(IWebDriver webDriver) : base(webDriver) { }
 
-        public object SetValidGeneralSettingsValue(string name, string itemType, string relatedData, string button = "Next")
+        public object SetGeneralSettingsValue(string name, string itemType, string relatedData, string button = "Next")
         {
 
             TxtProfileName.SendKeys(name);
@@ -49,8 +49,15 @@ namespace SeleniumAdvProject.PageObjects
 
             switch (button)
             {
-                case "Finish": BtnFinish.Click();
-                    return new DataProfilePage(_webDriver);
+                case "Finish":
+                    {
+                        BtnFinish.Click();
+                        if (isAlertPresent())
+                        {
+                            return this;
+                        }
+                        return new DataProfilePage(_webDriver);
+                    }
                 case "Cancel": BtnCancel.Click();
                     return new DataProfilePage(_webDriver);
                 default: BtnNext.Click();

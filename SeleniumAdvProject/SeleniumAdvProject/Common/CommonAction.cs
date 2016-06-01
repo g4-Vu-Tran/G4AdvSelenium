@@ -42,19 +42,36 @@ namespace SeleniumAdvProject.Common
         }
 
         /// <summary>
-        /// Generate the page number
+        /// Generate the page name
         /// </summary>
         /// <returns>String</returns>
         /// <author>Vu Tran</author>
-        /// <date>05/26/2015</date>
+        /// <date>05/26/2016</date>
         public static string GeneratePageName()
         {
             return string.Format("Page {0}", GenrateRandomString());
         }
 
+        /// <summary>
+        /// Generate the Panel name
+        /// </summary>
+        /// <returns>String</returns>
+        /// <author>Vu Tran</author>
+        /// <date>05/26/2016</date>
         public static string GeneratePanelName()
         {
             return string.Format("Panel {0}", GenrateRandomString());
+        }
+
+        /// <summary>
+        /// Generate the Data Profile name
+        /// </summary>
+        /// <returns>String</returns>
+        /// <author>Vu Tran</author>
+        /// <date>05/26/2016</date>
+        public static string GenerateDataProfileName()
+        {
+            return string.Format("DataProfile {0}", GenrateRandomString());
         }
     }
 }

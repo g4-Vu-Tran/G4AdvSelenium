@@ -587,6 +587,58 @@ namespace SeleniumAdvProject.TestCases
         }
 
         /// <summary>
+        /// Verify that newly created data profiles are populated correctly under the "Data Profile" dropped down menu in  "Add New Panel" and "Edit Panel" control/form			
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/30/2016</date>
+        [TestMethod]
+        public void DA_PANEL_TC034()
+        {
+            Console.WriteLine("DA_PANEL_TC034 - Verify that newly created data profiles are populated correctly under the \"Data Profile\" dropped down menu in  \"Add New Panel\" and \"Edit Panel\" control/form");
+
+            //Set variables
+            Chart chart = new Chart(CommonAction.GeneratePanelName(), "Name", null);
+            string dataProfileName = CommonAction.GenerateDataProfileName();
+
+            //1. Navigate to Dashboard login page
+            //2. Login with valid account
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+
+            //2. Click on Administer/Data Profiles link
+            //3. Click on add new link
+            //4. Enter name to Name textbox
+            //5. Click on Finish button
+            mainPage.GoToDataProfilePage()
+                    .GoToGeneralSettingPage()
+                    .SetGeneralSettingsValue(dataProfileName, null, null, "Finish");
+
+            //6. Click on Administer/Panels link
+            PanelsPage panelPage = mainPage.OpenPanelsPage();
+
+            //7. Click on add new link
+            //VP. Verify that "giang - data" data profiles are populated correctly under the "Data Profile" dropped down menu.
+            AddNewPanelPage addNewPanelPage = panelPage.OpenAddNewPanelPopupFromLink();
+            Assert.IsTrue(addNewPanelPage.IsDataProfileExists(dataProfileName), string.Format("{0} is not populated correctly under the \"Data Profile\" dropped down menu",dataProfileName));
+
+            //8. Enter display name to Display Name textbox
+            //9. Click Ok button to create a panel
+            panelPage.AddNewPanel(chart, false);
+
+            //10. Click on edit link
+            //VP. Verify that "giang - data" data profiles are populated correctly under the "Data Profile" dropped down menu.
+            panelPage.OpenEditPanelPopup(chart.DisplayName);
+            Assert.IsTrue(addNewPanelPage.IsDataProfileExists(dataProfileName), string.Format("{0} is not populated correctly under the \"Data Profile\" dropped down menu", dataProfileName));
+            
+            //Post-condition
+            panelPage.CancelPanel();
+            panelPage.DeleteAllPanels();
+
+
+        }
+
+        /// <summary>
         /// Verify that no special character except '@' character is allowed to be inputted into "Chart Title" field			
         /// </summary>
         /// <author>Vu Tran</author>
@@ -632,6 +684,7 @@ namespace SeleniumAdvProject.TestCases
 
             //Post-condition
             panelPage.DeleteAllPanels();
+            mainPage.GoToDataProfilePage().DeleteAllDataProfiles();
         }
 
         /// <summary>

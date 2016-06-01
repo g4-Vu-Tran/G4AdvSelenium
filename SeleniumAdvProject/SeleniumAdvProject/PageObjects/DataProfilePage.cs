@@ -58,6 +58,18 @@ namespace SeleniumAdvProject.PageObjects
             ConfirmDialog("OK");
             return this;
         }
+
+        /// <summary>
+        /// Delete all Data Profiles
+        /// </summary>
+        /// <returns>DataProfilePage object</returns>
+        /// <author>Vu Tran</author>
+        /// <date>05/30/2016</date>
+        public GeneralSettingsPage GoToGeneralSettingPage()
+        {
+            LnkAddNew.Click();
+            return new GeneralSettingsPage(_webDriver);
+        }
         #endregion
     }
 }
