@@ -8,7 +8,7 @@ namespace SeleniumAdvProject.TestCases
 {
 
     [TestClass]
-    public class LoginTestCases: TestBase
+    public class LoginTestCases
     {
         [TestMethod]
         public void TC01()
