@@ -182,7 +182,7 @@ namespace SeleniumAdvProject.PageObjects
         /// Selects the legend.
         /// </summary>
         /// <param name="legend">The legend.</param>
-        private void SelectLegend(string legend)
+        public void SelectLegend(string legend)
         {
             switch (legend)
             {
@@ -199,6 +199,7 @@ namespace SeleniumAdvProject.PageObjects
                     RbLeft.Click();
                     break;
                 default:
+                    RbNone.Click();
                     break;
             }
         }
@@ -622,9 +623,17 @@ namespace SeleniumAdvProject.PageObjects
         /// Closes the panel dialog.
         /// </summary>
         /// Author: Tu Nguyen
-        public void ClosePanelDialog()
+        public void ClosePanelDialog(string button)
         {
-            BtnCancel.Click();
+            switch(button)
+            {
+                case "OK":
+                    BtnOk.Click();
+                    break;
+                case "Cancel":
+                    BtnCancel.Click();
+                    break;
+             }
         }
 
         #endregion

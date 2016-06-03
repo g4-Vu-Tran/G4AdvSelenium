@@ -264,7 +264,7 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual("enabled", actualSeriesCaptionStatus4, "Series Caption textbox is " + actualSeriesCaptionStatus4);
 
             //Post-Condition
-            addPanelPopup.ClosePanelDialog();
+            addPanelPopup.ClosePanelDialog("Cancel");
             mainPage.DeletePage(page.PageName);
             mainPage.Logout();
         }
@@ -496,7 +496,7 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual("Top", currentLegend3, "Legend is " + currentLegend3);
 
             //Post Condition
-            addPanelPopup.ClosePanelDialog();
+            addPanelPopup.ClosePanelDialog("Cancel");
             panelPage.DeleteAllPanels();
 
         }
@@ -520,7 +520,7 @@ namespace SeleniumAdvProject.TestCases
 
             //3 Click Administer/Panels link            
             //5 Click Add New link
-            Chart chart = new Chart();
+
             PanelsPage panelPage = mainPage.OpenPanelsPage();
             panelPage.OpenAddNewPanelPopupFromLink();
             AddNewPanelPage addPanelPopup = new AddNewPanelPage(_webDriver);
@@ -536,7 +536,7 @@ namespace SeleniumAdvProject.TestCases
             string currentSeries = addPanelPopup.CbbSeries.Value;
 
             //6. Click None radio button for Legend
-            addPanelPopup.RbNone.Click();
+            addPanelPopup.SelectLegend("None");
 
             //VP: All settings are unchange in Add New Panel dialog
             Assert.AreEqual("Chart", currentType, "Current Type is " + currentType);
@@ -548,6 +548,142 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual("2D", currentStyle, "Current Style is " + currentStyle);
             Assert.AreEqual("Name", currentCategory, "Current Category is " + currentCategory);
             Assert.AreEqual("Location", currentSeries, "Current Series is " + currentSeries);
+
+            //7. Click Top radio button for Legend
+            addPanelPopup.SelectLegend("Top");
+
+            //VP: All settings are unchange in Add New Panel dialog
+            Assert.AreEqual("Chart", currentType, "Current Type is " + currentType);
+            Assert.AreEqual("Test Case Execution", currentProfile, "Current Profile is " + currentProfile);
+            Assert.AreEqual("Tu_Panel", currentName, "Current Display Name is " + currentName);
+            Assert.AreEqual("Tu_Title", currentChartTitle, "Current Chart Title is " + currentChartTitle);
+            Assert.AreEqual("on", currentShowTitle, "Current Show Title is " + currentShowTitle);
+            Assert.AreEqual("Stacked Bar", currentChartType, "Current Chart Type is " + currentChartType);
+            Assert.AreEqual("2D", currentStyle, "Current Style is " + currentStyle);
+            Assert.AreEqual("Name", currentCategory, "Current Category is " + currentCategory);
+            Assert.AreEqual("Location", currentSeries, "Current Series is " + currentSeries);
+
+            //8. Click Right radio button for Legend
+            addPanelPopup.SelectLegend("Right");
+
+            //VP: All settings are unchange in Add New Panel dialog
+            Assert.AreEqual("Chart", currentType, "Current Type is " + currentType);
+            Assert.AreEqual("Test Case Execution", currentProfile, "Current Profile is " + currentProfile);
+            Assert.AreEqual("Tu_Panel", currentName, "Current Display Name is " + currentName);
+            Assert.AreEqual("Tu_Title", currentChartTitle, "Current Chart Title is " + currentChartTitle);
+            Assert.AreEqual("on", currentShowTitle, "Current Show Title is " + currentShowTitle);
+            Assert.AreEqual("Stacked Bar", currentChartType, "Current Chart Type is " + currentChartType);
+            Assert.AreEqual("2D", currentStyle, "Current Style is " + currentStyle);
+            Assert.AreEqual("Name", currentCategory, "Current Category is " + currentCategory);
+            Assert.AreEqual("Location", currentSeries, "Current Series is " + currentSeries);
+
+            //9. Click Bottom radio button for Legend
+            addPanelPopup.SelectLegend("Bottom");
+
+            //VP: All settings are unchange in Add New Panel dialog
+            Assert.AreEqual("Chart", currentType, "Current Type is " + currentType);
+            Assert.AreEqual("Test Case Execution", currentProfile, "Current Profile is " + currentProfile);
+            Assert.AreEqual("Tu_Panel", currentName, "Current Display Name is " + currentName);
+            Assert.AreEqual("Tu_Title", currentChartTitle, "Current Chart Title is " + currentChartTitle);
+            Assert.AreEqual("on", currentShowTitle, "Current Show Title is " + currentShowTitle);
+            Assert.AreEqual("Stacked Bar", currentChartType, "Current Chart Type is " + currentChartType);
+            Assert.AreEqual("2D", currentStyle, "Current Style is " + currentStyle);
+            Assert.AreEqual("Name", currentCategory, "Current Category is " + currentCategory);
+            Assert.AreEqual("Location", currentSeries, "Current Series is " + currentSeries);
+
+            //10. Click Left radio button for Legend
+            addPanelPopup.SelectLegend("Left");
+
+            //VP: All settings are unchange in Add New Panel dialog
+            Assert.AreEqual("Chart", currentType, "Current Type is " + currentType);
+            Assert.AreEqual("Test Case Execution", currentProfile, "Current Profile is " + currentProfile);
+            Assert.AreEqual("Tu_Panel", currentName, "Current Display Name is " + currentName);
+            Assert.AreEqual("Tu_Title", currentChartTitle, "Current Chart Title is " + currentChartTitle);
+            Assert.AreEqual("on", currentShowTitle, "Current Show Title is " + currentShowTitle);
+            Assert.AreEqual("Stacked Bar", currentChartType, "Current Chart Type is " + currentChartType);
+            Assert.AreEqual("2D", currentStyle, "Current Style is " + currentStyle);
+            Assert.AreEqual("Name", currentCategory, "Current Category is " + currentCategory);
+            Assert.AreEqual("Location", currentSeries, "Current Series is " + currentSeries);
+
+            //11. Create a new panel
+            addPanelPopup.ClosePanelDialog("Cancel");
+            Chart chart = new Chart("Test Case Execution", CommonAction.GeneratePanelName(), null, 400, null, "Tu_Title", "Stacked Bar", "Name", null, "Location", null, null, null, "2D", false);
+            addPanelPopup.AddChart(chart);
+
+            //12. Click Edit Panel link
+            panelPage.OpenEditPanelPopup(CommonAction.GeneratePanelName());
+
+            string currentProfile1 = addPanelPopup.CbbDataProfile.Value;
+            string currentName1 = addPanelPopup.TxtDisplayName.Value;
+            string currentChartTitle1 = addPanelPopup.TxtChartTitle.Value;
+            string currentChartType1 = addPanelPopup.CbbChartType.Value;
+            string currentStyle1 = addPanelPopup.GetStyle();
+            string currentCategory1 = addPanelPopup.CbbCategory.Value;
+            string currentSeries1 = addPanelPopup.CbbSeries.Value;
+
+            //13. Click None radio button for Legend
+            addPanelPopup.SelectLegend("None");
+
+            //VP: All settings are unchange in Add New Panel dialog
+            Assert.AreEqual("Test Case Execution", currentProfile1, "Current Profile is " + currentProfile1);
+            Assert.AreEqual(CommonAction.GeneratePanelName(), currentName1, "Current Display Name is " + currentName1);
+            Assert.AreEqual("Tu_Title", currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
+            Assert.AreEqual("Stacked Bar", currentChartType1, "Current Chart Type is " + currentChartType1);
+            Assert.AreEqual("2D", currentStyle1, "Current Style is " + currentStyle1);
+            Assert.AreEqual("Name", currentCategory1, "Current Category is " + currentCategory1);
+            Assert.AreEqual("Location", currentSeries1, "Current Series is " + currentSeries1);
+
+            //14. Click Top radio button for Legend
+            addPanelPopup.SelectLegend("Top");
+
+            //VP: All settings are unchange in Add New Panel dialog
+            Assert.AreEqual("Test Case Execution", currentProfile1, "Current Profile is " + currentProfile1);
+            Assert.AreEqual(CommonAction.GeneratePanelName(), currentName1, "Current Display Name is " + currentName1);
+            Assert.AreEqual("Tu_Title", currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
+            Assert.AreEqual("Stacked Bar", currentChartType1, "Current Chart Type is " + currentChartType1);
+            Assert.AreEqual("2D", currentStyle1, "Current Style is " + currentStyle1);
+            Assert.AreEqual("Name", currentCategory1, "Current Category is " + currentCategory1);
+            Assert.AreEqual("Location", currentSeries1, "Current Series is " + currentSeries1);
+
+            //15. Click Right radio button for Legend
+            addPanelPopup.SelectLegend("Right");
+
+            //VP: All settings are unchange in Add New Panel dialog
+            Assert.AreEqual("Test Case Execution", currentProfile1, "Current Profile is " + currentProfile1);
+            Assert.AreEqual(CommonAction.GeneratePanelName(), currentName1, "Current Display Name is " + currentName1);
+            Assert.AreEqual("Tu_Title", currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
+            Assert.AreEqual("Stacked Bar", currentChartType1, "Current Chart Type is " + currentChartType1);
+            Assert.AreEqual("2D", currentStyle1, "Current Style is " + currentStyle1);
+            Assert.AreEqual("Name", currentCategory1, "Current Category is " + currentCategory1);
+            Assert.AreEqual("Location", currentSeries1, "Current Series is " + currentSeries1);
+
+            //16. Click Bottom radio button for Legend
+            addPanelPopup.SelectLegend("Bottom");
+
+            //VP: All settings are unchange in Add New Panel dialog
+            Assert.AreEqual("Test Case Execution", currentProfile1, "Current Profile is " + currentProfile1);
+            Assert.AreEqual(CommonAction.GeneratePanelName(), currentName1, "Current Display Name is " + currentName1);
+            Assert.AreEqual("Tu_Title", currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
+            Assert.AreEqual("Stacked Bar", currentChartType1, "Current Chart Type is " + currentChartType1);
+            Assert.AreEqual("2D", currentStyle1, "Current Style is " + currentStyle1);
+            Assert.AreEqual("Name", currentCategory1, "Current Category is " + currentCategory1);
+            Assert.AreEqual("Location", currentSeries1, "Current Series is " + currentSeries1);
+
+            //17. Click Left radio button for Legend
+            addPanelPopup.SelectLegend("Left");
+
+            //VP: All settings are unchange in Add New Panel dialog
+            Assert.AreEqual("Test Case Execution", currentProfile1, "Current Profile is " + currentProfile1);
+            Assert.AreEqual(CommonAction.GeneratePanelName(), currentName1, "Current Display Name is " + currentName1);
+            Assert.AreEqual("Tu_Title", currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
+            Assert.AreEqual("Stacked Bar", currentChartType1, "Current Chart Type is " + currentChartType1);
+            Assert.AreEqual("2D", currentStyle1, "Current Style is " + currentStyle1);
+            Assert.AreEqual("Name", currentCategory1, "Current Category is " + currentCategory1);
+            Assert.AreEqual("Location", currentSeries1, "Current Series is " + currentSeries1);
+
+            //Post-Condition
+            addPanelPopup.ClosePanelDialog("Cancel");
+            panelPage.DeleteAllPanels();
         }
 
         /// <summary>
@@ -668,7 +804,7 @@ namespace SeleniumAdvProject.TestCases
             //7. Click on add new link
             //VP. Verify that "giang - data" data profiles are populated correctly under the "Data Profile" dropped down menu.
             AddNewPanelPage addNewPanelPage = panelPage.OpenAddNewPanelPopupFromLink();
-            Assert.IsTrue(addNewPanelPage.IsDataProfileExists(dataProfileName), string.Format("{0} is not populated correctly under the \"Data Profile\" dropped down menu",dataProfileName));
+            Assert.IsTrue(addNewPanelPage.IsDataProfileExists(dataProfileName), string.Format("{0} is not populated correctly under the \"Data Profile\" dropped down menu", dataProfileName));
 
             //8. Enter display name to Display Name textbox
             //9. Click Ok button to create a panel
@@ -678,7 +814,7 @@ namespace SeleniumAdvProject.TestCases
             //VP. Verify that "giang - data" data profiles are populated correctly under the "Data Profile" dropped down menu.
             panelPage.OpenEditPanelPopup(chart.DisplayName);
             Assert.IsTrue(addNewPanelPage.IsDataProfileExists(dataProfileName), string.Format("{0} is not populated correctly under the \"Data Profile\" dropped down menu", dataProfileName));
-            
+
             //Post-condition
             panelPage.CancelPanel();
             panelPage.DeleteAllPanels();
