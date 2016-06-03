@@ -23,7 +23,7 @@ namespace SeleniumAdvProject.PageObjects
 
         #region Elements
         public Button BtnNext
-        {            get { return new Button(.FindElement(_btnNext)); }
+        {            get { return new Button(FindElement(_btnNext)); }
         }
         public Button BtnFinish
         {
