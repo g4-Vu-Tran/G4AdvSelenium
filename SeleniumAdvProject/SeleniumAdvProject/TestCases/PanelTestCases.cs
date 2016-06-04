@@ -1017,7 +1017,7 @@ namespace SeleniumAdvProject.TestCases
             //VP. Verify that "giang - data" data profiles are populated correctly under the "Data Profile" dropped down menu.
             panelPage.OpenEditPanelPopup(chart.DisplayName);
             Assert.IsTrue(addNewPanelPage.IsDataProfileExists(dataProfileName), string.Format("{0} is not populated correctly under the \"Data Profile\" dropped down menu", dataProfileName));
-            
+
             //Post-condition
             panelPage.CancelPanel();
             panelPage.DeleteAllPanels();
@@ -1157,6 +1157,85 @@ namespace SeleniumAdvProject.TestCases
         }
 
         /// <summary>
+        /// Verify that user is able to navigate properly to folders with "Select Folder" form
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2016</date>
+        [TestMethod]
+        public void DA_PANEL_TC047()
+        {
+            Console.WriteLine("DA_PANEL_TC047 - Verify that user is able to navigate properly to folders with \"Select Folder\" form");
+
+            //Set variables
+            Chart chart = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "!#$%^&*()'", "Name", null, null, null, null, null, null, null, false);
+
+            //1. Navigate to Dashboard login page
+            //2. Login with valid account
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Create a new page
+            //4. Click Choose Panel button
+            //5. Click Create New Panel button
+            //6. Enter all required fields on Add New Panel page
+            //7. Click Ok button
+            //8. Click Select Folder button on Panel Configuration dialog
+            //9. Choose folder name in Folder Form
+            //10. Click Ok button on Select Folder form
+            //VP. User is able to select properly folder with Select Folder form
+
+        }
+
+        /// <summary>
+        /// Verify that population of corresponding item type ( e.g. Actions, Test Modules) folders is correct in "Select Folder form
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2016</date>
+        //[TestMethod]
+        public void DA_PANEL_TC048()
+        {
+            Console.WriteLine("DA_PANEL_TC048 - Verify that population of corresponding item type ( e.g. Actions, Test Modules) folders is correct in \"Select Folder form\"");
+
+            //1. Navigate to Dashboard login page
+            //2. Login with valid account
+            //3. Create a new page
+            //4. Click Choose Panel button
+            //5. Click Create New Panel button
+            //6. Enter all required fields on Add New Panel page
+            //7. Click Ok button
+            //8. Click Select Folder button on Panel Configuration dialog
+            //VP. Population of corresponding item type ( e.g. Actions, Test Modules) folders is correct in "Select Folder form
+
+
+        }
+
+        /// <summary>
+        /// Verify that all folder paths of corresponding item type ( e.g. Actions, Test Modules) are correct in "Select Folder" form 
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2016</date>
+        //[TestMethod]
+        public void DA_PANEL_TC049()
+        {
+            Console.WriteLine("DA_PANEL_TC049 - Verify that all folder paths of corresponding item type ( e.g. Actions, Test Modules) are correct in \"Select Folder\" form ");
+
+            //1. Navigate to Dashboard login page
+            //2. Login with valid account
+            //3. Create a new page
+            //4. Click Choose Panel button
+            //5. Click Create New Panel button
+            //6. Enter all required fields on Add New Panel page
+            //7. Click Ok button
+            //8. Click Select Folder button on Panel Configuration dialog
+            //9. Choose folder name in Folder Form
+            //10. Click Ok button on Select Folder form
+            //VP. Folder path is displayed correctly after selecting folder in Select Folder form
+
+
+
+        }
+
+        /// <summary>
         /// Verify that user is able to successfully edit "Display Name" of any Panel providing that the name is not duplicated with existing Panels' name
         /// </summary>
         /// <author>Vu Tran</author>
@@ -1238,53 +1317,6 @@ namespace SeleniumAdvProject.TestCases
 
             //Post-Condition
             panelPage.DeleteAllPanels();
-
-        }
-
-        /// <summary>
-        /// Verify that user is unable to edit  "Height *" field to anything apart from integer number with in 300-800 range
-        /// </summary>
-        /// <author>Vu Tran</author>
-        /// <date>05/25/2016</date>
-        [TestMethod]
-        public void DA_PANEL_TC052()
-        {
-            Console.WriteLine("DA_PANEL_TC051 - Verify that user is unable to edit  \"Height *\" field to anything apart from integer number with in 300-800 range");
-
-            //Set variables
-            Page page = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
-            Chart chart = new Chart(null, CommonAction.GeneratePanelName(), null, 40, null, "Chart@", "Name", null, null, null, null, null, null, null, false);
-
-            //1. Navigate to Dashboard login page
-            //2. Login with valid account
-            LoginPage loginPage = new LoginPage(_webDriver).Open();
-            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
-
-            //3. Create a new page
-            mainPage.AddPage(page);
-
-            //4. Click Choose Panel button
-            //5. Click Create New Panel button
-            //6. Enter all required fields on Add New Panel page
-            //7. Click Ok button
-            //8. Enter invalid height into Height field
-            //9. Click Ok button
-            //VP. There is message "Panel Height must be greater than or equal to 300 and lower than or equal to 800"
-            //10. Close Warning Message box
-            AddNewPanelPage addPanelPage = mainPage.OpenPanelsPage().AddChartWithExpectedError(chart);
-            string actualMsg = addPanelPage.GetDialogText();
-            string expectedMsg = "Panel Height must be greater than or equal to 300 and lower than or equal to 800";
-            Assert.AreEqual(expectedMsg, actualMsg, string.Format("Message incorrect {0}", actualMsg));
-            addPanelPage.ConfirmDialog("OK");
-
-            //11. Enter valid height into Height field
-            //12. Click Ok button
-            //VP. User is able to edit Height field to anything apart from integer number with in 300-800 range
-            chart.Height = 400;
-
-
-            //Post-Condition
-            //panelPage.DeleteAllPanels();
 
         }
 
