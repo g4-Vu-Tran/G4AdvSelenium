@@ -22,7 +22,7 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _chbShowTitle = By.XPath("//input[@id='chkShowTitle']");
         static readonly By _cbbChartType = By.XPath("//select[@id='cbbChartType']");
         static readonly By _cbbCategory = By.XPath("//select[@id='cbbCategoryField']");
-        static readonly By _cbbSeries = By.XPath("//select[@id='cbbSeriesField']/optgroup[@label='Action']");
+        static readonly By _cbbSeries = By.XPath("//select[@id='cbbSeriesField']");
         static readonly By _txtCategoryCaption = By.XPath("//input[@id='txtCategoryXAxis']");
         static readonly By _txtSeriesCaption = By.XPath("//input[@id='txtValueYAxis']");
         static readonly By _chbSeries = By.XPath("//input[@id='chkSeriesName']");
@@ -182,7 +182,7 @@ namespace SeleniumAdvProject.PageObjects
         /// Selects the legend.
         /// </summary>
         /// <param name="legend">The legend.</param>
-        private void SelectLegend(string legend)
+        public void SelectLegend(string legend)
         {
             switch (legend)
             {
@@ -199,6 +199,7 @@ namespace SeleniumAdvProject.PageObjects
                     RbLeft.Click();
                     break;
                 default:
+                    RbNone.Click();
                     break;
             }
         }
@@ -214,27 +215,27 @@ namespace SeleniumAdvProject.PageObjects
             string tmp1 = RbNone.GetAttribute("checked");
             if (tmp1 == "true")
             {
-                legend = RbNone.Value;
+                legend = "None";
             }
             string tmp2 = RbLeft.GetAttribute("checked");
             if (tmp2 == "true")
             {
-                legend = RbLeft.Value;
+                legend = "Left";
             }
             string tmp3 = RbRight.GetAttribute("checked");
             if (tmp3 == "true")
             {
-                legend = RbRight.Value;
+                legend = "Right";
             }
             string tmp4 = RbTop.GetAttribute("checked");
             if (tmp4 == "true")
             {
-                legend = RbTop.Value;
+                legend = "Top";
             }
             string tmp5 = RbBottom.GetAttribute("checked");
             if (tmp5 == "true")
             {
-                legend = RbBottom.Value;
+                legend = "Bottom";
             }
             return legend;
         }
@@ -250,12 +251,12 @@ namespace SeleniumAdvProject.PageObjects
             string tmp1 = Rb2D.GetAttribute("checked");
             if (tmp1 == "true")
             {
-                style = Rb2D.Value;
+                style = "2D";
             }
             string tmp2 = Rb3D.GetAttribute("checked");
             if (tmp2 == "true")
             {
-                style = Rb3D.Value;
+                style = "3D";
             }
             return style;
         
@@ -266,60 +267,30 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <returns></returns>
         /// Author: Tu Nguyen
-        public string GetType()
+        public string GetPanelType()
         {
             string type = "";
             string tmp1 = RbChart.GetAttribute("checked");
             if (tmp1 == "true")
             {
-                type = RbChart.Value;
+                type = "Chart";
             }
             string tmp2 = RbIndicator.GetAttribute("checked");
             if (tmp2 == "true")
             {
-                type = RbIndicator.Value;
+                type = "Indicator";
             }
             string tmp3 = RbReport.GetAttribute("checked");
             if (tmp3 == "true")
             {
-                type = RbReport.Value;
+                type = "Report";
             }
             string tmp4 = RbHeadMap.GetAttribute("checked");
             if (tmp4 == "true")
             {
-                type = RbHeadMap.Value;
+                type = "Heat Map";
             }
             return type;
-        }
-        /// <summary>
-        /// Fill Panel Data.
-        /// </summary>
-        /// <param name="profile">The profile.</param>
-        /// <param name="displayName">The display name.</param>
-        /// <param name="chartTitle">The chart title.</param>
-        /// <param name="showTitle">The show title.</param>
-        /// <param name="legend">The legend.</param>
-        /// <param name="style">The style.</param>
-        /// <returns></returns>
-        /// Author: Tu Nguyen
-        public AddNewPanelPage FillPanelData(string profile, string displayName, string chartTitle, string chartType, string showTitle, string legend, string style)
-        {
-            CbbDataProfile.SelectByText(profile);
-            TxtDisplayName.SendKeys(displayName);
-            SelectChartType(chartType);
-            TxtChartTitle.SendKeys(chartTitle);
-            switch (showTitle)
-            {
-                case "on":
-                    ChbShowTitle.Check();
-                    break;
-                case "off":
-                    ChbShowTitle.Uncheck();
-                    break;
-            }
-            SelectLegend(legend);
-            SelectStyle(style);
-            return this;
         }
 
         /// <summary>
@@ -361,27 +332,40 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="dataLabel">The data label.</param>
         /// <returns></returns>
         /// Author: Tu Nguyen
-        public AddNewPanelPage FillAllPanelData(string type, string dataProfile, string displayName, string chartTitle, string showTitle, string chartType, string style, string category, string series, string[] dataLabel)
+        public AddNewPanelPage FillPanelData(string type, string dataProfile, string displayName, string chartTitle, string showTitle, string chartType, string style, string category, string series, string dataLabel, bool selected, string legend)
         {
             SelectType(type);
-            CbbDataProfile.SelectByText(dataProfile);
-            TxtDisplayName.SendKeys(displayName);
-            TxtChartTitle.SendKeys(chartTitle);
+            SelectChartType(chartType);
+            CbbCategory.SelectByTextFromGroup(category);
+            CbbSeries.SelectByTextFromGroup(series);
+            TxtDisplayName.EnterText(displayName);
+            TxtChartTitle.EnterText(chartTitle);
+            CbbDataProfile.SelectByTextFromGroup(dataProfile);
+            bool temp = GetCheckBoxStatus(ChbShowTitle);
             switch (showTitle)
             {
                 case "on":
-                    ChbShowTitle.Check();
+                    if (temp == false) { ChbShowTitle.Click(); }
                     break;
                 case "off":
-                    ChbShowTitle.Uncheck();
+                    if (temp == true) { ChbShowTitle.Click(); }
                     break;
             }
-            SelectChartType(chartType);
             SelectStyle(style);
-            CbbCategory.SelectByText(category);
-            CbbSeries.SelectByText(series);
-            SelectDataLabels(dataLabel);
+            SelectDataLabel(dataLabel, selected);
+            SelectLegend(legend);
             return this;
+        }
+
+        /// <summary>
+        /// Gets the CheckBox status.
+        /// </summary>
+        /// <param name="ck">The ck.</param>
+        /// <returns></returns>
+        /// Author: TU Nguyen
+        private Boolean GetCheckBoxStatus(Checkbox ck)
+        {
+            return ck.Selected;
         }
 
         /// <summary>
@@ -405,11 +389,65 @@ namespace SeleniumAdvProject.PageObjects
                     ChbPercentage.Click();
             }
         }
+
+        /// <summary>
+        /// Selects the data label.
+        /// </summary>
+        /// <param name="dataLabel">The data label.</param>
+        /// Author: TuNguyen
+        private void SelectDataLabel(string dataLabel, bool selected)
+        {
+            if ((dataLabel == null))
+                return;
+            switch (dataLabel)
+            {
+                case "Series":
+                    if (selected == true)
+                    {
+                        ChbSeries.Check();
+                    }
+                    else
+                    {
+                        ChbSeries.Uncheck();
+                    }
+                    break;
+                case "Categories":
+                    if (selected == true)
+                    {
+                        ChbCategories.Check();
+                    }
+                    else
+                    {
+                        ChbCategories.Uncheck();
+                    }
+                    break;
+                case "Value":
+                    if (selected == true)
+                    {
+                        ChbValue.Check();
+                    }
+                    else
+                    {
+                        ChbValue.Uncheck();
+                    }
+                    break;
+                case "Percentage":
+                    if (selected == true)
+                    {
+                        ChbPercentage.Check();
+                    }
+                    else
+                    {
+                        ChbPercentage.Uncheck();
+                    }
+                    break;
+            }
+        }
         /// <summary>
         /// Selects the style.
         /// </summary>
         /// <param name="style">The style.</param>
-        private void SelectStyle(string style)
+        public void SelectStyle(string style)
         {
             switch (style)
             {
@@ -595,8 +633,9 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="type">The type.</param>
         /// <returns></returns>
         /// Author: Tu Nguyen
-        public AddNewPanelPage SelectChartType(string type)
+        public void SelectChartType(string type)
         {
+
             switch (type)
             {
                 case "Pie":
@@ -616,16 +655,23 @@ namespace SeleniumAdvProject.PageObjects
                     break;
             }
 
-            return this;
         }
 
         /// <summary>
         /// Closes the panel dialog.
         /// </summary>
         /// Author: Tu Nguyen
-        public void ClosePanelDialog()
+        public void ClosePanelDialog(string button)
         {
+            switch (button)
+        {
+                case "OK":
+                    BtnOk.Click();
+                    break;
+                case "Cancel":
             BtnCancel.Click();
+                    break;
+        }
         }
 
         #endregion
@@ -636,18 +682,27 @@ namespace SeleniumAdvProject.PageObjects
         /// <returns>Main Page</returns>
         /// <author>Huong Huynh</author>
         /// <date>5/30/2016</date>
+        /// <param name="pChart">The p chart.</param>
+        /// <returns></returns>
+        /// Update: Tu Nguyen
         public MainPage AddChart(Chart pChart)
         {
             RbChart.Click();
-            CbbDataProfile.SelectByText(pChart.DataProfile);
             TxtDisplayName.SendKeys(pChart.DisplayName);
             TxtChartTitle.SendKeys(pChart.ChartTitle);
-            CbbChartType.SelectByText(pChart.ChartType);
-            if (pChart.ShowTitle)
-                ChbShowTitle.Check();
-            else
-                ChbShowTitle.Uncheck();
-            CbbCategory.SelectByText(pChart.Category);
+            CbbDataProfile.SelectByTextFromGroup(pChart.DataProfile);
+            bool temp = GetCheckBoxStatus(ChbShowTitle);
+            switch (pChart.ShowTitle)
+            {
+                case true:
+                    if (temp == false) { ChbShowTitle.Click(); }
+                    break;
+                case false:
+                    if (temp == true) { ChbShowTitle.Click(); }
+                    break;
+            }
+            SelectChartType(pChart.ChartType);
+            CbbCategory.SelectByTextFromGroup(pChart.Category);
             TxtCategoryCaption.SendKeys(pChart.CategoryCaption);
             CbbSeries.SelectByTextFromGroup(pChart.Series);
             TxtSeriesCaption.SendKeys(pChart.SeriesCaption);
@@ -676,6 +731,7 @@ namespace SeleniumAdvProject.PageObjects
                 TxtFolder.SendKeys(folder);
                 BtnOKConfigurationPanel.Click();
             }
+            
         }
 
         //public string SettingPanelWithExpectedError(string selectPage, int height, string folder)

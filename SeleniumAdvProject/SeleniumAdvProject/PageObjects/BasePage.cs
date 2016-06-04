@@ -238,6 +238,18 @@ namespace SeleniumAdvProject.PageObjects
             return Link.isDisplayed();
         }
 
+        /// <summary>
+        /// Determines whether [is div exist] [the specified div name].
+        /// </summary>
+        /// <param name="divName">Name of the div.</param>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public Boolean IsDivExist(string divName)
+        {
+            Div div = new Div(_webDriver, By.XPath(string.Format("//div[@title='{0}']", divName)));
+            return div.isDisplayed();
+        }
+
         #endregion
 
         #region Get Text Methods
@@ -328,7 +340,7 @@ namespace SeleniumAdvProject.PageObjects
             //{
             //    throw new Exception("No element have been found.");
 
-            //}
+            }
         }
 
         /// <summary>
@@ -376,7 +388,7 @@ namespace SeleniumAdvProject.PageObjects
             string dglMessage = _webDriver.SwitchTo().Alert().Text;
             return dglMessage;
 
-        }
+        //}
 
         /// <summary>
         /// Gets the URL

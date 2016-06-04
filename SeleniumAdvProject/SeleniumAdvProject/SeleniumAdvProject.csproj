@@ -113,7 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Documents\Dashboard_Testcases.xls" />
-    <None Include="Documents\How to run.docx" />
+    <None Include="Documents\How to run.doc" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
