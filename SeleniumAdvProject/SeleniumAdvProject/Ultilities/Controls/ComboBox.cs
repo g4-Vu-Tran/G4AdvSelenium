@@ -56,7 +56,8 @@ namespace SeleniumAdvProject.Ultilities.Controls
         /// <param name="index">The index.</param>
         public void SelectByIndex(int index)
         {
-            GetSelectControl();
+            //GetSelectControl();
+            selectElement = new SelectElement(element);
             selectElement.SelectByIndex(index);
         }
 

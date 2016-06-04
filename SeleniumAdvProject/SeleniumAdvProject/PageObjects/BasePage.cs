@@ -271,6 +271,18 @@ namespace SeleniumAdvProject.PageObjects
             return Link.isDisplayed();
         }
 
+        /// <summary>
+        /// Determines whether [is div exist] [the specified div name].
+        /// </summary>
+        /// <param name="divName">Name of the div.</param>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public Boolean IsDivExist(string divName)
+        {
+            Div div = new Div(_webDriver, By.XPath(string.Format("//div[@title='{0}']", divName)));
+            return div.isDisplayed();
+        }
+
         #endregion
 
         #region Get Text Methods
@@ -289,11 +301,11 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <param name="driver">The driver.</param>
         /// <param name="isNewUrl">if set to <c>true</c> [is new URL].</param>
-        public void SwitchToNewOpenedWindow(IWebDriver driver, bool isNewUrl = true)
-        {
-            driver.Close();
-            driver.SwitchTo().Window(driver.WindowHandles.Last());
-        }
+        //public void SwitchToNewOpenedWindow(IWebDriver driver, bool isNewUrl = true)
+        //{
+        //    driver.Close();
+        //    driver.SwitchTo().Window(driver.WindowHandles.Last());
+        //}
 
         /// <summary>
         /// Waits for page load complete
@@ -301,18 +313,18 @@ namespace SeleniumAdvProject.PageObjects
         /// <return></return>
         /// <author>Huong Huynh</author>
         /// <date>05/26/2015</date>
-        public void WaitForPageLoadComplete()
-        {
-            WebDriverWait wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(Constants.WaitTimeoutShortSeconds));
-            try
-            {
-                wait.Until(w => ((IJavaScriptExecutor)_webDriver).ExecuteScript("return document.readyState;").Equals("loaded"));
-            }
-            catch (WebDriverException e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-        }
+        //public void WaitForPageLoadComplete()
+        //{
+        //    WebDriverWait wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(Constants.WaitTimeoutShortSeconds));
+        //    try
+        //    {
+        //        wait.Until(w => ((IJavaScriptExecutor)_webDriver).ExecuteScript("return document.readyState;").Equals("loaded"));
+        //    }
+        //    catch (WebDriverException e)
+        //    {
+        //        Console.WriteLine(e.ToString());
+        //    }
+        //}
         /// <summary>
         /// Switches to new frame
         /// </summary>
@@ -320,20 +332,20 @@ namespace SeleniumAdvProject.PageObjects
         /// <return></return>
         /// <author>Huong Huynh</author>
         /// <date>05/26/2015</date>
-        public void SwitchToNewFrame(IWebElement element)
-        {
-            _webDriver.SwitchTo().Frame(element);
-        }
+        //public void SwitchToNewFrame(IWebElement element)
+        //{
+        //    _webDriver.SwitchTo().Frame(element);
+        //}
         /// <summary>
         /// Closes the window
         /// </summary>
         /// <return></return>
         /// <author>Huong Huynh</author>
         /// <date>05/26/2015</date>
-        public void CloseWindow()
-        {
-            _webDriver.Close();
-        }
+        //public void CloseWindow()
+        //{
+        //    _webDriver.Close();
+        //}
 
         /// <summary>
         /// Waits for control exists
@@ -343,24 +355,24 @@ namespace SeleniumAdvProject.PageObjects
         /// <return></return>
         /// <author>Huong Huynh</author>
         /// <date>05/26/2015</date>
-        public void WaitForControlExists(By control, int timeoutInSeconds = Constants.WaitTimeoutShortSeconds)
-        {
-            try
-            {
-                _webDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(timeoutInSeconds));
-                IWebElement element = _webDriver.FindElement(control);
-                if (element == null)
-                {
-                    WebDriverWait wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(timeoutInSeconds));
-                    wait.Until(drv => drv.FindElement(control));
-                }
-            }
-            catch
-            {
-                throw new Exception("No element have been found.");
+        //public void WaitForControlExists(By control, int timeoutInSeconds = Constants.WaitTimeoutShortSeconds)
+        //{
+        //    try
+        //    {
+        //        _webDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(timeoutInSeconds));
+        //        IWebElement element = _webDriver.FindElement(control);
+        //        if (element == null)
+        //        {
+        //            WebDriverWait wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(timeoutInSeconds));
+        //            wait.Until(drv => drv.FindElement(control));
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        throw new Exception("No element have been found.");
 
-            }
-        }
+        //    }
+        //}
 
         /// <summary>
         /// Refreshes the current page
@@ -368,10 +380,10 @@ namespace SeleniumAdvProject.PageObjects
         /// <return></return>
         /// <author>Huong Huynh</author>
         /// <date>05/26/2015</date>
-        public void RefreshCurrentPage()
-        {
-            _webDriver.Navigate().Refresh();
-        }
+        //public void RefreshCurrentPage()
+        //{
+        //    _webDriver.Navigate().Refresh();
+        //}
 
         /// <summary>
         /// Confirm OK/YES/NO/CANCEL on the dialog
@@ -380,21 +392,21 @@ namespace SeleniumAdvProject.PageObjects
         /// <returns></returns>
         /// <author>Huong Huynh</author>
         /// <date>05/26/2015</date>
-        public void ConfirmDialog(string buttonName)
-        {
-            switch (buttonName.ToUpper())
-            {
-                case "OK":
-                case "YES":
-                    _webDriver.SwitchTo().Alert().Accept();
-                    break;
+        //public void ConfirmDialog(string buttonName)
+        //{
+        //    switch (buttonName.ToUpper())
+        //    {
+        //        case "OK":
+        //        case "YES":
+        //            _webDriver.SwitchTo().Alert().Accept();
+        //            break;
 
-                case "NO":
-                case "CANCEL":
-                    _webDriver.SwitchTo().Alert().Dismiss();
-                    break;
-            }
-        }
+        //        case "NO":
+        //        case "CANCEL":
+        //            _webDriver.SwitchTo().Alert().Dismiss();
+        //            break;
+        //    }
+        //}
 
         /// <summary>
         /// Get the text message in the dialog
@@ -402,12 +414,12 @@ namespace SeleniumAdvProject.PageObjects
         /// <returns>String</returns>
         /// <author>Huong Huynh</author>
         /// <date>05/26/2015</date>
-        public string GetDialogText()
-        {
-            string dglMessage = _webDriver.SwitchTo().Alert().Text;
-            return dglMessage;
+        //public string GetDialogText()
+        //{
+        //    string dglMessage = _webDriver.SwitchTo().Alert().Text;
+        //    return dglMessage;
 
-        }
+        //}
 
         /// <summary>
         /// Gets the URL
@@ -421,11 +433,11 @@ namespace SeleniumAdvProject.PageObjects
             return url;
         }
 
-        public void ClickLinkText(string linkText)
-        {
-            Link lnkDynamic = new Link(_webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", linkText))));
-            lnkDynamic.Click();
-        }
+        //public void ClickLinkText(string linkText)
+        //{
+        //    Link lnkDynamic = new Link(_webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", linkText))));
+        //    lnkDynamic.Click();
+        //}
 
         public AddNewPanelPage OpenAddNewPanelPageFromButton()
         {
