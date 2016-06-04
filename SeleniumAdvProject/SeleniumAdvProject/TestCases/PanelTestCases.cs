@@ -412,7 +412,7 @@ namespace SeleniumAdvProject.TestCases
             //14. Select 'Show Title' checkbox
             //15. Select 'Legends' radio button
             //16. Select 'Style' radio button
-            addPanelPopup.FillPanelData(null, "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "3D", null, null, null, "Top");
+            addPanelPopup.FillPanelData(null, "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "3D", null, null, null, true, "Top");
 
             //VP: Settings of 'Chart Type', 'Data Profile', 'Display Name', 'Chart Title', 'Show Title' and 'Legends' stay unchanged
             string currentChartType = addPanelPopup.CbbChartType.Value;
@@ -514,7 +514,7 @@ namespace SeleniumAdvProject.TestCases
             PanelsPage panelPage = mainPage.OpenPanelsPage();
             panelPage.OpenAddNewPanelPopupFromLink();
             AddNewPanelPage addPanelPopup = new AddNewPanelPage(_webDriver);
-            addPanelPopup.FillPanelData("Chart", "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "2D", "Name", "Location", null, null);
+            addPanelPopup.FillPanelData("Chart", "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "2D", "Name", "Location", null, true, null);
             string currentType = addPanelPopup.GetPanelType();
             string currentProfile = addPanelPopup.CbbDataProfile.GetSelectedText();
             string currentName = addPanelPopup.TxtDisplayName.Value;
@@ -675,6 +675,156 @@ namespace SeleniumAdvProject.TestCases
             //Post-Condition
             addPanelPopup.ClosePanelDialog("Cancel");
             panelPage.DeleteAllPanels();
+        }
+
+        /// <summary>
+        /// Verify that all settings within "Add New Panel" and "Edit Panel" form stay unchanged when user switches between "Data Labels" check boxes buttons.
+        /// </summary>
+        /// Author: Tu Nguyen
+        [TestMethod]
+        public void DA_PANEL_TC041()
+        {
+            Console.WriteLine("DA_PANEL_TC041 - Verify that all settings within \"Add New Panel\" and \"Edit Panel\" form stay unchanged when user switches between \"Data Labels\" check boxes buttons");
+
+            //1 Navigate to Dashboard login page
+            //2 Select specific repository
+            //3 Enter valid username and password
+            //4 Click on Login button
+            LoginPage loginPage = new LoginPage(_webDriver);
+            loginPage.Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3 Click Administer/Panels link            
+            //5 Click Add New link
+            PanelsPage panelPage = mainPage.OpenPanelsPage();
+            panelPage.OpenAddNewPanelPopupFromLink();
+            AddNewPanelPage addPanelPopup = new AddNewPanelPage(_webDriver);
+            addPanelPopup.FillPanelData("Chart", "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "2D", "Name", "Location", null, true, null);
+            string currentType = addPanelPopup.GetPanelType();
+            string currentProfile = addPanelPopup.CbbDataProfile.GetSelectedText();
+            string currentName = addPanelPopup.TxtDisplayName.Value;
+            string currentChartTitle = addPanelPopup.TxtChartTitle.Value;
+            string currentShowTitle = addPanelPopup.ChbShowTitle.Value;
+            string currentChartType = addPanelPopup.CbbChartType.Value;
+            string currentStyle = addPanelPopup.GetStyle();
+            string currentCategory = addPanelPopup.CbbCategory.Value;
+            string currentSeries = addPanelPopup.CbbSeries.Value;
+
+            //6. Check Series checkbox for Data Labels
+            addPanelPopup.FillPanelData(null, null, null, null, null, null, null, null, null, "Series", true, null);
+            
+            //VP: All settings are unchange in Add New Panel dialog
+            Assert.AreEqual("Chart", currentType, "Current Type is " + currentType);
+            Assert.AreEqual("Test Case Execution", currentProfile, "Current Profile is " + currentProfile);
+            Assert.AreEqual("Tu_Panel", currentName, "Current Display Name is " + currentName);
+            Assert.AreEqual("Tu_Title", currentChartTitle, "Current Chart Title is " + currentChartTitle);
+            Assert.AreEqual("on", currentShowTitle, "Current Show Title is " + currentShowTitle);
+            Assert.AreEqual("Stacked Bar", currentChartType, "Current Chart Type is " + currentChartType);
+            Assert.AreEqual("2D", currentStyle, "Current Style is " + currentStyle);
+            Assert.AreEqual("name", currentCategory, "Current Category is " + currentCategory);
+            Assert.AreEqual("location", currentSeries, "Current Series is " + currentSeries);
+
+            //7. Uncheck Series checkbox
+            addPanelPopup.FillPanelData(null, null, null, null, null, null, null, null, null, "Series", false, null);
+
+            //8. Check Value checkbox for Data Labels
+            addPanelPopup.FillPanelData(null, null, null, null, null, null, null, null, null, "Value", true, null);
+
+            //VP: All settings are unchange in Add New Panel dialog
+            Assert.AreEqual("Chart", currentType, "Current Type is " + currentType);
+            Assert.AreEqual("Test Case Execution", currentProfile, "Current Profile is " + currentProfile);
+            Assert.AreEqual("Tu_Panel", currentName, "Current Display Name is " + currentName);
+            Assert.AreEqual("Tu_Title", currentChartTitle, "Current Chart Title is " + currentChartTitle);
+            Assert.AreEqual("on", currentShowTitle, "Current Show Title is " + currentShowTitle);
+            Assert.AreEqual("Stacked Bar", currentChartType, "Current Chart Type is " + currentChartType);
+            Assert.AreEqual("2D", currentStyle, "Current Style is " + currentStyle);
+            Assert.AreEqual("name", currentCategory, "Current Category is " + currentCategory);
+            Assert.AreEqual("location", currentSeries, "Current Series is " + currentSeries);
+
+            //9. Uncheck Value checkbox
+            addPanelPopup.FillPanelData(null, null, null, null, null, null, null, null, null, "Value", false, null);
+
+            //10. Check Percentage checbox for Data Labels
+            addPanelPopup.FillPanelData(null, null, null, null, null, null, null, null, null, "Percentage", true, null);
+
+            //VP: All settings are unchange in Add New Panel dialog
+            Assert.AreEqual("Chart", currentType, "Current Type is " + currentType);
+            Assert.AreEqual("Test Case Execution", currentProfile, "Current Profile is " + currentProfile);
+            Assert.AreEqual("Tu_Panel", currentName, "Current Display Name is " + currentName);
+            Assert.AreEqual("Tu_Title", currentChartTitle, "Current Chart Title is " + currentChartTitle);
+            Assert.AreEqual("on", currentShowTitle, "Current Show Title is " + currentShowTitle);
+            Assert.AreEqual("Stacked Bar", currentChartType, "Current Chart Type is " + currentChartType);
+            Assert.AreEqual("2D", currentStyle, "Current Style is " + currentStyle);
+            Assert.AreEqual("name", currentCategory, "Current Category is " + currentCategory);
+            Assert.AreEqual("location", currentSeries, "Current Series is " + currentSeries);
+
+            //11. Uncheck Percentage checkbox
+            addPanelPopup.FillPanelData(null, null, null, null, null, null, null, null, null, "Percentage", false, null);
+
+            //Close current panel
+            addPanelPopup.ClosePanelDialog("Cancel");
+            
+            //12. Create a new panel
+            //13. Click Edit Panel link
+            panelPage.OpenAddNewPanelPopupFromLink();
+            Chart chart = new Chart("Test Case Execution", "Tu_Panel", null, 400, null, "Tu_Title", "Stacked Bar", "Name", null, "Location", null, null, null, "2D", false);
+            addPanelPopup.AddChart(chart);
+            panelPage.OpenEditPanelPopup("Tu_Panel");
+
+            string currentProfile1 = addPanelPopup.CbbDataProfile.GetSelectedText();
+            string currentName1 = addPanelPopup.TxtDisplayName.Value;
+            string currentChartTitle1 = addPanelPopup.TxtChartTitle.Value;
+            string currentChartType1 = addPanelPopup.CbbChartType.Value;
+            string currentStyle1 = addPanelPopup.GetStyle();
+            string currentCategory1 = addPanelPopup.CbbCategory.Value;
+            string currentSeries1 = addPanelPopup.CbbSeries.Value;
+
+            //14. Check Series checkbox for Data Labels
+            addPanelPopup.FillPanelData(null, null, null, null, null, null, null, null, null, "Series", true, null);
+
+            //VP: All settings are unchange in Edit New Panel dialog
+            Assert.AreEqual("Test Case Execution", currentProfile1, "Current Profile is " + currentProfile1);
+            Assert.AreEqual("Tu_Panel", currentName1, "Current Display Name is " + currentName1);
+            Assert.AreEqual("Tu_Title", currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
+            Assert.AreEqual("Stacked Bar", currentChartType1, "Current Chart Type is " + currentChartType1);
+            Assert.AreEqual("2D", currentStyle1, "Current Style is " + currentStyle1);
+            Assert.AreEqual("name", currentCategory1, "Current Category is " + currentCategory1);
+            Assert.AreEqual("location", currentSeries1, "Current Series is " + currentSeries1);
+
+            //15. Uncheck Series checkbox
+            addPanelPopup.FillPanelData(null, null, null, null, null, null, null, null, null, "Series", false, null);
+
+            //16. Check Value checkbox for Data Labels
+            addPanelPopup.FillPanelData(null, null, null, null, null, null, null, null, null, "Value", true, null);
+
+            //VP: All settings are unchange in Edit New Panel dialog
+            Assert.AreEqual("Test Case Execution", currentProfile1, "Current Profile is " + currentProfile1);
+            Assert.AreEqual("Tu_Panel", currentName1, "Current Display Name is " + currentName1);
+            Assert.AreEqual("Tu_Title", currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
+            Assert.AreEqual("Stacked Bar", currentChartType1, "Current Chart Type is " + currentChartType1);
+            Assert.AreEqual("2D", currentStyle1, "Current Style is " + currentStyle1);
+            Assert.AreEqual("name", currentCategory1, "Current Category is " + currentCategory1);
+            Assert.AreEqual("location", currentSeries1, "Current Series is " + currentSeries1);
+
+            //17. Uncheck Value checkbox
+            addPanelPopup.FillPanelData(null, null, null, null, null, null, null, null, null, "Value", false, null);
+
+            //18. Check Percentage checbox for Data Labels
+            addPanelPopup.FillPanelData(null, null, null, null, null, null, null, null, null, "Percentage", true, null);
+
+            //VP: All settings are unchange in Edit New Panel dialog
+            Assert.AreEqual("Test Case Execution", currentProfile1, "Current Profile is " + currentProfile1);
+            Assert.AreEqual("Tu_Panel", currentName1, "Current Display Name is " + currentName1);
+            Assert.AreEqual("Tu_Title", currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
+            Assert.AreEqual("Stacked Bar", currentChartType1, "Current Chart Type is " + currentChartType1);
+            Assert.AreEqual("2D", currentStyle1, "Current Style is " + currentStyle1);
+            Assert.AreEqual("name", currentCategory1, "Current Category is " + currentCategory1);
+            Assert.AreEqual("location", currentSeries1, "Current Series is " + currentSeries1);
+
+            //Post-Condition
+            addPanelPopup.ClosePanelDialog("Cancel");
+            panelPage.DeleteAllPanels();
+
         }
 
         /// <summary>

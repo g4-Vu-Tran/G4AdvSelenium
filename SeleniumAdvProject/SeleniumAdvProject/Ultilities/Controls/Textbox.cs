@@ -32,6 +32,10 @@ namespace SeleniumAdvProject.Ultilities.Controls
         /// Author: Tu Nguyen
         public void EnterText(string text)
         {
+            if (text == null)
+            {
+                return;
+            }
             element.Clear();
             element.Click();
             element.SendKeys(text);

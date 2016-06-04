@@ -292,7 +292,7 @@ namespace SeleniumAdvProject.PageObjects
             }
             return type;
         }
-        
+
         /// <summary>
         /// Selects the type.
         /// </summary>
@@ -332,28 +332,40 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="dataLabel">The data label.</param>
         /// <returns></returns>
         /// Author: Tu Nguyen
-        public AddNewPanelPage FillPanelData(string type, string dataProfile, string displayName, string chartTitle, string showTitle, string chartType, string style, string category, string series, string[] dataLabel, string legend)
+        public AddNewPanelPage FillPanelData(string type, string dataProfile, string displayName, string chartTitle, string showTitle, string chartType, string style, string category, string series, string dataLabel, bool selected, string legend)
         {
             SelectType(type);
             TxtDisplayName.EnterText(displayName);
             TxtChartTitle.SendKeys(chartTitle);
             CbbDataProfile.SelectByTextFromGroup(dataProfile);
+            bool temp = GetCheckBoxStatus(ChbShowTitle);
             switch (showTitle)
             {
                 case "on":
-                    ChbShowTitle.Check();
+                    if (temp == false) { ChbShowTitle.Click(); }
                     break;
                 case "off":
-                    ChbShowTitle.Uncheck();
+                    if (temp == true) { ChbShowTitle.Click(); }
                     break;
             }
             SelectStyle(style);
             SelectChartType(chartType);
             CbbCategory.SelectByTextFromGroup(category);
             CbbSeries.SelectByTextFromGroup(series);
-            SelectDataLabels(dataLabel);
+            SelectDataLabel(dataLabel, selected);
             SelectLegend(legend);
             return this;
+        }
+
+        /// <summary>
+        /// Gets the CheckBox status.
+        /// </summary>
+        /// <param name="ck">The ck.</param>
+        /// <returns></returns>
+        /// Author: TU Nguyen
+        private Boolean GetCheckBoxStatus(Checkbox ck)
+        {
+            return ck.Selected;
         }
 
         /// <summary>
@@ -374,6 +386,60 @@ namespace SeleniumAdvProject.PageObjects
                     ChbValue.Click();
                 if (dataLabel[i].Equals("Percentage"))
                     ChbPercentage.Click();
+            }
+        }
+
+        /// <summary>
+        /// Selects the data label.
+        /// </summary>
+        /// <param name="dataLabel">The data label.</param>
+        /// Author: TuNguyen
+        private void SelectDataLabel(string dataLabel, bool selected)
+        {
+            if ((dataLabel == null))
+                return;
+            switch (dataLabel)
+            {
+                case "Series":
+                    if (selected == true)
+                    {
+                        ChbSeries.Check();
+                    }
+                    else
+                    {
+                        ChbSeries.Uncheck();
+                    }
+                    break;
+                case "Categories":
+                    if (selected == true)
+                    {
+                        ChbCategories.Check();
+                    }
+                    else
+                    {
+                        ChbCategories.Uncheck();
+                    }
+                    break;
+                case "Value":
+                    if (selected == true)
+                    {
+                        ChbValue.Check();
+                    }
+                    else
+                    {
+                        ChbValue.Uncheck();
+                    }
+                    break;
+                case "Percentage":
+                    if (selected == true)
+                    {
+                        ChbPercentage.Check();
+                    }
+                    else
+                    {
+                        ChbPercentage.Uncheck();
+                    }
+                    break;
             }
         }
         /// <summary>
@@ -568,7 +634,7 @@ namespace SeleniumAdvProject.PageObjects
         /// Author: Tu Nguyen
         public AddNewPanelPage SelectChartType(string type)
         {
-            
+
             switch (type)
             {
                 case "Pie":
@@ -613,16 +679,23 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <param name="pChart">The p chart.</param>
         /// <returns></returns>
+        /// Update: Tu Nguyen
         public MainPage AddChart(Chart pChart)
         {
             RbChart.Click();
             TxtDisplayName.SendKeys(pChart.DisplayName);
             TxtChartTitle.SendKeys(pChart.ChartTitle);
             CbbDataProfile.SelectByTextFromGroup(pChart.DataProfile);
-            if (pChart.ShowTitle)
-                ChbShowTitle.Check();
-            else
-                ChbShowTitle.Uncheck();
+            bool temp = GetCheckBoxStatus(ChbShowTitle);
+            switch (pChart.ShowTitle)
+            {
+                case true:
+                    if (temp == false) { ChbShowTitle.Click(); }
+                    break;
+                case false:
+                    if (temp == true) { ChbShowTitle.Click(); }
+                    break;
+            }
             SelectChartType(pChart.ChartType);
             CbbCategory.SelectByTextFromGroup(pChart.Category);
             TxtCategoryCaption.SendKeys(pChart.CategoryCaption);
