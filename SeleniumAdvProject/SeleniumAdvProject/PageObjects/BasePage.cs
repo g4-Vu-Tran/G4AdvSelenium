@@ -339,8 +339,7 @@ namespace SeleniumAdvProject.PageObjects
             //catch
             //{
             //    throw new Exception("No element have been found.");
-
-            }
+            //}
         }
 
         /// <summary>
@@ -387,8 +386,7 @@ namespace SeleniumAdvProject.PageObjects
         {
             string dglMessage = _webDriver.SwitchTo().Alert().Text;
             return dglMessage;
-
-        //}
+        }
 
         /// <summary>
         /// Gets the URL

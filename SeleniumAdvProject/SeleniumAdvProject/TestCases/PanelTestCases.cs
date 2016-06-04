@@ -481,12 +481,9 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual("on", currentShowTitle1, "Show Title is " + currentShowTitle1);
             Assert.AreEqual("Top", currentLegend1, "Legend is " + currentLegend1);
 
-            //Post Condition
-            addPanelPopup.ClosePanelDialog();
+            //Post Condition            
             panelPage.DeletePanels("All");
             addPanelPopup.ClosePanelDialog("Cancel");
-            panelPage.DeleteAllPanels();
-
             mainPage.DeletePage(page.PageName);
 
         }
@@ -674,7 +671,7 @@ namespace SeleniumAdvProject.TestCases
 
             //Post-Condition
             addPanelPopup.ClosePanelDialog("Cancel");
-            panelPage.DeleteAllPanels();
+            panelPage.DeletePanels("All");
         }
 
         /// <summary>
@@ -823,7 +820,7 @@ namespace SeleniumAdvProject.TestCases
 
             //Post-Condition
             addPanelPopup.ClosePanelDialog("Cancel");
-            panelPage.DeleteAllPanels();
+            panelPage.DeletePanels("All");
 
         }
 
@@ -835,7 +832,6 @@ namespace SeleniumAdvProject.TestCases
         public void DA_PANEL_TC052()
         {
             Console.WriteLine("DA_PANEL_TC052 - Verify that user is unable to edit  \"Height *\" field to anything apart from integer number with in 300-800 range");
-
             //1 Navigate to Dashboard login page
             //2 Select a specific repository 
             //3. Enter valid Username and Password
@@ -884,7 +880,7 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual(true, actual, "Actual panel exist");
 
             //Post-condition
-            panelPage.DeleteAllPanels();
+            panelPage.DeletePanels("All");
             mainPage.DeletePage(page.PageName);
 
 
