@@ -335,8 +335,11 @@ namespace SeleniumAdvProject.PageObjects
         public AddNewPanelPage FillPanelData(string type, string dataProfile, string displayName, string chartTitle, string showTitle, string chartType, string style, string category, string series, string dataLabel, bool selected, string legend)
         {
             SelectType(type);
+            SelectChartType(chartType);
+            CbbCategory.SelectByTextFromGroup(category);
+            CbbSeries.SelectByTextFromGroup(series);
             TxtDisplayName.EnterText(displayName);
-            TxtChartTitle.SendKeys(chartTitle);
+            TxtChartTitle.EnterText(chartTitle);
             CbbDataProfile.SelectByTextFromGroup(dataProfile);
             bool temp = GetCheckBoxStatus(ChbShowTitle);
             switch (showTitle)
@@ -349,9 +352,6 @@ namespace SeleniumAdvProject.PageObjects
                     break;
             }
             SelectStyle(style);
-            SelectChartType(chartType);
-            CbbCategory.SelectByTextFromGroup(category);
-            CbbSeries.SelectByTextFromGroup(series);
             SelectDataLabel(dataLabel, selected);
             SelectLegend(legend);
             return this;
@@ -632,7 +632,7 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="type">The type.</param>
         /// <returns></returns>
         /// Author: Tu Nguyen
-        public AddNewPanelPage SelectChartType(string type)
+        public void SelectChartType(string type)
         {
 
             switch (type)
@@ -653,7 +653,7 @@ namespace SeleniumAdvProject.PageObjects
                     CbbChartType.SelectByIndex(4);
                     break;
             }
-            return this;
+
         }
 
         /// <summary>
@@ -724,6 +724,7 @@ namespace SeleniumAdvProject.PageObjects
                 TxtFolder.SendKeys(folder);
                 BtnOKConfigurationPanel.Click();
             }
+            
         }
 
 

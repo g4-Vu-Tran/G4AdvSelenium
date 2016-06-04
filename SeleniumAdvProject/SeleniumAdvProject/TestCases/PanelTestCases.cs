@@ -712,7 +712,7 @@ namespace SeleniumAdvProject.TestCases
 
             //6. Check Series checkbox for Data Labels
             addPanelPopup.FillPanelData(null, null, null, null, null, null, null, null, null, "Series", true, null);
-            
+
             //VP: All settings are unchange in Add New Panel dialog
             Assert.AreEqual("Chart", currentType, "Current Type is " + currentType);
             Assert.AreEqual("Test Case Execution", currentProfile, "Current Profile is " + currentProfile);
@@ -763,7 +763,7 @@ namespace SeleniumAdvProject.TestCases
 
             //Close current panel
             addPanelPopup.ClosePanelDialog("Cancel");
-            
+
             //12. Create a new panel
             //13. Click Edit Panel link
             panelPage.OpenAddNewPanelPopupFromLink();
@@ -827,6 +827,68 @@ namespace SeleniumAdvProject.TestCases
 
         }
 
+        /// <summary>
+        /// Verify that user is unable to edit  "Height *" field to anything apart from integer number with in 300-800 range.
+        /// </summary>
+        /// Author: Tu Nguyen
+        [TestMethod]
+        public void DA_PANEL_TC052()
+        {
+            Console.WriteLine("DA_PANEL_TC052 - Verify that user is unable to edit  \"Height *\" field to anything apart from integer number with in 300-800 range");
+
+            //1 Navigate to Dashboard login page
+            //2 Select a specific repository 
+            //3. Enter valid Username and Password
+            //4. Click 'Login' button
+            LoginPage loginPage = new LoginPage(_webDriver);
+            loginPage.Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //5. Click 'Add Page' button
+            //6. Enter Page Name
+            //7. Click 'OK' button
+            string pageName = CommonAction.GenrateRandomString(Constants.lenghtRandomString);
+            Page page = new Page(pageName, "Select parent", 2, "Overview", false);
+            mainPage.AddPage(page);
+
+            //8. Click 'Choose Panels' button below 'main_hung' button        
+            //9. Click 'Create new panel' button
+            PanelsPage panelPage = new PanelsPage(_webDriver);
+            mainPage.OpenNewPanelPopUp(page.PageName);
+            AddNewPanelPage addPanelPopup = new AddNewPanelPage(_webDriver);
+
+            //10. Enter all required fields on Add New Panel page
+            addPanelPopup.FillPanelData("Chart", "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "2D", "Name", "Location", null, true, null);
+
+            //11. Click Ok button
+            addPanelPopup.ClosePanelDialog("OK");
+
+            //12. Enter invalid height into Height field
+            //13. Click Ok button
+            addPanelPopup.SettingPanel(page.PageName, 200, null);
+
+            //VP: There is message "Panel Height must be greater than or equal to 300 and lower than or equal to 800"
+            string actualMessage = panelPage.GetDialogText();
+            string expectedMessage = "Panel height must be greater than or equal to 300 and less than or equal to 800.";
+
+            Assert.AreEqual(expectedMessage, actualMessage, "Actual Message is " + actualMessage);
+            panelPage.ConfirmDialog("OK");
+
+            //14. Enter valid height into Height field
+            //15. Click Ok button
+            addPanelPopup.SettingPanel(page.PageName, 400, null);
+
+            //VP:User is able to edit Height field to anything apart from integer number with in 300-800 range
+            mainPage.OpenPanelsPage();
+            bool actual = panelPage.IsPanelExist("Tu_Panel");
+            Assert.AreEqual(true, actual, "Actual panel exist");
+
+            //Post-condition
+            panelPage.DeleteAllPanels();
+            mainPage.DeletePage(page.PageName);
+
+
+        }
         /// <summary>
         /// Verify that user is not allowed to create panel with duplicated "Display Name"  			
         /// </summary>

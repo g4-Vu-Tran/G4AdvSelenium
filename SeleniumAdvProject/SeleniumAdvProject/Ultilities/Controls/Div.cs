@@ -13,6 +13,7 @@ namespace SeleniumAdvProject.Ultilities.Controls
         public Div(string xPath) : base(By.XPath(xPath)) { }
         public Div(IWebElement element) : base(element) { }
         public Div(By by) : base(by) { }
+        public Div(IWebDriver webDriver, By by) : base(webDriver, by) { }
        
     }
 }

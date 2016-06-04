@@ -110,7 +110,7 @@ namespace SeleniumAdvProject.Ultilities
         /// <param name="timeoutInSeconds">The timeout in seconds.</param>
         /// <exception cref="System.Exception">No element have been found.</exception>
         /// <author>Huong Huynh</author>
-        public void WaitForControlExists(By control, int timeoutInSeconds)
+        public void WaitForControlExists(By control, int timeoutInSeconds = Constants.WaitTimeoutShortSeconds)
         {
             try
             {
