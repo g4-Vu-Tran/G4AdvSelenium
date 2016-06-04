@@ -49,14 +49,19 @@ namespace SeleniumAdvProject.PageObjects
             return new AddNewPanelPage(_webDriver);
         }
 
+        /// <summary>
+        /// Opens the edit panel popup.
+        /// </summary>
+        /// <param name="panelName">Name of the panel.</param>
+        /// <returns>Add New Panel Page</returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2016</date>s
         public AddNewPanelPage OpenEditPanelPopup(string panelName)
         {
             Link LnkPanelName = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", panelName))));
             LnkPanelName.Click();
             return new AddNewPanelPage(_webDriver);
         }
-
-
 
         /// <summary>
         /// Adds the new panel.
@@ -73,7 +78,7 @@ namespace SeleniumAdvProject.PageObjects
             }
             AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
             addPanelPage.AddChart(chart);
-           // WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", chart.DisplayName)));
+            // WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", chart.DisplayName)));
             return this;
         }
 
@@ -98,13 +103,26 @@ namespace SeleniumAdvProject.PageObjects
         /// <summary>
         /// Delete all panels
         /// </summary>
-        /// <returns>PanelsPage object</returns>
-        /// <author>Vu Tran</author>
-        /// <date>05/30/2016</date>
-        public PanelsPage DeleteAllPanels()
+        /// <param name="panelName">input a panel name to delete a panel or "All" to detele all panel</param>
+        /// <returns> PanelsPage object </returns>
+        /// <author> Vu Tran </author>
+        /// <editor>Huong Huynh-update delete with special panel or all panel</editor>
+        /// <date>06/03/2016</date>
+        public PanelsPage DeletePanels(string panelName)
         {
-            LnkCheckAll.Click();
-            LnkDelete.Click();
+            if (panelName.Equals("All"))
+            {
+                LnkCheckAll.Click();
+                LnkDelete.Click();
+            }
+            else
+            {
+                Checkbox chkPanel = new Checkbox(FindElement(By.XPath(string.Format("//td[.='{0}']//preceding-sibling::td/input[@id='chkDelPanel']", panelName))));
+                chkPanel.Check();
+                Link lnkEdit = new Link(FindElement(By.XPath(string.Format("//td[.='{0}']//following-sibling::td/a[.='Delete']", panelName))));
+                lnkEdit.Click();
+            }
+
             ConfirmDialog("OK");
             return this;
         }

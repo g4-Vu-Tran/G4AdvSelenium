@@ -7,23 +7,22 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Remote;
 using System.Text.RegularExpressions;
 using SeleniumAdvProject.DataObjects;
+using System.Collections.Generic;
 
 namespace SeleniumAdvProject.TestCases
 {
     [TestClass]
     public class PanelTestCase : BaseTestCase
     {
-
         /// <summary>
         /// Verify that when "Choose panels" form is expanded all pre-set panels are populated and sorted correctly
         /// </summary>
         /// <author>Huong Huynh</author>
         /// <date>05/25/2015</date>
-        //[TestMethod]
+        [TestMethod]
         public void DA_PANEL_TC027()
         {
             Console.WriteLine("DA_PANEL_TC027 - Verify that when \"Choose panels\" form is expanded all pre-set panels are populated and sorted correctly");
-
             //1 Navigate to Dashboard login page
             //2 Login with valid account
             LoginPage loginPage = new LoginPage(_webDriver);
@@ -40,22 +39,21 @@ namespace SeleniumAdvProject.TestCases
             //8 Select any value in Series dropdown list
             //9 Click OK button on PanelConfiguration popup and then click on Chose Panel menu icon
 
-            Chart chart = new Chart(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Name", page1.PageName);
-
-            //Chart chart = new Chart("Action Implementation By Status", ActionCommon.GenrateRandomString(Constants.lenghtRandomString), page1.PageName, 0, null, null, "Pie", null, null, "Name", null, "None", dataLabel, "2D", false);
+            Chart chart = new Chart(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Name", page1.PageName);          
             mainPage.AddNewPanel(chart);
+            mainPage.BtnChoosePanel.Click();
 
             ////VP Verify that all pre-set panels are populated and sorted correctly
-            //bool actualResult = panelPage.IsTheListIsSorted(panelPage.CbbDataProfile, "ASC");
-            //Assert.AreEqual(true, actualResult, "Data Profile is not sorted correctly");
-
-            //panelPage.BtnCancel.Click();
+            Assert.AreEqual(true, mainPage.IsContentInTableSorted("Charts", "ASC"),"Contents in Chart table are not sorted by ASC correctly");
+            Assert.AreEqual(true, mainPage.IsContentInTableSorted("Reports", "ASC"), "Contents in Reports table are not sorted by ASC correctly");
+            Assert.AreEqual(true, mainPage.IsContentInTableSorted("Indicators", "ASC"), "Contents in Indicators table are not sorted by ASC correctly");
+            
 
             ////Post-Condition
             ////Logout			
-            ////Close Dashboard            
-            //mainPage.DeletePage(page1.PageName, "Yes");
-            //mainPage.Logout();
+            ////Close Dashboard   
+
+            mainPage.DeletePage(page1.PageName, "Yes").OpenPanelsPage().DeletePanels(chart.DisplayName).Logout();            
         }
 
         /// <summary>
@@ -497,7 +495,7 @@ namespace SeleniumAdvProject.TestCases
 
             //Post Condition
             addPanelPopup.ClosePanelDialog();
-            panelPage.DeleteAllPanels();
+            panelPage.DeletePanels("All");
 
         }
 
@@ -589,7 +587,7 @@ namespace SeleniumAdvProject.TestCases
             //Post-condition
             panelPage.ConfirmDialog("OK");
             panelPage.CancelPanel();
-            panelPage.DeleteAllPanels();
+            panelPage.DeletePanels("All");
 
         }
 
@@ -627,10 +625,9 @@ namespace SeleniumAdvProject.TestCases
             //VP. Verify that Data Profile list is in alphabetical order
             panelPage.OpenEditPanelPopup(chart.DisplayName);
             Assert.IsTrue(panelPage.IsDataProfileSOrder("ASC"), "Data Profile list is not in alphabetical order");
-
             //Post-condition
             panelPage.CancelPanel();
-            panelPage.DeleteAllPanels();
+            panelPage.DeletePanels("All");
 
         }
 
@@ -681,7 +678,7 @@ namespace SeleniumAdvProject.TestCases
             
             //Post-condition
             panelPage.CancelPanel();
-            panelPage.DeleteAllPanels();
+            panelPage.DeletePanels("All");
 
 
         }
@@ -731,7 +728,7 @@ namespace SeleniumAdvProject.TestCases
             Assert.IsTrue(panelPage.IsPanelExist(chart2.DisplayName), string.Format("{0} is not created successfully ", chart2.DisplayName));
 
             //Post-condition
-            panelPage.DeleteAllPanels();
+            panelPage.DeletePanels("All");
             mainPage.GoToDataProfilePage().DeleteAllDataProfiles();
         }
 
@@ -770,18 +767,20 @@ namespace SeleniumAdvProject.TestCases
 
         }
 
-        //[TestMethod]
+        /// <summary>
+        /// DA_PANEL_TC042 - Verify that all pages are listed correctly under the \"Select page *\" dropped down menu of \"Panel Configuration\" form/ control
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>06/03/2016</date>
+        /// 
+        [TestMethod]
         public void DA_PANEL_TC042()
         {
             Console.WriteLine("DA_PANEL_TC042 - Verify that all pages are listed correctly under the \"Select page *\" dropped down menu of \"Panel Configuration\" form/ control");
-
             //1 Navigate to Dashboard login page
             //2 Select a specific repository 
             //3 Enter valid Username and Password
             //4 Click 'Login' button
-            LoginPage loginPage = new LoginPage(_webDriver);
-            MainPage mainPage = loginPage.Open().Login(Constants.Repository, Constants.UserName, Constants.Password);
-
             //5 Click 'Add Page' button
             //6 Enter Page Name
             //7 Click 'OK' button
@@ -791,30 +790,240 @@ namespace SeleniumAdvProject.TestCases
             //11 Click 'Add Page' button
             //12 Enter Page Name
             //13 Click 'OK' button
-            Page page1 = new Page("main_hung1", "Select parent", 2, "Overview", false);
-            Page page2 = new Page("main_hung2", "Select parent", 2, "Overview", false);
-            Page page3 = new Page("main_hung3", "Select parent", 2, "Overview", false);
-            mainPage.AddPage(page1);
-            mainPage.AddPage(page2);
-            mainPage.AddPage(page3);
-
             //14 Click 'Choose panels' button
             //15 Click on any Chart panel instance
-            mainPage.BtnChoosePanel.Click();
-            mainPage.ClickLinkText("Test Case Execution Results");
             //16 Click 'Select Page*' drop-down menu
+            Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+            Page page2 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+            Page page3 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+            string[] pageList = new string[]{page1.PageName,page2.PageName,page3.PageName};
+
+            LoginPage loginPage = new LoginPage(_webDriver);
+            MainPage mainPage = loginPage.Open().Login(Constants.Repository, Constants.UserName, Constants.Password);
+            mainPage.AddPage(page1)
+                .AddPage(page2)
+                .AddPage(page3);
+           AddNewPanelPage configurationPopup= mainPage.OpenPanelConfigurationFromChoosePanel("Test Case Execution Results");
+               configurationPopup.isComboboxContainsItems(configurationPopup.CbbSelectPage,pageList);
 
             //17 Check that 'Select Page*' drop-down menu contains 3 items: 'main_hung1', 'main_hung2' and 'main_hung3'
-
-
-            // Assert.AreEqual(true, panelPage.IsLinkExist("Logigear@"), "Page Logigear@ cannot be created");
-
+            Assert.AreEqual(true,configurationPopup.isComboboxContainsItems(configurationPopup.CbbSelectPage,pageList),"Select Page * Combobox does not contain these page name");
+            
             //Post-Condition
-            mainPage.DeletePage(page1.PageName);
-            mainPage.DeletePage(page2.PageName);
-            mainPage.DeletePage(page3.PageName);
-
+            mainPage.DeletePage(page1.PageName).DeletePage(page2.PageName).DeletePage(page3.PageName);
             mainPage.Logout();
+        }
+        /// <summary>
+        /// DA_PANEL_TC043 - Verify that only integer number inputs from 300-800 are valid for \"Height *\" field 
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>06/03/2016</date>
+        [TestMethod]
+        public void DA_PANEL_TC043()
+        {
+            Console.WriteLine("DA_PANEL_TC043 - Verify that only integer number inputs from 300-800 are valid for \"Height *\" field ");
+            //1 Navigate to Dashboard login page
+            //2 Select a specific repository 
+            //3 Enter valid Username and Password
+            //4 Click 'Login' button
+            //5 Click 'Add Page' button
+            //6 Enter Page Name
+            //7 Click 'OK' button
+            //8 Click 'Choose panels' button
+            //9 Click on any Chart panel instance
+            //10 Enter integer number to 'Height *' field '299
+            //11 Click OK button
+            //12 Check that error message 'Panel height must be greater than or equal to 300 and lower than or equal to 800' display
+            //VP Error message 'Panel height must be greater than or equal to 300 and lower than or equal to 800' display
+            Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+            LoginPage loginPage = new LoginPage(_webDriver);
+            MainPage mainPage = loginPage.Open().Login(Constants.Repository, Constants.UserName, Constants.Password);
+            mainPage.AddPage(page1);
+            AddNewPanelPage configurationPopup = mainPage.OpenPanelConfigurationFromChoosePanel("Test Case Execution Results");
+            string actualMessage = configurationPopup.SettingPanelWithExpectedError(null, 299, null);
+
+            Assert.AreEqual("Panel height must be greater than or equal to 300 and less than or equal to 800.",
+                actualMessage,
+                string.Format("Failed! Actual message is: {0}", actualMessage));
+            configurationPopup.ConfirmDialog("OK");
+
+            //13 Click OK button
+            //14 Enter integer number to 'Height *' field 801
+            //15 Click OK button
+            //16 Check that error message 'Panel height must be greater than or equal to 300 and lower than or equal to 800' display
+            //VP Error message 'Panel height must be greater than or equal to 300 and lower than or equal to 800' display
+            actualMessage = configurationPopup.SettingPanelWithExpectedError(null, 801, null);
+            Assert.AreEqual("Panel height must be greater than or equal to 300 and less than or equal to 800.",
+                actualMessage,
+                string.Format("Failed! Actual message is: {0}", actualMessage));
+            configurationPopup.ConfirmDialog("OK");
+
+            //17 Click OK button
+            //18 Enter integer number to 'Height *' field -2
+            //19 Click OK button
+            //20 Check that error message 'Panel height must be greater than or equal to 300 and lower than or equal to 800' display
+            //VP Error message 'Panel height must be greater than or equal to 300 and lower than or equal to 800' display
+            actualMessage = configurationPopup.SettingPanelWithExpectedError(null, -2, null);
+            Assert.AreEqual("Panel height must be greater than or equal to 300 and less than or equal to 800.",
+                actualMessage,
+                string.Format("Failed! Actual message is: {0}", actualMessage));
+            configurationPopup.ConfirmDialog("OK");
+
+            //21 Click OK button
+            //22 Enter integer number to 'Height *' field 3.1
+            //23 Click OK button
+            //24 Check that error message 'Panel height must be an integer number' display
+            //VP Error message 'Panel height must be an integer number' display
+            actualMessage = configurationPopup.SettingPanelWithExpectedError(null, 3.1, null);
+            Assert.AreNotEqual("Panel height must be an integer number",
+                actualMessage,
+                string.Format("Failed! Actual message is: {0}", actualMessage));
+            configurationPopup.ConfirmDialog("OK");
+
+            //25 Click OK button
+            //26 Enter integer number to 'Height *' field ABC
+            //27 Click OK button
+            //28 Check that error message 'Panel height must be an integer number' display
+            //VP Error message 'Panel height must be an integer number' display
+            actualMessage = configurationPopup.SettingPanelWithExpectedError(null, "abc", null);
+            Assert.AreEqual("Panel height must be an integer number",
+                actualMessage,
+                string.Format("Failed! Actual message is: {0}", actualMessage));
+            configurationPopup.ConfirmDialog("OK");
+            configurationPopup.BtnCancel.Click();
+
+            //Post Condition
+            mainPage.DeletePage(page1.PageName).Logout();            
+        }
+        /// <summary>
+        /// DA_PANEL_TC044 - Verify that \"Height *\" field is not allowed to be empty
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>06/04/2016</date>
+        [TestMethod]
+        public void DA_PANEL_TC044()
+        {
+            Console.WriteLine("DA_PANEL_TC044 - Verify that \"Height *\" field is not allowed to be empty");
+            //1 Navigate to Dashboard login page
+            //2 Select a specific repository 
+            //3 Enter valid Username and Password
+            //4 Click 'Login' button
+            //5 Click 'Add Page' button
+            //6 Enter Page Name
+            //7 Click 'OK' button
+            //8 Click 'Choose panels' button
+            //9 Click on any Chart panel instance
+            //10 Leave 'Height *' field empty
+            //11 Click OK button            
+            Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+            LoginPage loginPage = new LoginPage(_webDriver);
+            MainPage mainPage = loginPage.Open().Login(Constants.Repository, Constants.UserName, Constants.Password);
+            mainPage.AddPage(page1);
+            AddNewPanelPage configurationPopup = mainPage.OpenPanelConfigurationFromChoosePanel("Test Case Execution Results");
+            string actualMessage = configurationPopup.SettingPanelWithExpectedError(null, "empty", null);
+
+            //12 Check that 'Panel height is required field' message display
+            //VP 'Panel height is required field' message display
+            Assert.AreEqual("Panel height is a required field.",
+                actualMessage,
+                string.Format("Failed! Actual message is: {0}", actualMessage));
+            configurationPopup.ConfirmDialog("OK");          
+            configurationPopup.BtnCancel.Click();
+
+            //Post Condition
+            mainPage.DeletePage(page1.PageName).Logout();
+        }
+        /// <summary>
+        /// DA_PANEL_TC045 - Verify that \"Folder\" field is not allowed to be empty
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>06/04/2016</date>
+        [TestMethod]
+        public void DA_PANEL_TC045()
+        {
+            Console.WriteLine("DA_PANEL_TC045 - Verify that \"Folder\" field is not allowed to be empty");
+            //1 Navigate to Dashboard login page
+            //2 Login with valid account
+            //3 Create a new page
+            //4 Click Choose Panel button
+            //5 Click Create New Panel button
+            //6 Enter all required fields on Add New Panel page
+            //7 Click Ok button
+            //8 Leave empty on Folder field
+            //9 Click Ok button on Panel Configuration dialog          
+            Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+            LoginPage loginPage = new LoginPage(_webDriver);
+            MainPage mainPage = loginPage.Open().Login(Constants.Repository, Constants.UserName, Constants.Password);
+            mainPage.AddPage(page1);
+            AddNewPanelPage configurationPopup = mainPage.OpenPanelConfigurationFromChoosePanel("Test Case Execution Results");
+            string actualMessage = configurationPopup.SettingPanelWithExpectedError(null, null, " ");
+
+            //10 Observe the current page
+            //VP There is message "Panel folder is incorrect"
+            Assert.AreEqual("Panel folder is incorrect",
+                actualMessage,
+                string.Format("Failed! Actual message is: {0}", actualMessage));
+            configurationPopup.ConfirmDialog("OK");
+            configurationPopup.BtnCancel.Click();
+
+            //Post Condition
+            mainPage.DeletePage(page1.PageName).Logout();
+        }
+        /// <summary>
+        /// DA_PANEL_TC046 - Verify that only valid folder path of corresponding item type ( e.g. Actions, Test Modules) are allowed to be entered into "Folder" field
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>06/04/2016</date>
+        [TestMethod]
+        public void DA_PANEL_TC046()
+        {
+            Console.WriteLine("DA_PANEL_TC046 - Verify that only valid folder path of corresponding item type ( e.g. Actions, Test Modules) are allowed to be entered into \"Folder\" field");
+
+            //1 Navigate to Dashboard login page
+            //2 Login with valid account
+            //3 Create a new page
+            //4 Click Choose Panel button
+            //5 Click Create New Panel button
+            //6 Enter all required fields on Add New Panel page
+            //7 Click Ok button
+            //8 Enter invalid folder path
+            //9 Click Ok button on Panel Configuration dialog           
+            Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);            
+            Chart chart = new Chart(CommonAction.GeneratePanelName(), "Name", page1.PageName);
+            chart.Folder = "abc";
+            LoginPage loginPage = new LoginPage(_webDriver);
+            loginPage.Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);                        
+            mainPage.AddPage(page1);           
+            mainPage.AddNewPanel(chart);
+
+            //VP Observe the current page.There is message "Panel folder is incorrect"
+            Assert.AreEqual("Panel folder is incorrect",
+               mainPage.GetDialogText(),
+               string.Format("Failed! Actual message is: {0}", mainPage.GetDialogText()));
+
+            //11 Enter valid folder path
+            //12 Click Ok button on Panel Configuration dialog
+            ////VP Observe the current page -The new panel is created
+            
+            mainPage.BtnChoosePanel.Click();
+            //Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+            //LoginPage loginPage = new LoginPage(_webDriver);
+            //MainPage mainPage = loginPage.Open().Login(Constants.Repository, Constants.UserName, Constants.Password);
+            //mainPage.AddPage(page1);
+            //AddNewPanelPage configurationPopup = mainPage.OpenPanelConfigurationFromChoosePanel("Test Case Execution Results");
+            //string actualMessage = configurationPopup.SettingPanelWithExpectedError(null, null, "");
+
+            ////10 Observe the current page
+            ////VP There is message "Panel folder is incorrect"
+            //Assert.AreEqual("Panel folder is incorrect",
+            //    actualMessage,
+            //    string.Format("Failed! Actual message is: {0}", actualMessage));
+            //configurationPopup.ConfirmDialog("OK");
+            //configurationPopup.BtnCancel.Click();
+
+            ////Post Condition
+            //mainPage.DeletePage(page1.PageName).Logout();
         }
     }
 }

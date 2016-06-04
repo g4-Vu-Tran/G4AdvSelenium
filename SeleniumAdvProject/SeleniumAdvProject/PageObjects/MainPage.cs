@@ -67,7 +67,7 @@ namespace SeleniumAdvProject.PageObjects
         /// Clicks the delete link.
         /// </summary>
         /// <param name="pathOfPage">The path of page.</param>
-        /// <returns></returns>
+        /// <returns></returns>        
         public MainPage ClickDeleteLink(string pathOfPage)
         {
             GoToPage(pathOfPage);
@@ -87,7 +87,7 @@ namespace SeleniumAdvProject.PageObjects
         public MainPage AddNewPanel(Chart chart)
         {
             GoToPage(chart.PageName);
-            OpenAddNewPanelPopup().AddChart(chart);
+            OpenAddNewPanelPopup().AddChart(chart).WaitForPageLoadComplete();
             return this;
         }
 
@@ -111,7 +111,21 @@ namespace SeleniumAdvProject.PageObjects
             return new AddNewPanelPage(_webDriver);
         
         }
-
+        /// <summary>
+        /// Opens the panel configuration popup by click on Chooses Panle and click on Chart panel instance
+        /// </summary>
+        /// <param name="linkText">Input panle instance</param>
+        /// <returns>Add New Panel Page</returns>
+        /// <autho>Huong Huynh</autho>
+        /// <date>06/03/2016</date>
+        public AddNewPanelPage OpenPanelConfigurationFromChoosePanel(string linkText)
+        {
+            BtnChoosePanel.Click();
+            WaitForPageLoadComplete();
+            Link lnkDynamic = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", CommonAction.EncodeSpace(linkText)))));
+            lnkDynamic.Click();
+            return new AddNewPanelPage(webDriver);
+        }
         /// <summary>
         /// Gets the position page.
         /// </summary>
@@ -206,8 +220,7 @@ namespace SeleniumAdvProject.PageObjects
         /// <date>05/26/2015</date>
         public MainPage AddPage(Page page)
         {
-            AddNewPage addNewPage = this.OpenAddNewPage();
-            addNewPage.AddPage(page.ParentPage, page);
+            OpenAddNewPage().AddPage(page.ParentPage, page);
             return this;
         }
 
@@ -218,6 +231,51 @@ namespace SeleniumAdvProject.PageObjects
             return this;
         }
 
+        /// <summary>
+        /// Determines the content in a table is sorted or not?
+        /// </summary>
+        /// <param name="combobox">the name of table</param>
+        /// <param name="sortType">Type of the sort DESC|ASC.</param>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
+        public bool IsContentInTableSorted(string tableName, string sortType)
+        {
+            Table table = new Table(FindElement(By.XPath(string.Format("//div[.='{0}']/../table", tableName))));
+            IList<IWebElement> rows = table.FindElements(By.XPath(string.Format("//div[.='{0}']/../table/tbody/tr", tableName)));
+            List<string> tableContent = new List<string>();
+            for(int i=0; i< rows.Count();i++) 
+            {                
+                IList<IWebElement> columns = table.FindElements(By.XPath(string.Format("//div[.='{0}']/../table/tbody/tr[{1}]/td", tableName,i+1)));
+                    foreach (IWebElement column in columns)
+                    {
+                        tableContent.Add(column.Text);
+                    }
+
+            }
+
+            bool flag = false;
+            if (tableContent.Count == 1)
+            {
+                flag = true;
+            }
+            else
+            {
+                for (int i = 1; i < tableContent.Count - 1; i++)
+                {
+                    if (sortType == "DESC")
+                    {
+                        if (tableContent[i].CompareTo(tableContent[i + 1]) >= 0)
+                            flag = true;
+                    }
+                    else if (sortType == "ASC")
+                    {
+                        if (tableContent[i].CompareTo(tableContent[i + 1]) <= 0)
+                            flag = true;
+                    }
+                }
+            }
+            return flag;
+        }
         
 
         #endregion

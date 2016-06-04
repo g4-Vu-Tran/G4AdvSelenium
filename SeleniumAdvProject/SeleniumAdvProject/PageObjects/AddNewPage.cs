@@ -57,20 +57,22 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="page">The page.</param>
         /// <returns></returns>
         /// <author>Huong Huynh</author>
-        /// <date>05/25/2016</date>
+        /// <date update>06/03/2016</date>
         public MainPage AddPage(string pathOfPage, Page page)
         {         
             TxtPageName.SendKeys(page.PageName);
             CbbParentPage.SelectByText(ConvertParentPage(pathOfPage));
-            Thread.Sleep(500);
+            //Thread.Sleep(500);
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
             CbbDisplayAfter.SelectByText(page.DisplayAfter);
             if (page.IsPublic)
                 ChkPublic.Check();
             else
                 ChkPublic.Uncheck();            
-            BtnOk.Click();            
-            WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", CommonAction.EncodeSpace(page.PageName))));
+            BtnOk.Click();
+            //FindElement(By.XPath(string.Format("//a[.='{0}", CommonAction.EncodeSpace(page.PageName))));
+            //WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", CommonAction.EncodeSpace(page.PageName))));
+            WaitForPageLoadComplete();
             return new MainPage(_webDriver);
         }
 
@@ -85,7 +87,7 @@ namespace SeleniumAdvProject.PageObjects
         {            
             TxtPageName.SendKeys(page.PageName);
             CbbParentPage.SelectByText(CommonAction.EncodeSpace(page.ParentPage));
-            Thread.Sleep(500);
+            //Thread.Sleep(500);
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
             CbbDisplayAfter.SelectByText(page.DisplayAfter);
             if (page.IsPublic)

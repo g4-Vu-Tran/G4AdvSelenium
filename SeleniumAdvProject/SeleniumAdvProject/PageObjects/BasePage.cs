@@ -117,7 +117,7 @@ namespace SeleniumAdvProject.PageObjects
             Link LnkName = new Link();
             foreach (string node in arrNode)
             {
-                LnkName = new Link(_webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", CommonAction.EncodeSpace(node)))));
+                LnkName = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", CommonAction.EncodeSpace(node)))));
                 LnkName.MouseOver();
             }
             if (isClicked)
@@ -256,6 +256,8 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <param name="driver">The driver.</param>
         /// <param name="isNewUrl">if set to <c>true</c> [is new URL].</param>
+        /// <author>Huong Huynh</author>
+        /// <date>05/26/2015</date>
         public void SwitchToNewOpenedWindow(IWebDriver driver, bool isNewUrl = true)
         {
             driver.Close();
@@ -312,21 +314,21 @@ namespace SeleniumAdvProject.PageObjects
         /// <date>05/26/2015</date>
         public void WaitForControlExists(By control, int timeoutInSeconds = Constants.WaitTimeoutShortSeconds)
         {
-            try
-            {
-                _webDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(timeoutInSeconds));
-                IWebElement element = _webDriver.FindElement(control);
-                if (element == null)
-                {
-                    WebDriverWait wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(timeoutInSeconds));
-                    wait.Until(drv => drv.FindElement(control));
-                }
-            }
-            catch
-            {
-                throw new Exception("No element have been found.");
+            //try
+            //{
+            //    _webDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(timeoutInSeconds));
+            //    IWebElement element = _webDriver.FindElement(control);
+            //    if (element == null)
+            //    {
+            //        WebDriverWait wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(timeoutInSeconds));
+            //        wait.Until(drv => drv.FindElement(control));
+            //    }
+            //}
+            //catch
+            //{
+            //    throw new Exception("No element have been found.");
 
-            }
+            //}
         }
 
         /// <summary>
@@ -366,9 +368,9 @@ namespace SeleniumAdvProject.PageObjects
         /// <summary>
         /// Get the text message in the dialog
         /// </summary>
-        /// <returns>String</returns>
+        /// <returns>dialog message string</returns>
         /// <author>Huong Huynh</author>
-        /// <date>05/26/2015</date>
+        ///<date>05/26/2015</date>
         public string GetDialogText()
         {
             string dglMessage = _webDriver.SwitchTo().Alert().Text;
@@ -390,10 +392,11 @@ namespace SeleniumAdvProject.PageObjects
 
         public void ClickLinkText(string linkText)
         {
-            Link lnkDynamic = new Link(_webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", linkText))));
+            Link lnkDynamic = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", CommonAction.EncodeSpace(linkText)))));
             lnkDynamic.Click();
         }
 
+       
         public AddNewPanelPage OpenAddNewPanelPageFromButton()
         {
             BtnChoosePanel.Click();

@@ -25,14 +25,14 @@ namespace SeleniumAdvProject.Ultilities.Controls
         /// <returns></returns>
         private void GetSelectControl()
         {
-            LoadControl();
+            //LoadControl();
             selectElement = new SelectElement(element);
         }
         public bool isEnabled
         {
             get
             {
-                LoadControl();
+                //LoadControl();
                 return element.Selected;
             }
         }
