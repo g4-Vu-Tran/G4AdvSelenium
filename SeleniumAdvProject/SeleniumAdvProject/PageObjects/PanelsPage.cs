@@ -73,7 +73,7 @@ namespace SeleniumAdvProject.PageObjects
             }
             AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
             addPanelPage.AddChart(chart);
-           // WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", chart.DisplayName)));
+            WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", chart.DisplayName)));
             return this;
         }
 
@@ -84,16 +84,20 @@ namespace SeleniumAdvProject.PageObjects
         /// <returns></returns>
         /// <author>Vu Tran</author>
         /// <date>05/25/2016</date>
-        public PanelsPage AddNewPanelWithExpectedError(Chart chart, bool openPopup = true)
+        public AddNewPanelPage AddChartWithExpectedError(Chart chart)
         {
-            if (openPopup)
-            {
-                OpenAddNewPanelPopupFromLink();
-            }
+            OpenAddNewPanelPage("Panels Page");
             AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
             addPanelPage.AddChart(chart);
-            return this;
+            return new AddNewPanelPage(_webDriver);
         }
+
+        public AddNewPanelPage AddNewPanelPage()
+        {
+            LnkAddNew.Click();
+            return new AddNewPanelPage(_webDriver);
+        }
+
 
         /// <summary>
         /// Delete all panels
@@ -129,7 +133,8 @@ namespace SeleniumAdvProject.PageObjects
 
         public bool IsPanelExist(string panelName)
         {
-            return IsLinkExist(panelName);
+            Link LnkPanelName = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", panelName))));
+            return LnkPanelName.Displayed;
         }
         #endregion
     }

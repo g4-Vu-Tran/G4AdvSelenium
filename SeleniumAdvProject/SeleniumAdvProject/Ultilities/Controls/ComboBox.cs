@@ -44,12 +44,11 @@ namespace SeleniumAdvProject.Ultilities.Controls
         public void SelectByText(string text)
         {
             GetSelectControl();
-            if (element.Selected)
-            {
+           
+            
                 if (text != null)
                     selectElement.SelectByText(text);
 
-            }
         }
         /// <summary>
         /// Selects the index of the by.

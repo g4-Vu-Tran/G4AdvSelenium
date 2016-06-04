@@ -197,6 +197,39 @@ namespace SeleniumAdvProject.PageObjects
         }
 
         /// <summary>
+        /// Go to the Data Profile page.
+        /// </summary>
+        /// <returns></returns>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2016</date>
+        public AddNewPanelPage OpenAddNewPanelPage(string openFrom = "Global setting")
+        {
+            switch (openFrom)
+            {
+                case "Global setting":
+                    {
+                        LblGlobalSetting.MouseOver();
+                        LnkCreatePanel.Click();
+                        break;
+                    }
+                case "Choose panels":
+                    {
+                        BtnChoosePanel.Click();
+                        BtnCreateNewPanel.Click();
+                        break;
+                    }
+                case "Panels Page":
+                    {
+                        PanelsPage panelPage = OpenPanelsPage();
+                        panelPage.LnkAddNew.Click();
+                        break;
+                    }
+            }
+
+            return new AddNewPanelPage(_webDriver);
+        }
+
+        /// <summary>
         /// Logouts this instance.
         /// </summary>
         /// <returns></returns>

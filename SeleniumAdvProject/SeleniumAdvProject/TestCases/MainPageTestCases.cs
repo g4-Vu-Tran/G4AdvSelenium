@@ -260,7 +260,7 @@ namespace SeleniumAdvProject.TestCases
         /// Verify that user can remove any main parent page except "Overview" page successfully and the order of pages stays persistent as long as there is not children page under it
         /// </summary>
         /// <author>Vu Tran</author>
-        /// <date>05/25/2015</date>
+        /// <date>05/25/2016</date>
         [TestMethod]
         public void DA_MP_TC017()
         {

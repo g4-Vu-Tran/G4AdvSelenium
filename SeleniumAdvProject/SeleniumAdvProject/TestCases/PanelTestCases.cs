@@ -579,7 +579,7 @@ namespace SeleniumAdvProject.TestCases
             //7. Click on Add new link again.
             //8. Enter display name same with previous display name to "display name" field. 
             //9. Click on OK button
-            panelPage.AddNewPanelWithExpectedError(chart);
+            panelPage.AddChartWithExpectedError(chart);
 
             //VP. Warning message: "Dupicated panel already exists. Please enter a different name" show up
             string actualMsg = panelPage.GetDialogText();
@@ -668,7 +668,7 @@ namespace SeleniumAdvProject.TestCases
             //7. Click on add new link
             //VP. Verify that "giang - data" data profiles are populated correctly under the "Data Profile" dropped down menu.
             AddNewPanelPage addNewPanelPage = panelPage.OpenAddNewPanelPopupFromLink();
-            Assert.IsTrue(addNewPanelPage.IsDataProfileExists(dataProfileName), string.Format("{0} is not populated correctly under the \"Data Profile\" dropped down menu",dataProfileName));
+            Assert.IsTrue(addNewPanelPage.IsDataProfileExists(dataProfileName), string.Format("{0} is not populated correctly under the \"Data Profile\" dropped down menu", dataProfileName));
 
             //8. Enter display name to Display Name textbox
             //9. Click Ok button to create a panel
@@ -678,7 +678,7 @@ namespace SeleniumAdvProject.TestCases
             //VP. Verify that "giang - data" data profiles are populated correctly under the "Data Profile" dropped down menu.
             panelPage.OpenEditPanelPopup(chart.DisplayName);
             Assert.IsTrue(addNewPanelPage.IsDataProfileExists(dataProfileName), string.Format("{0} is not populated correctly under the \"Data Profile\" dropped down menu", dataProfileName));
-            
+
             //Post-condition
             panelPage.CancelPanel();
             panelPage.DeleteAllPanels();
@@ -712,7 +712,7 @@ namespace SeleniumAdvProject.TestCases
             //5. Enter value into Display Name field
             //6. Enter value into Chart Title field with special characters except "@"
             //7. Click Ok button
-            panelPage.AddNewPanelWithExpectedError(chart1);
+            panelPage.AddChartWithExpectedError(chart1);
 
             //VP. Message "Invalid display name. The name can't contain high ASCII characters or any of following characters: /:*?<>|"#{[]{};" is displayed
             string actualMsg = panelPage.GetDialogText();
@@ -816,5 +816,139 @@ namespace SeleniumAdvProject.TestCases
 
             mainPage.Logout();
         }
+
+        /// <summary>
+        /// Verify that user is able to successfully edit "Display Name" of any Panel providing that the name is not duplicated with existing Panels' name
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2016</date>
+        [TestMethod]
+        public void DA_PANEL_TC050()
+        {
+            Console.WriteLine("DA_PANEL_TC050 - Verify that user is able to successfully edit \"Display Name\" of any Panel providing that the name is not duplicated with existing Panels' name");
+
+            //Set variables
+            Chart chart = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "!#$%^&*()'", "Name", null, null, null, null, null, null, null, false);
+
+            //1. Navigate to Dashboard login page
+            //2. Login with valid account
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Click Administer link
+            //4. Click Panel link
+            PanelsPage panelPage = mainPage.OpenPanelsPage();
+
+            //5. Click Add New link
+            //6. Enter a valid name into Display Name field
+            panelPage.AddNewPanel(chart);
+
+            //VP. The new panel is created successfully
+            panelPage.IsPanelExist(chart.DisplayName);
+
+            //Post-Condition
+            panelPage.DeleteAllPanels();
+
+        }
+
+        /// <summary>
+        /// Verify that user is unable to change "Display Name" of any Panel if there is special character except '@' inputted
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2016</date>
+        [TestMethod]
+        public void DA_PANEL_TC051()
+        {
+            Console.WriteLine("DA_PANEL_TC051 - Verify that all pages are listed correctly under the \"Select page *\" dropped down menu of \"Panel Configuration\" form/ control");
+
+            //AppDomainSetup variable
+            Chart chart1 = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "Chart@", "Name", null, null, null, null, null, null, null, false);
+            Chart chart2 = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "Chart@", "Name", null, null, null, null, null, null, null, false);
+
+            //1. Navigate to Dashboard login page
+            //2. Login with valid account
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Click Administer link
+            //4. Click Panel link
+            PanelsPage panelPage = mainPage.OpenPanelsPage();
+
+            //5. Click Add New link
+            //6. Create a new panel
+            panelPage.AddNewPanel(chart1);
+
+            //7. Click Edit link
+            //8. Edit panel name with special characters
+            //9. Click Ok button
+            panelPage.AddNewPanel(chart2);
+            //VP. Message "Invalid display name. The name can't contain high ASCII characters or any of following characters: /:*?<>|"#{[]{};" is displayed
+            //10. Close warning message box
+            string actualMsg = panelPage.GetDialogText();
+            string expectedMsg = "Invalid display name. The name can't contain high ASCII characters or any of following characters: /:*?<>|\"#{[]{};";
+            Assert.AreEqual(expectedMsg, actualMsg, string.Format("Message incorrect {0}", actualMsg));
+            panelPage.ConfirmDialog("OK");
+            panelPage.CancelPanel();
+
+            //11. Click Edit link
+            //12. Edit panel name with special character is @
+            //13. Click Ok button
+            //VP. User is able to edit panel name with special characters is @
+            panelPage.AddNewPanel(chart1);
+            panelPage.IsPanelExist(chart1.DisplayName);
+
+            //Post-Condition
+            panelPage.DeleteAllPanels();
+
+        }
+
+        /// <summary>
+        /// Verify that user is unable to edit  "Height *" field to anything apart from integer number with in 300-800 range
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2016</date>
+        [TestMethod]
+        public void DA_PANEL_TC052()
+        {
+            Console.WriteLine("DA_PANEL_TC051 - Verify that user is unable to edit  \"Height *\" field to anything apart from integer number with in 300-800 range");
+
+            //Set variables
+            Page page = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+            Chart chart = new Chart(null, CommonAction.GeneratePanelName(), null, 40, null, "Chart@", "Name", null, null, null, null, null, null, null, false);
+
+            //1. Navigate to Dashboard login page
+            //2. Login with valid account
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Create a new page
+            mainPage.AddPage(page);
+
+            //4. Click Choose Panel button
+            //5. Click Create New Panel button
+            //6. Enter all required fields on Add New Panel page
+            //7. Click Ok button
+            //8. Enter invalid height into Height field
+            //9. Click Ok button
+            //VP. There is message "Panel Height must be greater than or equal to 300 and lower than or equal to 800"
+            //10. Close Warning Message box
+            AddNewPanelPage addPanelPage = mainPage.OpenPanelsPage().AddChartWithExpectedError(chart);
+            string actualMsg = addPanelPage.GetDialogText();
+            string expectedMsg = "Panel Height must be greater than or equal to 300 and lower than or equal to 800";
+            Assert.AreEqual(expectedMsg, actualMsg, string.Format("Message incorrect {0}", actualMsg));
+            addPanelPage.ConfirmDialog("OK");
+
+            //11. Enter valid height into Height field
+            //12. Click Ok button
+            //VP. User is able to edit Height field to anything apart from integer number with in 300-800 range
+            chart.Height = 400;
+
+
+            //Post-Condition
+            //panelPage.DeleteAllPanels();
+
+        }
+
+
     }
 }
