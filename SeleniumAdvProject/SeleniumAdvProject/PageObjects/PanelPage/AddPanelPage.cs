@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OpenQA.Selenium;
 
-namespace SeleniumAdvProject.Common
+namespace SeleniumAdvProject.PageObjects.PanelPage
 {
-    public class Constant
+    class AddPanelPage
     {
-        public static IWebDriver WebDriver;
     }
 }

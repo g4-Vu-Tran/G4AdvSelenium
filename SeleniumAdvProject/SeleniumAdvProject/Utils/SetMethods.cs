@@ -10,26 +10,26 @@ using OpenQA.Selenium.Interactions;
 
 namespace SeleniumAdvProject.Utils
 {
-    class SetMethods
+    public static class SetMethods
     {
-        public static void EnterText(IWebElement element, string value)
+        public static void EnterText(this IWebElement element, string value)
         {
             if (value != null)
                 element.SendKeys(value);
         }
 
-        public static void Clicks(IWebElement element)
+        public static void Clicks(this IWebElement element)
         {
             element.Click();
         }
 
-        public static void SelectDropDown(IWebElement element, string value)
+        public static void SelectDropDown(this IWebElement element, string value)
         {
             if (value != null)
                 new SelectElement(element).SelectByText(value);
         }
 
-        public static void SelectOptionByLabel(IWebElement element, string label, string option)
+        public static void SelectOptionByLabel(this IWebElement element, string label, string option)
         {
             if (label == null)
             {
@@ -54,19 +54,26 @@ namespace SeleniumAdvProject.Utils
             }
         }
 
-        public static void Check(IWebElement element)
+        public static void Check(this IWebElement element)
         {
             if (!element.Selected)
                 element.Click();
         }
 
-        public static void UnCheck(IWebElement element)
+        public static void UnCheck(this IWebElement element)
         {
             if (element.Selected)
                 element.Click();
         }
 
-        public static void MouseTo(IWebElement element)
+        /// <summary>
+        /// Move mouse to the control
+        /// </summary>
+        /// <param name="element">The IWebElement that mouse moves to</param>
+        /// <returns></returns>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2016</date>
+        public static void MouseTo(this IWebElement element)
         {
             IWebDriver webDriver = ((RemoteWebElement)element).WrappedDriver;
             Actions actions = new Actions(webDriver);
