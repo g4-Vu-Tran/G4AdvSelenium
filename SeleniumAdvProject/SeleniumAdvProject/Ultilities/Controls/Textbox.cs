@@ -25,5 +25,23 @@ namespace SeleniumAdvProject.Ultilities.Controls
             return bool.Parse(element.GetAttribute("readonly"));
         }
 
+        /// <summary>
+        /// Enters the text.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// Author: Tu Nguyen
+        public void EnterText(string text)
+        {
+            element.Clear();
+            element.Click();
+            element.SendKeys(text);
+            string temp = element.Text;
+            if (temp == null)
+            {
+                element.Click();
+                element.SendKeys(text);
+            }
+        }
+
     }
 }
