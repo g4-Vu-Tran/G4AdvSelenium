@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using SeleniumAdvProject.Utils;
 using SeleniumAdvProject.PageObjects.HomePage;
 using SeleniumAdvProject.PageObjects.PanelPage;
+using SeleniumAdvProject.PageObjects.GeneralPage;
 
 namespace SeleniumAdvProject.PageObjects
 {
@@ -226,6 +227,21 @@ namespace SeleniumAdvProject.PageObjects
             return new PanelsPage(_webDriver);
         }
 
+        /// <summary>
+        /// Log out TA Dashboard
+        /// </summary>
+        /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2016</date>
+        public LoginPage Logout()
+        {
+            LblUsername.MouseTo();
+            LnkLogout.Click();
+            return new LoginPage(_webDriver);
+        }
+
+
+
         ///// <summary>
         ///// Go to the add new panel page.
         ///// </summary>
@@ -239,130 +255,72 @@ namespace SeleniumAdvProject.PageObjects
         //    return new AddNewPanelPage(_webDriver);
         //}
 
-
-        ///// <summary>
-        ///// Go to the Data Profile page.
-        ///// </summary>
-        ///// <returns></returns>
-        ///// <author>Vu Tran</author>
-        ///// <date>05/25/2016</date>
-        //public DataProfilePage GoToDataProfilePage()
-        //{
-        //    LnkAdminister.MouseOver();
-        //    LnkDataProfiles.Click();
-        //    return new DataProfilePage(_webDriver);
-        //}
-
-        ///// <summary>
-        ///// Go to the Data Profile page.
-        ///// </summary>
-        ///// <returns></returns>
-        ///// <author>Vu Tran</author>
-        ///// <date>05/25/2016</date>
-        //public AddNewPanelPage OpenAddNewPanelPage(string openFrom = "Global setting")
-        //{
-        //    switch (openFrom)
-        //    {
-        //        case "Global setting":
-        //            {
-        //                LblGlobalSetting.MouseOver();
-        //                LnkCreatePanel.Click();
-        //                break;
-        //            }
-        //        case "Choose panels":
-        //            {
-        //                BtnChoosePanel.Click();
-        //                BtnCreateNewPanel.Click();
-        //                break;
-        //            }
-        //        case "Panels Page":
-        //            {
-        //                PanelsPage panelPage = OpenPanelsPage();
-        //                panelPage.LnkAddNew.Click();
-        //                break;
-        //            }
-        //    }
-
-        //    return new AddNewPanelPage(_webDriver);
-        //}
-
-        ///// <summary>
-        ///// Logouts this instance.
-        ///// </summary>
-        ///// <returns></returns>
-        ///// <author>Huong Huynh</author>
-        ///// <date>05/25/2016</date>
-        //public LoginPage Logout()
-        //{
-        //    LblUsername.MouseOver();
-        //    LnkLogout.Click();
-        //    return new LoginPage(_webDriver);
-        //}
-
-
-        ///// <summary>
-        ///// Selects the repository on Main Page
-        ///// </summary>
-        ///// <param name="repositoryName">Name of the repository</param>
-        ///// <returns>The MainPage object</returns>
-        ///// <author>Vu Tran</author>
-        ///// <date>05/26/2016</date>
-        //public MainPage SelectRepository(String repositoryName)
-        //{
-        //    LblRepository.MouseOver();
-        //    Link lnkRepository = new Link(_webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", repositoryName))));
-        //    lnkRepository.Click();
-        //    return new MainPage(_webDriver);
-        //}
-
-        ///// <summary>
-        ///// Verify the link is exist
-        ///// </summary>
-        ///// <param name="linkName">Name of the link.</param>
-        ///// <returns></returns>
-        ///// <author>Huong Huynh</author>
-        ///// <date>05/25/2016</date>
-        //public Boolean IsLinkExist(string linkName)
-        //{
-        //    Link Link = new Link(_webDriver, By.XPath(string.Format("//a[.='{0}']", linkName)));
-        //    return Link.isDisplayed();
-        //}
-
-        ///// <summary>
-        ///// Determines whether [is div exist] [the specified div name].
-        ///// </summary>
-        ///// <param name="divName">Name of the div.</param>
-        ///// <returns></returns>
-        ///// Author: Tu Nguyen
-        //public Boolean IsDivExist(string divName)
-        //{
-        //    Div div = new Div(_webDriver, By.XPath(string.Format("//div[@title='{0}']", divName)));
-        //    return div.isDisplayed();
-        //}
-
         #endregion
 
-        #region Get Text Methods
+        #region General Methods
+
+        /// <summary>
+        /// Get the current userName
+        /// </summary>
+        /// <returns>the current userName</returns>
+        /// <author>Tu Nguyen</author>
+        /// <date>05/26/2016</date>
         public string GetUserNameText()
         {
             return LblUsername.Text;
         }
+
+        /// <summary>
+        /// Get the current Repository name
+        /// </summary>
+        /// <returns>the current Repository name</returns>
+        /// <author>Vu Tran</author>
+        /// <date>05/26/2016</date>
         public string GetCurrentRepositoryText()
         {
             return LblCurrentRepository.Text;
         }
-        #endregion
 
         /// <summary>
-        /// Switches to new opened window.
+        /// Selects the repository
         /// </summary>
-        /// <param name="driver">The driver.</param>
-        /// <param name="isNewUrl">if set to <c>true</c> [is new URL].</param>
-        //public void SwitchToNewOpenedWindow(IWebDriver driver, bool isNewUrl = true)
-        //{
-        //    driver.Close();
-        //    driver.SwitchTo().Window(driver.WindowHandles.Last());
-        //}
+        /// <param name="repositoryName">Name of the repository</param>
+        /// <returns>The MainPage object</returns>
+        /// <author>Vu Tran</author>
+        /// <date>05/26/2016</date>
+        public MainPage SelectRepository(String repositoryName)
+        {
+            LblRepository.MouseTo();
+            IWebElement lnkRepository = FindElement(By.XPath(string.Format("//a[.='{0}']", repositoryName)));
+            lnkRepository.Clicks();
+            return new MainPage(_webDriver);
+        }
+
+        /// <summary>
+        /// Verify the link is exist
+        /// </summary>
+        /// <param name="linkName">Name of the link.</param>
+        /// <returns>True/False</returns>
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2016</date>
+        public Boolean IsLinkExist(string linkName)
+        {
+            IWebElement lnkName = FindElement(By.XPath(string.Format("//a[.='{0}']", linkName)));
+            return lnkName.Displayed;
+        }
+
+        /// <summary>
+        /// Determines whether [is div exist] [the specified div name].
+        /// </summary>
+        /// <param name="divName">Name of the div.</param>
+        /// <returns>True/False</returns>
+        /// <author>Tu Nguyen</author>
+        /// <date>05/25/2016</date>
+        public bool IsDivExist(string divName)
+        {
+            IWebElement div = FindElement(By.XPath(string.Format("//div[@title='{0}']", divName)));
+            return div.Displayed;
+        }
 
         /// <summary>
         /// Waits for page load complete
@@ -370,152 +328,55 @@ namespace SeleniumAdvProject.PageObjects
         /// <return></return>
         /// <author>Huong Huynh</author>
         /// <date>05/26/2015</date>
-        //public void WaitForPageLoadComplete()
-        //{
-        //    WebDriverWait wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(Constants.WaitTimeoutShortSeconds));
-        //    try
-        //    {
-        //        wait.Until(w => ((IJavaScriptExecutor)_webDriver).ExecuteScript("return document.readyState;").Equals("loaded"));
-        //    }
-        //    catch (WebDriverException e)
-        //    {
-        //        Console.WriteLine(e.ToString());
-        //    }
-        //}
-        /// <summary>
-        /// Switches to new frame
-        /// </summary>
-        /// <param name="element">The IWebElement</param>
-        /// <return></return>
-        /// <author>Huong Huynh</author>
-        /// <date>05/26/2015</date>
-        //public void SwitchToNewFrame(IWebElement element)
-        //{
-        //    _webDriver.SwitchTo().Frame(element);
-        //}
-        /// <summary>
-        /// Closes the window
-        /// </summary>
-        /// <return></return>
-        /// <author>Huong Huynh</author>
-        /// <date>05/26/2015</date>
-        //public void CloseWindow()
-        //{
-        //    _webDriver.Close();
-        //}
+        public void WaitForPageLoadComplete()
+        {
+            WebDriverWait wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(Constants.WaitTimeoutShortSeconds));
+            try
+            {
+                wait.Until(w => ((IJavaScriptExecutor)_webDriver).ExecuteScript("return document.readyState;").Equals("loaded"));
+            }
+            catch (WebDriverException e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+        #endregion
 
+        #region Alert methods
         /// <summary>
-        /// Waits for control exists
-        /// </summary>
-        /// <param name="control">The By property of element</param>
-        /// <param name="timeoutInSeconds">The timeout in seconds</param>
-        /// <return></return>
-        /// <author>Huong Huynh</author>
-        /// <date>05/26/2015</date>
-        //public void WaitForControlExists(By control, int timeoutInSeconds = Constants.WaitTimeoutShortSeconds)
-        //{
-        //    try
-        //    {
-        //        _webDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(timeoutInSeconds));
-        //        IWebElement element = _webDriver.FindElement(control);
-        //        if (element == null)
-        //        {
-        //            WebDriverWait wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(timeoutInSeconds));
-        //            wait.Until(drv => drv.FindElement(control));
-        //        }
-        //    }
-        //    catch
-        //    {
-        //        throw new Exception("No element have been found.");
-
-        //    }
-        //}
-
-        /// <summary>
-        /// Refreshes the current page
-        /// </summary>
-        /// <return></return>
-        /// <author>Huong Huynh</author>
-        /// <date>05/26/2015</date>
-        //public void RefreshCurrentPage()
-        //{
-        //    _webDriver.Navigate().Refresh();
-        //}
-
-        /// <summary>
-        /// Confirm OK/YES/NO/CANCEL on the dialog
+        /// Confirm OK/CANCEL on the dialog
         /// </summary>
         /// <param name="buttonName">Name of the button on the dialog</param>
         /// <returns></returns>
         /// <author>Huong Huynh</author>
-        /// <date>05/26/2015</date>
-        //public void ConfirmDialog(string buttonName)
-        //{
-        //    switch (buttonName.ToUpper())
-        //    {
-        //        case "OK":
-        //        case "YES":
-        //            _webDriver.SwitchTo().Alert().Accept();
-        //            break;
-
-        //        case "NO":
-        //        case "CANCEL":
-        //            _webDriver.SwitchTo().Alert().Dismiss();
-        //            break;
-        //    }
-        //}
+        /// <date>05/26/2016</date>
+        public void ConfirmDialog(BtnName buttonName)
+        {
+            switch (buttonName)
+            {
+                case BtnName.OK:
+                    _webDriver.SwitchTo().Alert().Accept();
+                    break;
+                case BtnName.Cancel:
+                    _webDriver.SwitchTo().Alert().Dismiss();
+                    break;
+            }
+        }
 
         /// <summary>
         /// Get the text message in the dialog
         /// </summary>
-        /// <returns>String</returns>
+        /// <returns>dialog message string</returns>
         /// <author>Huong Huynh</author>
-        /// <date>05/26/2015</date>
-        //public string GetDialogText()
-        //{
-        //    string dglMessage = _webDriver.SwitchTo().Alert().Text;
-        //    return dglMessage;
-
-        //}
-
-        /// <summary>
-        /// Gets the URL
-        /// </summary>
-        /// <returns>String</returns>
-        /// <author>Huong Huynh</author>
-        /// <date>05/26/2015</date>
-        public string GetURL()
+        ///<date>05/26/2016</date>
+        public string GetDialogText()
         {
-            string url = _webDriver.Url;
-            return url;
+            string dglMessage = _webDriver.SwitchTo().Alert().Text;
+            return dglMessage;
         }
 
-        //public void ClickLinkText(string linkText)
-        //{
-        //    Link lnkDynamic = new Link(_webDriver.FindElement(By.XPath(string.Format("//a[.='{0}']", linkText))));
-        //    lnkDynamic.Click();
-        //}
+        #endregion
 
-        //public AddNewPanelPage OpenAddNewPanelPageFromButton()
-        //{
-        //    BtnChoosePanel.Click();
-        //    BtnCreateNewPanel.Click();
-        //    return new AddNewPanelPage(_webDriver);
-        //}
-
-
-        public bool isAlertPresent()
-        {
-            try
-            {
-                _webDriver.SwitchTo().Alert();
-                return true;
-            }
-            catch (NoAlertPresentException)
-            {
-                return false;
-            }
-        }
         #endregion
     }
 }

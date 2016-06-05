@@ -29,7 +29,7 @@ namespace SeleniumAdvProject.Utils
         Add,
     }
 
-    class PropertiesCollection
+    public static class PropertiesCollection
     {
         
     }

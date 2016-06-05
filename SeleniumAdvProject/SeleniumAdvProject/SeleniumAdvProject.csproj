@@ -72,20 +72,22 @@
     <Compile Include="Common\CommonAction.cs" />
     <Compile Include="Common\Constants.cs" />
     <Compile Include="DataObjects\Page.cs" />
+    <Compile Include="PageObjects\GeneralPage\Alert.cs" />
     <Compile Include="PageObjects\GeneralPage\BasePage.cs" />
+    <Compile Include="PageObjects\GeneralPage\LoginPage.cs" />
     <Compile Include="PageObjects\HomePage\AddNewPage.cs" />
     <Compile Include="PageObjects\HomePage\MainPage.cs" />
     <Compile Include="PageObjects\PanelPage\AddPanelPage.cs" />
     <Compile Include="PageObjects\PanelPage\PanelsPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestCases\BaseTestCase.cs" />
+    <Compile Include="TestCases\LoginTCs.cs" />
     <Compile Include="Utils\GetMethods.cs" />
     <Compile Include="Utils\PropertiesCollection.cs" />
     <Compile Include="Utils\SetMethods.cs" />
     <Compile Include="Utils\TableData.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TestCases\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Dlls\Selenium.WebDriverBackedSelenium.dll" />
     <Content Include="Dlls\ThoughtWorks.Selenium.Core.dll" />
