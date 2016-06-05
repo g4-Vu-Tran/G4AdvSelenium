@@ -60,9 +60,9 @@ namespace SeleniumAdvProject.PageObjects
         }
 
         /// <summary>
-        /// Delete all Data Profiles
+        /// Go to General Setting Page
         /// </summary>
-        /// <returns>DataProfilePage object</returns>
+        /// <returns>General Setting Page</returns>
         /// <author>Vu Tran</author>
         /// <date>05/30/2016</date>
         public GeneralSettingsPage GoToGeneralSettingPage()
@@ -70,6 +70,47 @@ namespace SeleniumAdvProject.PageObjects
             LnkAddNew.Click();
             return new GeneralSettingsPage(_webDriver);
         }
+
+        /// <summary>
+        /// Verify Pre-set Data Profile are populated
+        /// </summary>
+        /// <returns>True/False</returns>
+        /// <author>Vu Tran</author>
+        /// <date>05/30/2016</date>
+        public bool IsPresetDataProfilePopulated()
+        {
+            for (int i = 0; i < Constants.presetDataProfile.Length; i++)
+            {
+                IWebElement element = FindElement(By.XPath(string.Format("//form[@id='form1']//table/tbody//td[text()='{0}']", CommonAction.EncodeSpace(Constants.presetDataProfile[i]))));
+                if (element == null)
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Verify the link exist in the Data Profile table
+        /// </summary>
+        /// <returns>True/False</returns>
+        /// <author>Vu Tran</author>
+        /// <date>05/30/2016</date>
+        public bool IsLinkExists(string dataProfileName, string linkName)
+        {
+            Link lnkName = new Link(FindElement(By.XPath(string.Format("//td[.='{0}']//following-sibling::td/a[.='{1}']",CommonAction.EncodeSpace(dataProfileName), linkName))));
+            
+            if(lnkName == null)
+                return false ;
+            return true;
+        }
+
+        public bool IsCheckBoxExists(string dataProfileName)
+        {
+            Checkbox chkDataProfile = new Checkbox(FindElement(By.XPath(string.Format("//td[.='{0}']//preceding-sibling::td/input[@id='chkDel']", CommonAction.EncodeSpace(dataProfileName)))));
+            if (chkDataProfile == null)
+                return false;
+            return true;
+        }
+
         #endregion
     }
 }

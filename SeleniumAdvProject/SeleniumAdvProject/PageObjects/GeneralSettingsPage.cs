@@ -61,7 +61,7 @@ namespace SeleniumAdvProject.PageObjects
                 case "Cancel": BtnCancel.Click();
                     return new DataProfilePage(_webDriver);
                 default: BtnNext.Click();
-                    return new DataProfilePage(_webDriver);
+                    return new DisplayFieldsPage(_webDriver);
             }
         }
 

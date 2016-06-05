@@ -44,7 +44,7 @@ namespace SeleniumAdvProject.TestCases
             mainPage.BtnChoosePanel.Click();
 
             ////VP Verify that all pre-set panels are populated and sorted correctly
-            Assert.AreEqual(true, mainPage.IsContentInTableSorted("Charts", "ASC"),"Contents in Chart table are not sorted by ASC correctly");
+            Assert.AreEqual(true, mainPage.IsContentInTableSorted("Charts", "ASC"), "Contents in Chart table are not sorted by ASC correctly");
             Assert.AreEqual(true, mainPage.IsContentInTableSorted("Reports", "ASC"), "Contents in Reports table are not sorted by ASC correctly");
             Assert.AreEqual(true, mainPage.IsContentInTableSorted("Indicators", "ASC"), "Contents in Indicators table are not sorted by ASC correctly");
 
@@ -53,7 +53,7 @@ namespace SeleniumAdvProject.TestCases
             ////Logout			
             ////Close Dashboard            
 
-            mainPage.DeletePage(page1.PageName, "Yes").OpenPanelsPage().DeletePanels(chart.DisplayName).Logout();            
+            mainPage.DeletePage(page1.PageName, "Yes").OpenPanelsPage().DeletePanels(chart.DisplayName).Logout();
         }
 
         /// <summary>
@@ -1012,7 +1012,7 @@ namespace SeleniumAdvProject.TestCases
             //VP. Verify that "giang - data" data profiles are populated correctly under the "Data Profile" dropped down menu.
             panelPage.OpenEditPanelPopup(chart.DisplayName);
             Assert.IsTrue(addNewPanelPage.IsDataProfileExists(dataProfileName), string.Format("{0} is not populated correctly under the \"Data Profile\" dropped down menu", dataProfileName));
-            
+
             //Post-condition
             panelPage.CancelPanel();
             panelPage.DeletePanels("All");
@@ -1133,18 +1133,18 @@ namespace SeleniumAdvProject.TestCases
             Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
             Page page2 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
             Page page3 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
-            string[] pageList = new string[]{page1.PageName,page2.PageName,page3.PageName};
+            string[] pageList = new string[] { page1.PageName, page2.PageName, page3.PageName };
 
             LoginPage loginPage = new LoginPage(_webDriver);
             MainPage mainPage = loginPage.Open().Login(Constants.Repository, Constants.UserName, Constants.Password);
             mainPage.AddPage(page1)
                 .AddPage(page2)
                 .AddPage(page3);
-           AddNewPanelPage configurationPopup= mainPage.OpenPanelConfigurationFromChoosePanel("Test Case Execution Results");
-               configurationPopup.isComboboxContainsItems(configurationPopup.CbbSelectPage,pageList);
+            AddNewPanelPage configurationPopup = mainPage.OpenPanelConfigurationFromChoosePanel("Test Case Execution Results");
+            configurationPopup.isComboboxContainsItems(configurationPopup.CbbSelectPage, pageList);
 
             //17 Check that 'Select Page*' drop-down menu contains 3 items: 'main_hung1', 'main_hung2' and 'main_hung3'
-            Assert.AreEqual(true,configurationPopup.isComboboxContainsItems(configurationPopup.CbbSelectPage,pageList),"Select Page * Combobox does not contain these page name");
+            Assert.AreEqual(true, configurationPopup.isComboboxContainsItems(configurationPopup.CbbSelectPage, pageList), "Select Page * Combobox does not contain these page name");
 
             //Post-Condition
             mainPage.DeletePage(page1.PageName).DeletePage(page2.PageName).DeletePage(page3.PageName);
@@ -1230,7 +1230,7 @@ namespace SeleniumAdvProject.TestCases
             configurationPopup.BtnCancel.Click();
 
             //Post Condition
-            mainPage.DeletePage(page1.PageName).Logout();            
+            mainPage.DeletePage(page1.PageName).Logout();
         }
         /// <summary>
         /// DA_PANEL_TC044 - Verify that \"Height *\" field is not allowed to be empty
@@ -1264,7 +1264,7 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual("Panel height is a required field.",
                 actualMessage,
                 string.Format("Failed! Actual message is: {0}", actualMessage));
-            configurationPopup.ConfirmDialog("OK");          
+            configurationPopup.ConfirmDialog("OK");
             configurationPopup.BtnCancel.Click();
 
             //Post Condition
@@ -1325,13 +1325,13 @@ namespace SeleniumAdvProject.TestCases
             //7 Click Ok button
             //8 Enter invalid folder path
             //9 Click Ok button on Panel Configuration dialog           
-            Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);            
+            Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
             Chart chart = new Chart(CommonAction.GeneratePanelName(), "Name", page1.PageName);
             chart.Folder = "abc";
             LoginPage loginPage = new LoginPage(_webDriver);
             loginPage.Open();
-            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);                        
-            mainPage.AddPage(page1);           
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+            mainPage.AddPage(page1);
             mainPage.AddNewPanel(chart);
 
             //VP Observe the current page.There is message "Panel folder is incorrect"
@@ -1342,7 +1342,7 @@ namespace SeleniumAdvProject.TestCases
             //11 Enter valid folder path
             //12 Click Ok button on Panel Configuration dialog
             ////VP Observe the current page -The new panel is created
-            
+
             mainPage.BtnChoosePanel.Click();
             //Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
             //LoginPage loginPage = new LoginPage(_webDriver);
@@ -1375,6 +1375,7 @@ namespace SeleniumAdvProject.TestCases
 
             //Set variables
             Chart chart = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "!#$%^&*()'", "Name", null, null, null, null, null, null, null, false);
+            Page page = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
 
             //1. Navigate to Dashboard login page
             //2. Login with valid account
@@ -1382,15 +1383,22 @@ namespace SeleniumAdvProject.TestCases
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
             //3. Create a new page
+            mainPage.AddPage(page);
+
             //4. Click Choose Panel button
             //5. Click Create New Panel button
             //6. Enter all required fields on Add New Panel page
             //7. Click Ok button
+            mainPage.AddNewPanel(chart);
+            AddNewPanelPage addNewPanelPage = mainPage.OpenAddNewPanelPage().FillPanelData(null, "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "3D", null, null, null, true, "Top");
+            addNewPanelPage.BtnOk.Click();
+
             //8. Click Select Folder button on Panel Configuration dialog
             //9. Choose folder name in Folder Form
             //10. Click Ok button on Select Folder form
+            addNewPanelPage.SelectFolder("/Car Rental/Actions/Car");
             //VP. User is able to select properly folder with Select Folder form
-
+            Assert.AreEqual("/Car Rental/Actions/Car", addNewPanelPage.TxtFolder.Text, "Select folder is unsuccessfully");
         }
 
         /// <summary>
@@ -1472,7 +1480,7 @@ namespace SeleniumAdvProject.TestCases
             panelPage.IsPanelExist(chart.DisplayName);
 
             //Post-Condition
-            panelPage.DeleteAllPanels();
+            panelPage.DeletePanels("All");
 
         }
 
@@ -1523,7 +1531,7 @@ namespace SeleniumAdvProject.TestCases
             panelPage.IsPanelExist(chart1.DisplayName);
 
             //Post-Condition
-            panelPage.DeleteAllPanels();
+            panelPage.DeletePanels("All");
 
         }
 

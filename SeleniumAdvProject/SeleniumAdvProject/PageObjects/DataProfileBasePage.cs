@@ -19,11 +19,22 @@ namespace SeleniumAdvProject.PageObjects
         protected static readonly By _btnFinish = By.XPath("//input[@value='Finish' and @type='button']");
         protected static readonly By _btnCancel = By.XPath("//input[@value='Cancel' and @type='button']");
         protected static readonly By _btnBack = By.XPath("//input[@value='Back' and @type='button']");
+        protected static readonly By _lblSortField = By.XPath("//ul[@id='wstep']/li[text()='Sort Fields']");
+        protected static readonly By _lblGeneralSetting = By.XPath("//ul[@id='wstep']/li[text()='General Settings']");
         #endregion
 
         #region Elements
         public Button BtnNext
-        {            get { return new Button(FindElement(_btnNext)); }
+        {
+            get { return new Button(FindElement(_btnNext)); }
+        }
+        public Label LblSortField
+        {
+            get { return new Label(FindElement(_lblSortField)); }
+        }
+        public Label LblGeneralSetting
+        {
+            get { return new Label(FindElement(_lblGeneralSetting)); }
         }
         public Button BtnFinish
         {
@@ -69,7 +80,19 @@ namespace SeleniumAdvProject.PageObjects
             }
         }
 
-       // enum AddDataProfileSteps { GeneralSettings, DisplayFields, SortFields, FilterFields,StatisticFields, DisplaySubFields, SortSubFields, FilterSubFields};
+
+        protected GeneralSettingsPage GoToGeneralSettingsPage()
+        {
+            LblGeneralSetting.Click();
+            return new GeneralSettingsPage(_webDriver);
+        }
+
+        protected GeneralSettingsPage GoToGeneralSettingsPage()
+        {
+            LblSortField.Click();
+            return new GeneralSettingsPage(_webDriver);
+        }
+        // enum AddDataProfileSteps { GeneralSettings, DisplayFields, SortFields, FilterFields,StatisticFields, DisplaySubFields, SortSubFields, FilterSubFields};
         #endregion
 
     }

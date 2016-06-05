@@ -422,6 +422,17 @@ namespace SeleniumAdvProject.PageObjects
         }
 
         /// <summary>
+        /// Gets the CheckBox status.
+        /// </summary>
+        /// <param name="ck">The ck.</param>
+        /// <returns></returns>
+        /// Author: TU Nguyen
+        public Boolean GetCheckBoxStatus(Checkbox ck)
+        {
+            return ck.Selected;
+        }
+
+        /// <summary>
         /// Gets the URL
         /// </summary>
         /// <returns>String</returns>

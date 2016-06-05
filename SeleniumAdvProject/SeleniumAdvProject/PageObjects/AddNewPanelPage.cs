@@ -44,12 +44,23 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _txtHeight = By.XPath("//input[@id='txtHeight']");
         static readonly By _txtFolder = By.XPath("//input[@id='txtFolder']");
         static readonly By _btnOKConfigurationPanel = By.XPath(" //input[@id='OK' and contains(@onclick,'Dashboard.addPanelToPage')]");
+        static readonly By _btnFolder = By.XPath("//img[@class='panel_setting_treefolder']");
+        static readonly By _btnFolderSelectionOK = By.XPath("//input[@id='btnFolderSelectionOK']");
+
         #endregion
 
         #region Elements
         public ComboBox CbbDataProfile
         {
             get { return new ComboBox(FindElement(_cbbDataProfile)); }
+        }
+        public Button BtnFolder
+        {
+            get { return new Button(FindElement(_btnFolder)); }
+        }
+        public Button BtnFolderSelectionOK
+        {
+            get { return new Button(FindElement(_btnFolderSelectionOK)); }
         }
         public TextBox TxtDisplayName
         {
@@ -259,7 +270,7 @@ namespace SeleniumAdvProject.PageObjects
                 style = "3D";
             }
             return style;
-        
+
         }
 
         /// <summary>
@@ -357,16 +368,7 @@ namespace SeleniumAdvProject.PageObjects
             return this;
         }
 
-        /// <summary>
-        /// Gets the CheckBox status.
-        /// </summary>
-        /// <param name="ck">The ck.</param>
-        /// <returns></returns>
-        /// Author: TU Nguyen
-        private Boolean GetCheckBoxStatus(Checkbox ck)
-        {
-            return ck.Selected;
-        }
+        
 
         /// <summary>
         /// Selects the data labels.
@@ -664,14 +666,14 @@ namespace SeleniumAdvProject.PageObjects
         public void ClosePanelDialog(string button)
         {
             switch (button)
-        {
+            {
                 case "OK":
                     BtnOk.Click();
                     break;
                 case "Cancel":
-            BtnCancel.Click();
+                    BtnCancel.Click();
                     break;
-        }
+            }
         }
 
         #endregion
@@ -731,7 +733,23 @@ namespace SeleniumAdvProject.PageObjects
                 TxtFolder.SendKeys(folder);
                 BtnOKConfigurationPanel.Click();
             }
-            
+
+        }
+
+        public void SelectFolder(string folderPath)
+        {
+            BtnFolder.Click();
+            string[] arrNode = folderPath.Split('/');
+            for (int i = 0; i < arrNode.Length; i++)
+            {
+                IWebElement plusImg = FindElement(By.XPath(string.Format("//div[@id='async_html_2']//a[text()=' {0}']//preceding-sibling::a/img[@src='images/plus.gif']", arrNode[i])));
+                if (plusImg != null)
+                {
+                    plusImg.Click();
+                }
+            }
+            BtnFolderSelectionOK.Click();
+
         }
 
         //public string SettingPanelWithExpectedError(string selectPage, int height, string folder)
@@ -763,7 +781,7 @@ namespace SeleniumAdvProject.PageObjects
             if (height != null)
             {
                 TxtHeight.SendKeys(height.ToString());
-            }            
+            }
             TxtFolder.SendKeys(folder);
             BtnOKConfigurationPanel.Click();
             return this.GetDialogText();
@@ -804,7 +822,8 @@ namespace SeleniumAdvProject.PageObjects
         {
             bool flag = false;
             IList<String> values = comBoboxName.OptionStrings;
-            foreach (string listValue in listValues){
+            foreach (string listValue in listValues)
+            {
                 flag = values.Contains(listValue);
                 if (flag == false)
                     break;

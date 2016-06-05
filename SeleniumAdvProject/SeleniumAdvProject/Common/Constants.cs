@@ -20,10 +20,27 @@ namespace SeleniumAdvProject.Common
         public const string LowerCaseUser = "admin";
 
         //URL
-        public const string LoginPageUrl = "http://127.0.0.1/TADashboard/login.jsp";
+        public const string LoginPageUrl = "http://localhost:54000/TADashboard/login.jsp";
         //public const string LoginPageUrl = "http://groupba.dyndns.org:54000/TADashboard/login.jsp";
-        public const string MainPageUrl = "/TADashboard/";                
-       
+        public const string MainPageUrl = "/TADashboard/";
+
+        public static readonly string[] presetDataProfile = {"Action Implementation By Status",
+                                     "Test Case Execution",
+                                     "Test Case Execution Failure Trend",
+                                     "Test Case Execution History",
+                                     "Test Case Execution Results",
+                                     "Test Case Execution Trend",
+                                     "Test Module Execution",
+                                     "Test Module Execution Failure Trend",
+                                     "Test Module Execution History",
+                                     "Test Module Execution Results",
+                                     "Test Module Execution Results Report",
+                                     "Test Module Execution Trend",
+                                     "Test Module Implementation By Priority",
+                                     "Test Module Implementation By Status",
+                                     "Test Module Status per Assigned Users",
+                                     "Test Objective Execution"};
+
     }
 
 }
