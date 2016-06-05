@@ -259,7 +259,7 @@ namespace SeleniumAdvProject.PageObjects
                 style = "3D";
             }
             return style;
-
+        
         }
 
         /// <summary>
@@ -372,6 +372,7 @@ namespace SeleniumAdvProject.PageObjects
         /// Selects the data labels.
         /// </summary>
         /// <param name="dataLabel">The data label.</param>
+        /// 
         private void SelectDataLabels(string[] dataLabel)
         {
             if ((dataLabel == null))
@@ -663,20 +664,24 @@ namespace SeleniumAdvProject.PageObjects
         public void ClosePanelDialog(string button)
         {
             switch (button)
-            {
+        {
                 case "OK":
                     BtnOk.Click();
                     break;
                 case "Cancel":
-                    BtnCancel.Click();
+            BtnCancel.Click();
                     break;
-            }
+        }
         }
 
         #endregion
         /// <summary>
         /// Adds the chart.
         /// </summary>
+        /// <param name="pChart">Chart object.</param>
+        /// <returns>Main Page</returns>
+        /// <author>Huong Huynh</author>
+        /// <date>5/30/2016</date>
         /// <param name="pChart">The p chart.</param>
         /// <returns></returns>
         /// Update: Tu Nguyen
@@ -715,6 +720,8 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="selectPage">The select page.</param>
         /// <param name="height">The height.</param>
         /// <param name="folder">The folder.</param>
+        /// <author>Huong Huynh</author>
+        /// <date>5/30/2016</date>
         public void SettingPanel(string selectPage, int height, string folder)
         {
             if (selectPage != null)
@@ -727,6 +734,40 @@ namespace SeleniumAdvProject.PageObjects
             
         }
 
+        //public string SettingPanelWithExpectedError(string selectPage, int height, string folder)
+        //{
+        //    CbbSelectPage.SelectByText(selectPage);
+        //    TxtHeight.SendKeys(height.ToString());
+        //    TxtFolder.SendKeys(folder);
+        //    BtnOKConfigurationPanel.Click();
+        //    return this.GetDialogText();
+        //}
+        //public string SettingPanelWithExpectedError(string selectPage, double height, string folder)
+        //{
+        //    CbbSelectPage.SelectByText(selectPage);
+        //    TxtHeight.SendKeys(height.ToString());
+        //    TxtFolder.SendKeys(folder);
+        //    BtnOKConfigurationPanel.Click();
+        //    return this.GetDialogText();
+        //}
+        /// <summary>
+        /// Settings the panel with expected error.
+        /// </summary>
+        /// <param name="selectPage">select page name, left defaut if this value is null.</param>
+        /// <param name="height">enter height, left as default if this value is null</param>
+        /// <param name="folder">enter folder, left as default if this value is null.</param>
+        /// <returns></returns>
+        public string SettingPanelWithExpectedError(string selectPage, object height, string folder)
+        {
+            CbbSelectPage.SelectByText(selectPage);
+            if (height != null)
+            {
+                TxtHeight.SendKeys(height.ToString());
+            }            
+            TxtFolder.SendKeys(folder);
+            BtnOKConfigurationPanel.Click();
+            return this.GetDialogText();
+        }
 
         /// <summary>
         /// Determines whether [is the list is sorted] [the specified combobox].
@@ -759,6 +800,17 @@ namespace SeleniumAdvProject.PageObjects
             return flag;
         }
 
+        public bool isComboboxContainsItems(ComboBox comBoboxName, string[] listValues)
+        {
+            bool flag = false;
+            IList<String> values = comBoboxName.OptionStrings;
+            foreach (string listValue in listValues){
+                flag = values.Contains(listValue);
+                if (flag == false)
+                    break;
+            }
+            return flag;
+        }
 
         #endregion
         #endregion

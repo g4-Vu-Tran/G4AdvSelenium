@@ -86,7 +86,7 @@ namespace SeleniumAdvProject.Ultilities
         /// </summary>
         public void DoubleClick()
         {
-            LoadControl();
+            //LoadControl();
             action.DoubleClick(element).Build().Perform();
         }
 
@@ -105,18 +105,18 @@ namespace SeleniumAdvProject.Ultilities
         /// <param name="timeoutInSeconds">The timeout in seconds.</param>
         public void WaitForControlExists(int timeoutInSeconds = Constants.WaitTimeoutShortSeconds)
         {
-            try
-            {
-                if (element == null)
-                {
-                    wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(timeoutInSeconds));
-                    wait.Until(drv => drv.FindElement(this.by));
-                }
-            }
-            catch
-            {
-                throw new Exception(string.Format("No element '{0}' have been found.", by));
-            }
+            //try
+            //{
+            //    if (element == null)
+            //    {
+            //        wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(timeoutInSeconds));
+            //        wait.Until(drv => drv.FindElement(this.by));
+            //    }
+            //}
+            //catch
+            //{
+            //    throw new Exception(string.Format("No element '{0}' have been found.", by));
+            //}
 
         }
 
@@ -141,15 +141,15 @@ namespace SeleniumAdvProject.Ultilities
         /// <summary>
         /// Loads the control.
         /// </summary>
-        public void LoadControl()
-        {
-            if (by != null)
-            {
-                WaitForControlExists();
-                element = _webDriver.FindElement(by);
-            }
+        //public void LoadControl()
+        //{
+            //if (by != null)
+            //{
+            //    WaitForControlExists();
+            //    element = _webDriver.FindElement(by);
+            //}
 
-        }
+        //}
 
         /// <summary>
         /// Gets the CSS classes.
@@ -161,7 +161,7 @@ namespace SeleniumAdvProject.Ultilities
         {
             get
             {
-                LoadControl();
+                //LoadControl();
                 return GetAttribute("class").Split(' ').ToList();
             }
         }
@@ -182,7 +182,7 @@ namespace SeleniumAdvProject.Ultilities
         /// </summary>
         public void Clear()
         {
-            LoadControl();
+            //LoadControl();
             element.SendKeys(Keys.End);
             element.SendKeys(Keys.Shift + Keys.Home);
             element.SendKeys(Keys.Delete);
@@ -193,7 +193,7 @@ namespace SeleniumAdvProject.Ultilities
         /// </summary>
         public void Click()
         {
-            LoadControl();
+            //LoadControl();
             element.Click();
         }
 
@@ -202,7 +202,7 @@ namespace SeleniumAdvProject.Ultilities
         /// </summary>
         public void MouseOver()
         {
-            LoadControl();
+            //LoadControl();
             action = new Actions(_webDriver);
             action.MoveToElement(this.element).Build().Perform();
         }
@@ -213,7 +213,7 @@ namespace SeleniumAdvProject.Ultilities
         {
             if (by != null)
             {
-                LoadControl();
+                //LoadControl();
             }
             ((IJavaScriptExecutor)_webDriver).ExecuteScript("arguments[0].click();", element);
         }
@@ -230,7 +230,7 @@ namespace SeleniumAdvProject.Ultilities
         {
             get
             {
-                LoadControl();
+                //LoadControl();
                 return element.Enabled;
             }
         }
@@ -239,7 +239,7 @@ namespace SeleniumAdvProject.Ultilities
         /// </summary>
         public string GetAttribute(string attributeName)
         {
-            LoadControl();
+            //LoadControl();
             return element.GetAttribute(attributeName);
         }
         /// <summary>
@@ -249,7 +249,7 @@ namespace SeleniumAdvProject.Ultilities
         /// <returns></returns>
         public string GetCssValue(string propertyName)
         {
-            LoadControl();
+            //LoadControl();
             return element.GetCssValue(propertyName);
         }
 
@@ -261,7 +261,7 @@ namespace SeleniumAdvProject.Ultilities
         {
             get
             {
-                LoadControl();
+                //LoadControl();
                 return element.Location;
             }
         }
@@ -272,7 +272,7 @@ namespace SeleniumAdvProject.Ultilities
         {
             get
             {
-                LoadControl();
+                //LoadControl();
                 return element.Selected;
             }
         }
@@ -282,7 +282,7 @@ namespace SeleniumAdvProject.Ultilities
         /// <param name="text">The text to type into element</param>
         public void SendKeys(string text)
         {
-            LoadControl();
+            //LoadControl();
             if (element.Enabled)
             {
                 if (text != null)
@@ -302,7 +302,7 @@ namespace SeleniumAdvProject.Ultilities
         /// <param name="normalKey"></param>
         public void SendSpecialKeys(string specialKey, string normalKey)
         {
-            LoadControl();
+            //LoadControl();
 
             switch (specialKey)
             {
@@ -332,7 +332,7 @@ namespace SeleniumAdvProject.Ultilities
         {
             get
             {
-                LoadControl();
+                //LoadControl();
                 return element.Size;
             }
         }
@@ -345,7 +345,7 @@ namespace SeleniumAdvProject.Ultilities
         /// <exception cref="StaleElementReferenceException">Thrown when the target element is no longer valid in the document DOM.</exception>
         public void Submit()
         {
-            LoadControl();
+            //LoadControl();
             element.Submit();
         }
         /// <summary>
@@ -361,7 +361,7 @@ namespace SeleniumAdvProject.Ultilities
         {
             get
             {
-                LoadControl();
+                //LoadControl();
                 return element.TagName;
             }
         }
@@ -374,7 +374,7 @@ namespace SeleniumAdvProject.Ultilities
         {
             get
             {
-                LoadControl();
+               //LoadControl();
                 return element.Text;
             }
         }
@@ -386,7 +386,7 @@ namespace SeleniumAdvProject.Ultilities
         {
             get
             {
-                LoadControl();
+                //LoadControl();
                 return element.GetAttribute("value");
             }
         }
@@ -424,7 +424,7 @@ namespace SeleniumAdvProject.Ultilities
         {
             if (isExists())
             {
-                LoadControl();
+                //LoadControl();
                 return element.Displayed;
             }
             return false;
@@ -441,7 +441,7 @@ namespace SeleniumAdvProject.Ultilities
         public IWebElement FindElement(By by)
         {
             IWebElement eResult;
-            LoadControl();
+            //LoadControl();
             try
             {
                 eResult = element.FindElement(by);
@@ -461,7 +461,7 @@ namespace SeleniumAdvProject.Ultilities
         /// matching the current criteria, or an empty list if nothing matches.</returns>
         public System.Collections.ObjectModel.ReadOnlyCollection<IWebElement> FindElements(By by)
         {
-            LoadControl();
+            //LoadControl();
             try
             {
                 element.FindElements(by);
