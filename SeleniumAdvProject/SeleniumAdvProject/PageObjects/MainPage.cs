@@ -105,6 +105,11 @@ namespace SeleniumAdvProject.PageObjects
             return this;
         }
 
+        /// <summary>
+        /// Opens the edit panel popup.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
         public AddNewPanelPage OpenEditPanelPopup()
         {
             LnkEditPanel.Click();
