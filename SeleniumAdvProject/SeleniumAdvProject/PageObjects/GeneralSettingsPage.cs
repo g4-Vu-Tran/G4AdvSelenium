@@ -65,6 +65,29 @@ namespace SeleniumAdvProject.PageObjects
             }
         }
 
+        /// <summary>
+        /// Sets the general settings with expected error.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="button">The button.</param>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string SetGeneralSettingsWithExpectedError(string name, string button = "Next")
+        {
+
+            TxtProfileName.SendKeys(name);
+            switch (button)
+            {
+                case "Finish":
+                    {
+                        BtnFinish.Click();
+                        return this.GetDialogText();
+                    }
+                default: BtnNext.Click();
+                    return this.GetDialogText();
+            }
+        }
+
         #endregion
 
     }

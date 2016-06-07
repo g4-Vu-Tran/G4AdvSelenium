@@ -217,7 +217,7 @@ namespace SeleniumAdvProject.TestCases
             //7. Click on "Next" button
             DisplayFieldsPage displayFieldsPage = (DisplayFieldsPage)DPPage.GoToGeneralSettingPage().SetGeneralSettingsValue(CommonAction.GenerateDataProfileName(), null, null);
 
-            
+
             //3. Input to "Name *" field
             //4. Click "Item Type" dropped down menu and choose Test Modules
             //5. Navigate to Sort Fields page
@@ -251,10 +251,62 @@ namespace SeleniumAdvProject.TestCases
             //27. Navigate to Sort Fields page
             //VP. Check all fields of selected "Item Type" item are listed under the "Field" dropped down menu 
 
-            
+        }
+
+        /// <summary>
+        /// Verify that Data Profiles are listed alphabetically
+        /// </summary>
+        /// Author: Tu Nguyen
+        [TestMethod]
+        public void DA_DP_TC067()
+        {
+            Console.WriteLine("DA_DP_TC067 - Verify that Data Profiles are listed alphabetically");
+
+            //1. Log in Dashboard
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //2. Click Administer->Data Profiles
+            DataProfilePage DPPage = mainPage.GoToDataProfilePage();
+
+            //VP: Check Data Profiles are listed alphabetically
+            bool actualResult = DPPage.IsDataProfileContentSorted("panel_tag1", "ASC");
+            Assert.AreEqual(true, actualResult, "Data Profiles are not listed alphabetically");
 
         }
 
+        /// <summary>
+        /// Verify that user is unable to proceed to next step or finish creating data profile if  "Name *" field is left empty
+        /// </summary>
+        /// Author: Tu Nguyen
+        [TestMethod]
+        public void DA_DP_TC069()
+        {
+            Console.WriteLine("DA_DP_TC069 - Verify that user is unable to proceed to next step or finish creating data profile if  \"Name *\" field is left empty");
+
+            //1. Log in Dashboard
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //2. Navigate to Data Profiles page
+            DataProfilePage DPPage = mainPage.GoToDataProfilePage();
+
+            //3. Click on "Add New"
+            //4. Click on "Next Button"
+            //VP: dialog message "Please input profile name" appears
+            string actualMessage = DPPage.GoToGeneralSettingPage().SetGeneralSettingsWithExpectedError(" ");
+            Assert.AreEqual("Please input profile name.", actualMessage,
+                           string.Format("Failed! Actual message is: {0}", actualMessage));
+            DPPage.ConfirmDialog("OK");
+
+            //5. Click on "Finish Button"
+            //VP: dialog message "Please input profile name" appears
+            string actualMessageFinish = DPPage.GoToGeneralSettingPage().SetGeneralSettingsWithExpectedError(" ", "Finish");
+            Assert.AreEqual("Please input profile name.", actualMessageFinish,
+                           string.Format("Failed! Actual message is: {0}", actualMessageFinish));
+            DPPage.ConfirmDialog("OK");
+
+        }
 
     }
 }

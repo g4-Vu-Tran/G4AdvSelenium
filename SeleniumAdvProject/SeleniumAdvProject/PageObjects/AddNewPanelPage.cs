@@ -368,7 +368,7 @@ namespace SeleniumAdvProject.PageObjects
             return this;
         }
 
-        
+
 
         /// <summary>
         /// Selects the data labels.
@@ -724,6 +724,7 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="folder">The folder.</param>
         /// <author>Huong Huynh</author>
         /// <date>5/30/2016</date>
+        /// <Updator>Tu Nguyen</Updator>
         public void SettingPanel(string selectPage, int height, string folder)
         {
             if (selectPage != null)
@@ -731,9 +732,8 @@ namespace SeleniumAdvProject.PageObjects
                 CbbSelectPage.SelectByText(selectPage);
                 TxtHeight.SendKeys(height.ToString());
                 TxtFolder.SendKeys(folder);
-                BtnOKConfigurationPanel.Click();
             }
-
+            BtnOKConfigurationPanel.Click();
         }
 
         public void SelectFolder(string folderPath)

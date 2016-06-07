@@ -1646,9 +1646,9 @@ namespace SeleniumAdvProject.TestCases
 
             //4. Create a new panel
             Chart chart = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "Chart@", null, null, null, "Name", null, null, null, null, false);
-            PanelsPage panelPage = mainPage.OpenPanelsPage();
-            panelPage.AddNewPanel(chart);
-            mainPage.GoToPage(page.PageName);
+            AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
+            mainPage.OpenNewPanelPopUp(page.PageName);
+            addPanelPage.AddChart(chart);
 
             //5. Click Choose Panel button
             //6. Click on the newly created panel link
@@ -1656,7 +1656,6 @@ namespace SeleniumAdvProject.TestCases
 
             //7. Edit valid folder path
             //8. Click Ok button
-            AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
             string actualMessage = addPanelPage.SettingPanelWithExpectedError(page.PageName, 400, " ");
 
             //VP: User is unable to edit "Folder" field with invalid path
@@ -1668,7 +1667,8 @@ namespace SeleniumAdvProject.TestCases
             //Post-Condition
             addPanelPage.ClosePanelDialog("Cancel");
             mainPage.DeletePage(page.PageName);
-            panelPage.DeletePanels(CommonAction.GeneratePanelName());
+            PanelsPage panel = mainPage.OpenPanelsPage();
+            panel.DeletePanels(CommonAction.GeneratePanelName());
 
         }
     }
