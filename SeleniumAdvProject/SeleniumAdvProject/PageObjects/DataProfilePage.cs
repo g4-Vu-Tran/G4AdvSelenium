@@ -103,6 +103,11 @@ namespace SeleniumAdvProject.PageObjects
             return true;
         }
 
+        /// <summary>
+        /// Determines whether [is CheckBox exists] [the specified data profile name].
+        /// </summary>
+        /// <param name="dataProfileName">Name of the data profile.</param>
+        /// <returns></returns>
         public bool IsCheckBoxExists(string dataProfileName)
         {
             Checkbox chkDataProfile = new Checkbox(FindElement(By.XPath(string.Format("//td[.='{0}']//preceding-sibling::td/input[@id='chkDel']", CommonAction.EncodeSpace(dataProfileName)))));
