@@ -32,7 +32,9 @@ namespace SeleniumAdvProject.Ultilities
 
         public IWebElement FindElement(By by, int waitingTime = 60)
         {
+            
             IWebElement iElement = null;
+            int waitSecond= 0;
             while (waitingTime > 0)
             {
                  Stopwatch stopwatch = new Stopwatch();
@@ -45,19 +47,20 @@ namespace SeleniumAdvProject.Ultilities
                     break;
                 }
                 catch(StaleElementReferenceException){
-                    waitingTime=stopwatch.Elapsed.Seconds;
+                    waitSecond = stopwatch.Elapsed.Seconds;
                     FindElement(by, waitingTime);
                 }
                 catch (NullReferenceException)
                 {
-                    waitingTime = stopwatch.Elapsed.Seconds;
+                    waitSecond = stopwatch.Elapsed.Seconds;
                     FindElement(by, waitingTime);
                 }
                 catch (WebDriverException)
                 {
-                    waitingTime = stopwatch.Elapsed.Seconds;
+                    waitSecond = stopwatch.Elapsed.Seconds;
                     FindElement(by, waitingTime);
                 }
+                waitingTime = waitingTime - waitSecond;
                 stopwatch.Stop();
             }         
             return iElement;

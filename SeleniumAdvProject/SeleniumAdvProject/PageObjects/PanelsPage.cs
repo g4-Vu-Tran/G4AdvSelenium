@@ -78,9 +78,10 @@ namespace SeleniumAdvProject.PageObjects
             }
             AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
             addPanelPage.AddChart(chart);
-            WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", chart.DisplayName)));
+            //WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", chart.DisplayName)));
             return this;
         }
+
 
         /// <summary>
         /// Adds the new panel with expected error
@@ -128,6 +129,14 @@ namespace SeleniumAdvProject.PageObjects
             }
 
             ConfirmDialog("OK");
+            return this;
+        }
+   
+                
+        public PanelsPage EditChartPanels(Chart pChart)
+        {
+            AddNewPanelPage addPanelPage = OpenEditPanelPopup(pChart.DisplayName);
+            addPanelPage.EditChartPanel(pChart);
             return this;
         }
 

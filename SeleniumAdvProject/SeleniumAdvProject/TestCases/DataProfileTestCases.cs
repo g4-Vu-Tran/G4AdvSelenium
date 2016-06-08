@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SeleniumAdvProject.PageObjects;
 using SeleniumAdvProject.Common;
@@ -250,11 +249,69 @@ namespace SeleniumAdvProject.TestCases
             //26. Click "Item Type" dropped down menu and choose Test Case Results
             //27. Navigate to Sort Fields page
             //VP. Check all fields of selected "Item Type" item are listed under the "Field" dropped down menu 
-
             
-
         }
+        /// <summary>
+        /// DA_DP_TC072 - Verify that all data profile types are listed under \"Item Type\" dropped down menu
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>06/08/2016</date>
+        [TestMethod]
+        public void DA_DP_TC072()
+        {
+            Console.WriteLine("DA_DP_TC072 - Verify that all data profile types are listed under \"Item Type\" dropped down menu");
 
+            //1 Navigate to Dashboard login page
+            //2 Select a specific repository 
+            //3 Enter valid Username and Password
+            //4 Click Login
+            //5 Click Administer->Data Profiles
+            //6 Click 'Add New' link
+            string []itemsList = new string[]{"Test Modules","Test Cases","Test Objectives","Data Sets","Actions","Interface Entities","Test Results","Test Case Results"};
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            DataProfilePage dataProfilePage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password).GoToDataProfilePage();
+            GeneralSettingsPage genralSettingPage = dataProfilePage.GoToGeneralSettingPage();
+
+           //VP All data profile types are listed under "Item Type" dropped down menu
+            //+ Test Modules
+            //+ Test Cases
+            //+ Test Objectives
+            //+ Data Sets
+            //+ Actions
+            //+ Interface Entities
+            //+ Test Results
+            //+ Test Case Results
+            Assert.AreEqual(true, genralSettingPage.isComboboxContainsItems(genralSettingPage.CbbItemType, itemsList));
+
+            genralSettingPage.Logout();
+        }
+        /// <summary>
+        /// DA_DP_TC072 - Verify that all data profile types are listed under \"Item Type\" dropped down menu
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>06/08/2016</date>
+        [TestMethod]
+        public void DA_DP_TC073()
+        {
+            Console.WriteLine("DA_DP_TC073 - Verify that all data profile types are listed in priority order under \"Item Type\" dropped down menu");
+
+            //1 Log in Dashboard
+            //2 Navigate to Data Profiles page
+            //3 Click on "Add New"
+            //4 Click on "Item Type" dropped down menu          
+
+            string[] itemsList = new string[] { "Test Modules", "Test Cases", "Test Objectives", "Data Sets", "Actions", "Interface Entities", "Test Results", "Test Case Results" };
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            DataProfilePage dataProfilePage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password).GoToDataProfilePage();
+            GeneralSettingsPage genralSettingPage = dataProfilePage.GoToGeneralSettingPage();
+
+            //VP "Item Type" items are listed in priority order: Test Modules>Test Cases> Test Objectives> Data Sets> Actions> Interface Entities> Test Results> Test Cases results
+
+            Assert.AreEqual(true, genralSettingPage.isComboboxContainsItems(genralSettingPage.CbbItemType, itemsList));
+
+            genralSettingPage.Logout();
+        }
 
     }
 }
+

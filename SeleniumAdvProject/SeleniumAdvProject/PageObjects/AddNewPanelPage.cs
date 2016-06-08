@@ -182,7 +182,6 @@ namespace SeleniumAdvProject.PageObjects
 
         #region Private Methods
 
-
         public bool IsDataProfileExists(string dataProfileName)
         {
             IList<string> dataProfiles = CbbDataProfile.OptionStrings;
@@ -715,6 +714,63 @@ namespace SeleniumAdvProject.PageObjects
             SettingPanel(pChart.PageName, pChart.Height, pChart.Folder);
             return new MainPage(_webDriver);
         }
+        public void EditChartPanel(Chart pChart)
+        {           
+            TxtDisplayName.SendKeys(pChart.DisplayName);
+            TxtChartTitle.SendKeys(pChart.ChartTitle);
+            CbbDataProfile.SelectByTextFromGroup(pChart.DataProfile);
+            bool temp = GetCheckBoxStatus(ChbShowTitle);
+            switch (pChart.ShowTitle)
+            {
+                case true:
+                    if (temp == false) { ChbShowTitle.Click(); }
+                    break;
+                case false:
+                    if (temp == true) { ChbShowTitle.Click(); }
+                    break;
+            }
+            SelectChartType(pChart.ChartType);
+            CbbCategory.SelectByTextFromGroup(pChart.Category);
+            TxtCategoryCaption.SendKeys(pChart.CategoryCaption);
+            CbbSeries.SelectByTextFromGroup(pChart.Series);
+            TxtSeriesCaption.SendKeys(pChart.SeriesCaption);
+            SelectLegend(pChart.Legend);
+            SelectDataLabels(pChart.DataLabel);
+            SelectStyle(pChart.Style);
+            BtnOk.Click();
+            SettingPanel(pChart.PageName, pChart.Height, pChart.Folder);            
+        }
+
+        public string AddChartWithExpectedError(Chart pChart)
+        {
+            RbChart.Click();
+            TxtDisplayName.SendKeys(pChart.DisplayName);
+            TxtChartTitle.SendKeys(pChart.ChartTitle);
+            CbbDataProfile.SelectByTextFromGroup(pChart.DataProfile);
+            bool temp = GetCheckBoxStatus(ChbShowTitle);
+            switch (pChart.ShowTitle)
+            {
+                case true:
+                    if (temp == false) { ChbShowTitle.Click(); }
+                    break;
+                case false:
+                    if (temp == true) { ChbShowTitle.Click(); }
+                    break;
+            }
+            SelectChartType(pChart.ChartType);
+            CbbCategory.SelectByTextFromGroup(pChart.Category);
+            TxtCategoryCaption.SendKeys(pChart.CategoryCaption);
+            CbbSeries.SelectByTextFromGroup(pChart.Series);
+            TxtSeriesCaption.SendKeys(pChart.SeriesCaption);
+            SelectLegend(pChart.Legend);
+            SelectDataLabels(pChart.DataLabel);
+            SelectStyle(pChart.Style);
+            BtnOk.Click();
+            SettingPanel(pChart.PageName, pChart.Height, pChart.Folder);
+            string errorMesage = GetDialogText();
+            ConfirmDialog("OK");
+            return errorMesage;            
+        }
 
         /// <summary>
         /// Settings the panel.
@@ -724,7 +780,7 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="folder">The folder.</param>
         /// <author>Huong Huynh</author>
         /// <date>5/30/2016</date>
-        public void SettingPanel(string selectPage, int height, string folder)
+        public MainPage SettingPanel(string selectPage, int height, string folder)
         {
             if (selectPage != null)
             {
@@ -732,8 +788,9 @@ namespace SeleniumAdvProject.PageObjects
                 TxtHeight.SendKeys(height.ToString());
                 TxtFolder.SendKeys(folder);
                 BtnOKConfigurationPanel.Click();
+                WaitForPageLoadComplete();
             }
-
+            return new MainPage(_webDriver);
         }
 
         public void SelectFolder(string folderPath)
@@ -752,22 +809,6 @@ namespace SeleniumAdvProject.PageObjects
 
         }
 
-        //public string SettingPanelWithExpectedError(string selectPage, int height, string folder)
-        //{
-        //    CbbSelectPage.SelectByText(selectPage);
-        //    TxtHeight.SendKeys(height.ToString());
-        //    TxtFolder.SendKeys(folder);
-        //    BtnOKConfigurationPanel.Click();
-        //    return this.GetDialogText();
-        //}
-        //public string SettingPanelWithExpectedError(string selectPage, double height, string folder)
-        //{
-        //    CbbSelectPage.SelectByText(selectPage);
-        //    TxtHeight.SendKeys(height.ToString());
-        //    TxtFolder.SendKeys(folder);
-        //    BtnOKConfigurationPanel.Click();
-        //    return this.GetDialogText();
-        //}
         /// <summary>
         /// Settings the panel with expected error.
         /// </summary>
@@ -775,6 +816,8 @@ namespace SeleniumAdvProject.PageObjects
         /// <param name="height">enter height, left as default if this value is null</param>
         /// <param name="folder">enter folder, left as default if this value is null.</param>
         /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>6/3/2016</date>
         public string SettingPanelWithExpectedError(string selectPage, object height, string folder)
         {
             CbbSelectPage.SelectByText(selectPage);
@@ -792,7 +835,9 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <param name="combobox">The combobox.</param>
         /// <param name="sortType">Type of the sort.</param>
-        /// <returns></returns>
+        /// <returns>return true the value in combobox are sorted, otherwise return false </returns>
+        /// <author>Huong Huynh</author>
+        /// <date>6/3/2016</date>
         public bool IsTheListIsSorted(ComboBox combobox, string sortType)
         {
             IList<string> listValues = combobox.OptionStrings;
@@ -817,19 +862,7 @@ namespace SeleniumAdvProject.PageObjects
             }
             return flag;
         }
-
-        public bool isComboboxContainsItems(ComboBox comBoboxName, string[] listValues)
-        {
-            bool flag = false;
-            IList<String> values = comBoboxName.OptionStrings;
-            foreach (string listValue in listValues)
-            {
-                flag = values.Contains(listValue);
-                if (flag == false)
-                    break;
-            }
-            return flag;
-        }
+               
 
         #endregion
         #endregion

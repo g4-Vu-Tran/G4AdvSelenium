@@ -152,7 +152,7 @@ namespace SeleniumAdvProject.TestCases
             chart = new Chart("Logigear@", "Name", null);
             addPanelPopup.AddChart(chart);
 
-            bool a = panelPage.IsLinkExist("Logigear@");
+            
             //VP The new panel is created
             Assert.AreEqual(true, panelPage.IsLinkExist("Logigear@"), "Page Logigear@ cannot be created");
         }
@@ -1326,39 +1326,26 @@ namespace SeleniumAdvProject.TestCases
             Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
             Chart chart = new Chart(CommonAction.GeneratePanelName(), "Name", page1.PageName);
             chart.Folder = "abc";
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
-            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
-            mainPage.AddPage(page1);
-            mainPage.AddNewPanel(chart);
-
+            LoginPage loginPage = new LoginPage(_webDriver);            
+            MainPage mainPage = loginPage.Open().Login(Constants.Repository, Constants.UserName, Constants.Password);
+            AddNewPanelPage addPanelPopup = mainPage.AddPage(page1).GoToPage(page1.PageName).OpenAddNewPanelPage();
+            //AddNewPanelPage addPanelPopup = panelPage.OpenAddNewPanelPage();
+            string errorMessage = addPanelPopup.AddChartWithExpectedError(chart);
             //VP Observe the current page.There is message "Panel folder is incorrect"
             Assert.AreEqual("Panel folder is incorrect",
-               mainPage.GetDialogText(),
-               string.Format("Failed! Actual message is: {0}", mainPage.GetDialogText()));
+               errorMessage,
+               string.Format("Failed! Actual message is: {0}", errorMessage));            
 
             //11 Enter valid folder path
-            //12 Click Ok button on Panel Configuration dialog
-            ////VP Observe the current page -The new panel is created
-
-            mainPage.BtnChoosePanel.Click();
-            //Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
-            //LoginPage loginPage = new LoginPage(_webDriver);
-            //MainPage mainPage = loginPage.Open().Login(Constants.Repository, Constants.UserName, Constants.Password);
-            //mainPage.AddPage(page1);
-            //AddNewPanelPage configurationPopup = mainPage.OpenPanelConfigurationFromChoosePanel("Test Case Execution Results");
-            //string actualMessage = configurationPopup.SettingPanelWithExpectedError(null, null, "");
-
-            ////10 Observe the current page
-            ////VP There is message "Panel folder is incorrect"
-            //Assert.AreEqual("Panel folder is incorrect",
-            //    actualMessage,
-            //    string.Format("Failed! Actual message is: {0}", actualMessage));
-            //configurationPopup.ConfirmDialog("OK");
-            //configurationPopup.BtnCancel.Click();
-
-            ////Post Condition
-            //mainPage.DeletePage(page1.PageName).Logout();
+            //12 Click Ok button on Panel Configuration dialog 
+            chart.Folder = "/Car Rental/Tests";
+            addPanelPopup.SettingPanel(chart.PageName, chart.Height,chart.Folder);
+           
+            //VP Observe the current page -The new panel is created
+            Assert.AreEqual(true, mainPage.IsDivExist(chart.DisplayName), "Panel cannot be created");
+            
+            //post condition
+            mainPage.DeletePage(page1.PageName).OpenPanelsPage().DeletePanels(chart.DisplayName).Logout();
         }
 
         /// <summary>
@@ -1671,5 +1658,346 @@ namespace SeleniumAdvProject.TestCases
             panelPage.DeletePanels(CommonAction.GeneratePanelName());
 
         }
+        /// <summary>
+        /// DA_PANEL_TC057 - Verify that user is able to successfully edit \"Chart Type\"
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>06/06/2016</date>
+        [TestMethod]
+        public void DA_PANEL_TC057()
+        {
+            Console.WriteLine("DA_PANEL_TC057 - Verify that user is able to successfully edit \"Chart Type\"");
+
+            //1 Navigate to Dashboard login page
+            //2 Login with valid account
+            //3 Click Administer link
+            //4 Click Panel link
+            //5 Click Add New link
+            //6 Create a new panel
+            //7 Click Edit link
+            //8 Change Chart Type for panel
+            //9 Click Ok button            
+
+            LoginPage loginPage = new LoginPage(_webDriver);
+            loginPage.Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+            Chart chart = new Chart(CommonAction.GeneratePanelName(), "Name", null);
+            chart.ChartType = "Pie";
+            PanelsPage panelPage = mainPage.OpenPanelsPage();
+            panelPage.AddNewPanel(chart);
+            chart.ChartType = "Single Bar";
+
+            //VP Observe the current page: User is able to edit Chart Type successfully
+            panelPage.EditChartPanels(chart);
+            AddNewPanelPage newPanelPage = panelPage.OpenEditPanelPopup(chart.DisplayName);
+            string chartType = newPanelPage.CbbChartType.GetSelectedText();
+            Assert.AreEqual(chart.ChartType,chartType, "Cannot edit chart type for panel");
+
+            newPanelPage.BtnCancel.Click();
+            panelPage.DeletePanels(chart.DisplayName).Logout();
+
+        }
+        /// <summary>
+        /// DA_PANEL_TC058 - Verify that \"Category\", \"Series\" and \"Caption\" field are enabled and disabled correctly corresponding to each type of the \"Chart Type\" in \"Edit Panel\" form
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>06/06/2016</date>
+        [TestMethod]
+        public void DA_PANEL_TC058()
+        {
+            Console.WriteLine("DA_PANEL_TC058 - Verify that \"Category\", \"Series\" and \"Caption\" field are enabled and disabled correctly corresponding to each type of the \"Chart Type\" in \"Edit Panel\" form");
+
+            //1 Navigate to Dashboard login page
+            //2 Login with valid account
+            //3 Click Administer link
+            //4 Click Panel link
+            //5 Click Add New link
+            //6 Create a new panel
+            //7 Click Edit link
+            //8 Change Chart Type for panel: Pie
+            LoginPage loginPage = new LoginPage(_webDriver);
+            loginPage.Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+            Chart chart = new Chart(CommonAction.GeneratePanelName(), "Name", null);
+            chart.ChartType = "Pie";
+            PanelsPage panelPage = mainPage.OpenPanelsPage();
+            panelPage.AddNewPanel(chart);
+            AddNewPanelPage newPanelPage = panelPage.OpenEditPanelPopup(chart.DisplayName);
+
+            //VP Observe the current page -Category and Caption are disabled- Series is enabled
+            Assert.AreEqual(true, newPanelPage.CbbSeries.Enabled, "Failed:  Series combobox are disabled");
+            Assert.AreEqual(false, newPanelPage.CbbCategory.Enabled, "Failed: Category combobox are enable");
+            Assert.AreEqual(false, newPanelPage.TxtCategoryCaption.Enabled, "Failed: Category are enable");
+            Assert.AreEqual(false, newPanelPage.TxtSeriesCaption.Enabled, "Failed: Category are enable");
+
+            //10 Change Chart Type for panel - Single Bar
+            newPanelPage.CbbChartType.SelectByText("Single Bar");
+
+            //VP Observe the current page
+            //Category is disabled
+            //Series and Caption are enabled
+            //Assert.AreEqual(true,newPanelPage.ChbSeries.Enabled,)
+            Assert.AreEqual(true, newPanelPage.CbbSeries.Enabled, "Failed:  Series combobox are disabled");
+            Assert.AreEqual(false, newPanelPage.CbbCategory.Enabled, "Failed: Category combobox are enable");
+            Assert.AreEqual(true, newPanelPage.TxtCategoryCaption.Enabled, "Failed: Category caption are disabled");
+            Assert.AreEqual(true, newPanelPage.TxtSeriesCaption.Enabled, "Failed: Series caption are disabled");
+
+            //12 Change Chart Type for panel
+            newPanelPage.CbbChartType.SelectByText("Stacked Bar");
+
+            //VP Observe the current page - All of them are enabled
+            Assert.AreEqual(true, newPanelPage.CbbSeries.Enabled, "Failed: Series combobox are disabled");
+            Assert.AreEqual(true, newPanelPage.CbbCategory.Enabled, "Failed: Category combobox are disabled");
+            Assert.AreEqual(true, newPanelPage.TxtCategoryCaption.Enabled, "Failed: Category caption are disabled");
+            Assert.AreEqual(true, newPanelPage.TxtSeriesCaption.Enabled, "Failed: Series caption are disabled");
+
+            //14 Change Chart Type for panel
+            newPanelPage.CbbChartType.SelectByText("Group Bar");
+
+            //VP Observe the current page - All of them are enabled
+            Assert.AreEqual(true, newPanelPage.CbbSeries.Enabled, "Failed:  Series combobox are disabled");
+            Assert.AreEqual(true, newPanelPage.CbbCategory.Enabled, "Failed: Category combobox are disabled");
+            Assert.AreEqual(true, newPanelPage.TxtCategoryCaption.Enabled, "Failed: Category caption are disabled");
+            Assert.AreEqual(true, newPanelPage.TxtSeriesCaption.Enabled, "Failed: Series caption are disabled");
+
+            //16 Change Chart Type for panel
+            newPanelPage.CbbChartType.SelectByText("Line");
+
+            //VP Observe the current page - All of them are enabled
+            Assert.AreEqual(true, newPanelPage.CbbSeries.Enabled, "Failed:  Series combobox are disabled");
+            Assert.AreEqual(true, newPanelPage.CbbCategory.Enabled, "Failed: Category combobox are disabled");
+            Assert.AreEqual(true, newPanelPage.TxtCategoryCaption.Enabled, "Failed: Category caption are disabled");
+            Assert.AreEqual(true, newPanelPage.TxtSeriesCaption.Enabled, "Failed: Series caption are disabled");
+
+            newPanelPage.BtnCancel.Click();
+            panelPage.DeletePanels(chart.DisplayName).Logout();
+        }
+
+        /// <summary>
+        /// Verify that all settings within "Add New Panel" and "Edit Panel" form stay unchanged when user switches between "2D" and "3D" radio buttons in "Edit Panel" form
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>06/08/2016</date>
+        [TestMethod]
+        public void DA_PANEL_TC059()
+        {
+            Console.WriteLine("DA_PANEL_TC059 - Verify that all settings within \"Add New Panel\" and \"Edit Panel\" form stay unchanged when user switches between \"2D\" and \"3D\" radio buttons in \"Edit Panel\" form");
+
+            //1 Navigate to Dashboard login page
+            //2 Login with valid account
+            //3 Click Administer link
+            //4 Click Panel link
+            //5 Click Add New link
+            //6 Switch between "2D" and "3D"
+            LoginPage loginPage = new LoginPage(_webDriver);
+            loginPage.Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+            Chart chart = new Chart(CommonAction.GeneratePanelName(), "Name", null);
+            chart.ChartType = "Pie";
+            chart.Style = "3D";
+            PanelsPage panelPage = mainPage.OpenPanelsPage();
+            AddNewPanelPage addNewPanelPage = panelPage.OpenAddNewPanelPopupFromLink();
+            addNewPanelPage.Rb3D.Click();
+
+            //VP Observe the current page - All settings is unchanged in the Add New Panel form
+            Assert.AreEqual(true, addNewPanelPage.CbbDataProfile.Enabled, "Failed: Data Profile are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtDisplayName.Enabled, "Failed: Display Name are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtChartTitle.Enabled, "Failed: Chart Title are disabled");
+            Assert.AreEqual(true, addNewPanelPage.CbbChartType.Enabled, "Failed: Chart Type are disabled");
+            Assert.AreEqual(false, addNewPanelPage.CbbCategory.Enabled, "Failed: Category are enable");
+            Assert.AreEqual(true, addNewPanelPage.CbbSeries.Enabled, "Failed: Series are disabled");
+            Assert.AreEqual(false, addNewPanelPage.TxtCategoryCaption.Enabled, "Failed: Category Caption are enable");
+            Assert.AreEqual(false, addNewPanelPage.TxtSeriesCaption.Enabled, "Failed: SeriesCaption are enable");
+            Assert.AreEqual(true, addNewPanelPage.ChbShowTitle.Enabled, "Failed: Show Title are disabled");
+
+            //8 Create a new panel
+            //9 Click Edit link
+            //10 Switch between "2D" and "3D"
+            addNewPanelPage.AddChart(chart);
+            AddNewPanelPage newPanelPage = panelPage.OpenEditPanelPopup(chart.DisplayName);
+            addNewPanelPage.Rb2D.Click();
+
+            //VP Observe the current page - All settings is unchanged in the Edit Panel form
+            Assert.AreEqual(true, addNewPanelPage.CbbDataProfile.Enabled, "Failed: Data Profile are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtDisplayName.Enabled, "Failed: Display Name are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtChartTitle.Enabled, "Failed: Chart Title are disabled");
+            Assert.AreEqual(true, addNewPanelPage.CbbChartType.Enabled, "Failed: Chart Type are disabled");
+            Assert.AreEqual(false, addNewPanelPage.CbbCategory.Enabled, "Failed: Category are enable");
+            Assert.AreEqual(true, addNewPanelPage.CbbSeries.Enabled, "Failed: Series are disabled");
+            Assert.AreEqual(false, addNewPanelPage.TxtCategoryCaption.Enabled, "Failed: Category Caption are enable");
+            Assert.AreEqual(false, addNewPanelPage.TxtSeriesCaption.Enabled, "Failed: SeriesCaption are enable");
+            Assert.AreEqual(true, addNewPanelPage.ChbShowTitle.Enabled, "Failed: Show Title are disabled");
+
+            newPanelPage.BtnCancel.Click();
+            panelPage.DeletePanels(chart.DisplayName).Logout();            
+        }
+        /// <summary>
+        /// DA_PANEL_TC060 - Verify that all settings within \"Add New Panel\" and \"Edit Panel\" form stay unchanged when user switches between \"Legends\" radio buttons in \"Edit Panel\" form
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>06/08/2016</date>
+        public void DA_PANEL_TC060()
+        {
+            Console.WriteLine("DA_PANEL_TC060 - Verify that all settings within \"Add New Panel\" and \"Edit Panel\" form stay unchanged when user switches between \"Legends\" radio buttons in \"Edit Panel\" form");
+
+            //1 Navigate to Dashboard login page
+            //2 Login with valid account
+            //3 Click Administer link
+            //4 Click Panel link
+            //5 Click Add New link
+            //6 Click None radio button for Legends
+            LoginPage loginPage = new LoginPage(_webDriver);
+            loginPage.Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+            Chart chart = new Chart(CommonAction.GeneratePanelName(), "Name", null);
+            chart.ChartType = "Pie";
+            PanelsPage panelPage = mainPage.OpenPanelsPage();
+            AddNewPanelPage addNewPanelPage = panelPage.OpenAddNewPanelPopupFromLink();
+            addNewPanelPage.RbNone.Click();
+
+            //VP  Observe the current page --All settings is unchanged in the Add New Panel form
+            Assert.AreEqual(true, addNewPanelPage.CbbDataProfile.Enabled, "Failed: Data Profile are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtDisplayName.Enabled, "Failed: Display Name are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtChartTitle.Enabled, "Failed: Chart Title are disabled");
+            Assert.AreEqual(true, addNewPanelPage.CbbChartType.Enabled, "Failed: Chart Type are disabled");
+            Assert.AreEqual(false, addNewPanelPage.CbbCategory.Enabled, "Failed: Category are enable");
+            Assert.AreEqual(true, addNewPanelPage.CbbSeries.Enabled, "Failed: Series are disabled");
+            Assert.AreEqual(false, addNewPanelPage.TxtCategoryCaption.Enabled, "Failed: Category Caption are enable");
+            Assert.AreEqual(false, addNewPanelPage.TxtSeriesCaption.Enabled, "Failed: SeriesCaption are enable");
+            Assert.AreEqual(true, addNewPanelPage.ChbShowTitle.Enabled, "Failed: Show Title are disabled");
+
+            //8 Click Top radio button for Legends
+            addNewPanelPage.RbTop.Click();
+
+            //VP  Observe the current page --All settings is unchanged in the Add New Panel form
+            Assert.AreEqual(true, addNewPanelPage.CbbDataProfile.Enabled, "Failed: Data Profile are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtDisplayName.Enabled, "Failed: Display Name are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtChartTitle.Enabled, "Failed: Chart Title are disabled");
+            Assert.AreEqual(true, addNewPanelPage.CbbChartType.Enabled, "Failed: Chart Type are disabled");
+            Assert.AreEqual(false, addNewPanelPage.CbbCategory.Enabled, "Failed: Category are enable");
+            Assert.AreEqual(true, addNewPanelPage.CbbSeries.Enabled, "Failed: Series are disabled");
+            Assert.AreEqual(false, addNewPanelPage.TxtCategoryCaption.Enabled, "Failed: Category Caption are enable");
+            Assert.AreEqual(false, addNewPanelPage.TxtSeriesCaption.Enabled, "Failed: SeriesCaption are enable");
+            Assert.AreEqual(true, addNewPanelPage.ChbShowTitle.Enabled, "Failed: Show Title are disabled");
+
+            //10 Click Right radio button for Legends
+            addNewPanelPage.RbRight.Click();
+
+            //VP  Observe the current page --All settings is unchanged in the Add New Panel form
+            Assert.AreEqual(true, addNewPanelPage.CbbDataProfile.Enabled, "Failed: Data Profile are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtDisplayName.Enabled, "Failed: Display Name are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtChartTitle.Enabled, "Failed: Chart Title are disabled");
+            Assert.AreEqual(true, addNewPanelPage.CbbChartType.Enabled, "Failed: Chart Type are disabled");
+            Assert.AreEqual(false, addNewPanelPage.CbbCategory.Enabled, "Failed: Category are enable");
+            Assert.AreEqual(true, addNewPanelPage.CbbSeries.Enabled, "Failed: Series are disabled");
+            Assert.AreEqual(false, addNewPanelPage.TxtCategoryCaption.Enabled, "Failed: Category Caption are enable");
+            Assert.AreEqual(false, addNewPanelPage.TxtSeriesCaption.Enabled, "Failed: SeriesCaption are enable");
+            Assert.AreEqual(true, addNewPanelPage.ChbShowTitle.Enabled, "Failed: Show Title are disabled");
+
+            //12 Click Bottom radio button for Legends
+            addNewPanelPage.RbBottom.Click();
+
+            //VP  Observe the current page --All settings is unchanged in the Add New Panel form
+            Assert.AreEqual(true, addNewPanelPage.CbbDataProfile.Enabled, "Failed: Data Profile are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtDisplayName.Enabled, "Failed: Display Name are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtChartTitle.Enabled, "Failed: Chart Title are disabled");
+            Assert.AreEqual(true, addNewPanelPage.CbbChartType.Enabled, "Failed: Chart Type are disabled");
+            Assert.AreEqual(false, addNewPanelPage.CbbCategory.Enabled, "Failed: Category are enable");
+            Assert.AreEqual(true, addNewPanelPage.CbbSeries.Enabled, "Failed: Series are disabled");
+            Assert.AreEqual(false, addNewPanelPage.TxtCategoryCaption.Enabled, "Failed: Category Caption are enable");
+            Assert.AreEqual(false, addNewPanelPage.TxtSeriesCaption.Enabled, "Failed: SeriesCaption are enable");
+            Assert.AreEqual(true, addNewPanelPage.ChbShowTitle.Enabled, "Failed: Show Title are disabled");
+
+            //14 Click Left radio button for Legends
+            addNewPanelPage.RbLeft.Click();
+            //VP  Observe the current page --All settings is unchanged in the Add New Panel form
+            Assert.AreEqual(true, addNewPanelPage.CbbDataProfile.Enabled, "Failed: Data Profile are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtDisplayName.Enabled, "Failed: Display Name are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtChartTitle.Enabled, "Failed: Chart Title are disabled");
+            Assert.AreEqual(true, addNewPanelPage.CbbChartType.Enabled, "Failed: Chart Type are disabled");
+            Assert.AreEqual(false, addNewPanelPage.CbbCategory.Enabled, "Failed: Category are enable");
+            Assert.AreEqual(true, addNewPanelPage.CbbSeries.Enabled, "Failed: Series are disabled");
+            Assert.AreEqual(false, addNewPanelPage.TxtCategoryCaption.Enabled, "Failed: Category Caption are enable");
+            Assert.AreEqual(false, addNewPanelPage.TxtSeriesCaption.Enabled, "Failed: SeriesCaption are enable");
+            Assert.AreEqual(true, addNewPanelPage.ChbShowTitle.Enabled, "Failed: Show Title are disabled");
+
+            //16 Create a new panel Display Name: Logigear / Chart Type: Pie
+            //17 Click Edit link
+            //18 Click None radio button for Legends
+            addNewPanelPage.AddChart(chart);
+            AddNewPanelPage newPanelPage = panelPage.OpenEditPanelPopup(chart.DisplayName);
+            addNewPanelPage.RbNone.Click();
+
+            //VP  Observe the current page --All settings is unchanged in the Add New Panel form
+            Assert.AreEqual(true, addNewPanelPage.CbbDataProfile.Enabled, "Failed: Data Profile are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtDisplayName.Enabled, "Failed: Display Name are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtChartTitle.Enabled, "Failed: Chart Title are disabled");
+            Assert.AreEqual(true, addNewPanelPage.CbbChartType.Enabled, "Failed: Chart Type are disabled");
+            Assert.AreEqual(false, addNewPanelPage.CbbCategory.Enabled, "Failed: Category are enable");
+            Assert.AreEqual(true, addNewPanelPage.CbbSeries.Enabled, "Failed: Series are disabled");
+            Assert.AreEqual(false, addNewPanelPage.TxtCategoryCaption.Enabled, "Failed: Category Caption are enable");
+            Assert.AreEqual(false, addNewPanelPage.TxtSeriesCaption.Enabled, "Failed: SeriesCaption are enable");
+            Assert.AreEqual(true, addNewPanelPage.ChbShowTitle.Enabled, "Failed: Show Title are disabled");
+
+            //20 Click Top radio button for Legends
+            addNewPanelPage.RbTop.Click();
+
+            //VP  Observe the current page --All settings is unchanged in the Add New Panel form
+            Assert.AreEqual(true, addNewPanelPage.CbbDataProfile.Enabled, "Failed: Data Profile are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtDisplayName.Enabled, "Failed: Display Name are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtChartTitle.Enabled, "Failed: Chart Title are disabled");
+            Assert.AreEqual(true, addNewPanelPage.CbbChartType.Enabled, "Failed: Chart Type are disabled");
+            Assert.AreEqual(false, addNewPanelPage.CbbCategory.Enabled, "Failed: Category are enable");
+            Assert.AreEqual(true, addNewPanelPage.CbbSeries.Enabled, "Failed: Series are disabled");
+            Assert.AreEqual(false, addNewPanelPage.TxtCategoryCaption.Enabled, "Failed: Category Caption are enable");
+            Assert.AreEqual(false, addNewPanelPage.TxtSeriesCaption.Enabled, "Failed: SeriesCaption are enable");
+            Assert.AreEqual(true, addNewPanelPage.ChbShowTitle.Enabled, "Failed: Show Title are disabled");
+
+            //22 Click Right radio button for Legends
+            addNewPanelPage.RbRight.Click();
+
+            //VP  Observe the current page --All settings is unchanged in the Add New Panel form
+            Assert.AreEqual(true, addNewPanelPage.CbbDataProfile.Enabled, "Failed: Data Profile are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtDisplayName.Enabled, "Failed: Display Name are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtChartTitle.Enabled, "Failed: Chart Title are disabled");
+            Assert.AreEqual(true, addNewPanelPage.CbbChartType.Enabled, "Failed: Chart Type are disabled");
+            Assert.AreEqual(false, addNewPanelPage.CbbCategory.Enabled, "Failed: Category are enable");
+            Assert.AreEqual(true, addNewPanelPage.CbbSeries.Enabled, "Failed: Series are disabled");
+            Assert.AreEqual(false, addNewPanelPage.TxtCategoryCaption.Enabled, "Failed: Category Caption are enable");
+            Assert.AreEqual(false, addNewPanelPage.TxtSeriesCaption.Enabled, "Failed: SeriesCaption are enable");
+            Assert.AreEqual(true, addNewPanelPage.ChbShowTitle.Enabled, "Failed: Show Title are disabled");
+
+            //24 Click Bottom radio button for Legends
+            addNewPanelPage.RbBottom.Click();
+
+            //VP  Observe the current page --All settings is unchanged in the Add New Panel form
+            Assert.AreEqual(true, addNewPanelPage.CbbDataProfile.Enabled, "Failed: Data Profile are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtDisplayName.Enabled, "Failed: Display Name are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtChartTitle.Enabled, "Failed: Chart Title are disabled");
+            Assert.AreEqual(true, addNewPanelPage.CbbChartType.Enabled, "Failed: Chart Type are disabled");
+            Assert.AreEqual(false, addNewPanelPage.CbbCategory.Enabled, "Failed: Category are enable");
+            Assert.AreEqual(true, addNewPanelPage.CbbSeries.Enabled, "Failed: Series are disabled");
+            Assert.AreEqual(false, addNewPanelPage.TxtCategoryCaption.Enabled, "Failed: Category Caption are enable");
+            Assert.AreEqual(false, addNewPanelPage.TxtSeriesCaption.Enabled, "Failed: SeriesCaption are enable");
+            Assert.AreEqual(true, addNewPanelPage.ChbShowTitle.Enabled, "Failed: Show Title are disabled");
+
+            //26 Click Left radio button for Legends
+            addNewPanelPage.RbLeft.Click();
+
+            //VP  Observe the current page --All settings is unchanged in the Add New Panel form
+            Assert.AreEqual(true, addNewPanelPage.CbbDataProfile.Enabled, "Failed: Data Profile are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtDisplayName.Enabled, "Failed: Display Name are disabled");
+            Assert.AreEqual(true, addNewPanelPage.TxtChartTitle.Enabled, "Failed: Chart Title are disabled");
+            Assert.AreEqual(true, addNewPanelPage.CbbChartType.Enabled, "Failed: Chart Type are disabled");
+            Assert.AreEqual(false, addNewPanelPage.CbbCategory.Enabled, "Failed: Category are enable");
+            Assert.AreEqual(true, addNewPanelPage.CbbSeries.Enabled, "Failed: Series are disabled");
+            Assert.AreEqual(false, addNewPanelPage.TxtCategoryCaption.Enabled, "Failed: Category Caption are enable");
+            Assert.AreEqual(false, addNewPanelPage.TxtSeriesCaption.Enabled, "Failed: SeriesCaption are enable");
+            Assert.AreEqual(true, addNewPanelPage.ChbShowTitle.Enabled, "Failed: Show Title are disabled");
+
+            newPanelPage.BtnCancel.Click();
+            panelPage.DeletePanels(chart.DisplayName).Logout();            
+        }
+       
     }
 }

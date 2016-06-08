@@ -67,7 +67,9 @@ namespace SeleniumAdvProject.PageObjects
         /// Clicks the delete link.
         /// </summary>
         /// <param name="pathOfPage">The path of page.</param>
-        /// <returns></returns>        
+        /// <returns></returns> 
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public MainPage ClickDeleteLink(string pathOfPage)
         {
             GoToPage(pathOfPage);

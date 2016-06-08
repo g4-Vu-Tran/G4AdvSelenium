@@ -144,6 +144,27 @@ namespace SeleniumAdvProject.PageObjects
             LnkAddPage.Click();
             return new AddNewPage(_webDriver);
         }
+
+        /// <summary>
+        /// Determines the combobox contains the exptected items
+        /// </summary>
+        /// <param name="comBoboxName">Name of the COM bobox.</param>
+        /// <param name="listValues">The list values need to check</param>
+        /// <returns></returns>
+        /// <author>Huong Huynh</author>
+        /// <date>6/3/2016</date>
+        public bool isComboboxContainsItems(ComboBox comBoboxName, string[] listValues)
+        {
+            bool flag = false;
+            IList<String> values = comBoboxName.OptionStrings;
+            foreach (string listValue in listValues)
+            {
+                flag = values.Contains(listValue);
+                if (flag == false)
+                    break;
+            }
+            return flag;
+        }
         /// <summary>
         /// Opens the edit page.
         /// </summary>
@@ -267,7 +288,7 @@ namespace SeleniumAdvProject.PageObjects
         /// <date>05/25/2016</date>
         public Boolean IsLinkExist(string linkName)
         {
-            Link Link = new Link(_webDriver, By.XPath(string.Format("//a[.='{0}']", linkName)));
+            Link Link = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", CommonAction.EncodeSpace(linkName)))));
             return Link.isDisplayed();
         }
 
@@ -276,11 +297,14 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <param name="divName">Name of the div.</param>
         /// <returns></returns>
-        /// Author: Tu Nguyen
+        /// <Author>Tu Nguyen</Author> 
+        /// <Update>Huong Huynh-handle space</Update>
+        
         public Boolean IsDivExist(string divName)
         {
-            Div div = new Div(_webDriver, By.XPath(string.Format("//div[@title='{0}']", divName)));
-            return div.isDisplayed();
+            Div div = new Div(FindElement(By.XPath(string.Format("//div[@title='{0}']", CommonAction.EncodeSpace(divName)))));
+            bool a = div.isExists();
+            return div.isExists();
         }
 
         #endregion
