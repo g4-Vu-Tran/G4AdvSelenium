@@ -143,11 +143,11 @@ namespace SeleniumAdvProject.Ultilities
         /// </summary>
         //public void LoadControl()
         //{
-            //if (by != null)
-            //{
-            //    WaitForControlExists();
-            //    element = _webDriver.FindElement(by);
-            //}
+        //if (by != null)
+        //{
+        //    WaitForControlExists();
+        //    element = _webDriver.FindElement(by);
+        //}
 
         //}
 
@@ -191,10 +191,10 @@ namespace SeleniumAdvProject.Ultilities
         /// <summary>
         /// Click this element
         /// </summary>
+        /// Update: Tu Nguyen
         public void Click()
         {
-            //LoadControl();
-            element.Click();
+             action.Click(this.element).Build().Perform();
         }
 
         /// <summary>
@@ -221,7 +221,7 @@ namespace SeleniumAdvProject.Ultilities
         /// <summary>
         /// Gets the value indicating whether or not this element is displayed
         /// </summary>
-        
+
 
         /// <summary>
         /// Gets the value indicating whether or not this element is enabled
@@ -374,7 +374,7 @@ namespace SeleniumAdvProject.Ultilities
         {
             get
             {
-               //LoadControl();
+                //LoadControl();
                 return element.Text;
             }
         }

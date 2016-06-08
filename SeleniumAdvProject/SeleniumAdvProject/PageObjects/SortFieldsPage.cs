@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace SeleniumAdvProject.PageObjects
 {
-    public class SortFieldsPage: DataProfileBasePage
+    public class SortFieldsPage : DataProfileBasePage
     {
         #region Locators
         static readonly By _cbbField = By.XPath("//select[@id='cbbFields']");
@@ -34,7 +34,18 @@ namespace SeleniumAdvProject.PageObjects
         public SortFieldsPage() { }
         public SortFieldsPage(IWebDriver webDriver) : base(webDriver) { }
 
-
+        public bool IsItemTypeListed(string[] expectedItemType)
+        {
+            IList<string> itemTypeList = CbbField.OptionStrings;
+            foreach (string item in expectedItemType)
+            {
+                if (!itemTypeList.Contains(item))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         #endregion
     }
 }

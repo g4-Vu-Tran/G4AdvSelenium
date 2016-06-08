@@ -1326,7 +1326,7 @@ namespace SeleniumAdvProject.TestCases
             Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
             Chart chart = new Chart(CommonAction.GeneratePanelName(), "Name", page1.PageName);
             chart.Folder = "abc";
-            LoginPage loginPage = new LoginPage(_webDriver);            
+            LoginPage loginPage = new LoginPage(_webDriver);
             MainPage mainPage = loginPage.Open().Login(Constants.Repository, Constants.UserName, Constants.Password);
             AddNewPanelPage addPanelPopup = mainPage.AddPage(page1).GoToPage(page1.PageName).OpenAddNewPanelPage();
             //AddNewPanelPage addPanelPopup = panelPage.OpenAddNewPanelPage();
@@ -1337,13 +1337,13 @@ namespace SeleniumAdvProject.TestCases
                string.Format("Failed! Actual message is: {0}", errorMessage));            
 
             //11 Enter valid folder path
-            //12 Click Ok button on Panel Configuration dialog 
+            //12 Click Ok button on Panel Configuration dialog
             chart.Folder = "/Car Rental/Tests";
             addPanelPopup.SettingPanel(chart.PageName, chart.Height,chart.Folder);
-           
+
             //VP Observe the current page -The new panel is created
             Assert.AreEqual(true, mainPage.IsDivExist(chart.DisplayName), "Panel cannot be created");
-            
+
             //post condition
             mainPage.DeletePage(page1.PageName).OpenPanelsPage().DeletePanels(chart.DisplayName).Logout();
         }
@@ -1567,6 +1567,128 @@ namespace SeleniumAdvProject.TestCases
         }
 
         /// <summary>
+        /// Verify that all changes made to or with the values populated for corresponding parameters under "Categories" and "Series" field in Edit Panel are recorded correctly
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2016</date>
+        [TestMethod]
+        public void DA_PANEL_TC062()
+        {
+            Console.WriteLine("DA_PANEL_TC062 - Verify that all changes made to or with the values populated for corresponding parameters under \"Categories\" and \"Series\" field in Edit Panel are recorded correctly");
+
+            //1. Navigate to Dashboard login page
+            //2. Login with valid account
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Click Choose Panels button
+            //4. Click Test Module Implementation By Priority link
+            //5. Click Ok button on Panel Configuration dialog
+            //6. Click Edit Panel icon
+            //7. Enter value into Caption field for Category
+            //8. Enter value into Caption field for Serius
+            //9. Click Ok button
+            //10. Click Edit Panel icon
+            //VP. Caption's values are saved
+        }
+
+        /// <summary>
+        /// Verify that for "Action Implementation By Status" panel instance, when user changes from "Pie" chart to any other chart type then change back the "Edit Panel" form should be as original
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2016</date>
+        [TestMethod]
+        public void DA_PANEL_TC063()
+        {
+            Console.WriteLine("DA_PANEL_TC063 - Verify that for \"Action Implementation By Status\" panel instance, when user changes from \"Pie\" chart to any other chart type then change back the \"Edit Panel\" form should be as original");
+
+            //1. Navigate to Dashboard login page
+            //2. Login with valid account
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+
+            //3. Click Choose Panels button
+            //4. Click Action Implementation By Status link
+            //5. Click Ok button on Panel Configuration dialog
+            //6. Click Edit Panel icon
+            //7. Click on Chart Type dropped down menu
+            //8. Select Single Bar
+            //9. Click on Chart Type dropped down menu
+            //10. Select Pie
+            //VP. Check original "Pie" - Edit Panel form is displayed
+            //12. Close "Edit Panel" form
+            //13. Click Edit Panel icon
+            //14. Click on Chart Type dropped down menu
+            //15. Select Stacked Bar
+            //16. Click on Chart Type dropped down menu
+            //17. Select Pie
+            //VP. Check original "Pie" - Edit Panel form is displayed
+            //18. Close "Edit Panel" form
+            //19. Click Edit Panel icon
+            //20. Click on Chart Type dropped down menu
+            //21. Select Group Bar
+            //22. Click on Chart Type dropped down menu
+            //23. Select Pie
+            //VP. Check original "Pie" - Edit Panel form is displayed
+            //24. Close "Edit Panel" form
+            //25. Click Edit Panel icon
+            //26. Click on Chart Type dropped down menu
+            //27. Select Line
+            //28. Click on Chart Type dropped down menu
+            //29. Select Pie
+            //VP. Check original "Pie" - Edit Panel form is displayed
+
+        }
+
+        /// <summary>
+        /// Verify that "Check All/Uncheck All" links are working correctly.
+        /// </summary>
+        /// <author>Vu Tran</author>
+        /// <date>05/25/2016</date>
+        [TestMethod]
+        public void DA_PANEL_TC064()
+        {
+            Console.WriteLine("DA_PANEL_TC064 - Verify that \"Check All/Uncheck All\" links are working correctly.");
+
+            //Set variables
+            Page page = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+
+
+            //1. Navigate to Dashboard login page
+            //2. Select a specific repository 
+            //3. Enter valid Username and Password
+            //4. Click 'Login' button
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //5. Click 'Add Page' button
+            //6. Enter Page Name
+            //7. Click 'OK' button
+            mainPage.AddPage(page);
+
+            //8. Click 'Choose Panels' button below 'main_hung' button
+            //9. Click 'Create new panel' button
+            //10. Enter a name to Display Name
+            //11. Click OK button
+            Chart chart = new Chart(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Name", page.PageName);
+            mainPage.AddNewPanel(chart);
+
+            //12. Click Cancel button
+            //13. Click 'Create new panel' button
+            //14. Enter a name to Display Name
+            //15. Click OK button
+            //16. Click Cancel button
+            //17. Click 'Administer' link
+            //18. Click 'Panels' link
+            //19. Click 'Check All' link
+            //VP. Check that 'hung_a' checkbox and 'hung_b' checkbox are checked
+            //20. Click 'Uncheck All' link
+            //VP. Check that 'hung_a' checkbox and 'hung_b' checkbox are unchecked
+
+        }
+
+        /// <summary>
         /// Verify that user is unable to edit "Folder" field with invalid path
         /// </summary>
         /// Author: Tu Nguyen
@@ -1633,9 +1755,9 @@ namespace SeleniumAdvProject.TestCases
 
             //4. Create a new panel
             Chart chart = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "Chart@", null, null, null, "Name", null, null, null, null, false);
-            PanelsPage panelPage = mainPage.OpenPanelsPage();
-            panelPage.AddNewPanel(chart);
-            mainPage.GoToPage(page.PageName);
+            AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
+            mainPage.OpenNewPanelPopUp(page.PageName);
+            addPanelPage.AddChart(chart);
 
             //5. Click Choose Panel button
             //6. Click on the newly created panel link
@@ -1643,7 +1765,6 @@ namespace SeleniumAdvProject.TestCases
 
             //7. Edit valid folder path
             //8. Click Ok button
-            AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
             string actualMessage = addPanelPage.SettingPanelWithExpectedError(page.PageName, 400, " ");
 
             //VP: User is unable to edit "Folder" field with invalid path
@@ -1655,7 +1776,8 @@ namespace SeleniumAdvProject.TestCases
             //Post-Condition
             addPanelPage.ClosePanelDialog("Cancel");
             mainPage.DeletePage(page.PageName);
-            panelPage.DeletePanels(CommonAction.GeneratePanelName());
+            PanelsPage panel = mainPage.OpenPanelsPage();
+            panel.DeletePanels(CommonAction.GeneratePanelName());
 
         }
         /// <summary>
@@ -1998,6 +2120,6 @@ namespace SeleniumAdvProject.TestCases
             newPanelPage.BtnCancel.Click();
             panelPage.DeletePanels(chart.DisplayName).Logout();            
         }
-       
+           
     }
 }

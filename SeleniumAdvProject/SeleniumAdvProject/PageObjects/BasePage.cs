@@ -460,7 +460,7 @@ namespace SeleniumAdvProject.PageObjects
         /// Gets the URL
         /// </summary>
         /// <returns>String</returns>
-        /// <author>Huong Huynh</author>
+        /// <author>Tu Nguyen</author>
         /// <date>05/26/2015</date>
         public string GetURL()
         {
