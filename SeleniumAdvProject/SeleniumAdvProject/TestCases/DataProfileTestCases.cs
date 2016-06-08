@@ -212,46 +212,78 @@ namespace SeleniumAdvProject.TestCases
             //2. Navigate to Data Profiles page
             DataProfilePage DPPage = mainPage.GoToDataProfilePage();
 
-            //5. Click "Add New" link
-            //6. Enter Name field
-            //7. Click on "Next" button
-            DisplayFieldsPage displayFieldsPage = (DisplayFieldsPage)DPPage.GoToGeneralSettingPage().SetGeneralSettingsValue(CommonAction.GenerateDataProfileName(), null, null);
-
-            
             //3. Input to "Name *" field
             //4. Click "Item Type" dropped down menu and choose Test Modules
             //5. Navigate to Sort Fields page
             //VP. Check all fields of selected "Item Type" item are listed under the "Field" dropped down menu 
+            DisplayFieldsPage displayFieldsPage = (DisplayFieldsPage)DPPage.GoToGeneralSettingPage().SetGeneralSettingsValue(CommonAction.GenerateDataProfileName(), "test modules", null);
+            SortFieldsPage SortFieldsPage = displayFieldsPage.GoToSortFieldsPage();
+            string[] expectedItemType1 = { "--- Select field ---", "Name", "Location", "Description", "Recent result", "Source", "Version", "Assigned user", "Priority", "Status", "Last update date", "Last updated by", "Creation date", "Created by", "Notes", "Check out by", "URL" };
+            Assert.IsTrue(SortFieldsPage.IsItemTypeListed(expectedItemType1), "\"Item Type\" item aren't listed under the \"Field\" dropped down menu");
+
             //6. Navigate to General Settings page
             //7. Click "Item Type" dropped down menu and choose Test Cases
             //8. Navigate to Sort Fields page
             //VP. Check all fields of selected "Item Type" item are listed under the "Field" dropped down menu 
+            SortFieldsPage.GoToGeneralSettingsPage().SetGeneralSettingsValue(CommonAction.GenerateDataProfileName(), "test cases", null);
+            displayFieldsPage.GoToSortFieldsPage();
+            string[] expectedItemType2 = { "--- Select field ---", "ID", "Location", "Title", "Recent result", "Notes", "Source", "URL" };
+            Assert.IsTrue(SortFieldsPage.IsItemTypeListed(expectedItemType2), "\"Item Type\" item aren't listed under the \"Field\" dropped down menu");
+
             //9. Navigate to General Settings page
             //10. Click "Item Type" dropped down menu and choose Test Objectives
             //11. Navigate to Sort Fields page
             //VP. Check all fields of selected "Item Type" item are listed under the "Field" dropped down menu 
+            SortFieldsPage.GoToGeneralSettingsPage().SetGeneralSettingsValue(CommonAction.GenerateDataProfileName(), "test objectives", null);
+            displayFieldsPage.GoToSortFieldsPage();
+            Assert.IsTrue(SortFieldsPage.IsItemTypeListed(expectedItemType2), "\"Item Type\" item aren't listed under the \"Field\" dropped down menu");
+
             //12. Navigate to General Settings page
             //13. Click "Item Type" dropped down menu and choose Data Sets
             //14. Navigate to Sort Fields page
             //VP. Check all fields of selected "Item Type" item are listed under the "Field" dropped down menu 
+            SortFieldsPage.GoToGeneralSettingsPage().SetGeneralSettingsValue(CommonAction.GenerateDataProfileName(), "data sets", null);
+            displayFieldsPage.GoToSortFieldsPage();
+            string[] expectedItemType3 = { "--- Select field ---", "Name", "Location", "Description", "Version", "Assigned user", "Status", "Last update date", "Last updated by", "Creation date", "Created by", "Notes", "Check out by", "URL" };
+            Assert.IsTrue(SortFieldsPage.IsItemTypeListed(expectedItemType3), "\"Item Type\" item aren't listed under the \"Field\" dropped down menu");
+
             //15. Navigate to General Settings page
             //16. Click "Item Type" dropped down menu and choose Actions
             //17. Navigate to Sort Fields page
             //VP. Check all fields of selected "Item Type" item are listed under the "Field" dropped down menu 
+            SortFieldsPage.GoToGeneralSettingsPage().SetGeneralSettingsValue(CommonAction.GenerateDataProfileName(), "actions", null);
+            displayFieldsPage.GoToSortFieldsPage();
+            string[] expectedItemType4 = { "--- Select field ---", "Name", "Location", "Description", "Version", "Assigned user", "Status", "Last update date", "Last updated by", "Creation date", "Created by", "Notes", "Check out by", "URL" };
+            Assert.IsTrue(SortFieldsPage.IsItemTypeListed(expectedItemType4), "\"Item Type\" item aren't listed under the \"Field\" dropped down menu");
+
             //18. Navigate to General Settings page
             //19. Click "Item Type" dropped down menu and choose Interface Entities
             //20. Navigate to Sort Fields page
             //VP. Check all fields of selected "Item Type" item are listed under the "Field" dropped down menu 
+            SortFieldsPage.GoToGeneralSettingsPage().SetGeneralSettingsValue(CommonAction.GenerateDataProfileName(), "interface entities", null);
+            displayFieldsPage.GoToSortFieldsPage();
+            string[] expectedItemType5 = { "--- Select field ---", "Name", "Location", "Description", "Version", "Assigned user", "Status", "Last update date", "Last updated by", "Creation date", "Created by", "Notes", "Check out by", "URL" };
+            Assert.IsTrue(SortFieldsPage.IsItemTypeListed(expectedItemType5), "\"Item Type\" item aren't listed under the \"Field\" dropped down menu");
+
             //22. Navigate to General Settings page
             //23. Click "Item Type" dropped down menu and choose Test Results
             //24. Navigate to Sort Fields page
             //VP. Check all fields of selected "Item Type" item are listed under the "Field" dropped down menu 
+            SortFieldsPage.GoToGeneralSettingsPage().SetGeneralSettingsValue(CommonAction.GenerateDataProfileName(), "test results", null);
+            displayFieldsPage.GoToSortFieldsPage();
+            string[] expectedItemType6 = { "--- Select field ---", "Name", "Location", "Reported by", "Date of run", "Start time", "End time", "Duration", "Comment", "Variation", "Result", "Passed", "Failed", "Warnings", "Errors", "Automated/Manual", "Run Machine", "Notes", "URL", "Baseline", "OS", "Device OS", "Device Name", "Build Number", "AUTVersion" };
+            Assert.IsTrue(SortFieldsPage.IsItemTypeListed(expectedItemType6), "\"Item Type\" item aren't listed under the \"Field\" dropped down menu");
+
             //25. Navigate to General Settings page
             //26. Click "Item Type" dropped down menu and choose Test Case Results
             //27. Navigate to Sort Fields page
             //VP. Check all fields of selected "Item Type" item are listed under the "Field" dropped down menu 
+            SortFieldsPage.GoToGeneralSettingsPage().SetGeneralSettingsValue(CommonAction.GenerateDataProfileName(), "test case results", null);
+            displayFieldsPage.GoToSortFieldsPage();
+            string[] expectedItemType7 = { "--- Select field ---", "Name", "Location", "Description", "Version", "Assigned user", "Status", "Last update date", "Last updated by", "Creation date", "Created by", "Notes", "Check out by", "URL" };
+            Assert.IsTrue(SortFieldsPage.IsItemTypeListed(expectedItemType7), "\"Item Type\" item aren't listed under the \"Field\" dropped down menu");
 
-            
+
 
         }
 

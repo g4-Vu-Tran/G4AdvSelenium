@@ -81,18 +81,17 @@ namespace SeleniumAdvProject.PageObjects
         }
 
 
-        protected GeneralSettingsPage GoToGeneralSettingsPage()
+        public GeneralSettingsPage GoToGeneralSettingsPage()
         {
             LblGeneralSetting.Click();
             return new GeneralSettingsPage(_webDriver);
         }
 
-        //protected GeneralSettingsPage GoToGeneralSettingsPage()
-        //{
-        //    LblSortField.Click();
-        //    return new GeneralSettingsPage(_webDriver);
-        //}
-        // enum AddDataProfileSteps { GeneralSettings, DisplayFields, SortFields, FilterFields,StatisticFields, DisplaySubFields, SortSubFields, FilterSubFields};
+        public SortFieldsPage GoToSortFieldsPage()
+        {
+            LblSortField.Click();
+            return new SortFieldsPage(_webDriver);
+        }
         #endregion
 
     }
