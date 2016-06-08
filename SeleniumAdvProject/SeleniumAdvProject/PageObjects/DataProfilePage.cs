@@ -103,6 +103,11 @@ namespace SeleniumAdvProject.PageObjects
             return true;
         }
 
+        /// <summary>
+        /// Determines whether [is CheckBox exists] [the specified data profile name].
+        /// </summary>
+        /// <param name="dataProfileName">Name of the data profile.</param>
+        /// <returns></returns>
         public bool IsCheckBoxExists(string dataProfileName)
         {
             Checkbox chkDataProfile = new Checkbox(FindElement(By.XPath(string.Format("//td[.='{0}']//preceding-sibling::td/input[@id='chkDel']", CommonAction.EncodeSpace(dataProfileName)))));
@@ -110,6 +115,53 @@ namespace SeleniumAdvProject.PageObjects
                 return false;
             return true;
         }
+
+        /// <summary>
+        /// Determines whether [is data profile content sorted] [the specified table name].
+        /// </summary>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="sortType">Type of the sort.</param>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public bool IsDataProfileContentSorted(string tableName, string sortType)
+        {
+            Table table = new Table(FindElement(By.XPath(string.Format(".//div[@class='{0}']//table", tableName))));
+            IList<IWebElement> rows = table.FindElements(By.XPath(string.Format(".//div[@class='{0}']//table/tbody/tr", tableName)));
+            List<string> tableContent = new List<string>();
+            for (int i = 0; i < rows.Count(); i++)
+            {
+                IList<IWebElement> columns = table.FindElements(By.XPath(string.Format(".//div[@class='{0}']//table/tbody/tr[{1}]/td", tableName, i + 1)));
+                foreach (IWebElement column in columns)
+                {
+                    tableContent.Add(column.Text);
+                }
+
+            }
+
+            bool flag = false;
+            if (tableContent.Count == 1)
+            {
+                flag = true;
+            }
+            else
+            {
+                for (int i = 1; i < tableContent.Count - 1; i++)
+                {
+                    if (sortType == "DESC")
+                    {
+                        if (tableContent[i].CompareTo(tableContent[i + 1]) >= 0)
+                            flag = true;
+                    }
+                    else if (sortType == "ASC")
+                    {
+                        if (tableContent[i].CompareTo(tableContent[i + 1]) <= 0)
+                            flag = true;
+                    }
+                }
+            }
+            return flag;
+        }
+        
 
         #endregion
     }

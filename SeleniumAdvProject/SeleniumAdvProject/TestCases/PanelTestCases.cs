@@ -861,10 +861,9 @@ namespace SeleniumAdvProject.TestCases
 
             //12. Enter invalid height into Height field
             //13. Click Ok button
-            addPanelPopup.SettingPanel(page.PageName, 200, null);
+            string actualMessage = addPanelPopup.SettingPanelWithExpectedError(page.PageName, 200, null);
 
             //VP: There is message "Panel Height must be greater than or equal to 300 and lower than or equal to 800"
-            string actualMessage = panelPage.GetDialogText();
             string expectedMessage = "Panel height must be greater than or equal to 300 and less than or equal to 800.";
 
             Assert.AreEqual(expectedMessage, actualMessage, "Actual Message is " + actualMessage);
@@ -873,6 +872,7 @@ namespace SeleniumAdvProject.TestCases
             //14. Enter valid height into Height field
             //15. Click Ok button
             addPanelPopup.SettingPanel(page.PageName, 400, null);
+            mainPage.DeletePage(page.PageName);
 
             //VP:User is able to edit Height field to anything apart from integer number with in 300-800 range
             mainPage.OpenPanelsPage();
@@ -881,8 +881,6 @@ namespace SeleniumAdvProject.TestCases
 
             //Post-condition
             panelPage.DeletePanels("All");
-            mainPage.DeletePage(page.PageName);
-
 
         }
         /// <summary>
@@ -1536,6 +1534,52 @@ namespace SeleniumAdvProject.TestCases
         }
 
         /// <summary>
+        /// Verify that user is able to successfully edit "Folder" field with valid path.
+        /// </summary>
+        /// Author: Tu Nguyen
+        [TestMethod]
+        public void DA_PANEL_TC054()
+        {
+            Console.WriteLine("DA_PANEL_TC054 - Verify that user is able to successfully edit \"Folder\" field with valid path");
+
+            //1. Navigate to Dashboard login page
+            //2. Login with valid account
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Create a new page
+            string pageName = CommonAction.GenrateRandomString(Constants.lenghtRandomString);
+            Page page = new Page(pageName, "Select parent", 2, "Overview", false);
+            mainPage.AddPage(page);
+
+            //4. Create a new panel
+            Chart chart = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "Chart@", null, null, null, "Name", null, null, null, null, false);
+            PanelsPage panelPage = mainPage.OpenPanelsPage();
+            panelPage.AddNewPanel(chart);
+            mainPage.GoToPage(page.PageName);
+
+            //5. Click Choose Panel button
+            //6. Click on the newly created panel link
+            mainPage.OpenPanelConfigurationFromChoosePanel(CommonAction.GeneratePanelName());
+
+            //7. Edit valid folder path
+            //8. Click Ok button
+            AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
+            addPanelPage.SettingPanel(page.PageName, 400, "/Music Library/Actions");
+
+            //VP: User is able to successfully edit "Folder" field with valid path
+            mainPage.OpenEditPanelPopup();
+            string actualDisplays = addPanelPage.TxtFolder.Value;
+            Assert.AreEqual("/Music Library/Actions", actualDisplays, "Actual Folder Path is: " + actualDisplays);
+
+            //Post-Condition
+            addPanelPage.ClosePanelDialog("Cancel");
+            mainPage.DeletePage(page.PageName);
+            panelPage.DeletePanels(CommonAction.GeneratePanelName());
+
+        }
+
+        /// <summary>
         /// Verify that all changes made to or with the values populated for corresponding parameters under "Categories" and "Series" field in Edit Panel are recorded correctly
         /// </summary>
         /// <author>Vu Tran</author>
@@ -1655,10 +1699,100 @@ namespace SeleniumAdvProject.TestCases
             //20. Click 'Uncheck All' link
             //VP. Check that 'hung_a' checkbox and 'hung_b' checkbox are unchecked
 
-
-
-
-            
         }
+
+        /// <summary>
+        /// Verify that user is unable to edit "Folder" field with invalid path
+        /// </summary>
+        /// Author: Tu Nguyen
+        [TestMethod]
+        public void DA_PANEL_TC055()
+        {
+            Console.WriteLine("DA_PANEL_TC055 - Verify that user is unable to edit \"Folder\" field with invalid path");
+
+            //1. Navigate to Dashboard login page
+            //2. Login with valid account
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Create a new page
+            string pageName = CommonAction.GenrateRandomString(Constants.lenghtRandomString);
+            Page page = new Page(pageName, "Select parent", 2, "Overview", false);
+            mainPage.AddPage(page);
+
+            //4. Create a new panel
+            Chart chart = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "Chart@", null, null, null, "Name", null, null, null, null, false);
+            PanelsPage panelPage = mainPage.OpenPanelsPage();
+            panelPage.AddNewPanel(chart);
+            mainPage.GoToPage(page.PageName);
+
+            //5. Click Choose Panel button
+            //6. Click on the newly created panel link
+            mainPage.OpenPanelConfigurationFromChoosePanel(CommonAction.GeneratePanelName());
+
+            //7. Edit valid folder path
+            //8. Click Ok button
+            AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
+            string actualMessage = addPanelPage.SettingPanelWithExpectedError(page.PageName, 400, "/Car Rental/Action");
+
+            //VP: User is unable to edit "Folder" field with invalid path
+            Assert.AreEqual("Panel folder is incorrect",
+                actualMessage,
+                string.Format("Failed! Actual message is: {0}", actualMessage));
+            addPanelPage.ConfirmDialog("OK");
+
+            //Post-Condition
+            addPanelPage.ClosePanelDialog("Cancel");
+            mainPage.DeletePage(page.PageName);
+            panelPage.DeletePanels(CommonAction.GeneratePanelName());
+
+        }
+
+        /// <summary>
+        /// Verify that user is unable to edit "Folder" field with empty value
+        /// </summary>
+        [TestMethod]
+        public void DA_PANEL_TC056()
+        {
+            Console.WriteLine("DA_PANEL_TC056 - Verify that user is unable to edit \"Folder\" field with empty value");
+
+            //1. Navigate to Dashboard login page
+            //2. Login with valid account
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //3. Create a new page
+            string pageName = CommonAction.GenrateRandomString(Constants.lenghtRandomString);
+            Page page = new Page(pageName, "Select parent", 2, "Overview", false);
+            mainPage.AddPage(page);
+
+            //4. Create a new panel
+            Chart chart = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "Chart@", null, null, null, "Name", null, null, null, null, false);
+            AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
+            mainPage.OpenNewPanelPopUp(page.PageName);
+            addPanelPage.AddChart(chart);
+
+            //5. Click Choose Panel button
+            //6. Click on the newly created panel link
+            mainPage.OpenPanelConfigurationFromChoosePanel(CommonAction.GeneratePanelName());
+
+            //7. Edit valid folder path
+            //8. Click Ok button
+            string actualMessage = addPanelPage.SettingPanelWithExpectedError(page.PageName, 400, " ");
+
+            //VP: User is unable to edit "Folder" field with invalid path
+            Assert.AreEqual("Panel folder is incorrect",
+                actualMessage,
+                string.Format("Failed! Actual message is: {0}", actualMessage));
+            addPanelPage.ConfirmDialog("OK");
+
+            //Post-Condition
+            addPanelPage.ClosePanelDialog("Cancel");
+            mainPage.DeletePage(page.PageName);
+            PanelsPage panel = mainPage.OpenPanelsPage();
+            panel.DeletePanels(CommonAction.GeneratePanelName());
+
+        }
+           
     }
 }
