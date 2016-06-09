@@ -95,6 +95,7 @@
     <Compile Include="TestCases\LoginTestCases.cs" />
     <Compile Include="TestCases\MainPageTestCases.cs" />
     <Compile Include="Ultilities\Browser.cs" />
+    <Compile Include="Ultilities\Controls\Span.cs" />
     <Compile Include="Ultilities\Controls\Td.cs" />
     <Compile Include="Ultilities\Controls\Tr.cs" />
     <Compile Include="Ultilities\Controls\Div.cs" />

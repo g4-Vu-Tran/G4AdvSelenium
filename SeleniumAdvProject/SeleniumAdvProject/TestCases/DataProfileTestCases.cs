@@ -309,6 +309,7 @@ namespace SeleniumAdvProject.TestCases
         /// <summary>
         /// Verify that Check Boxes are only present for non-preset Data Profiles.
         /// </summary>
+        /// Author: Tu Nguyen
         [TestMethod]
         public void DA_DP_TC068()
         {
@@ -478,6 +479,52 @@ namespace SeleniumAdvProject.TestCases
             //VP "Item Type" items are listed in priority order: Test Modules>Test Cases> Test Objectives> Data Sets> Actions> Interface Entities> Test Results> Test Cases results
 
             Assert.AreEqual(true, genralSettingPage.isComboboxContainsItems(genralSettingPage.CbbItemType, itemsList));
+        }
+
+        /// <summary>
+        /// Verify that user is unable to add any field more than once.
+        /// </summary>
+        /// Author: Tu Nguyen
+        [TestMethod]
+        public void DA_DP_TC084()
+        {
+            Console.WriteLine("DA_DP_TC084 - Verify that user is unable to add any field more than once.");
+
+            //1. Log in Dashboard 
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //2. Navigate to Data Profiles page
+            DataProfilePage DPPage = mainPage.GoToDataProfilePage();
+
+            //3. Click on "Add New"
+            //4. Input to "Name *" field
+            //5. Click on Next button
+            DisplayFieldsPage displayFieldsPage = (DisplayFieldsPage)DPPage.GoToGeneralSettingPage().SetGeneralSettingsValue(CommonAction.GenerateDataProfileName(), "test modules", null);
+
+            //6. Navigate to Sort Fields page
+            SortFieldsPage sortFieldsPage = displayFieldsPage.GoToSortFieldsPage();
+
+            //7. Click on "Field" dropped down menu
+            //8. Select "Name" item
+            //9. Click on "Add Level" button
+            sortFieldsPage.AddLevel("Name");
+
+            //VP: Check "Name item is added to the sorting criteria list
+            bool actualField = sortFieldsPage.IsFieldLevelExist("Name");
+            Assert.AreEqual(true, actualField, "Field Level: " + actualField + " does not exist");
+
+            //10. Click on "Field" dropped down menu
+            //11. Select "Name" item
+            //12. Click on "Add Level" button
+            string warningMessage = sortFieldsPage.AddLevelWithExpectedError("Name");
+            Assert.AreEqual("Field 'Name' already selected"
+                , warningMessage, string.Format("Failed! Actual message is: {0}", warningMessage));
+            sortFieldsPage.ConfirmDialog("OK");
+
+            //Post-Condition
+            sortFieldsPage.RemoveFieldLevel("Name");
+
         }
 
     }
