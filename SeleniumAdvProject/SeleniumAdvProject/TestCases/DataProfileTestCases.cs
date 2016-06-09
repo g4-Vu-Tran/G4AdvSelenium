@@ -439,8 +439,8 @@ namespace SeleniumAdvProject.TestCases
             //6 Click 'Add New' link
             string []itemsList = new string[]{"Test Modules","Test Cases","Test Objectives","Data Sets","Actions","Interface Entities","Test Results","Test Case Results"};
             LoginPage loginPage = new LoginPage(_webDriver).Open();
-            DataProfilePage dataProfilePage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password).GoToDataProfilePage();
-            GeneralSettingsPage genralSettingPage = dataProfilePage.GoToGeneralSettingPage();
+            GeneralSettingsPage genralSettingPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password).GoToDataProfilePage()
+                .GoToGeneralSettingPage();
            
            //VP All data profile types are listed under "Item Type" dropped down menu
             //+ Test Modules
@@ -455,8 +455,9 @@ namespace SeleniumAdvProject.TestCases
 
             genralSettingPage.Logout();
         }
+
         /// <summary>
-        /// DA_DP_TC072 - Verify that all data profile types are listed under \"Item Type\" dropped down menu
+        /// DA_DP_TC073 - Verify that all data profile types are listed in priority order under \"Item Type\" dropped down menu
         /// </summary>
         /// <author>Huong Huynh</author>
         /// <date>06/08/2016</date>
@@ -472,12 +473,130 @@ namespace SeleniumAdvProject.TestCases
 
             string[] itemsList = new string[] { "Test Modules", "Test Cases", "Test Objectives", "Data Sets", "Actions", "Interface Entities", "Test Results", "Test Case Results" };
             LoginPage loginPage = new LoginPage(_webDriver).Open();
-            DataProfilePage dataProfilePage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password).GoToDataProfilePage();
-            GeneralSettingsPage genralSettingPage = dataProfilePage.GoToGeneralSettingPage();
+            GeneralSettingsPage genralSettingPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password)
+                .GoToDataProfilePage().GoToGeneralSettingPage();
 
             //VP "Item Type" items are listed in priority order: Test Modules>Test Cases> Test Objectives> Data Sets> Actions> Interface Entities> Test Results> Test Cases results
+            Assert.AreEqual(true, genralSettingPage.CheckItemsInComboboxListedByPriorityOrder(genralSettingPage.CbbItemType, itemsList),"Failed! \"Item Type\" items are not listed in priority order");
 
-            Assert.AreEqual(true, genralSettingPage.isComboboxContainsItems(genralSettingPage.CbbItemType, itemsList));
+            genralSettingPage.Logout();
+        }
+        /// <summary>
+        /// DA_DP_TC074 - Verify that appropriate \"Related Data\" items are listed correctly corresponding to the \"Item Type\" items.
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>06/09/2016</date>
+        [TestMethod]
+        public void DA_DP_TC074()
+        {
+            Console.WriteLine("DA_DP_TC074 - Verify that appropriate \"Related Data\" items are listed correctly corresponding to the \"Item Type\" items.");
+
+            //1 Navigate to Dashboard login page
+            //2 Select a specific repository 
+            //3 Enter valid Username and Password
+            //4 Click Login
+            //5 Click Administer->Data Profiles
+            //6 Click Add new link
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            GeneralSettingsPage genralSettingPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password)
+                .GoToDataProfilePage().GoToGeneralSettingPage();
+
+            //7 Select 'Test Modules' in 'Item Type' drop down list
+            genralSettingPage.CbbItemType.SelectByText("Test Modules");
+
+            //VP Check 'Related Data' items listed correctly {Related Test Results,Related Test Cases}
+            string[] expectedList = new string[] { "Related Test Results","Related Test Cases"};
+            Assert.AreEqual(true, genralSettingPage.CheckItemsInComboboxListedCorrectly(genralSettingPage.CbbRelatedData, expectedList), "Failed!Check 'Related Data' items did not list correctly");
+
+            //9 Select 'Test Cases' in 'Item Type' drop down list
+            genralSettingPage.CbbItemType.SelectByText("Test Cases");
+
+            //VP Check 'Related Data' items listed correctly {Related Run Results,Related Objectives}
+            expectedList = new string[] { "Related Test Results", "Related Objectives" };
+            Assert.AreEqual(true, genralSettingPage.CheckItemsInComboboxListedCorrectly(genralSettingPage.CbbRelatedData, expectedList), "Failed!Check 'Related Data' items did not list correctly");
+
+            //11 Select 'Test Objectives' in 'Item Type' drop down list
+            genralSettingPage.CbbItemType.SelectByText("Test Objectives");
+
+            //VP Check 'Related Data' items listed correctly {Related Run Results,Related Test Cases}
+            expectedList = new string[] { "Related Test Results", "Related Objectives" };
+            Assert.AreEqual(true, genralSettingPage.CheckItemsInComboboxListedCorrectly(genralSettingPage.CbbRelatedData, expectedList), "Failed!Check 'Related Data' items did not list correctly");
+
+            //13 Select 'Data Sets' in 'Item Type' drop down list
+            genralSettingPage.CbbItemType.SelectByText("Data Sets");
+
+            //VP Check 'Related Data' items listed correctly {None}
+            expectedList = new string[] { "None" };
+            Assert.AreEqual(true, genralSettingPage.CheckItemsInComboboxListedCorrectly(genralSettingPage.CbbRelatedData, expectedList), "Failed!Check 'Related Data' items did not list correctly");
+
+            //15 Select 'Actions' in 'Item Type' drop down list
+            genralSettingPage.CbbItemType.SelectByText("Actions");
+
+            //VP Check 'Related Data' items listed correctly {Action Arguments}
+            expectedList = new string[] { "Action Arguments" };
+            Assert.AreEqual(true, genralSettingPage.CheckItemsInComboboxListedCorrectly(genralSettingPage.CbbRelatedData, expectedList), "Failed!Check 'Related Data' items did not list correctly");
+
+            //17 Select 'Interface Entities' in 'Item Type' drop down list
+            genralSettingPage.CbbItemType.SelectByText("Interface Entities");
+
+            //VP Check 'Related Data' items listed correctly {Interface Elements}
+            expectedList = new string[] { "Interface Elements" };
+            Assert.AreEqual(true, genralSettingPage.CheckItemsInComboboxListedCorrectly(genralSettingPage.CbbRelatedData, expectedList), "Failed!Check 'Related Data' items did not list correctly");
+
+            //19 Select 'Test Results' in 'Item Type' drop down list 
+            genralSettingPage.CbbItemType.SelectByText("Test Results");
+
+            //VP Check 'Related Data' items listed correctly {Related Test Module, Related Test Cases}
+            expectedList = new string[] { "Related Test Results", "Related Test Cases" };
+            Assert.AreEqual(true, genralSettingPage.CheckItemsInComboboxListedCorrectly(genralSettingPage.CbbRelatedData, expectedList), "Failed!Check 'Related Data' items did not list correctly");
+
+            //21 Select 'Test Case Results' in 'Item Type' drop down list
+            genralSettingPage.CbbItemType.SelectByText("Test Case Results");
+
+            //VP Check 'Related Data' items listed correctly
+            expectedList = new string[] { "None" };
+            Assert.AreEqual(true, genralSettingPage.CheckItemsInComboboxListedCorrectly(genralSettingPage.CbbRelatedData, expectedList), "Failed!Check 'Related Data' items did not list correctly");
+
+            genralSettingPage.Logout();
+        }
+        /// <summary>
+        /// DA_DP_TC075 - Verify that default settings are applied correctly for newly created data profiles if user only set up \"General Settings\" page and finishes.
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>06/09/2016</date>
+        [TestMethod]
+        public void DA_DP_TC075()
+        {
+            Console.WriteLine("DA_DP_TC075 - Verify that default settings are applied correctly for newly created data profiles if user only set up \"General Settings\" page and finishes.");
+
+            //1 Navigate to Data Profiles page
+            //2 Login with valid account
+            //3 Click on "Add New"
+            //4 Input to "Name *" field
+            //5 Click "Item Type" and choose an item
+            //6 Click "Finish" button
+            string profileName = CommonAction.GenerateDataProfileName();
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+            DataProfilePage DPPage = mainPage.GoToDataProfilePage();
+            DPPage= (DataProfilePage)DPPage.GoToGeneralSettingPage()
+                .SetGeneralSettingsValue(profileName, "test modules", "None","Finish");
+            
+            //7 Click on the newly created data profile
+            DPPage.ClickLinkText(profileName);
+            //8 Check the setting of General Settings Page
+
+
+            //9 Click Next Button
+            //10 Check the setting of Display Fields Page
+            //11 Click Next Button
+            //12 Check the setting of Sort Fields Page
+            //13 Click Next Button
+            //14 Check the setting of Filter Fields Page
+            //15 Click Next Button
+            //16 Check the setting of Statistic Page
+
+            
         }
 
     }
