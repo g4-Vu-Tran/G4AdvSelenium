@@ -96,7 +96,7 @@ namespace SeleniumAdvProject.PageObjects
         /// Author: Tu Nguyen
         public SortFieldsPage RemoveFieldLevel(string fieldName)
         {
-            Button removeButton = new Button(FindElement(By.XPath(string.Format(".//table[@id='profilesettings']//button[@title='{0}']", fieldName))));
+            Button removeButton = new Button(FindElement(By.XPath(string.Format("//table[@id='profilesettings']//td/span[.='{0}']/../../td/button[@title='Remove']", fieldName))));
             removeButton.Click();
             return this;
         }

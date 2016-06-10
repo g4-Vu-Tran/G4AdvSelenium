@@ -356,7 +356,7 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual("Please input profile name.", actualMessage,
                            string.Format("Failed! Actual message is: {0}", actualMessage));
             DPPage.ConfirmDialog("OK");
-            
+
             //5. Click on "Finish Button"
             //VP: dialog message "Please input profile name" appears
             string actualMessageFinish = DPPage.GoToGeneralSettingPage().SetGeneralSettingsWithExpectedError(" ", "Finish");
@@ -377,7 +377,7 @@ namespace SeleniumAdvProject.TestCases
             //1. Log in Dashboard
             LoginPage loginPage = new LoginPage(_webDriver).Open();
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
-             //2. Navigate to Data Profiles page
+            //2. Navigate to Data Profiles page
             DataProfilePage DPPage = mainPage.GoToDataProfilePage();
 
             //3. Click on "Add New"
@@ -431,19 +431,19 @@ namespace SeleniumAdvProject.TestCases
         public void DA_DP_TC072()
         {
             Console.WriteLine("DA_DP_TC072 - Verify that all data profile types are listed under \"Item Type\" dropped down menu");
-            
+
             //1 Navigate to Dashboard login page
             //2 Select a specific repository 
             //3 Enter valid Username and Password
             //4 Click Login
             //5 Click Administer->Data Profiles
             //6 Click 'Add New' link
-            string []itemsList = new string[]{"Test Modules","Test Cases","Test Objectives","Data Sets","Actions","Interface Entities","Test Results","Test Case Results"};
+            string[] itemsList = new string[] { "Test Modules", "Test Cases", "Test Objectives", "Data Sets", "Actions", "Interface Entities", "Test Results", "Test Case Results" };
             LoginPage loginPage = new LoginPage(_webDriver).Open();
             DataProfilePage dataProfilePage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password).GoToDataProfilePage();
             GeneralSettingsPage genralSettingPage = dataProfilePage.GoToGeneralSettingPage();
-           
-           //VP All data profile types are listed under "Item Type" dropped down menu
+
+            //VP All data profile types are listed under "Item Type" dropped down menu
             //+ Test Modules
             //+ Test Cases
             //+ Test Objectives
@@ -524,7 +524,6 @@ namespace SeleniumAdvProject.TestCases
 
             //Post-Condition
             sortFieldsPage.RemoveFieldLevel("Name");
-
         }
 
     }
