@@ -182,8 +182,9 @@ namespace SeleniumAdvProject.TestCases
 
             //VP. Observe the current page
             // Main page is displayed
-            Assert.IsTrue(mainPage.Displayed(), "User login unsuccessfully with uppercase username");
-
+            bool isDisplay = mainPage.Displayed();
+            Assert.AreEqual(true, isDisplay, "User login unsuccessfully with uppercase username");
+            
             //3. Logout TA Dashboard
             mainPage.Logout();
 
@@ -251,11 +252,10 @@ namespace SeleniumAdvProject.TestCases
             LoginPage loginPage = new LoginPage(_webDriver).Open();
 
             //2. Click Login button without entering data into Username and Password field
-            loginPage.LoginWithOutAccount(Constants.Repository);
+            string actualMsg = loginPage.LoginWithOutAccount(Constants.Repository);
 
             //VP. Observe the current page
-            //    There is a message "Please enter username"
-            string actualMsg = loginPage.GetDialogText();
+            // There is a message "Please enter username"
             string expectMsg = "Please enter username";
             Assert.AreEqual(expectMsg, actualMsg, string.Format("Message incorrect {0}", actualMsg));
         }

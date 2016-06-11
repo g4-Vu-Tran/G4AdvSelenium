@@ -94,11 +94,12 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <returns></returns>
-        public LoginPage LoginWithOutAccount(string repository)
+        /// Author: Tu Nguyen
+        public string LoginWithOutAccount(string repository)
         {
             DdlRepsitory.SelectByText(repository);
             BtnLogin.Click();
-            return this;
+            return this.GetDialogText();
         }
 
         /// <summary>
