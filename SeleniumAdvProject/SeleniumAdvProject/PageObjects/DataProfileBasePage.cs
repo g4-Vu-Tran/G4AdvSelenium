@@ -136,6 +136,7 @@ namespace SeleniumAdvProject.PageObjects
 
         public SortFieldsPage GoToSortFieldsPage()
         {
+            Thread.Sleep(500);
             LblSortField.Click();
             return new SortFieldsPage(_webDriver);
         }

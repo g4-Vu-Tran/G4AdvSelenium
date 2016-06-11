@@ -17,12 +17,17 @@ namespace SeleniumAdvProject.PageObjects
         #region Locators
         static readonly By _cbbField = By.XPath("//select[@id='cbbFields']");
         static readonly By _btnAddLevel = By.XPath("//input[@id='btnAddSortField']");
+        static readonly By _cbbDateField = By.XPath("//select[@name='cbbSortInterval']");
         #endregion
 
         #region Elements
         public ComboBox CbbField
         {
             get { return new ComboBox(FindElement(_cbbField)); }
+        }
+        public ComboBox CbbDateField
+        {
+            get { return new ComboBox(FindElement(_cbbDateField)); }
         }
         public Button BtnAddLevel
         {
@@ -96,7 +101,7 @@ namespace SeleniumAdvProject.PageObjects
         /// Author: Tu Nguyen
         public SortFieldsPage RemoveFieldLevel(string fieldName)
         {
-            Button removeButton = new Button(FindElement(By.XPath(string.Format(".//table[@id='profilesettings']//button[@title='{0}']", fieldName))));
+            Button removeButton = new Button(FindElement(By.XPath(string.Format("//table[@id='profilesettings']//td/span[.='{0}']/../../td/button[@title='Remove']", fieldName))));
             removeButton.Click();
             return this;
         }

@@ -194,7 +194,7 @@ namespace SeleniumAdvProject.Ultilities
         /// Update: Tu Nguyen
         public void Click()
         {
-             action.Click(this.element).Build().Perform();
+            action.Click(this.element).Build().Perform();
         }
 
         /// <summary>
@@ -424,7 +424,6 @@ namespace SeleniumAdvProject.Ultilities
         {
             if (isExists())
             {
-                //LoadControl();
                 return element.Displayed;
             }
             return false;

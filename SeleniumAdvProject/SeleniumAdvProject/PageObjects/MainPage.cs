@@ -102,7 +102,7 @@ namespace SeleniumAdvProject.PageObjects
         {
             GoToPage(page);
             BtnChoosePanel.Click();
-           // WaitForControlExists(By.XPath("//span[.='Create new panel']"), Constants.WaitTimeoutShortSeconds);
+            // WaitForControlExists(By.XPath("//span[.='Create new panel']"), Constants.WaitTimeoutShortSeconds);
             BtnCreateNewPanel.Click();
             return this;
         }
@@ -116,7 +116,7 @@ namespace SeleniumAdvProject.PageObjects
         {
             LnkEditPanel.Click();
             return new AddNewPanelPage(_webDriver);
-        
+
         }
         /// <summary>
         /// Opens the panel configuration popup by click on Chooses Panle and click on Chart panel instance
@@ -142,9 +142,21 @@ namespace SeleniumAdvProject.PageObjects
         /// <date>05/25/2015</date>
         public int GetPositionPage(string pageName)
         {
-            Link page = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", pageName))));            
+            Link page = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", pageName))));
             return page.Location.X;
 
+        }
+
+        /// <summary>
+        /// Gets the column count.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public int GetColumnCount()
+        {
+            IList<IWebElement> elements = _webDriver.FindElements(By.XPath("//ul[@class='column ui-sortable']"));
+            int columnCount = elements.Count;
+            return columnCount;
         }
 
         /// <summary>
@@ -231,10 +243,15 @@ namespace SeleniumAdvProject.PageObjects
             return this;
         }
 
+        /// <summary>
+        /// Edits the page.
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
         public MainPage EditPage(Page page)
         {
-            AddNewPage editPage = new AddNewPage(_webDriver);
-            editPage.AddPage(page.ParentPage, page);
+            OpenEditPage(page.PageName).EditPage(page.ParentPage, page);
             return this;
         }
 
@@ -250,13 +267,13 @@ namespace SeleniumAdvProject.PageObjects
             Table table = new Table(FindElement(By.XPath(string.Format("//div[.='{0}']/../table", tableName))));
             IList<IWebElement> rows = table.FindElements(By.XPath(string.Format("//div[.='{0}']/../table/tbody/tr", tableName)));
             List<string> tableContent = new List<string>();
-            for(int i=0; i< rows.Count();i++) 
-            {                
-                IList<IWebElement> columns = table.FindElements(By.XPath(string.Format("//div[.='{0}']/../table/tbody/tr[{1}]/td", tableName,i+1)));
-                    foreach (IWebElement column in columns)
-                    {
-                        tableContent.Add(column.Text);
-                    }
+            for (int i = 0; i < rows.Count(); i++)
+            {
+                IList<IWebElement> columns = table.FindElements(By.XPath(string.Format("//div[.='{0}']/../table/tbody/tr[{1}]/td", tableName, i + 1)));
+                foreach (IWebElement column in columns)
+                {
+                    tableContent.Add(column.Text);
+                }
 
             }
 
@@ -283,7 +300,7 @@ namespace SeleniumAdvProject.PageObjects
             }
             return flag;
         }
-        
+
 
         #endregion
     }
