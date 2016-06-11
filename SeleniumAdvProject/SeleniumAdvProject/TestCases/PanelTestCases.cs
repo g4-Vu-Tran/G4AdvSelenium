@@ -18,7 +18,7 @@ namespace SeleniumAdvProject.TestCases
         /// Verify that when "Choose panels" form is expanded all pre-set panels are populated and sorted correctly
         /// </summary>
         /// <author>Huong Huynh</author>
-        /// <date>05/25/2015</date>
+        /// <date>05/25/2016</date>
         [TestMethod]
         public void DA_PANEL_TC027()
         {
@@ -60,7 +60,7 @@ namespace SeleniumAdvProject.TestCases
         /// Verify that when "Add New Panel" form is on focused all other control/form is disabled or locked
         /// </summary>
         /// <author>Huong Huynh</author>
-        /// <date>05/25/2015</date>
+        /// <date>05/25/2016</date>
         [TestMethod]
         public void DA_PANEL_TC028()
         {
@@ -89,7 +89,7 @@ namespace SeleniumAdvProject.TestCases
         /// Verify that user is unable to create new panel when (*) required field is not filled
         /// </summary>
         /// <author>Huong Huynh</author>
-        /// <date>05/25/2015</date>
+        /// <date>05/25/2016</date>
         [TestMethod]
         public void DA_PANEL_TC029()
         {
@@ -118,7 +118,7 @@ namespace SeleniumAdvProject.TestCases
         /// Verify that no special character except '@' character is allowed to be inputted into "Display Name" field
         /// </summary>
         /// <author>Huong Huynh</author>
-        /// <date>05/25/2015</date>
+        /// <date>05/25/2016</date>
         [TestMethod]
         public void DA_PANEL_TC030()
         {
@@ -1095,11 +1095,12 @@ namespace SeleniumAdvProject.TestCases
 
             //8. Click 'Choose Panels' button
             //9. Click 'Create new panel' button
-            mainPage.OpenAddNewPanelPageFromButton();
+            AddNewPanelPage addNewPanelPage=  mainPage.OpenAddNewPanelPageFromButton();
 
             //10. Click 'Chart Type' drop-down menu
             //VP. Check that 'Chart Type' are listed 5 options: 'Pie', 'Single Bar', 'Stacked Bar', 'Group Bar' and 'Line'
-
+            string[] chartTypeOptions = {"Pie","Single Bar","Stacked Bar","Group Bar","Line"};
+            Assert.IsTrue( addNewPanelPage.IsComboboxListed(addNewPanelPage.CbbChartType, chartTypeOptions),"Chart Type combobox is not listed correcty!");
         }
 
         /// <summary>
@@ -1404,22 +1405,32 @@ namespace SeleniumAdvProject.TestCases
         /// </summary>
         /// <author>Vu Tran</author>
         /// <date>05/25/2016</date>
-        //[TestMethod]
+        [TestMethod]
         public void DA_PANEL_TC048()
         {
             Console.WriteLine("DA_PANEL_TC048 - Verify that population of corresponding item type ( e.g. Actions, Test Modules) folders is correct in \"Select Folder form\"");
 
+            //Set variables
+            Page page = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+
             //1. Navigate to Dashboard login page
             //2. Login with valid account
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
             //3. Create a new page
+            mainPage.AddPage(page);
+
             //4. Click Choose Panel button
             //5. Click Create New Panel button
             //6. Enter all required fields on Add New Panel page
             //7. Click Ok button
+            AddNewPanelPage addPanelPage = mainPage.OpenAddNewPanelPageFromButton().FillPanelData(null, "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "3D", null, null, null, true, "Top");
+            addPanelPage.BtnOk.Click();
+
             //8. Click Select Folder button on Panel Configuration dialog
             //VP. Population of corresponding item type ( e.g. Actions, Test Modules) folders is correct in "Select Folder form
-
-
+            Assert.IsTrue(addPanelPage.IsSelectFolderPopulation("/Car Rental/Tests"), string.Format("Folder field displays incorrently: {0}", addPanelPage.TxtFolder.Text));
         }
 
         /// <summary>
@@ -1427,24 +1438,37 @@ namespace SeleniumAdvProject.TestCases
         /// </summary>
         /// <author>Vu Tran</author>
         /// <date>05/25/2016</date>
-        //[TestMethod]
+        [TestMethod]
         public void DA_PANEL_TC049()
         {
             Console.WriteLine("DA_PANEL_TC049 - Verify that all folder paths of corresponding item type ( e.g. Actions, Test Modules) are correct in \"Select Folder\" form ");
 
+            //Set variables
+            Page page = new Page("Page c3c40a23-5", "Select parent", 2, "Overview", false);
+
             //1. Navigate to Dashboard login page
             //2. Login with valid account
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
             //3. Create a new page
+           // mainPage.AddPage(page);
+
             //4. Click Choose Panel button
             //5. Click Create New Panel button
             //6. Enter all required fields on Add New Panel page
             //7. Click Ok button
+            mainPage.GoToPage(page.PageName);
+            AddNewPanelPage addPanelPage = mainPage.OpenAddNewPanelPageFromButton().FillPanelData(null, "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "3D","Name","Location", null, true, "Top");
+            addPanelPage.BtnOk.Click();
+
             //8. Click Select Folder button on Panel Configuration dialog
             //9. Choose folder name in Folder Form
             //10. Click Ok button on Select Folder form
             //VP. Folder path is displayed correctly after selecting folder in Select Folder form
-
-
+            addPanelPage.SelectFolder("/Car Rental/Tests");
+            addPanelPage.BtnOKConfigurationPanel.Click();
+            Assert.AreEqual(addPanelPage.TxtFolder.Text, "/Car Rental/Tests", string.Format("Folder field displays incorrently: {0}", addPanelPage.TxtFolder.Text));
 
         }
 
@@ -1597,12 +1621,18 @@ namespace SeleniumAdvProject.TestCases
             //3. Click Choose Panels button
             //4. Click Test Module Implementation By Priority link
             //5. Click Ok button on Panel Configuration dialog
+            mainPage.OpenPanelConfigurationFromChoosePanel("Test Module Implementation By Priority").BtnOk.Click();
+
             //6. Click Edit Panel icon
             //7. Enter value into Caption field for Category
             //8. Enter value into Caption field for Serius
             //9. Click Ok button
+            mainPage.ClickEditPanelIcon("Test Module Implementation By Priority").FillPanelData(null, "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "3D", null, null, null, true, "Top").BtnOk.Click();
+
             //10. Click Edit Panel icon
             //VP. Caption's values are saved
+            mainPage.ClickEditPanelIcon("Test Module Implementation By Priority");
+
         }
 
         /// <summary>
@@ -1624,6 +1654,8 @@ namespace SeleniumAdvProject.TestCases
             //3. Click Choose Panels button
             //4. Click Action Implementation By Status link
             //5. Click Ok button on Panel Configuration dialog
+            mainPage.OpenPanelConfigurationFromChoosePanel("Action Implementation By Status").BtnOk.Click();
+
             //6. Click Edit Panel icon
             //7. Click on Chart Type dropped down menu
             //8. Select Single Bar
@@ -1631,6 +1663,11 @@ namespace SeleniumAdvProject.TestCases
             //10. Select Pie
             //VP. Check original "Pie" - Edit Panel form is displayed
             //12. Close "Edit Panel" form
+            AddNewPanelPage editPanelPage = mainPage.ClickEditPanelIcon("Action Implementation By Status");
+            editPanelPage.FillPanelData(null, null, null, null, null, "Single Bar", null, null, null, null, false, null);
+            editPanelPage.FillPanelData(null, null, null, null, null, "Pie", null, null, null, null, false, null);
+            editPanelPage.BtnCancel.Click();
+
             //13. Click Edit Panel icon
             //14. Click on Chart Type dropped down menu
             //15. Select Stacked Bar
@@ -1639,18 +1676,34 @@ namespace SeleniumAdvProject.TestCases
             //VP. Check original "Pie" - Edit Panel form is displayed
             //18. Close "Edit Panel" form
             //19. Click Edit Panel icon
+            mainPage.ClickEditPanelIcon("Action Implementation By Status");
+            editPanelPage.FillPanelData(null, null, null, null, null, "Stacked Bar", null, null, null, null, false, null);
+            editPanelPage.FillPanelData(null, null, null, null, null, "Pie", null, null, null, null, false, null);
+            Assert.AreEqual(editPanelPage.CbbChartType.Text, "Pie", string.Format("Current selected value is {0}", editPanelPage.CbbChartType.Text));
+            editPanelPage.BtnCancel.Click();
+
             //20. Click on Chart Type dropped down menu
             //21. Select Group Bar
             //22. Click on Chart Type dropped down menu
             //23. Select Pie
             //VP. Check original "Pie" - Edit Panel form is displayed
             //24. Close "Edit Panel" form
+            mainPage.ClickEditPanelIcon("Action Implementation By Status");
+            editPanelPage.FillPanelData(null, null, null, null, null, "Stacked Bar", null, null, null, null, false, null);
+            editPanelPage.FillPanelData(null, null, null, null, null, "Pie", null, null, null, null, false, null);
+            Assert.AreEqual(editPanelPage.CbbChartType.Text, "Pie", string.Format("Current selected value is {0}", editPanelPage.CbbChartType.Text));
+            editPanelPage.BtnCancel.Click();
+
             //25. Click Edit Panel icon
             //26. Click on Chart Type dropped down menu
             //27. Select Line
             //28. Click on Chart Type dropped down menu
             //29. Select Pie
             //VP. Check original "Pie" - Edit Panel form is displayed
+            mainPage.ClickEditPanelIcon("Action Implementation By Status");
+            editPanelPage.FillPanelData(null, null, null, null, null, "Line", null, null, null, null, false, null);
+            editPanelPage.FillPanelData(null, null, null, null, null, "Pie", null, null, null, null, false, null);
+            Assert.AreEqual(editPanelPage.CbbChartType.Text, "Pie", string.Format("Current selected value is {0}", editPanelPage.CbbChartType.Text));
 
         }
 
@@ -1684,20 +1737,36 @@ namespace SeleniumAdvProject.TestCases
             //9. Click 'Create new panel' button
             //10. Enter a name to Display Name
             //11. Click OK button
-            Chart chart = new Chart(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Name", page.PageName);
-            mainPage.AddNewPanel(chart);
-
             //12. Click Cancel button
+            mainPage.GoToPage(page.PageName);
+            string panelName1 = CommonAction.GeneratePanelName();
+            AddNewPanelPage addNewPanelPage = mainPage.OpenAddNewPanelPageFromButton().FillPanelData(null, null, panelName1, null, null, null, null, null, null, null, false, null);
+            addNewPanelPage.BtnOk.Click();
+            addNewPanelPage.BtnCancelConfigurationPanel.Click();
+            
             //13. Click 'Create new panel' button
             //14. Enter a name to Display Name
             //15. Click OK button
             //16. Click Cancel button
+            string panelName2 = CommonAction.GeneratePanelName();
+            mainPage.OpenAddNewPanelPageFromButton().FillPanelData(null, null, panelName2, null, null, null, null, null, null, null, false, null);
+
             //17. Click 'Administer' link
             //18. Click 'Panels' link
             //19. Click 'Check All' link
             //VP. Check that 'hung_a' checkbox and 'hung_b' checkbox are checked
             //20. Click 'Uncheck All' link
             //VP. Check that 'hung_a' checkbox and 'hung_b' checkbox are unchecked
+            string[] panelList = {panelName1,panelName2};
+            PanelsPage panelsPage = mainPage.OpenPanelsPage();
+            panelsPage.LnkCheckAll.Click();
+            Assert.IsTrue(panelsPage.IsCheckBoxExists(panelList), "All checkboxes are not checked");
+            panelsPage.LnkUnCheckAll.Click();
+            Assert.IsFalse(panelsPage.IsCheckBoxExists(panelList), "All checkboxes are not unchecked");
+
+            //Post-Condition
+            panelsPage.DeletePanels(panelName1);
+            panelsPage.DeletePanels(panelName2);
 
         }
 
@@ -1793,6 +1862,6 @@ namespace SeleniumAdvProject.TestCases
             panel.DeletePanels(CommonAction.GeneratePanelName());
 
         }
-           
+
     }
 }

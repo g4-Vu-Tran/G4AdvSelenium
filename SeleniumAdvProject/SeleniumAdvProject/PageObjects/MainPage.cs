@@ -281,7 +281,13 @@ namespace SeleniumAdvProject.PageObjects
             }
             return flag;
         }
-        
+
+        public AddNewPanelPage ClickEditPanelIcon(string panelName)
+        {
+            Button iconEditPanel = new Button(FindElement(By.XPath(string.Format("//div[@title='{0}']/../following-sibling::div//li[@title='Edit Panel']", panelName))));
+            iconEditPanel.Click();
+            return new AddNewPanelPage(_webDriver);
+        }
 
         #endregion
     }
