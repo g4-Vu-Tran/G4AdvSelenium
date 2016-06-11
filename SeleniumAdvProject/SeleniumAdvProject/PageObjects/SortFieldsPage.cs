@@ -17,7 +17,7 @@ namespace SeleniumAdvProject.PageObjects
         #region Locators
         static readonly By _cbbField = By.XPath("//select[@id='cbbFields']");
         static readonly By _btnAddLevel = By.XPath("//input[@id='btnAddSortField']");
-        static readonly By _cbbDateField = By.XPath("//select[@name='cbbSortInterval'");
+        static readonly By _cbbDateField = By.XPath("//select[@name='cbbSortInterval']");
         #endregion
 
         #region Elements

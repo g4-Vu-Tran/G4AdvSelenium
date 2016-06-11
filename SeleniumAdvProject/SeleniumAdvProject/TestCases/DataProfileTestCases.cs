@@ -304,6 +304,9 @@ namespace SeleniumAdvProject.TestCases
             bool actualResult = DPPage.IsDataProfileContentSorted("panel_tag1", "ASC");
             Assert.AreEqual(true, actualResult, "Data Profiles are not listed alphabetically");
 
+            //Post-Condition
+            mainPage.Logout();
+
         }
 
         /// <summary>
@@ -315,6 +318,9 @@ namespace SeleniumAdvProject.TestCases
         {
             Console.WriteLine("DA_DP_TC068 - Verify that Check Boxes are only present for non-preset Data Profiles");
 
+            //Set Variable
+            string profileName = CommonAction.GenerateDataProfileName();
+
             //1. Log in Dashboard
             LoginPage loginPage = new LoginPage(_webDriver).Open();
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
@@ -323,10 +329,10 @@ namespace SeleniumAdvProject.TestCases
             DataProfilePage DPPage = mainPage.GoToDataProfilePage();
 
             //3. Create a new Data Profile
-            DPPage.GoToGeneralSettingPage().SetGeneralSettingsValue("TuProfile", null, null, "Finish");
+            DPPage.GoToGeneralSettingPage().SetGeneralSettingsValue(profileName, null, null, "Finish");
 
             //VP: Check Check Boxes are only present for non-preset Data Profiles
-            bool isProfileCheckBox = DPPage.IsCheckBoxExists("TuProfile");
+            bool isProfileCheckBox = DPPage.IsCheckBoxExists(profileName);
             Assert.AreEqual(true, isProfileCheckBox, "This Data Profile does not have checkbox");
 
             //Post-Condition
@@ -359,10 +365,15 @@ namespace SeleniumAdvProject.TestCases
 
             //5. Click on "Finish Button"
             //VP: dialog message "Please input profile name" appears
-            string actualMessageFinish = DPPage.GoToGeneralSettingPage().SetGeneralSettingsWithExpectedError(" ", "Finish");
+            GeneralSettingsPage generalPage = new GeneralSettingsPage(_webDriver);
+            generalPage.BtnFinish.Click();
+            string actualMessageFinish = generalPage.GetDialogText();
             Assert.AreEqual("Please input profile name.", actualMessageFinish,
-                           string.Format("Failed! Actual message is: {0}", actualMessageFinish));
+               string.Format("Failed! Actual message is: {0}", actualMessageFinish));
             DPPage.ConfirmDialog("OK");
+
+            //Post Condition
+            mainPage.Logout();
         }
 
         /// <summary>
@@ -389,6 +400,9 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual("Invalid name. The name cannot contain high ASCII characters or any of the following characters: /:*?<>|\"#[]{}=%;"
                 , actualMessage, string.Format("Failed! Actual message is: {0}", actualMessage));
             DPPage.ConfirmDialog("OK");
+
+            //Post Condition
+            mainPage.Logout();
         }
         /// <summary>
         /// Verify that Data Profile names are not case sensitive
@@ -399,19 +413,23 @@ namespace SeleniumAdvProject.TestCases
         {
             Console.WriteLine("DA_DP_TC071 - Verify that Data Profile names are not case sensitive");
 
+            //Set Variables
+            string nameProfile = CommonAction.GenerateDataProfileName();
+            string uppercaseName = nameProfile.ToUpper();
+
             //1. Log in Dashboard
             LoginPage loginPage = new LoginPage(_webDriver).Open();
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
             //Pre-Condition: Create a data profile
             DataProfilePage DPPage = mainPage.GoToDataProfilePage();
-            DPPage.GoToGeneralSettingPage().SetGeneralSettingsValue("tu", null, null, "Finish");
+            DPPage.GoToGeneralSettingPage().SetGeneralSettingsValue(nameProfile, null, null, "Finish");
 
             //2. Navigate to Data Profiles page
             //3. Click on "Add New"
             //4. Input charater uppercase name into "Name *" field
             //5. Click "Next" button 
-            string actualMessage = DPPage.GoToGeneralSettingPage().SetGeneralSettingsWithExpectedError("TU", "Next");
+            string actualMessage = DPPage.GoToGeneralSettingPage().SetGeneralSettingsWithExpectedError(uppercaseName, "Next");
 
             //VP: Check dialog message "Data Profile name already exists"
             Assert.AreEqual("Data profile name already exists."
@@ -571,6 +589,46 @@ namespace SeleniumAdvProject.TestCases
 
             //Post-Condition
             sortFieldsPage.RemoveFieldLevel("Name");
+        }
+
+        /// <summary>
+        /// Verify that all date types are listed correctly under date type dropped down menu
+        /// </summary>
+        /// Author: Tu Nguyen
+        [TestMethod]
+        public void DA_DP_TC087()
+        {
+            Console.WriteLine("DA_DP_TC087 - Verify that all date types are listed correctly under date type dropped down menu");
+
+            //Set Variables
+            string[] itemsList = new string[] { "day", "week", "month", "year" };
+
+            //1. Log in Dashboard 
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //2. Navigate to Data Profiles page
+            DataProfilePage DPPage = mainPage.GoToDataProfilePage();
+
+            //3. Click on "Add New"
+            //4. Input to "Name *" field
+            //5. Click on Next button
+            DisplayFieldsPage displayFieldsPage = (DisplayFieldsPage)DPPage.GoToGeneralSettingPage().SetGeneralSettingsValue(CommonAction.GenerateDataProfileName(), "test modules", null);
+
+            //6. Navigate to Sort Fields page
+            SortFieldsPage sortFieldsPage = displayFieldsPage.GoToSortFieldsPage();
+
+            //7. Click on "Field" dropped down menu
+            //8. Select "Last update date" item
+            //9. Click on "Add Level" button
+            sortFieldsPage.AddLevel("Last update date");
+            bool actualContain = sortFieldsPage.isComboboxContainsItems(sortFieldsPage.CbbDateField, itemsList);
+
+            //VP: all date types from date type  dropped down menu are listed correctly
+            Assert.AreEqual(true, actualContain, "Item does not exist");
+
+            //Post-Condition
+            sortFieldsPage.RemoveFieldLevel("Last update date");
         }
 
     }
