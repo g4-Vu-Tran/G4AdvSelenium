@@ -9,7 +9,7 @@ namespace SeleniumAdvProject.TestCases
     public class LoginTestCases : BaseTestCase
     {
         /// <summary>
-        /// Verify that user can login specific repository successfully via Dashboard login page with correct credentials
+        /// DA_LOGIN_TC001 - Verify that user can login specific repository successfully via Dashboard login page with correct credentials
         /// </summary>
         /// <author>Huong Huynh</author>
         /// <date>05/25/2015</date>
@@ -19,10 +19,9 @@ namespace SeleniumAdvProject.TestCases
             Console.WriteLine("DA_LOGIN_TC001 - Verify that user can login specific repository successfully via Dashboard login page with correct credentials");
 
             //1. Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver).Open();
-
             //2. Enter valid username and password	
             //3. Click on "Login" button
+            LoginPage loginPage = new LoginPage(_webDriver).Open();            
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
             //VP. Verify that Dashboard Mainpage appears

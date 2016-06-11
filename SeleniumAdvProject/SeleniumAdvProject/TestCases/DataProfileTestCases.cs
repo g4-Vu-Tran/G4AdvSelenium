@@ -585,7 +585,8 @@ namespace SeleniumAdvProject.TestCases
             
             //7 Click on the newly created data profile
             DPPage.ClickLinkText(profileName);
-            //8 Check the setting of General Settings Page
+            //VP Check the setting of General Settings Page
+            Assert.AreEqual("General Settings",DPPage.LblProfileHeader.Text,"Failed! Page {0}");
 
 
             //9 Click Next Button
@@ -598,6 +599,92 @@ namespace SeleniumAdvProject.TestCases
             //16 Check the setting of Statistic Page
 
             
+        }
+        /// <summary>
+        /// DA_DP_TC076 - Verify that for newly created data profile, user is able to navigate through other setting pages on the left navigation panel.
+        /// </summary>
+        /// <author>Huong Huynh</author>
+        /// <date>06/10/2016</date>
+        [TestMethod]
+        public void DA_DP_TC076()
+        {
+            Console.WriteLine("DA_DP_TC076 - Verify that for newly created data profile, user is able to navigate through other setting pages on the left navigation panel.");
+
+            //1 Navigate to Dashboard login page
+            //2 Select a specific repository 
+            //3 Enter valid Username and Password
+            //4 Click Login
+            //5 Click Administer->Data Profiles
+            //6 Click Add new link
+            //7 Create new data profile
+            //8 Back to Data Profiles page
+            //9 Click on the data profile 'thinh-test'
+            string profileName = CommonAction.GenerateDataProfileName();
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+            DataProfilePage DPPage = mainPage.GoToDataProfilePage();
+            DPPage = (DataProfilePage)DPPage.GoToGeneralSettingPage()
+                .SetGeneralSettingsValue(profileName, "test modules", "None", "Finish");
+            DPPage.ClickLinkText(profileName);
+                    
+            //10 Click on 'Display Fields' in the left navigation panel
+            DPPage.LblDisplayField.Click();
+
+            //11 Check Display Fields page appears
+            Assert.AreEqual("General Settings", DPPage.LblProfileHeader.Text,
+                "Failed! Page {0} display instead of General Setting", DPPage.LblProfileHeader.Text); 
+
+            //12 Click on 'Sort Fields' in the left navigation panel
+            DPPage.LblSortField.Click();
+
+            //13 Check Sort Fields page appears
+            Assert.AreEqual("Sort Fields", DPPage.LblProfileHeader.Text,
+                "Failed! Page {0} display instead of Sort Fields", DPPage.LblProfileHeader.Text); 
+
+            //14 Click on 'Filter Fields' in the left navigation panel
+            DPPage.LblFilterFields.Click();
+
+            //15 Check Filter Fields page appears
+            Assert.AreEqual("Filter Fields", DPPage.LblProfileHeader.Text,
+                "Failed! Page {0} display instead of 'Filter Fields", DPPage.LblProfileHeader.Text);
+
+            //16 Click on 'Statistic Fields' in the left navigation panel
+            DPPage.LblStatisticFields.Click();
+
+            //17 Check Statistic Fields page appears
+            Assert.AreEqual("Statistic Fields", DPPage.LblProfileHeader.Text,
+                "Failed! Page {0} display instead of Statistic Fields", DPPage.LblProfileHeader.Text);
+
+            //18 Click on 'Display Sub-Fields' in the left navigation panel
+            DPPage.LblDisplaySubFiled.Click();
+
+            //19 Check Display Sub-Fields page appears
+            Assert.AreEqual("Display Sub-Fields", DPPage.LblProfileHeader.Text,
+                "Failed! Page {0} display instead of Display Sub-Fields", DPPage.LblProfileHeader.Text);
+
+            //20 Click on 'Sort Sub-Fields' in the left navigation panel
+            DPPage.LblSortSubField.Click();
+
+            //21 Check Sort Sub-Fields page appears
+            Assert.AreEqual("Sort Sub-Fields", DPPage.LblProfileHeader.Text,
+                "Failed! Page {0} display instead of Sort Sub-Fields", DPPage.LblProfileHeader.Text);
+            //22 Click on 'Filter Sub-Fields' in the left navigation panel
+            DPPage.LblFilterSubField.Click();
+            
+            //23 Check Filter Sub-Fields page appears
+            Assert.AreEqual("Filter Sub-Fields", DPPage.LblProfileHeader.Text,
+                "Failed! Page {0} display instead of Filter Sub-Fields", DPPage.LblProfileHeader.Text);
+
+            //24 Click on 'Statistic Sub-Fields' in the left navigation panel
+            DPPage.LblStatisticFields.Click();
+
+            //25 Check Statistic Sub-Fields page appears
+            Assert.AreEqual("Statistic Sub-Fields", DPPage.LblProfileHeader.Text,
+                "Failed! Page {0} display instead of Statistic Sub-Fields", DPPage.LblProfileHeader.Text);
+
+            DPPage.GoToDataProfilePage();
+            DPPage.DeleteDataProfiles(profileName);            
+
         }
 
         /// <summary>
@@ -645,7 +732,49 @@ namespace SeleniumAdvProject.TestCases
             sortFieldsPage.RemoveFieldLevel("Name");
 
         }
+        /// <summary>
+        /// DA_DP_TC082 - Verify that user is able to add levels of fields
+        /// <author>Huong Huynh</author>
+        /// <date>06/10/2016</date>
+        [TestMethod]
+        public void DA_DP_TC082()
+        {
+            Console.WriteLine(" DA_DP_TC082 - Verify that user is able to add levels of fields ");
 
+            //1. Log in Dashboard 
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //2. Navigate to Data Profiles page
+            DataProfilePage DPPage = mainPage.GoToDataProfilePage();
+
+            //3. Click on "Add New"
+            //4. Input to "Name *" field
+            //5. Click on Next button
+            DisplayFieldsPage displayFieldsPage = (DisplayFieldsPage)DPPage.GoToGeneralSettingPage().SetGeneralSettingsValue(CommonAction.GenerateDataProfileName(), "test modules", null);
+
+            //6. Navigate to Sort Fields page
+            SortFieldsPage sortFieldsPage = displayFieldsPage.GoToSortFieldsPage();
+
+            //7. Click on "Field" dropped down menu
+            //8. Select "Name" item
+            //9. Click on "Add Level" button
+            sortFieldsPage.AddLevel("Name");
+
+            //VP: Check "Name item is added to the sorting criteria list
+            bool actualField = sortFieldsPage.IsFieldLevelExist("Name");
+            Assert.AreEqual(true, actualField, "Field Level: " + actualField + " does not exist");
+
+            //10. Click on "Field" dropped down menu
+            //11. Select another item Location
+            //12. Click on "Add Level" button
+            sortFieldsPage.AddLevel("Location");
+            actualField = sortFieldsPage.IsFieldLevelExist("Location");
+            Assert.AreEqual(true, actualField, "Field Level: " + actualField + " does not exist");
+
+            //Post-Condition
+            sortFieldsPage.RemoveFieldLevel("Name").RemoveFieldLevel("Location");
+        }
     }
 }
 

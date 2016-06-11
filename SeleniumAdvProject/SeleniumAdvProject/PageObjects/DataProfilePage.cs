@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace SeleniumAdvProject.PageObjects
 {
-    public class DataProfilePage : BasePage
+    public class DataProfilePage : DataProfileBasePage
     {
         #region Locators
         static readonly By _lnkAddNew = By.XPath("//a[.='Add New']");
@@ -59,6 +59,22 @@ namespace SeleniumAdvProject.PageObjects
             return this;
         }
 
+        /// <summary>
+        /// Deletes the data profiles.
+        /// </summary>
+        /// <param name="profileName">Name of the profile.</param>
+        /// <returns> Data Profile Page</returns>
+        /// <author>Huong Huynh</author>
+        /// <date>06/10/2016</date>
+        public DataProfilePage DeleteDataProfiles(string profileName)
+        {
+            Checkbox chkprofile = new Checkbox(FindElement(By.XPath(string.Format("//td[.='{0}']//preceding-sibling::td/input[@name='chkDel']", profileName))));
+            chkprofile.Check();
+            Link lnkEdit = new Link(FindElement(By.XPath(string.Format("//td[.='{0}']//following-sibling::td/a[.='Delete']", profileName))));
+            lnkEdit.Click();
+            ConfirmDialog("OK");
+            return this;
+        }
         /// <summary>
         /// Go to General Setting Page
         /// </summary>
