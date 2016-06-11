@@ -482,6 +482,53 @@ namespace SeleniumAdvProject.TestCases
         }
 
         /// <summary>
+        /// Verify that user is able to add levels of fields 
+        /// </summary>
+        /// Author: Tu Nguyen
+        [TestMethod]
+        public void DA_DP_TC082()
+        {
+            Console.WriteLine("DA_DP_TC082 - Verify that user is able to add levels of fields");
+
+            //1. Log in Dashboard 
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
+
+            //2. Navigate to Data Profiles page
+            DataProfilePage DPPage = mainPage.GoToDataProfilePage();
+
+            //3. Click on "Add New"
+            //4. Input to "Name *" field
+            //5. Click on Next button
+            DisplayFieldsPage displayFieldsPage = (DisplayFieldsPage)DPPage.GoToGeneralSettingPage().SetGeneralSettingsValue(CommonAction.GenerateDataProfileName(), "test modules", null);
+
+            //6. Navigate to Sort Fields page
+            SortFieldsPage sortFieldsPage = displayFieldsPage.GoToSortFieldsPage();
+
+            //7. Click on "Field" dropped down menu
+            //8. Select "Name" item
+            //9. Click on "Add Level" button
+            sortFieldsPage.AddLevel("Name");
+
+            //VP: Check "Name item is added to the sorting criteria list
+            bool actualField = sortFieldsPage.IsFieldLevelExist("Name");
+            Assert.AreEqual(true, actualField, "Field Level: " + actualField + " does not exist");
+
+            //10. Click on "Field" dropped down menu
+            //11. Select another item (Location)
+            //12. Click on "Add Level" button
+            sortFieldsPage.AddLevel("Location");
+
+            //VP: Check this item is added to the sorting criteria list
+            bool actualField2 = sortFieldsPage.IsFieldLevelExist("Location");
+            Assert.AreEqual(true, actualField2, "Field Level: " + actualField2 + " does not exist");
+
+            //Post-Condition
+            sortFieldsPage.RemoveFieldLevel("Name");
+            sortFieldsPage.RemoveFieldLevel("Location");
+        }
+
+        /// <summary>
         /// Verify that user is unable to add any field more than once.
         /// </summary>
         /// Author: Tu Nguyen
