@@ -90,10 +90,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestCases\BaseTestCase.cs" />
     <Compile Include="TestCases\DataProfileTestCases.cs" />
+    <Compile Include="TestCases\CleanUpTestCases.cs" />
     <Compile Include="TestCases\PanelTestCases.cs" />
     <Compile Include="TestCases\LoginTestCases.cs" />
     <Compile Include="TestCases\MainPageTestCases.cs" />
     <Compile Include="Ultilities\Browser.cs" />
+    <Compile Include="Ultilities\Controls\Span.cs" />
     <Compile Include="Ultilities\Controls\Td.cs" />
     <Compile Include="Ultilities\Controls\Tr.cs" />
     <Compile Include="Ultilities\Controls\Div.cs" />

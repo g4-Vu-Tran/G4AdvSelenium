@@ -9,6 +9,7 @@ using SeleniumAdvProject.DataObjects;
 using OpenQA.Selenium.Support.UI;
 using SeleniumAdvProject.Ultilities.Controls;
 using System.Threading;
+using System.Collections.ObjectModel;
 
 namespace SeleniumAdvProject.PageObjects
 {
@@ -96,10 +97,10 @@ namespace SeleniumAdvProject.PageObjects
         /// <date>05/30/2016</date>
         public bool IsLinkExists(string dataProfileName, string linkName)
         {
-            Link lnkName = new Link(FindElement(By.XPath(string.Format("//td[.='{0}']//following-sibling::td/a[.='{1}']",CommonAction.EncodeSpace(dataProfileName), linkName))));
-            
-            if(lnkName == null)
-                return false ;
+            Link lnkName = new Link(FindElement(By.XPath(string.Format("//td[.='{0}']//following-sibling::td/a[.='{1}']", CommonAction.EncodeSpace(dataProfileName), linkName))));
+
+            if (lnkName == null)
+                return false;
             return true;
         }
 
@@ -108,9 +109,11 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <param name="dataProfileName">Name of the data profile.</param>
         /// <returns></returns>
+        /// Author: Vu Tran
+        /// Update: Tu Nguyen
         public bool IsCheckBoxExists(string dataProfileName)
         {
-            Checkbox chkDataProfile = new Checkbox(FindElement(By.XPath(string.Format("//td[.='{0}']//preceding-sibling::td/input[@id='chkDel']", CommonAction.EncodeSpace(dataProfileName)))));
+            Checkbox chkDataProfile = new Checkbox(FindElement(By.XPath(string.Format("//td[.='{0}']//preceding-sibling::td[@class='chkCol']", CommonAction.EncodeSpace(dataProfileName)))));
             if (chkDataProfile == null)
                 return false;
             return true;
@@ -125,19 +128,17 @@ namespace SeleniumAdvProject.PageObjects
         /// Author: Tu Nguyen
         public bool IsDataProfileContentSorted(string tableName, string sortType)
         {
-            Table table = new Table(FindElement(By.XPath(string.Format(".//div[@class='{0}']//table", tableName))));
-            IList<IWebElement> rows = table.FindElements(By.XPath(string.Format(".//div[@class='{0}']//table/tbody/tr", tableName)));
+            Table table = new Table(FindElement(By.XPath(string.Format("//div[@class='{0}']//table", tableName))));
+            IList<IWebElement> rows = table.FindElements(By.XPath(string.Format("//div[@class='{0}']//table/tbody/tr", tableName)));
             List<string> tableContent = new List<string>();
             for (int i = 0; i < rows.Count(); i++)
             {
-                IList<IWebElement> columns = table.FindElements(By.XPath(string.Format(".//div[@class='{0}']//table/tbody/tr[{1}]/td", tableName, i + 1)));
-                foreach (IWebElement column in columns)
+                foreach (IWebElement row in rows)
                 {
-                    tableContent.Add(column.Text);
+                    tableContent.Add(row.Text);
                 }
 
             }
-
             bool flag = false;
             if (tableContent.Count == 1)
             {
@@ -149,12 +150,12 @@ namespace SeleniumAdvProject.PageObjects
                 {
                     if (sortType == "DESC")
                     {
-                        if (tableContent[i].CompareTo(tableContent[i + 1]) >= 0)
+                        if (tableContent[i].CompareTo(tableContent[i + 1]) > 0)
                             flag = true;
                     }
                     else if (sortType == "ASC")
                     {
-                        if (tableContent[i].CompareTo(tableContent[i + 1]) <= 0)
+                        if (tableContent[i].CompareTo(tableContent[i + 1]) < 0)
                             flag = true;
                     }
                 }
@@ -162,7 +163,6 @@ namespace SeleniumAdvProject.PageObjects
             return flag;
         }
         
-
         #endregion
     }
 }

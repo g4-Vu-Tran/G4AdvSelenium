@@ -68,6 +68,8 @@ namespace SeleniumAdvProject.PageObjects
         /// </summary>
         /// <param name="pathOfPage">The path of page.</param>
         /// <returns></returns>        
+        /// <author>Huong Huynh</author>
+        /// <date>05/25/2015</date>
         public MainPage ClickDeleteLink(string pathOfPage)
         {
             GoToPage(pathOfPage);
@@ -143,6 +145,18 @@ namespace SeleniumAdvProject.PageObjects
             Link page = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", pageName))));            
             return page.Location.X;
 
+        }
+
+        /// <summary>
+        /// Gets the column count.
+        /// </summary>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public int GetColumnCount()
+        {
+            IList<IWebElement> elements = _webDriver.FindElements(By.XPath("//ul[@class='column ui-sortable']"));
+            int columnCount = elements.Count;
+            return columnCount;
         }
 
         /// <summary>
@@ -229,10 +243,15 @@ namespace SeleniumAdvProject.PageObjects
             return this;
         }
 
+        /// <summary>
+        /// Edits the page.
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
         public MainPage EditPage(Page page)
         {
-            AddNewPage editPage = new AddNewPage(_webDriver);
-            editPage.AddPage(page.ParentPage, page);
+            OpenEditPage(page.PageName).EditPage(page.ParentPage, page);
             return this;
         }
 
@@ -248,9 +267,9 @@ namespace SeleniumAdvProject.PageObjects
             Table table = new Table(FindElement(By.XPath(string.Format("//div[.='{0}']/../table", tableName))));
             IList<IWebElement> rows = table.FindElements(By.XPath(string.Format("//div[.='{0}']/../table/tbody/tr", tableName)));
             List<string> tableContent = new List<string>();
-            for(int i=0; i< rows.Count();i++) 
+            for (int i = 0; i < rows.Count(); i++)
             {                
-                IList<IWebElement> columns = table.FindElements(By.XPath(string.Format("//div[.='{0}']/../table/tbody/tr[{1}]/td", tableName,i+1)));
+                IList<IWebElement> columns = table.FindElements(By.XPath(string.Format("//div[.='{0}']/../table/tbody/tr[{1}]/td", tableName, i + 1)));
                     foreach (IWebElement column in columns)
                     {
                         tableContent.Add(column.Text);
@@ -281,7 +300,7 @@ namespace SeleniumAdvProject.PageObjects
             }
             return flag;
         }
-
+        
         public AddNewPanelPage ClickEditPanelIcon(string panelName)
         {
             Button iconEditPanel = new Button(FindElement(By.XPath(string.Format("//div[@title='{0}']/../following-sibling::div//li[@title='Edit Panel']", panelName))));

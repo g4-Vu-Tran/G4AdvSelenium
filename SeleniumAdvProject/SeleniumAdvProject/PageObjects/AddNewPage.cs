@@ -59,7 +59,7 @@ namespace SeleniumAdvProject.PageObjects
         /// <author>Huong Huynh</author>
         /// <date update>06/03/2016</date>
         public MainPage AddPage(string pathOfPage, Page page)
-        {         
+        {
             TxtPageName.SendKeys(page.PageName);
             CbbParentPage.SelectByText(ConvertParentPage(pathOfPage));
             //Thread.Sleep(500);
@@ -68,7 +68,7 @@ namespace SeleniumAdvProject.PageObjects
             if (page.IsPublic)
                 ChkPublic.Check();
             else
-                ChkPublic.Uncheck();            
+                ChkPublic.Uncheck();
             BtnOk.Click();
             //FindElement(By.XPath(string.Format("//a[.='{0}", CommonAction.EncodeSpace(page.PageName))));
             //WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", CommonAction.EncodeSpace(page.PageName))));
@@ -84,12 +84,17 @@ namespace SeleniumAdvProject.PageObjects
         /// <author>Huong Huynh</author>
         /// <date>05/25/2016</date>
         public MainPage EditPage(string pathOfPage, Page page)
-        {            
+        {
             TxtPageName.SendKeys(page.PageName);
-            CbbParentPage.SelectByText(CommonAction.EncodeSpace(page.ParentPage));
-            //Thread.Sleep(500);
+            if (page.ParentPage != null)
+            {
+                CbbParentPage.SelectByText(CommonAction.EncodeSpace(page.ParentPage));
+            }
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
-            CbbDisplayAfter.SelectByText(page.DisplayAfter);
+            if (page.DisplayAfter != null)
+            {
+                CbbDisplayAfter.SelectByText(page.DisplayAfter);
+            }
             if (page.IsPublic)
                 ChkPublic.Check();
             else

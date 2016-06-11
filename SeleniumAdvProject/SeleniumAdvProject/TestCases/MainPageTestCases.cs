@@ -20,6 +20,7 @@ namespace SeleniumAdvProject.TestCases
         [TestMethod]
         public void DA_MP_TC011()
         {
+
             Console.WriteLine("DA_MP_TC011 - Verify that user is unable open more than 1 \"New Page\" dialog");
 
             //1 Navigate to Dashboard login page
@@ -62,7 +63,7 @@ namespace SeleniumAdvProject.TestCases
             mainPage.AddPage(page);
 
             //VP. Check "Test" page is displayed besides "Overview" page
-            bool actualResult = mainPage.IsPageDisplayAfter("Overview", page.PageName);            
+            bool actualResult = mainPage.IsPageDisplayAfter("Overview", page.PageName);
             Assert.IsTrue(actualResult, "\"Test\" page is not displayed besides \"Overview\" page");
 
             //Post condition
@@ -732,16 +733,18 @@ namespace SeleniumAdvProject.TestCases
             //4. Enter info into all required fields on New Page dialog
             //Page name: Page 1; Number of Columns: 2
             Page page = new Page("Page1", "Select parent", 2, "Overview", false);
+            Page page2 = new Page("Page1", null, 3, null, false);
             mainPage.AddPage(page);
+            mainPage.ClickLinkText("Overview");
 
             //5. Go to Global Setting -> Edit link
             //6. Edit Number of Columns for the above created page (Number of Columns: 3)
             //7. Click OK button
-
-            Page editPage = new Page("", "", 3, "", false);
-            mainPage.EditPage(editPage);
+            mainPage.EditPage(page2);
 
             //VP. There are 3 columns on the above created page
+            int actualColumnNumber = mainPage.GetColumnCount();
+            Assert.AreEqual(3, actualColumnNumber, "There are " + actualColumnNumber + " column");
 
             //Post-Condition
             mainPage.DeletePage(page.PageName);

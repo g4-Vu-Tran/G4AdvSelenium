@@ -87,6 +87,34 @@ namespace SeleniumAdvProject.PageObjects
                     return this.GetDialogText();
             }
         }
+        public bool CheckItemsInComboboxListedByPriorityOrder(ComboBox cbControl, string[] listPriorityOrder)
+        {
+            bool flag = true;
+            int i = 0;
+            IList<String> values = cbControl.OptionStrings;
+            foreach (string listValue in listPriorityOrder)
+            {
+                flag = listValue.Equals(values[i]);
+                if (flag == false)
+                    break;
+                i++;
+            }
+            return flag;
+        }
+        public bool CheckItemsInComboboxListedCorrectly(ComboBox cbControl, string[] expectedList)
+        {
+            bool flag = true;
+            int i = 0;
+            IList<String> values = cbControl.OptionStrings;
+            foreach (string listValue in values)
+            {
+                flag = listValue.Equals(expectedList[i]);
+                if (flag == false)
+                    break;
+                i++;
+            }
+            return flag;
+        }
 
         #endregion
 
