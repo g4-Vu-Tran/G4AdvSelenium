@@ -122,6 +122,7 @@ namespace SeleniumAdvProject.PageObjects
             else
                 ChkPublic.Uncheck();
             BtnOk.Click();
+            WaitForPageLoadComplete();
             //WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", page.PageName)), Constants.WaitTimeoutShortSeconds);
             return new MainPage(_webDriver);
         }
