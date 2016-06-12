@@ -36,7 +36,6 @@ namespace SeleniumAdvProject.Ultilities.Controls
             {
                 return;
             }
-            element.Clear();
             element.Click();
             element.SendKeys(text);
             string temp = element.Text;

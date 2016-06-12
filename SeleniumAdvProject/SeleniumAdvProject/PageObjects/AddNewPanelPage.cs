@@ -720,7 +720,7 @@ namespace SeleniumAdvProject.PageObjects
             return new MainPage(_webDriver);
         }
         public void EditChartPanel(Chart pChart)
-        {           
+        {
             TxtDisplayName.SendKeys(pChart.DisplayName);
             TxtChartTitle.SendKeys(pChart.ChartTitle);
             CbbDataProfile.SelectByTextFromGroup(pChart.DataProfile);
@@ -743,7 +743,7 @@ namespace SeleniumAdvProject.PageObjects
             SelectDataLabels(pChart.DataLabel);
             SelectStyle(pChart.Style);
             BtnOk.Click();
-            SettingPanel(pChart.PageName, pChart.Height, pChart.Folder);            
+            SettingPanel(pChart.PageName, pChart.Height, pChart.Folder);
         }
 
         public string AddChartWithExpectedError(Chart pChart)
@@ -774,7 +774,7 @@ namespace SeleniumAdvProject.PageObjects
             SettingPanel(pChart.PageName, pChart.Height, pChart.Folder);
             string errorMesage = GetDialogText();
             ConfirmDialog("OK");
-            return errorMesage;            
+            return errorMesage;
         }
 
         /// <summary>
@@ -792,9 +792,9 @@ namespace SeleniumAdvProject.PageObjects
                 CbbSelectPage.SelectByText(selectPage);
                 TxtHeight.SendKeys(height.ToString());
                 TxtFolder.SendKeys(folder);
-            BtnOKConfigurationPanel.Click();
+                BtnOKConfigurationPanel.Click();
                 WaitForPageLoadComplete();
-        }
+            }
             return new MainPage(_webDriver);
         }
 
@@ -838,7 +838,7 @@ namespace SeleniumAdvProject.PageObjects
             return this;
         }
 
-        
+
 
         //public string SettingPanelWithExpectedError(string selectPage, int height, string folder)
         //{

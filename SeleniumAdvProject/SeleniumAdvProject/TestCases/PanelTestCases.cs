@@ -450,7 +450,7 @@ namespace SeleniumAdvProject.TestCases
             //19. Select a page in drop-down menu
             //20. Enter path of Folder
             //21. Click OK button
-            Chart chart = new Chart("Test Case Execution", displayName, null, 400, null, chartTitle, "Stacked Bar", "Name", null, "Location", null, null, null, "2D", false);
+            Chart chart = new Chart("Test Case Execution", displayName, page.PageName, 400, null, chartTitle, "Stacked Bar", "Name", null, "Location", null, null, null, "2D", false);
             addPanelPopup.AddChart(chart);
 
             //22. Click 'Edit Panel' button of panel 'hung_panel'
@@ -680,6 +680,7 @@ namespace SeleniumAdvProject.TestCases
             //Post-Condition
             addPanelPopup.ClosePanelDialog("Cancel");
             panelPage.DeletePanels("All");
+            
         }
 
         /// <summary>
@@ -894,7 +895,7 @@ namespace SeleniumAdvProject.TestCases
             //VP:User is able to edit Height field to anything apart from integer number with in 300-800 range
             mainPage.OpenPanelsPage();
             bool actual = panelPage.IsPanelExist(displayName);
-            Assert.AreEqual(true, actual, "Actual panel exist");
+            Assert.AreEqual(true, actual, "Actual panel not exist");
 
             //Post-condition
             panelPage.DeletePanels("All");

@@ -31,7 +31,7 @@ namespace SeleniumAdvProject.TestCases
             //4. Try to go to Global Setting -> Add page again
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password)
                 .OpenSetting();
-            
+
             //VP. User cannot go to Global Setting -> Add page while "New Page" dialog appears
             Assert.IsFalse(mainPage.IsSettingExist(), "User cannot go to Global Setting while \"New Page\" dialog appears");
 
@@ -99,13 +99,13 @@ namespace SeleniumAdvProject.TestCases
                 .AddPage(page1);
 
             //VP. Check "Another Test" page is positioned besides the "Test" page                       
-            Assert.IsTrue(mainPage.IsPageDisplayAfter(page.PageName,page1.PageName), 
+            Assert.IsTrue(mainPage.IsPageDisplayAfter(page.PageName, page1.PageName),
                 "The {0} page is not beside the {1} page", page1.PageName, page.PageName);
 
             //Post-Condition
             mainPage.DeletePage(page.PageName)
                 .DeletePage(page1.PageName)
-                .Logout();            
+                .Logout();
         }
 
         /// <summary>
@@ -592,24 +592,23 @@ namespace SeleniumAdvProject.TestCases
             //4. Enter info into all required fields on New Page dialog
             //5. Go to Global Setting -> Add page
             //6. Enter info into all required fields on New Page dialog
+            //7. Go to the first created page
+            //8. Click Edit link
+            //9. Enter another name into Page Name field
+            //10. Click Ok button on Edit Page dialog
             Page page = new Page(pageName, "Select parent", 2, "Overview", false);
             Page pageSibling = new Page(childPageName, pageName, 2, "Select page", false);
+            Page pageEdit = new Page(pageName2, null, 2, null, false);
             mainPage.AddPage(page).AddPage(pageSibling);
-
-            //5. Go to the first created page
-            //6. Click Edit link
-            //7. Enter another name into Page Name field
-            //8. Click Ok button on Edit Page dialog
-            Page pageEdit = new Page(pageName2, "Select parent", 2, "Overview", false);
-            mainPage.EditPage(pageEdit);
+            mainPage.OpenEditPage(pageName).EditPage(pageName, pageEdit);
 
             //VP: User is able to edit the parent page of the sibbling page successfully
-            Assert.IsTrue(mainPage.IsPageExist(pageEdit.PageName), "User can edit the parent page of sibling page");
+            Assert.IsTrue(mainPage.IsPageExisted(pageName2), "User can edit the parent page of sibling page");
 
             //Post-Condition
-            
-            mainPage.DeletePage(page.PageName + "/" + pageSibling.PageName);
-            mainPage.DeletePage(page.PageName);
+
+            mainPage.DeletePage(pageName2 + "/" + pageSibling.PageName);
+            mainPage.DeletePage(pageName2);
             mainPage.Logout();
 
         }
@@ -627,7 +626,7 @@ namespace SeleniumAdvProject.TestCases
             //Set Variable
             string pageName = CommonAction.GeneratePageName();
             string childPageName = "Child" + CommonAction.GeneratePageName();
-            
+
             //1. Navigate to Dashboard login page
             LoginPage loginPage = new LoginPage(_webDriver);
             loginPage.Open();
@@ -691,28 +690,27 @@ namespace SeleniumAdvProject.TestCases
 
             //3. Go to Global Setting -> Add page
             //4. Enter info into all required fields on New Page dialog
-            Page page = new Page(pageName1, "Select parent", 2, "Overview", false);
-            mainPage.AddPage(page);
-
             //5. Go to Global Setting -> Add page
             //6. Enter info into all required fields on New Page dialog
-            Page page2 = new Page(pageName2, "Select parent", 2, pageName1, false);
-            mainPage.AddPage(page2);
-
+            Page page = new Page(pageName1, "Select parent", 2, "Overview", false);
+            Page page2 = new Page(pageName2, "Select parent", 2, "Overview", false);
+            mainPage.AddPage(page).AddPage(page2);
 
             //5. Click Edit link for the second created page
+            mainPage.GoToPage(pageName2).OpenSetting().LnkEditPage.Click();
+
             //6. Change value Display After for the second created page to after Overview page
             //7. Click Ok button on Edit Page dialog
-            Page pageEdit = new Page("", "", 2, "Overview", false);
+            Page pageEdit = new Page(pageName2, null, 2, "Overview", false);
             mainPage.EditPage(pageEdit);
 
             //VP: Position of the second page follow Overview page
-            bool actualResult = mainPage.GetPositionPage(page2.PageName) < mainPage.GetPositionPage("Overview") ? true : false;
+            bool actualResult = mainPage.GetPositionPage(pageName2) > mainPage.GetPositionPage("Overview") ? true : false;
             Assert.AreEqual(true, actualResult);
 
             //Post-Condition
-            mainPage.DeletePage(page.PageName);
-            mainPage.DeletePage(page2.PageName);
+            mainPage.DeletePage(pageName1);
+            mainPage.DeletePage(pageName2);
             mainPage.Logout();
 
         }
@@ -729,7 +727,7 @@ namespace SeleniumAdvProject.TestCases
 
             //Set Variable
             string pageName1 = CommonAction.GeneratePageName();
-            
+
             //1. Navigate to Dashboard login page
             LoginPage loginPage = new LoginPage(_webDriver);
             loginPage.Open();
@@ -743,7 +741,7 @@ namespace SeleniumAdvProject.TestCases
             Page page = new Page(pageName1, "Select parent", 2, "Overview", false);
             Page page2 = new Page(pageName1, null, 3, null, false);
             mainPage.AddPage(page);
-            mainPage.ClickLinkText("Overview");
+            mainPage.OpenSetting().LnkEditPage.Click();
 
             //5. Go to Global Setting -> Edit link
             //6. Edit Number of Columns for the above created page (Number of Columns: 3)

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SeleniumAdvProject.PageObjects
@@ -128,9 +129,10 @@ namespace SeleniumAdvProject.PageObjects
         /// <date>06/03/2016</date>
         public AddNewPanelPage OpenPanelConfigurationFromChoosePanel(string linkText)
         {
+
             BtnChoosePanel.Click();
             WaitForPageLoadComplete();
-            Link lnkDynamic = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", CommonAction.EncodeSpace(linkText)))));
+            Link lnkDynamic = new Link(FindElement(By.XPath(string.Format("//a[.='{0}')]", CommonAction.EncodeSpace(linkText)))));
             lnkDynamic.Click();
             return new AddNewPanelPage(webDriver);
         }
@@ -141,9 +143,23 @@ namespace SeleniumAdvProject.PageObjects
         /// <returns></returns>
         /// <author>Huong Huynh</author>
         /// <date>05/25/2015</date>
+        /// <update>Tu Nguyen</update>
         public int GetPositionPage(string pageName)
         {
-            Link page = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", pageName))));
+            string tmp = "";
+            string pagename = "";
+            if (pageName.Contains("Child") == true)
+            {
+                tmp = Regex.Replace(pageName, "ChildPage", "");
+                pagename = Regex.Replace(tmp, " ", "");
+
+            }
+            else
+            {
+                tmp = Regex.Replace(pageName, "Page", "");
+                pagename = Regex.Replace(tmp, " ", "");
+            }
+            Link page = new Link(FindElement(By.XPath(string.Format("//a[contains(text(),'{0}')]", pagename))));
             return page.Location.X;
 
         }
@@ -158,6 +174,31 @@ namespace SeleniumAdvProject.PageObjects
             IList<IWebElement> elements = _webDriver.FindElements(By.XPath("//ul[@class='column ui-sortable']"));
             int columnCount = elements.Count;
             return columnCount;
+        }
+
+        /// <summary>
+        /// Determines whether [is page existed] [the specified page name].
+        /// </summary>
+        /// <param name="pageName">Name of the page.</param>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public Boolean IsPageExisted(string pageName)
+        {
+            string tmp = "";
+            string pagename = "";
+            if (pageName.Contains("Child") == true)
+            {
+                tmp = Regex.Replace(pageName, "ChildPage", "");
+                pagename = Regex.Replace(tmp, " ", "");
+
+            }
+            else
+            {
+                tmp = Regex.Replace(pageName, "Page", "");
+                pagename = Regex.Replace(tmp, " ", "");
+            }
+            Link lnkpage = new Link(FindElement(By.XPath(string.Format("//a[contains(text(),'{0}')]", pagename))));
+            return lnkpage.Enabled;
         }
 
         /// <summary>
@@ -233,7 +274,7 @@ namespace SeleniumAdvProject.PageObjects
         public bool Displayed(string username)
         {
             Link lnkWelcome = new Link(FindElement(By.XPath(string.Format("//a[.='{0}' and @href='#Welcome']", username))));
-            return lnkWelcome.Enabled;  
+            return lnkWelcome.Enabled;
         }
 
         /// <summary>
@@ -258,7 +299,7 @@ namespace SeleniumAdvProject.PageObjects
         public string AddPageWithError(Page page)
         {
             return OpenAddNewPage().AddPageWithExpectedError(page.ParentPage, page);
-                    
+
         }
 
         /// <summary>
@@ -269,7 +310,8 @@ namespace SeleniumAdvProject.PageObjects
         /// Author: Tu Nguyen
         public MainPage EditPage(Page page)
         {
-            OpenEditPage(page.PageName).EditPage(page.ParentPage, page);
+            AddNewPage newPage = new AddNewPage(_webDriver);
+            newPage.EditPage(page.ParentPage, page);
             return this;
         }
 
