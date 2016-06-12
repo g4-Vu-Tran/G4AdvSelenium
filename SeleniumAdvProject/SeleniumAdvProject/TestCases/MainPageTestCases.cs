@@ -31,7 +31,7 @@ namespace SeleniumAdvProject.TestCases
             //4. Try to go to Global Setting -> Add page again
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password)
                 .OpenSetting();
-
+            
             //VP. User cannot go to Global Setting -> Add page while "New Page" dialog appears
             Assert.IsFalse(mainPage.IsSettingExist(), "User cannot go to Global Setting while \"New Page\" dialog appears");
 
@@ -80,8 +80,8 @@ namespace SeleniumAdvProject.TestCases
             Console.WriteLine("DA_MP_TC013 - Verify that the newly added main parent page is positioned at the location specified as set with \"Displayed After\" field of \"New Page\" form on the main page bar \"Parent Page\" dropped down menu");
 
             //Set variables
-            Page page = new Page(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
-            Page page1 = new Page(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, page.PageName, false);
+            Page page = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+            Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, page.PageName, false);
 
             //1. Navigate to Dashboard login page
             //2. Log in specific repository with valid account
@@ -99,13 +99,13 @@ namespace SeleniumAdvProject.TestCases
                 .AddPage(page1);
 
             //VP. Check "Another Test" page is positioned besides the "Test" page                       
-            Assert.IsTrue(mainPage.IsPageDisplayAfter(page.PageName, page1.PageName),
+            Assert.IsTrue(mainPage.IsPageDisplayAfter(page.PageName,page1.PageName), 
                 "The {0} page is not beside the {1} page", page1.PageName, page.PageName);
 
             //Post-Condition
             mainPage.DeletePage(page.PageName)
                 .DeletePage(page1.PageName)
-                .Logout();
+                .Logout();            
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace SeleniumAdvProject.TestCases
             Console.WriteLine("DA_MP_TC014 - Verify that \"Public\" pages can be visible and accessed by all users of working repository");
 
             //Set variables
-            Page page = new Page(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", true);
+            Page page = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", true);
 
             //1. Navigate to Dashboard login page
             //2. Log in specific repository with valid account
@@ -129,8 +129,6 @@ namespace SeleniumAdvProject.TestCases
             //6. Click OK button 
             //7. Click on Log out link   
             LoginPage loginPage = new LoginPage(_webDriver).Open();
-
-
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password)
                 .AddPage(page);
             loginPage = mainPage.Logout();
@@ -141,8 +139,7 @@ namespace SeleniumAdvProject.TestCases
             Assert.IsTrue(!mainPage.IsPageExist(page.PageName), string.Format("{0} is not visibled", page.PageName));
 
             //Post-Condition
-            mainPage.DeletePage(page.PageName);
-            mainPage.Logout();
+            mainPage.DeletePage(page.PageName).Logout();
 
         }
 
@@ -156,27 +153,25 @@ namespace SeleniumAdvProject.TestCases
         {
             Console.WriteLine("DA_MP_TC015 - Verify that non \"Public\" pages can only be accessed and visible to their creators with condition that all parent pages above it are \"Public\"");
 
+            //Set variables
+            Page parentPage = new Page("Test", "Select parent", 2, "Overview", false);
+            Page childPage = new Page("TestChild", "Test", 2, "Select page", false);
+
             //1 Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
-
             //2 Log in specific repository with valid account
-            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
-
             //3. Go to Global Setting -> Add page
             //4 Enter Page Name field (Test)
             //5 Check Public checkbox
             //6 Click OK button
-            Page parentPage = new Page("Test", "Select parent", 2, "Overview", false);
-            mainPage.AddPage(parentPage);
-
             //7 Go to Global Setting -> Add page
             //8 Enter Page Name field (Test Chilld)
             //9 Click on  Select Parent dropdown list
             //10 Select specific page (Test)
             //11 Click OK button
-            Page childPage = new Page("TestChild", "Test", 2, "Select page", false);
-            mainPage.AddPage(childPage);
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password)
+                .AddPage(parentPage)
+                .AddPage(childPage);
 
             //12 Click on Log out link
             mainPage.Logout();
@@ -188,9 +183,9 @@ namespace SeleniumAdvProject.TestCases
             Assert.IsTrue(!mainPage.IsPageExist(childPage.PageName));
 
             //Post-Condition
-            mainPage.DeletePage(parentPage.PageName + "/" + childPage.PageName);
-            mainPage.DeletePage(parentPage.PageName);
-            mainPage.Logout();
+            mainPage.DeletePage(parentPage.PageName + "/" + childPage.PageName)
+                .DeletePage(parentPage.PageName)
+                .Logout();
         }
 
         /// <summary>
@@ -203,25 +198,23 @@ namespace SeleniumAdvProject.TestCases
         {
             Console.WriteLine("DA_MP_TC016 - Verify that user is able to edit the \"Public\" setting of any page successfully");
 
+            //Set variables
+            Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+            Page page2 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", true);
+
             //1 Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
-
             //2 Log in specific repository with valid account
-            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
-
             //3. Go to Global Setting -> Add page
             //4 Enter Page Name
             //5 Click OK button           
-            Page page1 = new Page(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
-            mainPage.AddPage(page1);
-
             //6 Go to Global Setting -> Add page
             //7 Enter Page Name
             //8 Check Public checkbox
             //9 Click OK button
-            Page page2 = new Page(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", true);
-            mainPage.AddPage(page2);
+            LoginPage loginPage = new LoginPage(_webDriver).Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password)
+                .AddPage(page1)
+                .AddPage(page2);
 
             //10 Click on "Test" page
             //11 Click on "Edit" link
@@ -234,26 +227,26 @@ namespace SeleniumAdvProject.TestCases
             //18 Uncheck Public checkbox
             //19 Click OK button
             //20 Click Log out link
+            //21 Log in with another valid account
             page1.IsPublic = true;
             page2.IsPublic = false;
-            mainPage.EditPage(page1);
-            mainPage.EditPage(page2);
-            loginPage = mainPage.Logout();
+            mainPage.EditPage(page1)
+                .EditPage(page2)
+                .Logout()
+                .Login(Constants.Repository, Constants.UserName1, Constants.SpecialPassword);
 
-            //21 Log in with another valid account
             //VP Check "Test" Page is visible and can be accessed            
-            mainPage = loginPage.Login(Constants.Repository, Constants.UserName1, Constants.SpecialPassword);
             Assert.AreEqual(true, mainPage.IsPageExist(page1.PageName));
 
             //VP Check "Another Test" page is invisible
             Assert.AreEqual(true, mainPage.IsPageExist(page2.PageName), string.Format("{0} page is visible", page2.PageName));
 
-            mainPage.DeletePage(page1.PageName);
-            loginPage = mainPage.Logout();
-
-            mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
-            mainPage.DeletePage(page2.PageName);
-            mainPage.Logout();
+            //Post-Condition
+            mainPage.DeletePage(page1.PageName)
+                .Logout()
+                .Login(Constants.Repository, Constants.UserName, Constants.Password)
+                .DeletePage(page2.PageName)
+                .Logout();
         }
 
         /// <summary>
@@ -613,7 +606,7 @@ namespace SeleniumAdvProject.TestCases
             Assert.IsTrue(mainPage.IsPageExist(pageEdit.PageName), "User can edit the parent page of sibling page");
 
             //Post-Condition
-
+            
             mainPage.DeletePage(page.PageName + "/" + pageSibling.PageName);
             mainPage.DeletePage(page.PageName);
             mainPage.Logout();
@@ -633,7 +626,7 @@ namespace SeleniumAdvProject.TestCases
             //Set Variable
             string pageName = CommonAction.GeneratePageName();
             string childPageName = "Child" + CommonAction.GeneratePageName();
-
+            
             //1. Navigate to Dashboard login page
             LoginPage loginPage = new LoginPage(_webDriver);
             loginPage.Open();
@@ -735,7 +728,7 @@ namespace SeleniumAdvProject.TestCases
 
             //Set Variable
             string pageName1 = CommonAction.GeneratePageName();
-
+            
             //1. Navigate to Dashboard login page
             LoginPage loginPage = new LoginPage(_webDriver);
             loginPage.Open();
