@@ -54,6 +54,7 @@ namespace SeleniumAdvProject.PageObjects
         public AddNewPanelPage OpenAddNewPanelPopupFromLink()
         {
             LnkAddNew.Click();
+            WaitForPageLoadComplete();
             return new AddNewPanelPage(_webDriver);
         }
 
@@ -160,19 +161,36 @@ namespace SeleniumAdvProject.PageObjects
             return this;
         }
 
+        /// <summary>
+        /// Determines whether [is data profile s order] [the specified order type].
+        /// </summary>
+        /// <param name="orderType">Type of the order.</param>
+        /// <returns></returns>
         public bool IsDataProfileSOrder(string orderType)
         {
             AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
             return addPanelPage.IsTheListIsSorted(addPanelPage.CbbDataProfile, orderType);
         }
 
+        /// <summary>
+        /// Determines whether [is panel exist] [the specified panel name].
+        /// </summary>
+        /// <param name="panelName">Name of the panel.</param>
+        /// <returns></returns>
+        /// Author: Vu Tran
+        /// Update: Tu NGuyen
         public bool IsPanelExist(string panelName)
         {
             Link LnkPanelName = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", panelName))));
-            return LnkPanelName.Displayed;
+            return LnkPanelName.Enabled;
         }
 
 
+        /// <summary>
+        /// Determines whether [is CheckBox exists] [the specified pane list].
+        /// </summary>
+        /// <param name="paneList">The pane list.</param>
+        /// <returns></returns>
         public bool IsCheckBoxExists(string[] paneList)
         {
             for (int i = 0; i < paneList.Length; i++)

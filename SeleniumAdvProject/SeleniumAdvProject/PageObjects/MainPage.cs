@@ -128,9 +128,10 @@ namespace SeleniumAdvProject.PageObjects
         /// <date>06/03/2016</date>
         public AddNewPanelPage OpenPanelConfigurationFromChoosePanel(string linkText)
         {
+
             BtnChoosePanel.Click();
             WaitForPageLoadComplete();
-            Link lnkDynamic = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", CommonAction.EncodeSpace(linkText)))));
+            Link lnkDynamic = new Link(FindElement(By.XPath(string.Format("//a[.='{0}')]", CommonAction.EncodeSpace(linkText)))));
             lnkDynamic.Click();
             return new AddNewPanelPage(webDriver);
         }
