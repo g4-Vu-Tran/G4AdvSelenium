@@ -27,6 +27,7 @@ namespace SeleniumAdvProject.PageObjects
         public Div DivOvelayClass
         {
             get { return new Div(FindElement(_divvOvelayClass)); }
+            
         }
         #endregion
 
@@ -193,6 +194,9 @@ namespace SeleniumAdvProject.PageObjects
         {
             string[] arrNode = pathOfPage.Split('/');
             string finalNode = arrNode[arrNode.Length - 1];
+            if (arrNode.Length == 1)
+                return IsLinkExist(arrNode[0]);
+
             GoToLink(pathOfPage.Substring(0, pathOfPage.Length - finalNode.Length - 1));
             string xpathOfPage = string.Format("//a[.='{0}']", CommonAction.EncodeSpace(arrNode[0]));
             for (int i = 1; i < arrNode.Length; i++)
@@ -200,6 +204,7 @@ namespace SeleniumAdvProject.PageObjects
                 xpathOfPage += string.Format("/..//a[.='{0}']", CommonAction.EncodeSpace(arrNode[i]));
             }
             Link LnkPage = new Link(_webDriver, By.XPath(xpathOfPage));
+            bool a = LnkPage.isDisplayed();
             return LnkPage.isDisplayed();
         }
 

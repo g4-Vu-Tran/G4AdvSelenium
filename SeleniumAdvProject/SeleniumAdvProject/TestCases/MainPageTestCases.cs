@@ -178,9 +178,10 @@ namespace SeleniumAdvProject.TestCases
 
             //13 Log in with another valid account
             mainPage = loginPage.Login(Constants.Repository, "test", "admin");
+            //mainPage = loginPage.Login(Constants.Repository, Constants.UserName1, Constants.SpecialPassword);
 
             //VP Check children is invisibled
-            Assert.IsTrue(!mainPage.IsPageExist(childPage.PageName));
+            Assert.IsFalse(mainPage.IsPageExist(parentPage.PageName + "/" + childPage.PageName), "Failled by bug! child page is still displayed");
 
             //Post-Condition
             mainPage.DeletePage(parentPage.PageName + "/" + childPage.PageName)
@@ -589,13 +590,11 @@ namespace SeleniumAdvProject.TestCases
 
             //3. Go to Global Setting -> Add page
             //4. Enter info into all required fields on New Page dialog
-            Page page = new Page(pageName, "Select parent", 2, "Overview", false);
-            mainPage.AddPage(page);
-
             //5. Go to Global Setting -> Add page
             //6. Enter info into all required fields on New Page dialog
+            Page page = new Page(pageName, "Select parent", 2, "Overview", false);
             Page pageSibling = new Page(childPageName, pageName, 2, "Select page", false);
-            mainPage.AddPage(pageSibling);
+            mainPage.AddPage(page).AddPage(pageSibling);
 
             //5. Go to the first created page
             //6. Click Edit link

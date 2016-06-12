@@ -27,6 +27,7 @@ namespace SeleniumAdvProject.TestCases
             //Set variables
             Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
             Chart chart = new Chart(CommonAction.GeneratePanelName(), "Name", page1.PageName);
+
             //1 Navigate to Dashboard login page
             //2 Login with valid account
             //3 Go to Global Setting -> Add page
@@ -47,7 +48,6 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual(true, mainPage.IsContentInTableSorted("Charts", "ASC"), "Contents in Chart table are not sorted by ASC correctly");
             Assert.AreEqual(true, mainPage.IsContentInTableSorted("Reports", "ASC"), "Contents in Reports table are not sorted by ASC correctly");
             Assert.AreEqual(true, mainPage.IsContentInTableSorted("Indicators", "ASC"), "Contents in Indicators table are not sorted by ASC correctly");
-
 
             //Post-Condition
             //Logout			
@@ -1130,6 +1130,13 @@ namespace SeleniumAdvProject.TestCases
         public void DA_PANEL_TC042()
         {
             Console.WriteLine("DA_PANEL_TC042 - Verify that all pages are listed correctly under the \"Select page *\" dropped down menu of \"Panel Configuration\" form/ control");
+
+            //Set variables
+            Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+            Page page2 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+            Page page3 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+            string[] pageList = new string[] { page1.PageName, page2.PageName, page3.PageName };
+
             //1 Navigate to Dashboard login page
             //2 Select a specific repository 
             //3 Enter valid Username and Password
@@ -1146,11 +1153,6 @@ namespace SeleniumAdvProject.TestCases
             //14 Click 'Choose panels' button
             //15 Click on any Chart panel instance
             //16 Click 'Select Page*' drop-down menu
-            Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
-            Page page2 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
-            Page page3 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
-            string[] pageList = new string[] { page1.PageName, page2.PageName, page3.PageName };
-
             LoginPage loginPage = new LoginPage(_webDriver);
             MainPage mainPage = loginPage.Open().Login(Constants.Repository, Constants.UserName, Constants.Password);
             mainPage.AddPage(page1)
@@ -1163,8 +1165,12 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual(true, configurationPopup.isComboboxContainsItems(configurationPopup.CbbSelectPage, pageList), "Select Page * Combobox does not contain these page name");
 
             //Post-Condition
-            mainPage.DeletePage(page1.PageName).DeletePage(page2.PageName).DeletePage(page3.PageName);
-            mainPage.Logout();
+            configurationPopup.BtnCancel.Click();
+            mainPage.WaitForPageLoadComplete();
+            mainPage.DeletePage(page1.PageName)
+                .DeletePage(page2.PageName)
+                .DeletePage(page3.PageName)
+                .Logout();
         }
         /// <summary>
         /// DA_PANEL_TC043 - Verify that only integer number inputs from 300-800 are valid for \"Height *\" field 
@@ -1175,6 +1181,9 @@ namespace SeleniumAdvProject.TestCases
         public void DA_PANEL_TC043()
         {
             Console.WriteLine("DA_PANEL_TC043 - Verify that only integer number inputs from 300-800 are valid for \"Height *\" field ");
+            //Set variables
+            Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+
             //1 Navigate to Dashboard login page
             //2 Select a specific repository 
             //3 Enter valid Username and Password
@@ -1186,15 +1195,15 @@ namespace SeleniumAdvProject.TestCases
             //9 Click on any Chart panel instance
             //10 Enter integer number to 'Height *' field '299
             //11 Click OK button
-            //12 Check that error message 'Panel height must be greater than or equal to 300 and lower than or equal to 800' display
-            //VP Error message 'Panel height must be greater than or equal to 300 and lower than or equal to 800' display
-            Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+            
             LoginPage loginPage = new LoginPage(_webDriver);
             MainPage mainPage = loginPage.Open().Login(Constants.Repository, Constants.UserName, Constants.Password);
             mainPage.AddPage(page1);
             AddNewPanelPage configurationPopup = mainPage.OpenPanelConfigurationFromChoosePanel("Test Case Execution Results");
             string actualMessage = configurationPopup.SettingPanelWithExpectedError(null, 299, null);
 
+            //12 Check that error message 'Panel height must be greater than or equal to 300 and lower than or equal to 800' display
+            //VP Error message 'Panel height must be greater than or equal to 300 and lower than or equal to 800' display
             Assert.AreEqual("Panel height must be greater than or equal to 300 and less than or equal to 800.",
                 actualMessage,
                 string.Format("Failed! Actual message is: {0}", actualMessage));
@@ -1273,7 +1282,7 @@ namespace SeleniumAdvProject.TestCases
             MainPage mainPage = loginPage.Open().Login(Constants.Repository, Constants.UserName, Constants.Password);
             mainPage.AddPage(page1);
             AddNewPanelPage configurationPopup = mainPage.OpenPanelConfigurationFromChoosePanel("Test Case Execution Results");
-            string actualMessage = configurationPopup.SettingPanelWithExpectedError(null, "empty", null);
+            string actualMessage = configurationPopup.SettingPanelWithExpectedError(null, "", null);
 
             //12 Check that 'Panel height is required field' message display
             //VP 'Panel height is required field' message display
