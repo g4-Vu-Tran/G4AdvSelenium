@@ -495,6 +495,24 @@ namespace SeleniumAdvProject.PageObjects
                 return false;
             }
         }
+
+        public bool IsComboboxListed(ComboBox cbb, string[] optionList)
+        {
+            IList<string> cbbValues = cbb.OptionStrings;
+            if (cbbValues.Count != optionList.Length)
+            {
+                return false;
+            }
+            foreach (string option in optionList)
+            {
+                if (!cbbValues.Contains(option))
+                {
+                    return false;
+                }
+            }
+            return true;
+                
+        }
         #endregion
     }
 }

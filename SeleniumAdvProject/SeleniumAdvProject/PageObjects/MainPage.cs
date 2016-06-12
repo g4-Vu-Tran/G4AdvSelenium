@@ -67,7 +67,7 @@ namespace SeleniumAdvProject.PageObjects
         /// Clicks the delete link.
         /// </summary>
         /// <param name="pathOfPage">The path of page.</param>
-        /// <returns></returns> 
+        /// <returns></returns>        
         /// <author>Huong Huynh</author>
         /// <date>05/25/2015</date>
         public MainPage ClickDeleteLink(string pathOfPage)
@@ -224,10 +224,11 @@ namespace SeleniumAdvProject.PageObjects
         /// <returns>True/False</returns>
         /// <author>Vu Tran</author>
         /// <date>05/26/2015</date>
-        public bool Displayed()
+        /// <Update>Tu Nguyen</Update>
+        public bool Displayed(string username)
         {
-            Label LblUsername = new Label(_webDriver, _lblUsername);
-            return LblUsername.isDisplayed();
+            Link lnkWelcome = new Link(FindElement(By.XPath(string.Format("//a[.='{0}' and @href='#Welcome']", username))));
+            return lnkWelcome.Enabled;  
         }
 
         /// <summary>
@@ -244,6 +245,18 @@ namespace SeleniumAdvProject.PageObjects
         }
 
         /// <summary>
+        /// Adds the page with error.
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string AddPageWithError(Page page)
+        {
+            return OpenAddNewPage().AddPageWithExpectedError(page.ParentPage, page);
+                    
+        }
+
+        /// <summary>
         /// Edits the page.
         /// </summary>
         /// <param name="page">The page.</param>
@@ -254,6 +267,23 @@ namespace SeleniumAdvProject.PageObjects
             OpenEditPage(page.PageName).EditPage(page.ParentPage, page);
             return this;
         }
+
+
+        //public List<string> GetPathOfPage(List<string> paths, string result, IList<IWebElement> pageLvList)
+        //{
+
+        //    //IList<IWebElement> pageLv1List = _webDriver.FindElements(By.XPath(string.Format("//div[@id='main-menu']/div/ul/li/a[contains(@href,'page')][.!='{0}']", CommonAction.EncodeSpace("Execution Dashboard"))));
+        //    foreach (IWebElement element in pageLvList)
+        //    {
+        //        IList<IWebElement> tmp = element.FindElements(By.XPath("/../ul/li/a"));
+        //        result = "/" + element.Text;
+        //        if (tmp.Count == 0)
+        //            paths.Add(result);
+        //        else
+        //            return GetPathOfPage(paths, result, tmp);
+        //    }
+        //    return paths;
+        //}
 
         /// <summary>
         /// Determines the content in a table is sorted or not?
@@ -301,6 +331,12 @@ namespace SeleniumAdvProject.PageObjects
             return flag;
         }
 
+        public AddNewPanelPage ClickEditPanelIcon(string panelName)
+        {
+            Button iconEditPanel = new Button(FindElement(By.XPath(string.Format("//div[@title='{0}']/../following-sibling::div//li[@title='Edit Panel']", panelName))));
+            iconEditPanel.Click();
+            return new AddNewPanelPage(_webDriver);
+        }
 
         #endregion
     }

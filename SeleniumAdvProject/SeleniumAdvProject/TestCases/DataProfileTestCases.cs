@@ -362,7 +362,7 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual("Please input profile name.", actualMessage,
                            string.Format("Failed! Actual message is: {0}", actualMessage));
             DPPage.ConfirmDialog("OK");
-            
+
             //5. Click on "Finish Button"
             //VP: dialog message "Please input profile name" appears
             GeneralSettingsPage generalPage = new GeneralSettingsPage(_webDriver);
@@ -388,7 +388,7 @@ namespace SeleniumAdvProject.TestCases
             //1. Log in Dashboard
             LoginPage loginPage = new LoginPage(_webDriver).Open();
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
-             //2. Navigate to Data Profiles page
+            //2. Navigate to Data Profiles page
             DataProfilePage DPPage = mainPage.GoToDataProfilePage();
 
             //3. Click on "Add New"
@@ -449,7 +449,7 @@ namespace SeleniumAdvProject.TestCases
         public void DA_DP_TC072()
         {
             Console.WriteLine("DA_DP_TC072 - Verify that all data profile types are listed under \"Item Type\" dropped down menu");
-            
+
             //1 Navigate to Dashboard login page
             //2 Select a specific repository 
             //3 Enter valid Username and Password
@@ -460,8 +460,8 @@ namespace SeleniumAdvProject.TestCases
             LoginPage loginPage = new LoginPage(_webDriver).Open();
             DataProfilePage dataProfilePage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password).GoToDataProfilePage();
             GeneralSettingsPage genralSettingPage = dataProfilePage.GoToGeneralSettingPage();
-           
-           //VP All data profile types are listed under "Item Type" dropped down menu
+
+            //VP All data profile types are listed under "Item Type" dropped down menu
             //+ Test Modules
             //+ Test Cases
             //+ Test Objectives
@@ -496,7 +496,7 @@ namespace SeleniumAdvProject.TestCases
                 .GoToDataProfilePage().GoToGeneralSettingPage();
 
             //VP "Item Type" items are listed in priority order: Test Modules>Test Cases> Test Objectives> Data Sets> Actions> Interface Entities> Test Results> Test Cases results
-            Assert.AreEqual(true, genralSettingPage.CheckItemsInComboboxListedByPriorityOrder(genralSettingPage.CbbItemType, itemsList),"Failed! \"Item Type\" items are not listed in priority order");
+            Assert.AreEqual(true, genralSettingPage.CheckItemsInComboboxListedByPriorityOrder(genralSettingPage.CbbItemType, itemsList), "Failed! \"Item Type\" items are not listed in priority order");
 
             genralSettingPage.Logout();
         }
@@ -524,7 +524,7 @@ namespace SeleniumAdvProject.TestCases
             genralSettingPage.CbbItemType.SelectByText("Test Modules");
 
             //VP Check 'Related Data' items listed correctly {Related Test Results,Related Test Cases}
-            string[] expectedList = new string[] { "Related Test Results","Related Test Cases"};
+            string[] expectedList = new string[] { "Related Test Results", "Related Test Cases" };
             Assert.AreEqual(true, genralSettingPage.CheckItemsInComboboxListedCorrectly(genralSettingPage.CbbRelatedData, expectedList), "Failed!Check 'Related Data' items did not list correctly");
 
             //9 Select 'Test Cases' in 'Item Type' drop down list
@@ -598,13 +598,13 @@ namespace SeleniumAdvProject.TestCases
             LoginPage loginPage = new LoginPage(_webDriver).Open();
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
             DataProfilePage DPPage = mainPage.GoToDataProfilePage();
-            DPPage= (DataProfilePage)DPPage.GoToGeneralSettingPage()
-                .SetGeneralSettingsValue(profileName, "test modules", "None","Finish");
-            
+            DPPage = (DataProfilePage)DPPage.GoToGeneralSettingPage()
+                .SetGeneralSettingsValue(profileName, "test modules", "None", "Finish");
+
             //7 Click on the newly created data profile
             DPPage.ClickLinkText(profileName);
             //VP Check the setting of General Settings Page
-            Assert.AreEqual("General Settings",DPPage.LblProfileHeader.Text,"Failed! Page {0}");
+            Assert.AreEqual("General Settings", DPPage.LblProfileHeader.Text, "Failed! Page {0}");
 
 
             //9 Click Next Button
@@ -616,7 +616,7 @@ namespace SeleniumAdvProject.TestCases
             //15 Click Next Button
             //16 Check the setting of Statistic Page
 
-            
+
         }
         /// <summary>
         /// DA_DP_TC076 - Verify that for newly created data profile, user is able to navigate through other setting pages on the left navigation panel.
@@ -644,20 +644,20 @@ namespace SeleniumAdvProject.TestCases
             DPPage = (DataProfilePage)DPPage.GoToGeneralSettingPage()
                 .SetGeneralSettingsValue(profileName, "test modules", "None", "Finish");
             DPPage.ClickLinkText(profileName);
-                    
+
             //10 Click on 'Display Fields' in the left navigation panel
             DPPage.LblDisplayField.Click();
 
             //11 Check Display Fields page appears
             Assert.AreEqual("General Settings", DPPage.LblProfileHeader.Text,
-                "Failed! Page {0} display instead of General Setting", DPPage.LblProfileHeader.Text); 
+                "Failed! Page {0} display instead of General Setting", DPPage.LblProfileHeader.Text);
 
             //12 Click on 'Sort Fields' in the left navigation panel
             DPPage.LblSortField.Click();
 
             //13 Check Sort Fields page appears
             Assert.AreEqual("Sort Fields", DPPage.LblProfileHeader.Text,
-                "Failed! Page {0} display instead of Sort Fields", DPPage.LblProfileHeader.Text); 
+                "Failed! Page {0} display instead of Sort Fields", DPPage.LblProfileHeader.Text);
 
             //14 Click on 'Filter Fields' in the left navigation panel
             DPPage.LblFilterFields.Click();
@@ -688,7 +688,7 @@ namespace SeleniumAdvProject.TestCases
                 "Failed! Page {0} display instead of Sort Sub-Fields", DPPage.LblProfileHeader.Text);
             //22 Click on 'Filter Sub-Fields' in the left navigation panel
             DPPage.LblFilterSubField.Click();
-            
+
             //23 Check Filter Sub-Fields page appears
             Assert.AreEqual("Filter Sub-Fields", DPPage.LblProfileHeader.Text,
                 "Failed! Page {0} display instead of Filter Sub-Fields", DPPage.LblProfileHeader.Text);
@@ -701,7 +701,7 @@ namespace SeleniumAdvProject.TestCases
                 "Failed! Page {0} display instead of Statistic Sub-Fields", DPPage.LblProfileHeader.Text);
 
             DPPage.GoToDataProfilePage();
-            DPPage.DeleteDataProfiles(profileName);            
+            DPPage.DeleteDataProfiles(profileName);
 
         }
 
@@ -789,10 +789,10 @@ namespace SeleniumAdvProject.TestCases
             //Post-Condition
             sortFieldsPage.RemoveFieldLevel("Last update date");
         }
+
         /// <summary>
-        /// DA_DP_TC082 - Verify that user is able to add levels of fields
-        /// <author>Huong Huynh</author>
-        /// <date>06/10/2016</date>
+        /// Verify that user is able to add levels of fields
+        /// <author>Tu Nguyen</author>
         [TestMethod]
         public void DA_DP_TC082()
         {

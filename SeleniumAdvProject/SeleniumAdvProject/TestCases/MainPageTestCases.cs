@@ -152,7 +152,7 @@ namespace SeleniumAdvProject.TestCases
         public void DA_MP_TC015()
         {
             Console.WriteLine("DA_MP_TC015 - Verify that non \"Public\" pages can only be accessed and visible to their creators with condition that all parent pages above it are \"Public\"");
-            
+
             //Set variables
             Page parentPage = new Page("Test", "Select parent", 2, "Overview", false);
             Page childPage = new Page("TestChild", "Test", 2, "Select page", false);
@@ -206,7 +206,7 @@ namespace SeleniumAdvProject.TestCases
             //2 Log in specific repository with valid account
             //3. Go to Global Setting -> Add page
             //4 Enter Page Name
-            //5 Click OK button
+            //5 Click OK button           
             //6 Go to Global Setting -> Add page
             //7 Enter Page Name
             //8 Check Public checkbox
@@ -234,8 +234,8 @@ namespace SeleniumAdvProject.TestCases
                 .EditPage(page2)
                 .Logout()
                 .Login(Constants.Repository, Constants.UserName1, Constants.SpecialPassword);
-            
-            //VP Check "Test" Page is visible and can be accessed 
+
+            //VP Check "Test" Page is visible and can be accessed            
             Assert.AreEqual(true, mainPage.IsPageExist(page1.PageName));
 
             //VP Check "Another Test" page is invisible
@@ -541,25 +541,21 @@ namespace SeleniumAdvProject.TestCases
             //4. Add a sibling page of new page
             Page page = new Page(pageName, "Select parent", 2, "Overview", false);
             Page pageSibling = new Page(childPageName, pageName, 2, "Select page", false);
-            mainPage.AddPage(page);
-            mainPage.AddPage(pageSibling);
+            mainPage.AddPage(page).AddPage(pageSibling);
 
             //5. Go to Global Setting -> Add page
             //6. Enter Page Name
             //7. Click on  Parent Page dropdown list
             //8. Select a parent page
             //9. Click OK button
-
-            Page pageDuplicate = new Page(childPageName, pageName, 2, "Select page", false);
-            mainPage.AddPage(pageDuplicate);
+            string actualMessage = mainPage.AddPageWithError(pageSibling);
 
             //VP. Check warning message "Test child already exist. Please enter a diffrerent name" appears
-            string actualMessage = mainPage.GetDialogText();
-            Assert.AreEqual(childPageName + " already exists. Please enter a diffrerent name.", actualMessage, string.Format("Message incorrect {0}", actualMessage));
+            Assert.IsTrue(actualMessage.Contains(childPageName + " already exists. Please enter a different name."), string.Format("Message incorrect {0}", actualMessage));
 
             //Close message and close add new page dialog
             mainPage.ConfirmDialog("OK");
-            AddNewPage newPage = new AddNewPage();
+            AddNewPage newPage = new AddNewPage(_webDriver);
             newPage.CancelPage();
 
             //Post-Condition

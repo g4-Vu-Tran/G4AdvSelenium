@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using SeleniumAdvProject.Common;
 using SeleniumAdvProject.DataObjects;
 using SeleniumAdvProject.Ultilities.Controls;
 using System;
@@ -15,6 +16,7 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _lnkAddNew = By.XPath("//a[.='Add New']");
         static readonly By _lnkDelete = By.XPath("//a[.='Delete']");
         static readonly By _lnkCheckAll = By.XPath("//a[.='Check All']");
+        static readonly By _lnkUnCheckAll = By.XPath("//a[.='UnCheck All']");
         #endregion
 
         #region Elements
@@ -22,6 +24,12 @@ namespace SeleniumAdvProject.PageObjects
         {
             get { return new Link(FindElement(_lnkAddNew)); }
         }
+
+        public Link LnkUnCheckAll
+        {
+            get { return new Link(FindElement(_lnkUnCheckAll)); }
+        }
+
         public Link LnkDelete
         {
             get { return new Link(FindElement(_lnkDelete)); }
@@ -116,9 +124,9 @@ namespace SeleniumAdvProject.PageObjects
         public PanelsPage DeletePanels(string panelName)
         {
             if (panelName.Equals("All"))
-            {
-                LnkCheckAll.Click();
-                LnkDelete.Click();
+        {
+            LnkCheckAll.Click();
+            LnkDelete.Click();
             }
             else
             {
@@ -163,6 +171,20 @@ namespace SeleniumAdvProject.PageObjects
             Link LnkPanelName = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", panelName))));
             return LnkPanelName.Displayed;
         }
+
+
+        public bool IsCheckBoxExists(string[] paneList)
+        {
+            for (int i = 0; i < paneList.Length; i++)
+            {
+                Checkbox chkDataProfile = new Checkbox(FindElement(By.XPath(string.Format("//td[.='{0}']//preceding-sibling::td/input[@id='chkDel']", CommonAction.EncodeSpace(paneList[i])))));
+                if (chkDataProfile == null)
+                    return false;
+            }
+            return true;
+        }
+
+
         #endregion
     }
 }

@@ -44,6 +44,7 @@ namespace SeleniumAdvProject.PageObjects
         static readonly By _txtHeight = By.XPath("//input[@id='txtHeight']");
         static readonly By _txtFolder = By.XPath("//input[@id='txtFolder']");
         static readonly By _btnOKConfigurationPanel = By.XPath(" //input[@id='OK' and contains(@onclick,'Dashboard.addPanelToPage')]");
+        static readonly By _btnCancelConfigurationPanel = By.XPath(" //input[@id='OK' and contains(@onclick,'Dashboard.closePanelDialog')]");
         static readonly By _btnFolder = By.XPath("//img[@class='panel_setting_treefolder']");
         static readonly By _btnFolderSelectionOK = By.XPath("//input[@id='btnFolderSelectionOK']");
 
@@ -53,6 +54,10 @@ namespace SeleniumAdvProject.PageObjects
         public ComboBox CbbDataProfile
         {
             get { return new ComboBox(FindElement(_cbbDataProfile)); }
+        }
+        public Button BtnCancelConfigurationPanel
+        {
+            get { return new Button(FindElement(_btnCancelConfigurationPanel)); }
         }
         public Button BtnFolder
         {
@@ -367,7 +372,7 @@ namespace SeleniumAdvProject.PageObjects
             return this;
         }
 
-        
+
 
         /// <summary>
         /// Selects the data labels.
@@ -787,9 +792,9 @@ namespace SeleniumAdvProject.PageObjects
                 CbbSelectPage.SelectByText(selectPage);
                 TxtHeight.SendKeys(height.ToString());
                 TxtFolder.SendKeys(folder);
-                BtnOKConfigurationPanel.Click();
+            BtnOKConfigurationPanel.Click();
                 WaitForPageLoadComplete();
-            }
+        }
             return new MainPage(_webDriver);
         }
 
@@ -809,6 +814,48 @@ namespace SeleniumAdvProject.PageObjects
 
         }
 
+        public bool IsSelectFolderPopulation(string folderPath)
+        {
+            BtnFolder.Click();
+            string[] arrNode = folderPath.Split('/');
+            for (int i = 0; i < arrNode.Length; i++)
+            {
+                IWebElement plusImg = FindElement(By.XPath(string.Format("//div[@id='async_html_2']//a[text()=' {0}']//preceding-sibling::a/img[@src='images/plus.gif']", arrNode[i])));
+                if (plusImg != null)
+                {
+                    return false;
+                }
+            }
+            return true;
+
+        }
+
+        public AddNewPanelPage FillPanelConfiguration(string selectPage, string height, string folder)
+        {
+            CbbSelectPage.SelectByText(selectPage);
+            TxtHeight.SendKeys(height);
+            TxtFolder.SendKeys(folder);
+            return this;
+        }
+
+        
+
+        //public string SettingPanelWithExpectedError(string selectPage, int height, string folder)
+        //{
+        //    CbbSelectPage.SelectByText(selectPage);
+        //    TxtHeight.SendKeys(height.ToString());
+        //    TxtFolder.SendKeys(folder);
+        //    BtnOKConfigurationPanel.Click();
+        //    return this.GetDialogText();
+        //}
+        //public string SettingPanelWithExpectedError(string selectPage, double height, string folder)
+        //{
+        //    CbbSelectPage.SelectByText(selectPage);
+        //    TxtHeight.SendKeys(height.ToString());
+        //    TxtFolder.SendKeys(folder);
+        //    BtnOKConfigurationPanel.Click();
+        //    return this.GetDialogText();
+        //}
         /// <summary>
         /// Settings the panel with expected error.
         /// </summary>
