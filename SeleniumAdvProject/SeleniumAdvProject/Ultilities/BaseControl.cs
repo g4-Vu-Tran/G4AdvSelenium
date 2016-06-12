@@ -424,6 +424,8 @@ namespace SeleniumAdvProject.Ultilities
         {
             if (isExists())
             {
+                //LoadControl();
+                element = _webDriver.FindElement(by);
                 return element.Displayed;
             }
             return false;
