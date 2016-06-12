@@ -245,6 +245,18 @@ namespace SeleniumAdvProject.PageObjects
         }
 
         /// <summary>
+        /// Adds the page with error.
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string AddPageWithError(Page page)
+        {
+            return OpenAddNewPage().AddPageWithExpectedError(page.ParentPage, page);
+                    
+        }
+
+        /// <summary>
         /// Edits the page.
         /// </summary>
         /// <param name="page">The page.</param>

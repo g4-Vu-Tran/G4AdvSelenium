@@ -31,7 +31,7 @@ namespace SeleniumAdvProject.TestCases
             //4. Try to go to Global Setting -> Add page again
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password)
                 .OpenSetting();
-            
+
             //VP. User cannot go to Global Setting -> Add page while "New Page" dialog appears
             Assert.IsFalse(mainPage.IsSettingExist(), "User cannot go to Global Setting while \"New Page\" dialog appears");
 
@@ -99,13 +99,13 @@ namespace SeleniumAdvProject.TestCases
                 .AddPage(page1);
 
             //VP. Check "Another Test" page is positioned besides the "Test" page                       
-            Assert.IsTrue(mainPage.IsPageDisplayAfter(page.PageName,page1.PageName), 
+            Assert.IsTrue(mainPage.IsPageDisplayAfter(page.PageName, page1.PageName),
                 "The {0} page is not beside the {1} page", page1.PageName, page.PageName);
 
             //Post-Condition
             mainPage.DeletePage(page.PageName)
                 .DeletePage(page1.PageName)
-                .Logout();            
+                .Logout();
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace SeleniumAdvProject.TestCases
             //7. Click on Log out link   
             LoginPage loginPage = new LoginPage(_webDriver).Open();
 
-            
+
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password)
                 .AddPage(page);
             loginPage = mainPage.Logout();
@@ -548,8 +548,7 @@ namespace SeleniumAdvProject.TestCases
             //4. Add a sibling page of new page
             Page page = new Page(pageName, "Select parent", 2, "Overview", false);
             Page pageSibling = new Page(childPageName, pageName, 2, "Select page", false);
-            mainPage.AddPage(page);
-            mainPage.AddPage(pageSibling);
+            mainPage.AddPage(page).AddPage(pageSibling);
 
             //5. Go to Global Setting -> Add page
             //6. Enter Page Name
@@ -557,12 +556,14 @@ namespace SeleniumAdvProject.TestCases
             //8. Select a parent page
             //9. Click OK button
 
-            Page pageDuplicate = new Page(childPageName, pageName, 2, "Select page", false);
-            mainPage.AddPage(pageDuplicate);
+            string actualMessage = mainPage.AddPageWithError(pageSibling);
+            string expectMessage = childPageName + "already exists. Please enter a diffrerent name.";
+
+            bool a = actualMessage.Contains("already exists. Please enter a diffrerent name.");
+
 
             //VP. Check warning message "Test child already exist. Please enter a diffrerent name" appears
-            string actualMessage = mainPage.GetDialogText();
-            Assert.AreEqual(childPageName + " already exists. Please enter a diffrerent name.", actualMessage, string.Format("Message incorrect {0}", actualMessage));
+            Assert.AreEqual(expectMessage, actualMessage, string.Format("Message incorrect {0}", actualMessage));
 
             //Close message and close add new page dialog
             mainPage.ConfirmDialog("OK");
@@ -619,7 +620,7 @@ namespace SeleniumAdvProject.TestCases
             Assert.IsTrue(mainPage.IsPageExist(pageEdit.PageName), "User can edit the parent page of sibling page");
 
             //Post-Condition
-            
+
             mainPage.DeletePage(page.PageName + "/" + pageSibling.PageName);
             mainPage.DeletePage(page.PageName);
             mainPage.Logout();
@@ -639,7 +640,7 @@ namespace SeleniumAdvProject.TestCases
             //Set Variable
             string pageName = CommonAction.GeneratePageName();
             string childPageName = "Child" + CommonAction.GeneratePageName();
-            
+
             //1. Navigate to Dashboard login page
             LoginPage loginPage = new LoginPage(_webDriver);
             loginPage.Open();
@@ -741,7 +742,7 @@ namespace SeleniumAdvProject.TestCases
 
             //Set Variable
             string pageName1 = CommonAction.GeneratePageName();
-            
+
             //1. Navigate to Dashboard login page
             LoginPage loginPage = new LoginPage(_webDriver);
             loginPage.Open();
