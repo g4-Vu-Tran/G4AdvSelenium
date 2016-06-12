@@ -23,24 +23,24 @@ namespace SeleniumAdvProject.TestCases
         public void DA_PANEL_TC027()
         {
             Console.WriteLine("DA_PANEL_TC027 - Verify that when \"Choose panels\" form is expanded all pre-set panels are populated and sorted correctly");
+
+            //Set variables
+            Page page1 = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+            Chart chart = new Chart(CommonAction.GeneratePanelName(), "Name", page1.PageName);
             //1 Navigate to Dashboard login page
             //2 Login with valid account
-            LoginPage loginPage = new LoginPage(_webDriver);
-            loginPage.Open();
-            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
             //3 Go to Global Setting -> Add page
             //4 Enter page name to Page Name field.
             //5 Click OK button
-            Page page1 = new Page(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Select parent", 2, "Overview", false);
-            mainPage.AddPage(page1);
-
             //6 Go to Global Setting -> Create Panel     
             //7 Enter display name into Display Name textbox
             //8 Select any value in Series dropdown list
             //9 Click OK button on PanelConfiguration popup and then click on Chose Panel menu icon
-
-            Chart chart = new Chart(CommonAction.GenrateRandomString(Constants.lenghtRandomString), "Name", page1.PageName);
-            mainPage.AddNewPanel(chart);
+            LoginPage loginPage = new LoginPage(_webDriver)
+                .Open();
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password)
+                .AddPage(page1)
+                .AddNewPanel(chart);
             mainPage.BtnChoosePanel.Click();
 
             ////VP Verify that all pre-set panels are populated and sorted correctly
@@ -49,11 +49,13 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual(true, mainPage.IsContentInTableSorted("Indicators", "ASC"), "Contents in Indicators table are not sorted by ASC correctly");
 
 
-            ////Post-Condition
-            ////Logout			
-            ////Close Dashboard            
-
-            mainPage.DeletePage(page1.PageName, "Yes").OpenPanelsPage().DeletePanels(chart.DisplayName).Logout();
+            //Post-Condition
+            //Logout			
+            //Close Dashboard      
+            mainPage.DeletePage(page1.PageName, "Yes")
+                .OpenPanelsPage()
+                .DeletePanels(chart.DisplayName)
+                .Logout();
         }
 
         /// <summary>
@@ -1974,6 +1976,7 @@ namespace SeleniumAdvProject.TestCases
         /// </summary>
         /// <author>Huong Huynh</author>
         /// <date>06/08/2016</date>
+        [TestMethod]
         public void DA_PANEL_TC060()
         {
             Console.WriteLine("DA_PANEL_TC060 - Verify that all settings within \"Add New Panel\" and \"Edit Panel\" form stay unchanged when user switches between \"Legends\" radio buttons in \"Edit Panel\" form");
