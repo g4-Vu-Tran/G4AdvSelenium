@@ -555,19 +555,14 @@ namespace SeleniumAdvProject.TestCases
             //7. Click on  Parent Page dropdown list
             //8. Select a parent page
             //9. Click OK button
-
             string actualMessage = mainPage.AddPageWithError(pageSibling);
-            string expectMessage = childPageName + "already exists. Please enter a diffrerent name.";
-
-            bool a = actualMessage.Contains("already exists. Please enter a diffrerent name.");
-
 
             //VP. Check warning message "Test child already exist. Please enter a diffrerent name" appears
-            Assert.AreEqual(expectMessage, actualMessage, string.Format("Message incorrect {0}", actualMessage));
+            Assert.IsTrue(actualMessage.Contains(childPageName + " already exists. Please enter a different name."), string.Format("Message incorrect {0}", actualMessage));
 
             //Close message and close add new page dialog
             mainPage.ConfirmDialog("OK");
-            AddNewPage newPage = new AddNewPage();
+            AddNewPage newPage = new AddNewPage(_webDriver);
             newPage.CancelPage();
 
             //Post-Condition

@@ -162,9 +162,9 @@ namespace SeleniumAdvProject.TestCases
         /// </summary>
         /// <author>Tu Nguyen</author>
         [TestMethod]
-        public void DA_PANEL_TC031()
+        public void DA_PANEL_TC037()
         {
-            Console.WriteLine("DA_PANEL_TC031 - Verify that \"Category\", \"Series\" and \"Caption\" field are enabled and disabled correctly corresponding to each type of the \"Chart Type\"");
+            Console.WriteLine("DA_PANEL_TC037 - Verify that \"Category\", \"Series\" and \"Caption\" field are enabled and disabled correctly corresponding to each type of the \"Chart Type\"");
 
             //1 Navigate to Dashboard login page
             //2 Select a specific repository 
