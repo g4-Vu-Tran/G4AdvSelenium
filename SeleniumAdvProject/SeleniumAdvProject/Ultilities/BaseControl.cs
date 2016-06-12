@@ -424,7 +424,6 @@ namespace SeleniumAdvProject.Ultilities
         {
             if (isExists())
             {
-                //LoadControl();
                 return element.Displayed;
             }
             return false;

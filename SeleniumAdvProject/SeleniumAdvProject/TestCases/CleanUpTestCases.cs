@@ -14,7 +14,7 @@ namespace SeleniumAdvProject.TestCases
         /// <author>Huong Huynh</author>
         /// <date>06/06/2015</date>
         [TestMethod]
-        public void DA_LOGIN_TC001()
+        public void DDeleteAll()
         {
             Console.WriteLine("DA_LOGIN_TC001 - Verify that user can login specific repository successfully via Dashboard login page with correct credentials");
 

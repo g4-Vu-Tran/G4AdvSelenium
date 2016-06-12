@@ -9,7 +9,7 @@ namespace SeleniumAdvProject.TestCases
     public class LoginTestCases : BaseTestCase
     {
         /// <summary>
-        /// Verify that user can login specific repository successfully via Dashboard login page with correct credentials
+        /// DA_LOGIN_TC001 - Verify that user can login specific repository successfully via Dashboard login page with correct credentials
         /// </summary>
         /// <author>Huong Huynh</author>
         /// <date>05/25/2015</date>
@@ -19,10 +19,9 @@ namespace SeleniumAdvProject.TestCases
             Console.WriteLine("DA_LOGIN_TC001 - Verify that user can login specific repository successfully via Dashboard login page with correct credentials");
 
             //1. Navigate to Dashboard login page
-            LoginPage loginPage = new LoginPage(_webDriver).Open();
-
             //2. Enter valid username and password	
             //3. Click on "Login" button
+            LoginPage loginPage = new LoginPage(_webDriver).Open();            
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
             //VP. Verify that Dashboard Mainpage appears
@@ -101,7 +100,7 @@ namespace SeleniumAdvProject.TestCases
             loginPage.Login(Constants.TestRepository, Constants.UserName, Constants.Password);
 
             //VP. Verify that Dashboard Mainpage appears
-            Assert.IsTrue(mainPage.Displayed(), "Main page does not appear");
+            Assert.IsTrue(mainPage.Displayed(Constants.UserName), "Main page does not appear");
 
             //Post-Condition
             mainPage.Logout();
@@ -147,17 +146,17 @@ namespace SeleniumAdvProject.TestCases
             LoginPage loginPage = new LoginPage(_webDriver).Open();
 
             //2. Login with the account has uppercase password
-            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.LowerCaseUser, Constants.UpperCasePassword);
+            MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName2, Constants.Password2);
 
             //VP. Observe the current page
             // Main page is displayed
-            Assert.IsTrue(mainPage.Displayed(), "Main page is NOT displaying");
+            Assert.IsTrue(mainPage.Displayed(Constants.UserName2), "Main page is NOT displaying");
 
             //3. Logout TA Dashboard
             mainPage.Logout();
 
             //4. Login with the above account but enter lowercase password
-            string actualMsg = loginPage.LoginWithExpectedError(Constants.Repository, "test", "test");
+            string actualMsg = loginPage.LoginWithExpectedError(Constants.Repository, Constants.UserName2, Constants.Password2.ToLower());
 
             //VP. Dashboard Error message "Username or password is invalid" appears
             string expectedMsg = "Username or password is invalid";
@@ -182,15 +181,16 @@ namespace SeleniumAdvProject.TestCases
 
             //VP. Observe the current page
             // Main page is displayed
-            Assert.IsTrue(mainPage.Displayed(), "User login unsuccessfully with uppercase username");
-
+            bool isDisplay = mainPage.Displayed(Constants.UpperCaseUserName);
+            Assert.AreEqual(true, isDisplay, "User login unsuccessfully with uppercase username");
+            
             //3. Logout TA Dashboard
             mainPage.Logout();
 
             //4. Login with the above account but enter lowercase username
             //VP. Main page is displayed
             loginPage.Login(Constants.Repository, Constants.LowerCaseUser, Constants.Password);
-            Assert.IsTrue(mainPage.Displayed(), "User login unsuccessfully with uppercase username");
+            Assert.IsTrue(mainPage.Displayed(Constants.LowerCaseUser.ToUpper()), "User login unsuccessfully with uppercase username");
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace SeleniumAdvProject.TestCases
             //2. Login with account that has special characters password
             //VP. Main page is displayed
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName1, Constants.SpecialPassword);
-            Assert.IsTrue(mainPage.Displayed(), "User login unsuccessfully with special characters password");
+            Assert.IsTrue(mainPage.Displayed(Constants.UserName1), "User login unsuccessfully with special characters password");
 
             //Post-Condition
             mainPage.Logout();
@@ -231,7 +231,7 @@ namespace SeleniumAdvProject.TestCases
             //2. Login with account that has special characters username
             //VP. Main page is displayed
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.SpecialUserName, Constants.Password);
-            Assert.IsTrue(mainPage.Displayed(), "User login unsuccessfully with special characters username");
+            Assert.IsTrue(mainPage.Displayed(Constants.SpecialUserName), "User login unsuccessfully with special characters username");
 
             //Post-Condition
             mainPage.Logout();
@@ -251,11 +251,10 @@ namespace SeleniumAdvProject.TestCases
             LoginPage loginPage = new LoginPage(_webDriver).Open();
 
             //2. Click Login button without entering data into Username and Password field
-            loginPage.LoginWithOutAccount(Constants.Repository);
+            string actualMsg = loginPage.LoginWithOutAccount(Constants.Repository);
 
             //VP. Observe the current page
-            //    There is a message "Please enter username"
-            string actualMsg = loginPage.GetDialogText();
+            // There is a message "Please enter username"
             string expectMsg = "Please enter username";
             Assert.AreEqual(expectMsg, actualMsg, string.Format("Message incorrect {0}", actualMsg));
         }

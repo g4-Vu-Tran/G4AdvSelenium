@@ -21,12 +21,25 @@ namespace SeleniumAdvProject.PageObjects
         protected static readonly By _btnBack = By.XPath("//input[@value='Back' and @type='button']");
         protected static readonly By _lblSortField = By.XPath("//ul[@id='wstep']/li[text()='Sort Fields']");
         protected static readonly By _lblGeneralSetting = By.XPath("//ul[@id='wstep']/li[text()='General Settings']");
+        protected static readonly By _lblDisplayField = By.XPath("//ul[@id='wstep']/li[text()='Display Fields']");
+        protected static readonly By _lblFilterFields = By.XPath("//ul[@id='wstep']/li[text()='Filter Fields']");
+        protected static readonly By _lblStatisticFields = By.XPath("//ul[@id='wstep']/li[text()='Statistic Fields']");
+        protected static readonly By _lblDisplaySubFiled = By.XPath("//ul[@id='wstep']/li[text()='Display Sub-Fields']");
+        protected static readonly By _lblSortSubField = By.XPath("//ul[@id='wstep']/li[text()='Sort Sub-Fields']");
+        protected static readonly By _lblFilterSubField = By.XPath("//ul[@id='wstep']/li[text()='Filter Sub-Fields']");
+        protected static readonly By _lblStatisticSubField = By.XPath("//ul[@id='wstep']/li[text()='Statistic Sub-Fields']");
+        protected static readonly By _lblProfileHeader = By.XPath("//td[@class='profilesettingheader']");
+        
         #endregion
 
         #region Elements
         public Button BtnNext
         {
             get { return new Button(FindElement(_btnNext)); }
+        }
+        public Label LblProfileHeader
+        {
+            get { return new Label(FindElement(_lblProfileHeader)); }
         }
         public Label LblSortField
         {
@@ -35,6 +48,40 @@ namespace SeleniumAdvProject.PageObjects
         public Label LblGeneralSetting
         {
             get { return new Label(FindElement(_lblGeneralSetting)); }
+        }
+       
+        public Label LblDisplayField
+        {
+            get { return new Label(FindElement(_lblDisplayField)); }
+        }        
+        public Label LblFilterFields
+        {
+            get { return new Label(FindElement(_lblFilterFields)); }
+        }
+        
+        public Label LblStatisticFields
+        {
+            get { return new Label(FindElement(_lblStatisticFields)); }
+        }
+        
+        public Label LblDisplaySubFiled
+        {
+            get { return new Label(FindElement(_lblDisplaySubFiled)); }
+        }
+        
+        public Label LblSortSubField
+        {
+            get { return new Label(FindElement(_lblSortSubField)); }
+        }
+        
+        public Label LblFilterSubField
+        {
+            get { return new Label(FindElement(_lblFilterSubField)); }
+        }
+        
+        public Label LblStatisticSubField
+        {
+            get { return new Label(FindElement(_lblStatisticSubField)); }
         }
         public Button BtnFinish
         {

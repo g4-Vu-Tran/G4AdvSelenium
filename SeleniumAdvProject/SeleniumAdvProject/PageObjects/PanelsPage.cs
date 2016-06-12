@@ -124,9 +124,9 @@ namespace SeleniumAdvProject.PageObjects
         public PanelsPage DeletePanels(string panelName)
         {
             if (panelName.Equals("All"))
-            {
-                LnkCheckAll.Click();
-                LnkDelete.Click();
+        {
+            LnkCheckAll.Click();
+            LnkDelete.Click();
             }
             else
             {

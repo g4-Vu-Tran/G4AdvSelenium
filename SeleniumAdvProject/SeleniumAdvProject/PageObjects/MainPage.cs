@@ -224,10 +224,11 @@ namespace SeleniumAdvProject.PageObjects
         /// <returns>True/False</returns>
         /// <author>Vu Tran</author>
         /// <date>05/26/2015</date>
-        public bool Displayed()
+        /// <Update>Tu Nguyen</Update>
+        public bool Displayed(string username)
         {
-            Label LblUsername = new Label(_webDriver, _lblUsername);
-            return LblUsername.isDisplayed();
+            Link lnkWelcome = new Link(FindElement(By.XPath(string.Format("//a[.='{0}' and @href='#Welcome']", username))));
+            return lnkWelcome.Enabled;  
         }
 
         /// <summary>
@@ -241,6 +242,18 @@ namespace SeleniumAdvProject.PageObjects
         {
             OpenAddNewPage().AddPage(page.ParentPage, page);
             return this;
+        }
+
+        /// <summary>
+        /// Adds the page with error.
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string AddPageWithError(Page page)
+        {
+            return OpenAddNewPage().AddPageWithExpectedError(page.ParentPage, page);
+                    
         }
 
         /// <summary>

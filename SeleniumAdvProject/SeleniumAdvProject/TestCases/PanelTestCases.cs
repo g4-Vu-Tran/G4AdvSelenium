@@ -162,9 +162,9 @@ namespace SeleniumAdvProject.TestCases
         /// </summary>
         /// <author>Tu Nguyen</author>
         [TestMethod]
-        public void DA_PANEL_TC031()
+        public void DA_PANEL_TC037()
         {
-            Console.WriteLine("DA_PANEL_TC031 - Verify that \"Category\", \"Series\" and \"Caption\" field are enabled and disabled correctly corresponding to each type of the \"Chart Type\"");
+            Console.WriteLine("DA_PANEL_TC037 - Verify that \"Category\", \"Series\" and \"Caption\" field are enabled and disabled correctly corresponding to each type of the \"Chart Type\"");
 
             //1 Navigate to Dashboard login page
             //2 Select a specific repository 
@@ -177,7 +177,7 @@ namespace SeleniumAdvProject.TestCases
             //5. Click 'Add Page' button
             //6. Enter Page Name
             //7. Click 'OK' button
-            string pageName = CommonAction.GenrateRandomString(Constants.lenghtRandomString);
+            string pageName = CommonAction.GeneratePageName();
             Page page = new Page(pageName, "Select parent", 2, "Overview", false);
             mainPage.AddPage(page);
 
@@ -287,7 +287,7 @@ namespace SeleniumAdvProject.TestCases
             //5. Click 'Add Page' button
             //6. Enter Page Name
             //7. Click 'OK' button
-            string pageName = CommonAction.GenrateRandomString(Constants.lenghtRandomString);
+            string pageName = CommonAction.GeneratePageName();
             Page page = new Page(pageName, "Select parent", 2, "Overview", false);
             mainPage.AddPage(page);
 
@@ -393,7 +393,7 @@ namespace SeleniumAdvProject.TestCases
             //5. Click 'Add Page' button
             //6. Enter Page Name
             //7. Click 'OK' button
-            string pageName = CommonAction.GenrateRandomString(Constants.lenghtRandomString);
+            string pageName = CommonAction.GeneratePageName();
             Page page = new Page(pageName, "Select parent", 2, "Overview", false);
             mainPage.AddPage(page);
 
@@ -410,7 +410,9 @@ namespace SeleniumAdvProject.TestCases
             //14. Select 'Show Title' checkbox
             //15. Select 'Legends' radio button
             //16. Select 'Style' radio button
-            addPanelPopup.FillPanelData(null, "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "3D", null, null, null, true, "Top");
+            string displayName = CommonAction.GeneratePanelName();
+            string chartTitle = "Tu_" + CommonAction.GeneratePanelName();
+            addPanelPopup.FillPanelData(null, "Test Case Execution", displayName, chartTitle, "on", "Stacked Bar", "3D", null, null, null, true, "Top");
 
             //VP: Settings of 'Chart Type', 'Data Profile', 'Display Name', 'Chart Title', 'Show Title' and 'Legends' stay unchanged
             string currentChartType = addPanelPopup.CbbChartType.Value;
@@ -422,8 +424,8 @@ namespace SeleniumAdvProject.TestCases
 
             Assert.AreEqual("Stacked Bar", currentChartType, "Current chart type is " + currentChartType);
             Assert.AreEqual("Test Case Execution", currentProfile, "Data Profile is " + currentProfile);
-            Assert.AreEqual("Tu_Panel", currentName, "Display name is " + currentName);
-            Assert.AreEqual("Tu_Title", currentChartTitle, "Chart Title is " + currentChartTitle);
+            Assert.AreEqual(displayName, currentName, "Display name is " + currentName);
+            Assert.AreEqual(chartTitle, currentChartTitle, "Chart Title is " + currentChartTitle);
             Assert.AreEqual("on", currentShowTitle, "Show Title is " + currentShowTitle);
             Assert.AreEqual("Top", currentLegend, "Legend is " + currentLegend);
 
@@ -433,8 +435,8 @@ namespace SeleniumAdvProject.TestCases
             //VP: Settings of 'Chart Type', 'Data Profile', 'Display Name', 'Chart Title', 'Show Title' and 'Legends' stay unchanged
             Assert.AreEqual("Stacked Bar", currentChartType, "Current chart type is " + currentChartType);
             Assert.AreEqual("Test Case Execution", currentProfile, "Data Profile is " + currentProfile);
-            Assert.AreEqual("Tu_Panel", currentName, "Display name is " + currentName);
-            Assert.AreEqual("Tu_Title", currentChartTitle, "Chart Title is " + currentChartTitle);
+            Assert.AreEqual(displayName, currentName, "Display name is " + currentName);
+            Assert.AreEqual(chartTitle, currentChartTitle, "Chart Title is " + currentChartTitle);
             Assert.AreEqual("on", currentShowTitle, "Show Title is " + currentShowTitle);
             Assert.AreEqual("Top", currentLegend, "Legend is " + currentLegend);
 
@@ -446,7 +448,7 @@ namespace SeleniumAdvProject.TestCases
             //19. Select a page in drop-down menu
             //20. Enter path of Folder
             //21. Click OK button
-            Chart chart = new Chart("Test Case Execution", "Tu_Panel", null, 400, null, "Tu_Title", "Stacked Bar", "Name", null, "Location", null, null, null, "2D", false);
+            Chart chart = new Chart("Test Case Execution", displayName, null, 400, null, chartTitle, "Stacked Bar", "Name", null, "Location", null, null, null, "2D", false);
             addPanelPopup.AddChart(chart);
 
             //22. Click 'Edit Panel' button of panel 'hung_panel'
@@ -465,8 +467,8 @@ namespace SeleniumAdvProject.TestCases
 
             Assert.AreEqual("Stacked Bar", currentChartType1, "Current chart type is " + currentChartType1);
             Assert.AreEqual("Test Case Execution", currentProfile1, "Data Profile is " + currentProfile1);
-            Assert.AreEqual("Tu_Panel", currentName1, "Display name is " + currentName1);
-            Assert.AreEqual("Tu_Title", currentChartTitle1, "Chart Title is " + currentChartTitle1);
+            Assert.AreEqual(displayName, currentName1, "Display name is " + currentName1);
+            Assert.AreEqual(chartTitle, currentChartTitle1, "Chart Title is " + currentChartTitle1);
             Assert.AreEqual("on", currentShowTitle1, "Show Title is " + currentShowTitle1);
             Assert.AreEqual("Top", currentLegend1, "Legend is " + currentLegend1);
 
@@ -476,8 +478,8 @@ namespace SeleniumAdvProject.TestCases
             //VP: Check that settings of 'Chart Type', 'Data Profile', 'Display Name', 'Chart Title', 'Show Title' and 'Legends' stay unchanged.
             Assert.AreEqual("Stacked Bar", currentChartType1, "Current chart type is " + currentChartType1);
             Assert.AreEqual("Test Case Execution", currentProfile1, "Data Profile is " + currentProfile1);
-            Assert.AreEqual("Tu_Panel", currentName1, "Display name is " + currentName1);
-            Assert.AreEqual("Tu_Title", currentChartTitle1, "Chart Title is " + currentChartTitle1);
+            Assert.AreEqual(displayName, currentName1, "Display name is " + currentName1);
+            Assert.AreEqual(chartTitle, currentChartTitle1, "Chart Title is " + currentChartTitle1);
             Assert.AreEqual("on", currentShowTitle1, "Show Title is " + currentShowTitle1);
             Assert.AreEqual("Top", currentLegend1, "Legend is " + currentLegend1);
 
@@ -497,6 +499,10 @@ namespace SeleniumAdvProject.TestCases
         {
             Console.WriteLine("DA_PANEL_TC039 - Verify that all settings within \"Add New Panel\" and \"Edit Panel\" form stay unchanged when user switches between \"Legends\" radio buttons");
 
+            //Set Variables
+            string displayName = CommonAction.GeneratePanelName();
+            string chartTitle = "Tu" + CommonAction.GeneratePanelName();
+
             //1 Navigate to Dashboard login page
             //2 Select specific repository
             //3 Enter valid username and password
@@ -511,7 +517,7 @@ namespace SeleniumAdvProject.TestCases
             PanelsPage panelPage = mainPage.OpenPanelsPage();
             panelPage.OpenAddNewPanelPopupFromLink();
             AddNewPanelPage addPanelPopup = new AddNewPanelPage(_webDriver);
-            addPanelPopup.FillPanelData("Chart", "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "2D", "Name", "Location", null, true, null);
+            addPanelPopup.FillPanelData("Chart", "Test Case Execution", displayName, chartTitle, "on", "Stacked Bar", "2D", "Name", "Location", null, true, null);
             string currentType = addPanelPopup.GetPanelType();
             string currentProfile = addPanelPopup.CbbDataProfile.GetSelectedText();
             string currentName = addPanelPopup.TxtDisplayName.Value;
@@ -528,8 +534,8 @@ namespace SeleniumAdvProject.TestCases
             //VP: All settings are unchange in Add New Panel dialog
             Assert.AreEqual("Chart", currentType, "Current Type is " + currentType);
             Assert.AreEqual("Test Case Execution", currentProfile, "Current Profile is " + currentProfile);
-            Assert.AreEqual("Tu_Panel", currentName, "Current Display Name is " + currentName);
-            Assert.AreEqual("Tu_Title", currentChartTitle, "Current Chart Title is " + currentChartTitle);
+            Assert.AreEqual(displayName, currentName, "Current Display Name is " + currentName);
+            Assert.AreEqual(chartTitle, currentChartTitle, "Current Chart Title is " + currentChartTitle);
             Assert.AreEqual("on", currentShowTitle, "Current Show Title is " + currentShowTitle);
             Assert.AreEqual("Stacked Bar", currentChartType, "Current Chart Type is " + currentChartType);
             Assert.AreEqual("2D", currentStyle, "Current Style is " + currentStyle);
@@ -542,8 +548,8 @@ namespace SeleniumAdvProject.TestCases
             //VP: All settings are unchange in Add New Panel dialog
             Assert.AreEqual("Chart", currentType, "Current Type is " + currentType);
             Assert.AreEqual("Test Case Execution", currentProfile, "Current Profile is " + currentProfile);
-            Assert.AreEqual("Tu_Panel", currentName, "Current Display Name is " + currentName);
-            Assert.AreEqual("Tu_Title", currentChartTitle, "Current Chart Title is " + currentChartTitle);
+            Assert.AreEqual(displayName, currentName, "Current Display Name is " + currentName);
+            Assert.AreEqual(chartTitle, currentChartTitle, "Current Chart Title is " + currentChartTitle);
             Assert.AreEqual("on", currentShowTitle, "Current Show Title is " + currentShowTitle);
             Assert.AreEqual("Stacked Bar", currentChartType, "Current Chart Type is " + currentChartType);
             Assert.AreEqual("2D", currentStyle, "Current Style is " + currentStyle);
@@ -556,8 +562,8 @@ namespace SeleniumAdvProject.TestCases
             //VP: All settings are unchange in Add New Panel dialog
             Assert.AreEqual("Chart", currentType, "Current Type is " + currentType);
             Assert.AreEqual("Test Case Execution", currentProfile, "Current Profile is " + currentProfile);
-            Assert.AreEqual("Tu_Panel", currentName, "Current Display Name is " + currentName);
-            Assert.AreEqual("Tu_Title", currentChartTitle, "Current Chart Title is " + currentChartTitle);
+            Assert.AreEqual(displayName, currentName, "Current Display Name is " + currentName);
+            Assert.AreEqual(chartTitle, currentChartTitle, "Current Chart Title is " + currentChartTitle);
             Assert.AreEqual("on", currentShowTitle, "Current Show Title is " + currentShowTitle);
             Assert.AreEqual("Stacked Bar", currentChartType, "Current Chart Type is " + currentChartType);
             Assert.AreEqual("2D", currentStyle, "Current Style is " + currentStyle);
@@ -570,8 +576,8 @@ namespace SeleniumAdvProject.TestCases
             //VP: All settings are unchange in Add New Panel dialog
             Assert.AreEqual("Chart", currentType, "Current Type is " + currentType);
             Assert.AreEqual("Test Case Execution", currentProfile, "Current Profile is " + currentProfile);
-            Assert.AreEqual("Tu_Panel", currentName, "Current Display Name is " + currentName);
-            Assert.AreEqual("Tu_Title", currentChartTitle, "Current Chart Title is " + currentChartTitle);
+            Assert.AreEqual(displayName, currentName, "Current Display Name is " + currentName);
+            Assert.AreEqual(chartTitle, currentChartTitle, "Current Chart Title is " + currentChartTitle);
             Assert.AreEqual("on", currentShowTitle, "Current Show Title is " + currentShowTitle);
             Assert.AreEqual("Stacked Bar", currentChartType, "Current Chart Type is " + currentChartType);
             Assert.AreEqual("2D", currentStyle, "Current Style is " + currentStyle);
@@ -584,8 +590,8 @@ namespace SeleniumAdvProject.TestCases
             //VP: All settings are unchange in Add New Panel dialog
             Assert.AreEqual("Chart", currentType, "Current Type is " + currentType);
             Assert.AreEqual("Test Case Execution", currentProfile, "Current Profile is " + currentProfile);
-            Assert.AreEqual("Tu_Panel", currentName, "Current Display Name is " + currentName);
-            Assert.AreEqual("Tu_Title", currentChartTitle, "Current Chart Title is " + currentChartTitle);
+            Assert.AreEqual(displayName, currentName, "Current Display Name is " + currentName);
+            Assert.AreEqual(chartTitle, currentChartTitle, "Current Chart Title is " + currentChartTitle);
             Assert.AreEqual("on", currentShowTitle, "Current Show Title is " + currentShowTitle);
             Assert.AreEqual("Stacked Bar", currentChartType, "Current Chart Type is " + currentChartType);
             Assert.AreEqual("2D", currentStyle, "Current Style is " + currentStyle);
@@ -595,11 +601,11 @@ namespace SeleniumAdvProject.TestCases
             //11. Create a new panel
             addPanelPopup.ClosePanelDialog("Cancel");
             panelPage.OpenAddNewPanelPopupFromLink();
-            Chart chart = new Chart("Test Case Execution", "Tu_Panel", null, 400, null, "Tu_Title", "Stacked Bar", "Name", null, "Location", null, null, null, "2D", false);
+            Chart chart = new Chart("Test Case Execution", displayName, null, 400, null, chartTitle, "Stacked Bar", "Name", null, "Location", null, null, null, "2D", false);
             addPanelPopup.AddChart(chart);
 
             //12. Click Edit Panel link
-            panelPage.OpenEditPanelPopup("Tu_Panel");
+            panelPage.OpenEditPanelPopup(displayName);
 
             string currentProfile1 = addPanelPopup.CbbDataProfile.GetSelectedText();
             string currentName1 = addPanelPopup.TxtDisplayName.Value;
@@ -614,8 +620,8 @@ namespace SeleniumAdvProject.TestCases
 
             //VP: All settings are unchange in Add New Panel dialog
             Assert.AreEqual("Test Case Execution", currentProfile1, "Current Profile is " + currentProfile1);
-            Assert.AreEqual("Tu_Panel", currentName1, "Current Display Name is " + currentName1);
-            Assert.AreEqual("Tu_Title", currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
+            Assert.AreEqual(displayName, currentName1, "Current Display Name is " + currentName1);
+            Assert.AreEqual(chartTitle, currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
             Assert.AreEqual("Stacked Bar", currentChartType1, "Current Chart Type is " + currentChartType1);
             Assert.AreEqual("2D", currentStyle1, "Current Style is " + currentStyle1);
             Assert.AreEqual("name", currentCategory1, "Current Category is " + currentCategory1);
@@ -626,8 +632,8 @@ namespace SeleniumAdvProject.TestCases
 
             //VP: All settings are unchange in Add New Panel dialog
             Assert.AreEqual("Test Case Execution", currentProfile1, "Current Profile is " + currentProfile1);
-            Assert.AreEqual("Tu_Panel", currentName1, "Current Display Name is " + currentName1);
-            Assert.AreEqual("Tu_Title", currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
+            Assert.AreEqual(displayName, currentName1, "Current Display Name is " + currentName1);
+            Assert.AreEqual(chartTitle, currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
             Assert.AreEqual("Stacked Bar", currentChartType1, "Current Chart Type is " + currentChartType1);
             Assert.AreEqual("2D", currentStyle1, "Current Style is " + currentStyle1);
             Assert.AreEqual("name", currentCategory1, "Current Category is " + currentCategory1);
@@ -638,8 +644,8 @@ namespace SeleniumAdvProject.TestCases
 
             //VP: All settings are unchange in Add New Panel dialog
             Assert.AreEqual("Test Case Execution", currentProfile1, "Current Profile is " + currentProfile1);
-            Assert.AreEqual("Tu_Panel", currentName1, "Current Display Name is " + currentName1);
-            Assert.AreEqual("Tu_Title", currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
+            Assert.AreEqual(displayName, currentName1, "Current Display Name is " + currentName1);
+            Assert.AreEqual(chartTitle, currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
             Assert.AreEqual("Stacked Bar", currentChartType1, "Current Chart Type is " + currentChartType1);
             Assert.AreEqual("2D", currentStyle1, "Current Style is " + currentStyle1);
             Assert.AreEqual("name", currentCategory1, "Current Category is " + currentCategory1);
@@ -650,8 +656,8 @@ namespace SeleniumAdvProject.TestCases
 
             //VP: All settings are unchange in Add New Panel dialog
             Assert.AreEqual("Test Case Execution", currentProfile1, "Current Profile is " + currentProfile1);
-            Assert.AreEqual("Tu_Panel", currentName1, "Current Display Name is " + currentName1);
-            Assert.AreEqual("Tu_Title", currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
+            Assert.AreEqual(displayName, currentName1, "Current Display Name is " + currentName1);
+            Assert.AreEqual(chartTitle, currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
             Assert.AreEqual("Stacked Bar", currentChartType1, "Current Chart Type is " + currentChartType1);
             Assert.AreEqual("2D", currentStyle1, "Current Style is " + currentStyle1);
             Assert.AreEqual("name", currentCategory1, "Current Category is " + currentCategory1);
@@ -662,8 +668,8 @@ namespace SeleniumAdvProject.TestCases
 
             //VP: All settings are unchange in Add New Panel dialog
             Assert.AreEqual("Test Case Execution", currentProfile1, "Current Profile is " + currentProfile1);
-            Assert.AreEqual("Tu_Panel", currentName1, "Current Display Name is " + currentName1);
-            Assert.AreEqual("Tu_Title", currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
+            Assert.AreEqual(displayName, currentName1, "Current Display Name is " + currentName1);
+            Assert.AreEqual(chartTitle, currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
             Assert.AreEqual("Stacked Bar", currentChartType1, "Current Chart Type is " + currentChartType1);
             Assert.AreEqual("2D", currentStyle1, "Current Style is " + currentStyle1);
             Assert.AreEqual("name", currentCategory1, "Current Category is " + currentCategory1);
@@ -683,6 +689,10 @@ namespace SeleniumAdvProject.TestCases
         {
             Console.WriteLine("DA_PANEL_TC041 - Verify that all settings within \"Add New Panel\" and \"Edit Panel\" form stay unchanged when user switches between \"Data Labels\" check boxes buttons");
 
+            //Set Variables
+            string displayName = CommonAction.GeneratePanelName();
+            string chartTitle = "Tu" + CommonAction.GeneratePanelName();
+
             //1 Navigate to Dashboard login page
             //2 Select specific repository
             //3 Enter valid username and password
@@ -696,7 +706,7 @@ namespace SeleniumAdvProject.TestCases
             PanelsPage panelPage = mainPage.OpenPanelsPage();
             panelPage.OpenAddNewPanelPopupFromLink();
             AddNewPanelPage addPanelPopup = new AddNewPanelPage(_webDriver);
-            addPanelPopup.FillPanelData("Chart", "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "2D", "Name", "Location", null, true, null);
+            addPanelPopup.FillPanelData("Chart", "Test Case Execution", displayName, chartTitle, "on", "Stacked Bar", "2D", "Name", "Location", null, true, null);
             string currentType = addPanelPopup.GetPanelType();
             string currentProfile = addPanelPopup.CbbDataProfile.GetSelectedText();
             string currentName = addPanelPopup.TxtDisplayName.Value;
@@ -713,8 +723,8 @@ namespace SeleniumAdvProject.TestCases
             //VP: All settings are unchange in Add New Panel dialog
             Assert.AreEqual("Chart", currentType, "Current Type is " + currentType);
             Assert.AreEqual("Test Case Execution", currentProfile, "Current Profile is " + currentProfile);
-            Assert.AreEqual("Tu_Panel", currentName, "Current Display Name is " + currentName);
-            Assert.AreEqual("Tu_Title", currentChartTitle, "Current Chart Title is " + currentChartTitle);
+            Assert.AreEqual(displayName, currentName, "Current Display Name is " + currentName);
+            Assert.AreEqual(chartTitle, currentChartTitle, "Current Chart Title is " + currentChartTitle);
             Assert.AreEqual("on", currentShowTitle, "Current Show Title is " + currentShowTitle);
             Assert.AreEqual("Stacked Bar", currentChartType, "Current Chart Type is " + currentChartType);
             Assert.AreEqual("2D", currentStyle, "Current Style is " + currentStyle);
@@ -730,8 +740,8 @@ namespace SeleniumAdvProject.TestCases
             //VP: All settings are unchange in Add New Panel dialog
             Assert.AreEqual("Chart", currentType, "Current Type is " + currentType);
             Assert.AreEqual("Test Case Execution", currentProfile, "Current Profile is " + currentProfile);
-            Assert.AreEqual("Tu_Panel", currentName, "Current Display Name is " + currentName);
-            Assert.AreEqual("Tu_Title", currentChartTitle, "Current Chart Title is " + currentChartTitle);
+            Assert.AreEqual(displayName, currentName, "Current Display Name is " + currentName);
+            Assert.AreEqual(chartTitle, currentChartTitle, "Current Chart Title is " + currentChartTitle);
             Assert.AreEqual("on", currentShowTitle, "Current Show Title is " + currentShowTitle);
             Assert.AreEqual("Stacked Bar", currentChartType, "Current Chart Type is " + currentChartType);
             Assert.AreEqual("2D", currentStyle, "Current Style is " + currentStyle);
@@ -747,8 +757,8 @@ namespace SeleniumAdvProject.TestCases
             //VP: All settings are unchange in Add New Panel dialog
             Assert.AreEqual("Chart", currentType, "Current Type is " + currentType);
             Assert.AreEqual("Test Case Execution", currentProfile, "Current Profile is " + currentProfile);
-            Assert.AreEqual("Tu_Panel", currentName, "Current Display Name is " + currentName);
-            Assert.AreEqual("Tu_Title", currentChartTitle, "Current Chart Title is " + currentChartTitle);
+            Assert.AreEqual(displayName, currentName, "Current Display Name is " + currentName);
+            Assert.AreEqual(chartTitle, currentChartTitle, "Current Chart Title is " + currentChartTitle);
             Assert.AreEqual("on", currentShowTitle, "Current Show Title is " + currentShowTitle);
             Assert.AreEqual("Stacked Bar", currentChartType, "Current Chart Type is " + currentChartType);
             Assert.AreEqual("2D", currentStyle, "Current Style is " + currentStyle);
@@ -764,9 +774,9 @@ namespace SeleniumAdvProject.TestCases
             //12. Create a new panel
             //13. Click Edit Panel link
             panelPage.OpenAddNewPanelPopupFromLink();
-            Chart chart = new Chart("Test Case Execution", "Tu_Panel", null, 400, null, "Tu_Title", "Stacked Bar", "Name", null, "Location", null, null, null, "2D", false);
+            Chart chart = new Chart("Test Case Execution", displayName, null, 400, null, chartTitle, "Stacked Bar", "Name", null, "Location", null, null, null, "2D", false);
             addPanelPopup.AddChart(chart);
-            panelPage.OpenEditPanelPopup("Tu_Panel");
+            panelPage.OpenEditPanelPopup(displayName);
 
             string currentProfile1 = addPanelPopup.CbbDataProfile.GetSelectedText();
             string currentName1 = addPanelPopup.TxtDisplayName.Value;
@@ -781,8 +791,8 @@ namespace SeleniumAdvProject.TestCases
 
             //VP: All settings are unchange in Edit New Panel dialog
             Assert.AreEqual("Test Case Execution", currentProfile1, "Current Profile is " + currentProfile1);
-            Assert.AreEqual("Tu_Panel", currentName1, "Current Display Name is " + currentName1);
-            Assert.AreEqual("Tu_Title", currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
+            Assert.AreEqual(displayName, currentName1, "Current Display Name is " + currentName1);
+            Assert.AreEqual(chartTitle, currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
             Assert.AreEqual("Stacked Bar", currentChartType1, "Current Chart Type is " + currentChartType1);
             Assert.AreEqual("2D", currentStyle1, "Current Style is " + currentStyle1);
             Assert.AreEqual("name", currentCategory1, "Current Category is " + currentCategory1);
@@ -796,8 +806,8 @@ namespace SeleniumAdvProject.TestCases
 
             //VP: All settings are unchange in Edit New Panel dialog
             Assert.AreEqual("Test Case Execution", currentProfile1, "Current Profile is " + currentProfile1);
-            Assert.AreEqual("Tu_Panel", currentName1, "Current Display Name is " + currentName1);
-            Assert.AreEqual("Tu_Title", currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
+            Assert.AreEqual(displayName, currentName1, "Current Display Name is " + currentName1);
+            Assert.AreEqual(chartTitle, currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
             Assert.AreEqual("Stacked Bar", currentChartType1, "Current Chart Type is " + currentChartType1);
             Assert.AreEqual("2D", currentStyle1, "Current Style is " + currentStyle1);
             Assert.AreEqual("name", currentCategory1, "Current Category is " + currentCategory1);
@@ -811,8 +821,8 @@ namespace SeleniumAdvProject.TestCases
 
             //VP: All settings are unchange in Edit New Panel dialog
             Assert.AreEqual("Test Case Execution", currentProfile1, "Current Profile is " + currentProfile1);
-            Assert.AreEqual("Tu_Panel", currentName1, "Current Display Name is " + currentName1);
-            Assert.AreEqual("Tu_Title", currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
+            Assert.AreEqual(displayName, currentName1, "Current Display Name is " + currentName1);
+            Assert.AreEqual(chartTitle, currentChartTitle1, "Current Chart Title is " + currentChartTitle1);
             Assert.AreEqual("Stacked Bar", currentChartType1, "Current Chart Type is " + currentChartType1);
             Assert.AreEqual("2D", currentStyle1, "Current Style is " + currentStyle1);
             Assert.AreEqual("name", currentCategory1, "Current Category is " + currentCategory1);
@@ -832,6 +842,11 @@ namespace SeleniumAdvProject.TestCases
         public void DA_PANEL_TC052()
         {
             Console.WriteLine("DA_PANEL_TC052 - Verify that user is unable to edit  \"Height *\" field to anything apart from integer number with in 300-800 range");
+
+            //Set Variables
+            string displayName = CommonAction.GeneratePanelName();
+            string chartTitle = "Tu" + CommonAction.GeneratePanelName();
+
             //1 Navigate to Dashboard login page
             //2 Select a specific repository 
             //3. Enter valid Username and Password
@@ -854,7 +869,7 @@ namespace SeleniumAdvProject.TestCases
             AddNewPanelPage addPanelPopup = new AddNewPanelPage(_webDriver);
 
             //10. Enter all required fields on Add New Panel page
-            addPanelPopup.FillPanelData("Chart", "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "2D", "Name", "Location", null, true, null);
+            addPanelPopup.FillPanelData("Chart", "Test Case Execution", displayName, chartTitle, "on", "Stacked Bar", "2D", "Name", "Location", null, true, null);
 
             //11. Click Ok button
             addPanelPopup.ClosePanelDialog("OK");
@@ -876,7 +891,7 @@ namespace SeleniumAdvProject.TestCases
 
             //VP:User is able to edit Height field to anything apart from integer number with in 300-800 range
             mainPage.OpenPanelsPage();
-            bool actual = panelPage.IsPanelExist("Tu_Panel");
+            bool actual = panelPage.IsPanelExist(displayName);
             Assert.AreEqual(true, actual, "Actual panel exist");
 
             //Post-condition
@@ -1807,6 +1822,7 @@ namespace SeleniumAdvProject.TestCases
         /// <summary>
         /// Verify that user is unable to edit "Folder" field with empty value
         /// </summary>
+        /// Author: Tu Nguyen
         [TestMethod]
         public void DA_PANEL_TC056()
         {

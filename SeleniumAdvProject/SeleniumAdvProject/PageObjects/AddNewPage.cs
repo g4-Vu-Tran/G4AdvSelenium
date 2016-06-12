@@ -62,7 +62,7 @@ namespace SeleniumAdvProject.PageObjects
         {
             TxtPageName.SendKeys(page.PageName);
             CbbParentPage.SelectByText(ConvertParentPage(pathOfPage));
-            //Thread.Sleep(500);
+            Thread.Sleep(500);
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
             CbbDisplayAfter.SelectByText(page.DisplayAfter);
             if (page.IsPublic)
@@ -74,6 +74,28 @@ namespace SeleniumAdvProject.PageObjects
             //WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", CommonAction.EncodeSpace(page.PageName))));
             WaitForPageLoadComplete();
             return new MainPage(_webDriver);
+        }
+
+        /// <summary>
+        /// Adds the page with expected error.
+        /// </summary>
+        /// <param name="pathOfPage">The path of page.</param>
+        /// <param name="page">The page.</param>
+        /// <returns></returns>
+        /// Author: Tu Nguyen
+        public string AddPageWithExpectedError(string pathOfPage, Page page)
+        {
+            TxtPageName.SendKeys(page.PageName);
+            CbbParentPage.SelectByText(ConvertParentPage(pathOfPage));
+            Thread.Sleep(500);
+            CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
+            CbbDisplayAfter.SelectByText(page.DisplayAfter);
+            if (page.IsPublic)
+                ChkPublic.Check();
+            else
+                ChkPublic.Uncheck();
+            BtnOk.Click();
+            return this.GetDialogText();
         }
 
         /// <summary>
