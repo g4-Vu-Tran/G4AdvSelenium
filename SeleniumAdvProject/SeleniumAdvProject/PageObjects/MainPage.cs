@@ -102,7 +102,7 @@ namespace SeleniumAdvProject.PageObjects
         {
             GoToPage(page);
             BtnChoosePanel.Click();
-           // WaitForControlExists(By.XPath("//span[.='Create new panel']"), Constants.WaitTimeoutShortSeconds);
+            // WaitForControlExists(By.XPath("//span[.='Create new panel']"), Constants.WaitTimeoutShortSeconds);
             BtnCreateNewPanel.Click();
             return this;
         }
@@ -116,7 +116,7 @@ namespace SeleniumAdvProject.PageObjects
         {
             LnkEditPanel.Click();
             return new AddNewPanelPage(_webDriver);
-        
+
         }
         /// <summary>
         /// Opens the panel configuration popup by click on Chooses Panle and click on Chart panel instance
@@ -142,7 +142,7 @@ namespace SeleniumAdvProject.PageObjects
         /// <date>05/25/2015</date>
         public int GetPositionPage(string pageName)
         {
-            Link page = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", pageName))));            
+            Link page = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", pageName))));
             return page.Location.X;
 
         }
@@ -255,6 +255,23 @@ namespace SeleniumAdvProject.PageObjects
             return this;
         }
 
+
+        //public List<string> GetPathOfPage(List<string> paths, string result, IList<IWebElement> pageLvList)
+        //{
+
+        //    //IList<IWebElement> pageLv1List = _webDriver.FindElements(By.XPath(string.Format("//div[@id='main-menu']/div/ul/li/a[contains(@href,'page')][.!='{0}']", CommonAction.EncodeSpace("Execution Dashboard"))));
+        //    foreach (IWebElement element in pageLvList)
+        //    {
+        //        IList<IWebElement> tmp = element.FindElements(By.XPath("/../ul/li/a"));
+        //        result = "/" + element.Text;
+        //        if (tmp.Count == 0)
+        //            paths.Add(result);
+        //        else
+        //            return GetPathOfPage(paths, result, tmp);
+        //    }
+        //    return paths;
+        //}
+
         /// <summary>
         /// Determines the content in a table is sorted or not?
         /// </summary>
@@ -268,12 +285,12 @@ namespace SeleniumAdvProject.PageObjects
             IList<IWebElement> rows = table.FindElements(By.XPath(string.Format("//div[.='{0}']/../table/tbody/tr", tableName)));
             List<string> tableContent = new List<string>();
             for (int i = 0; i < rows.Count(); i++)
-            {                
+            {
                 IList<IWebElement> columns = table.FindElements(By.XPath(string.Format("//div[.='{0}']/../table/tbody/tr[{1}]/td", tableName, i + 1)));
-                    foreach (IWebElement column in columns)
-                    {
-                        tableContent.Add(column.Text);
-                    }
+                foreach (IWebElement column in columns)
+                {
+                    tableContent.Add(column.Text);
+                }
 
             }
 
@@ -300,7 +317,7 @@ namespace SeleniumAdvProject.PageObjects
             }
             return flag;
         }
-        
+
         public AddNewPanelPage ClickEditPanelIcon(string panelName)
         {
             Button iconEditPanel = new Button(FindElement(By.XPath(string.Format("//div[@title='{0}']/../following-sibling::div//li[@title='Edit Panel']", panelName))));
