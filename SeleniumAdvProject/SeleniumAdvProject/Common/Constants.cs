@@ -18,8 +18,6 @@ namespace SeleniumAdvProject.Common
         public const string UpperCasePassword = "TEST";
         public const string UpperCaseUserName = "ADMIN";
         public const string LowerCaseUser = "admin";
-        public const string UserName2 = "vutran";
-        public const string Password2 = "VUTRAN";
 
         //URL
         //public const string LoginPageUrl = "http://192.168.1.104/TADashboard/login.jsp";
