@@ -114,6 +114,7 @@
     <Content Include="Dlls\ThoughtWorks.Selenium.Core.dll" />
     <Content Include="Dlls\WebDriver.dll" />
     <Content Include="Dlls\WebDriver.Support.dll" />
+    <Content Include="Documents\Result 26TCs.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Documents\Dashboard_Testcases.xls" />

@@ -802,7 +802,7 @@ namespace SeleniumAdvProject.PageObjects
         {
             BtnFolder.Click();
             string[] arrNode = folderPath.Split('/');
-            for (int i = 0; i < arrNode.Length; i++)
+            for (int i = 1; i < arrNode.Length; i++)
             {
                 IWebElement plusImg = FindElement(By.XPath(string.Format("//div[@id='async_html_2']//a[text()=' {0}']//preceding-sibling::a/img[@src='images/plus.gif']", arrNode[i])));
                 if (plusImg != null)
@@ -810,6 +810,8 @@ namespace SeleniumAdvProject.PageObjects
                     plusImg.Click();
                 }
             }
+            IWebElement LnkFinalNode = FindElement(By.XPath(string.Format("//div[@id='async_html_2']//a[text()=' {0}']", arrNode[arrNode.Length - 1])));
+            LnkFinalNode.Click();
             BtnFolderSelectionOK.Click();
 
         }
