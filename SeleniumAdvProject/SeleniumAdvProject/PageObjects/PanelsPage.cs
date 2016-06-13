@@ -67,8 +67,8 @@ namespace SeleniumAdvProject.PageObjects
         /// <date>05/25/2016</date>s
         public AddNewPanelPage OpenEditPanelPopup(string panelName)
         {
-            Link LnkPanelName = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", panelName))));
-            LnkPanelName.Click();
+            Link lnkEdit = new Link(FindElement(By.XPath(string.Format("//td[.='{0}']//following-sibling::td/a[.='Edit']", panelName))));
+            lnkEdit.Click();
             return new AddNewPanelPage(_webDriver);
         }
 
@@ -87,6 +87,7 @@ namespace SeleniumAdvProject.PageObjects
             }
             AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
             addPanelPage.AddChart(chart);
+            WaitForPageLoadComplete();
             //WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", chart.DisplayName)));
             return this;
         }
@@ -133,8 +134,8 @@ namespace SeleniumAdvProject.PageObjects
             {
                 Checkbox chkPanel = new Checkbox(FindElement(By.XPath(string.Format("//td[.='{0}']//preceding-sibling::td/input[@id='chkDelPanel']", panelName))));
                 chkPanel.Check();
-                Link lnkEdit = new Link(FindElement(By.XPath(string.Format("//td[.='{0}']//following-sibling::td/a[.='Delete']", panelName))));
-                lnkEdit.Click();
+                Link lnkDelete = new Link(FindElement(By.XPath(string.Format("//td[.='{0}']//following-sibling::td/a[.='Delete']", panelName))));
+                lnkDelete.Click();
             }
 
             ConfirmDialog("OK");

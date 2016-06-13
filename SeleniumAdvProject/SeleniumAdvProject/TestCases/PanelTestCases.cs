@@ -154,7 +154,6 @@ namespace SeleniumAdvProject.TestCases
             chart = new Chart("Logigear@", "Name", null);
             addPanelPopup.AddChart(chart);
 
-            
             //VP The new panel is created
             Assert.AreEqual(true, panelPage.IsLinkExist("Logigear@"), "Page Logigear@ cannot be created");
         }
@@ -680,7 +679,7 @@ namespace SeleniumAdvProject.TestCases
             //Post-Condition
             addPanelPopup.ClosePanelDialog("Cancel");
             panelPage.DeletePanels("All");
-            
+
         }
 
         /// <summary>
@@ -930,7 +929,7 @@ namespace SeleniumAdvProject.TestCases
             //7. Click on Add new link again.
             //8. Enter display name same with previous display name to "display name" field. 
             //9. Click on OK button
-           string actualMsg = panelPage.AddChartWithExpectedError(chart);
+            string actualMsg = panelPage.AddChartWithExpectedError(chart);
 
             //VP. Warning message: "Dupicated panel already exists. Please enter a different name" show up
             string expectedMsg = string.Format("{0} already exists. Please enter a different name.", chart.DisplayName);
@@ -977,6 +976,7 @@ namespace SeleniumAdvProject.TestCases
             //VP. Verify that Data Profile list is in alphabetical order
             panelPage.OpenEditPanelPopup(chart.DisplayName);
             Assert.IsTrue(panelPage.IsDataProfileSOrder("ASC"), "Data Profile list is not in alphabetical order");
+            
             //Post-condition
             panelPage.CancelPanel();
             panelPage.DeletePanels("All");
@@ -1111,12 +1111,12 @@ namespace SeleniumAdvProject.TestCases
 
             //8. Click 'Choose Panels' button
             //9. Click 'Create new panel' button
-            AddNewPanelPage addNewPanelPage=  mainPage.OpenAddNewPanelPageFromButton();
+            AddNewPanelPage addNewPanelPage = mainPage.OpenAddNewPanelPageFromButton();
 
             //10. Click 'Chart Type' drop-down menu
             //VP. Check that 'Chart Type' are listed 5 options: 'Pie', 'Single Bar', 'Stacked Bar', 'Group Bar' and 'Line'
-            string[] chartTypeOptions = {"Pie","Single Bar","Stacked Bar","Group Bar","Line"};
-            Assert.IsTrue( addNewPanelPage.IsComboboxListed(addNewPanelPage.CbbChartType, chartTypeOptions),"Chart Type combobox is not listed correcty!");
+            string[] chartTypeOptions = { "Pie", "Single Bar", "Stacked Bar", "Group Bar", "Line" };
+            Assert.IsTrue(addNewPanelPage.IsComboboxListed(addNewPanelPage.CbbChartType, chartTypeOptions), "Chart Type combobox is not listed correcty!");
         }
 
         /// <summary>
@@ -1194,7 +1194,7 @@ namespace SeleniumAdvProject.TestCases
             //9 Click on any Chart panel instance
             //10 Enter integer number to 'Height *' field '299
             //11 Click OK button
-            
+
             LoginPage loginPage = new LoginPage(_webDriver);
             MainPage mainPage = loginPage.Open().Login(Constants.Repository, Constants.UserName, Constants.Password);
             mainPage.AddPage(page1);
@@ -1360,12 +1360,12 @@ namespace SeleniumAdvProject.TestCases
             //VP Observe the current page.There is message "Panel folder is incorrect"
             Assert.AreEqual("Panel folder is incorrect",
                errorMessage,
-               string.Format("Failed! Actual message is: {0}", errorMessage));            
+               string.Format("Failed! Actual message is: {0}", errorMessage));
 
             //11 Enter valid folder path
             //12 Click Ok button on Panel Configuration dialog
             chart.Folder = "/Car Rental/Tests";
-            addPanelPopup.SettingPanel(chart.PageName, chart.Height,chart.Folder);
+            addPanelPopup.SettingPanel(chart.PageName, chart.Height, chart.Folder);
 
             //VP Observe the current page -The new panel is created
             Assert.AreEqual(true, mainPage.IsDivExist(chart.DisplayName), "Panel cannot be created");
@@ -1464,14 +1464,14 @@ namespace SeleniumAdvProject.TestCases
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
             //3. Create a new page
-           // mainPage.AddPage(page);
+            // mainPage.AddPage(page);
 
             //4. Click Choose Panel button
             //5. Click Create New Panel button
             //6. Enter all required fields on Add New Panel page
             //7. Click Ok button
             mainPage.GoToPage(page.PageName);
-            AddNewPanelPage addPanelPage = mainPage.OpenAddNewPanelPageFromButton().FillPanelData(null, "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "3D","Name","Location", null, true, "Top");
+            AddNewPanelPage addPanelPage = mainPage.OpenAddNewPanelPageFromButton().FillPanelData(null, "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "3D", "Name", "Location", null, true, "Top");
             addPanelPage.BtnOk.Click();
 
             //8. Click Select Folder button on Panel Configuration dialog
@@ -1769,7 +1769,7 @@ namespace SeleniumAdvProject.TestCases
             //VP. Check that 'hung_a' checkbox and 'hung_b' checkbox are checked
             //20. Click 'Uncheck All' link
             //VP. Check that 'hung_a' checkbox and 'hung_b' checkbox are unchecked
-            string[] panelList = {panelName1,panelName2};
+            string[] panelList = { panelName1, panelName2 };
             PanelsPage panelsPage = mainPage.OpenPanelsPage();
             panelsPage.LnkCheckAll.Click();
             Assert.IsTrue(panelsPage.IsCheckBoxExists(panelList), "All checkboxes are not checked");
@@ -1908,7 +1908,7 @@ namespace SeleniumAdvProject.TestCases
             panelPage.EditChartPanels(chart);
             AddNewPanelPage newPanelPage = panelPage.OpenEditPanelPopup(chart.DisplayName);
             string chartType = newPanelPage.CbbChartType.GetSelectedText();
-            Assert.AreEqual(chart.ChartType,chartType, "Cannot edit chart type for panel");
+            Assert.AreEqual(chart.ChartType, chartType, "Cannot edit chart type for panel");
 
             newPanelPage.BtnCancel.Click();
             panelPage.DeletePanels(chart.DisplayName).Logout();
@@ -2046,7 +2046,7 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual(true, addNewPanelPage.ChbShowTitle.Enabled, "Failed: Show Title are disabled");
 
             newPanelPage.BtnCancel.Click();
-            panelPage.DeletePanels(chart.DisplayName).Logout();            
+            panelPage.DeletePanels(chart.DisplayName).Logout();
         }
         /// <summary>
         /// DA_PANEL_TC060 - Verify that all settings within \"Add New Panel\" and \"Edit Panel\" form stay unchanged when user switches between \"Legends\" radio buttons in \"Edit Panel\" form
@@ -2214,8 +2214,8 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual(true, addNewPanelPage.ChbShowTitle.Enabled, "Failed: Show Title are disabled");
 
             newPanelPage.BtnCancel.Click();
-            panelPage.DeletePanels(chart.DisplayName).Logout();            
+            panelPage.DeletePanels(chart.DisplayName).Logout();
         }
-           
+
     }
 }
