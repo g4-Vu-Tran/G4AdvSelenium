@@ -117,6 +117,7 @@ namespace SeleniumAdvProject.PageObjects
         public AddNewPanelPage OpenEditPanelPopup()
         {
             LnkEditPanel.Click();
+            WaitForPageLoadComplete();
             return new AddNewPanelPage(_webDriver);
 
         }
