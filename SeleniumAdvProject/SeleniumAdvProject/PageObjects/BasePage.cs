@@ -288,7 +288,7 @@ namespace SeleniumAdvProject.PageObjects
         /// <date>05/25/2016</date>
         public Boolean IsLinkExist(string linkName)
         {
-            Link Link = new Link(FindElement(By.XPath(string.Format("//a[.='{0}']", CommonAction.EncodeSpace(linkName)))));
+            Link Link = new Link(_webDriver,By.XPath(string.Format("//a[.='{0}']", CommonAction.EncodeSpace(linkName))));            
             return Link.isDisplayed();
         }
 
@@ -302,7 +302,7 @@ namespace SeleniumAdvProject.PageObjects
         
         public Boolean IsDivExist(string divName)
         {
-            Div div = new Div(FindElement(By.XPath(string.Format("//div[@title='{0}']", CommonAction.EncodeSpace(divName)))));
+            Div div = new Div(_webDriver,By.XPath(string.Format("//div[@title='{0}']", CommonAction.EncodeSpace(divName))));
             bool a = div.isExists();
             return div.isExists();
         }

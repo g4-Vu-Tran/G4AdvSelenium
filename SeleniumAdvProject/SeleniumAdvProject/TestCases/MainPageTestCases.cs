@@ -11,7 +11,6 @@ namespace SeleniumAdvProject.TestCases
     [TestClass]
     public class MainPageTestCases : BaseTestCase
     {
-
         /// <summary>
         /// Verify that user is unable open more than 1 "New Page" dialog
         /// </summary>
@@ -20,7 +19,6 @@ namespace SeleniumAdvProject.TestCases
         [TestMethod]
         public void DA_MP_TC011()
         {
-
             Console.WriteLine("DA_MP_TC011 - Verify that user is unable open more than 1 \"New Page\" dialog");
 
             //1 Navigate to Dashboard login page
@@ -231,8 +229,10 @@ namespace SeleniumAdvProject.TestCases
             //21 Log in with another valid account
             page1.IsPublic = true;
             page2.IsPublic = false;
-            mainPage.EditPage(page1)
-                .EditPage(page2)
+            mainPage.OpenEditPage(page1.PageName);
+            mainPage.EditPage(page1);
+            mainPage.OpenEditPage(page2.PageName);
+            mainPage.EditPage(page2)
                 .Logout()
                 .Login(Constants.Repository, Constants.UserName1, Constants.SpecialPassword);
 

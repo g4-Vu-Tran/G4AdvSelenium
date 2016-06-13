@@ -20,7 +20,9 @@ namespace SeleniumAdvProject.Ultilities
         protected WebDriverWait wait;
         protected ICoordinates coordinates;
         protected IWebDriver _webDriver;
-
+        protected string _xPath;
+        protected string _by;
+        
         public string XPath { get; set; }
         public By by { get; set; }
         public bool Displayed { get; set; }
@@ -401,7 +403,8 @@ namespace SeleniumAdvProject.Ultilities
         {
             try
             {
-                if (by != null)
+
+                if (this.by != null)
                 {
                     _webDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(10));
                     int count = _webDriver.FindElements(by).Count;

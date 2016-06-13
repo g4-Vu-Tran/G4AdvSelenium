@@ -27,7 +27,7 @@ namespace SeleniumAdvProject.PageObjects
         }
         public Div DivOvelayClass
         {
-            get { return new Div(FindElement(_divvOvelayClass)); }
+            get { return new Div(_webDriver, _divvOvelayClass); }
             
         }
         #endregion
@@ -259,7 +259,8 @@ namespace SeleniumAdvProject.PageObjects
         /// <date>05/25/2015</date>
         public bool IsPageDisplayAfter(string pageName1, string pageName2)
         {
-            Label pageTab = new Label(FindElement(By.XPath(string.Format("//div[@id='main-menu']/div/ul/li[.='{0}']/preceding-sibling::li[1]", pageName2, pageName1))));
+            Label pageTab = new Label(FindElement(By.XPath(string.Format("//div[@id='main-menu']/div/ul/li[.='{0}']/preceding-sibling::li[1]",CommonAction.EncodeSpace(pageName2)
+                ,CommonAction.EncodeSpace(pageName1)))));
             string tempPage = pageTab.Text;
             return tempPage.Equals(pageName1);
         }
@@ -314,24 +315,7 @@ namespace SeleniumAdvProject.PageObjects
             newPage.EditPage(page.ParentPage, page);
             return this;
         }
-
-
-        //public List<string> GetPathOfPage(List<string> paths, string result, IList<IWebElement> pageLvList)
-        //{
-
-        //    //IList<IWebElement> pageLv1List = _webDriver.FindElements(By.XPath(string.Format("//div[@id='main-menu']/div/ul/li/a[contains(@href,'page')][.!='{0}']", CommonAction.EncodeSpace("Execution Dashboard"))));
-        //    foreach (IWebElement element in pageLvList)
-        //    {
-        //        IList<IWebElement> tmp = element.FindElements(By.XPath("/../ul/li/a"));
-        //        result = "/" + element.Text;
-        //        if (tmp.Count == 0)
-        //            paths.Add(result);
-        //        else
-        //            return GetPathOfPage(paths, result, tmp);
-        //    }
-        //    return paths;
-        //}
-
+        
         /// <summary>
         /// Determines the content in a table is sorted or not?
         /// </summary>
@@ -380,7 +364,7 @@ namespace SeleniumAdvProject.PageObjects
 
         public AddNewPanelPage ClickEditPanelIcon(string panelName)
         {
-            Button iconEditPanel = new Button(FindElement(By.XPath(string.Format("//div[@title='{0}']/../following-sibling::div//li[@title='Edit Panel']", panelName))));
+            Button iconEditPanel = new Button(FindElement(By.XPath(string.Format("//div[@title='{0}']/../following-sibling::div//li[@title='Edit Panel']", CommonAction.EncodeSpace(panelName)))));
             iconEditPanel.Click();
             return new AddNewPanelPage(_webDriver);
         }

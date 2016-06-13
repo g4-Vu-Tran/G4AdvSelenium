@@ -69,9 +69,7 @@ namespace SeleniumAdvProject.PageObjects
                 ChkPublic.Check();
             else
                 ChkPublic.Uncheck();
-            BtnOk.Click();
-            //FindElement(By.XPath(string.Format("//a[.='{0}", CommonAction.EncodeSpace(page.PageName))));
-            //WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", CommonAction.EncodeSpace(page.PageName))));
+            BtnOk.Click();            
             WaitForPageLoadComplete();
             return new MainPage(_webDriver);
         }
@@ -110,7 +108,11 @@ namespace SeleniumAdvProject.PageObjects
             TxtPageName.SendKeys(page.PageName);
             if (page.ParentPage != null)
             {
-                CbbParentPage.SelectByText(CommonAction.EncodeSpace(page.ParentPage));
+                string aa = CbbParentPage.GetSelectedText();
+                if(!page.ParentPage.Equals("Select parent"))
+                {
+                    CbbParentPage.SelectByText(CommonAction.EncodeSpace(page.ParentPage));
+                }                
             }
             CbbNumberOfColumns.SelectByText(page.NumberOfColumns.ToString());
             if (page.DisplayAfter != null)
@@ -122,8 +124,7 @@ namespace SeleniumAdvProject.PageObjects
             else
                 ChkPublic.Uncheck();
             BtnOk.Click();
-            WaitForPageLoadComplete();
-            //WaitForControlExists(By.XPath(string.Format("//a[.='{0}']", page.PageName)), Constants.WaitTimeoutShortSeconds);
+            WaitForPageLoadComplete();            
             return new MainPage(_webDriver);
         }
 

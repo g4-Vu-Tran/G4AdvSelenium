@@ -153,10 +153,11 @@ namespace SeleniumAdvProject.TestCases
             //10 Enter value into Display Name field with special character is @            
             chart = new Chart("Logigear@", "Name", null);
             addPanelPopup.AddChart(chart);
-
             
             //VP The new panel is created
             Assert.AreEqual(true, panelPage.IsLinkExist("Logigear@"), "Page Logigear@ cannot be created");
+
+            panelPage.DeletePanels("All");
         }
 
         /// <summary>

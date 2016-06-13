@@ -44,8 +44,6 @@ namespace SeleniumAdvProject.Ultilities.Controls
         public void SelectByText(string text)
         {
             GetSelectControl();
-           
-            
                 if (text != null)
                     selectElement.SelectByText(text);
 
