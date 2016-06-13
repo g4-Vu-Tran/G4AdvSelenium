@@ -99,12 +99,12 @@ namespace SeleniumAdvProject.PageObjects
         /// <returns></returns>
         /// <author>Vu Tran</author>
         /// <date>05/25/2016</date>
-        public AddNewPanelPage AddChartWithExpectedError(Chart chart)
+        public string AddChartWithExpectedError(Chart chart)
         {
             OpenAddNewPanelPage("Panels Page");
             AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
             addPanelPage.AddChart(chart);
-            return new AddNewPanelPage(_webDriver);
+            return this.GetDialogText();
         }
 
         public AddNewPanelPage AddNewPanelPage()

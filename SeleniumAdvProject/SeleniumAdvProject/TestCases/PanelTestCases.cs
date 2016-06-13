@@ -930,10 +930,9 @@ namespace SeleniumAdvProject.TestCases
             //7. Click on Add new link again.
             //8. Enter display name same with previous display name to "display name" field. 
             //9. Click on OK button
-            panelPage.AddChartWithExpectedError(chart);
+           string actualMsg = panelPage.AddChartWithExpectedError(chart);
 
             //VP. Warning message: "Dupicated panel already exists. Please enter a different name" show up
-            string actualMsg = panelPage.GetDialogText();
             string expectedMsg = string.Format("{0} already exists. Please enter a different name.", chart.DisplayName);
             Assert.AreEqual(expectedMsg, actualMsg, string.Format("Message incorrect {0}", actualMsg));
 
@@ -1062,10 +1061,9 @@ namespace SeleniumAdvProject.TestCases
             //5. Enter value into Display Name field
             //6. Enter value into Chart Title field with special characters except "@"
             //7. Click Ok button
-            panelPage.AddChartWithExpectedError(chart1);
+            string actualMsg = panelPage.AddChartWithExpectedError(chart1);
 
             //VP. Message "Invalid display name. The name can't contain high ASCII characters or any of following characters: /:*?<>|"#{[]{};" is displayed
-            string actualMsg = panelPage.GetDialogText();
             string expectedMsg = "Invalid display name. The name can't contain high ASCII characters or any of following characters: /:*?<>|\"#{[]{};";
             Assert.AreEqual(expectedMsg, actualMsg, string.Format("Message incorrect {0}", actualMsg));
 
