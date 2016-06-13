@@ -143,10 +143,9 @@ namespace SeleniumAdvProject.PageObjects
             return this;
         }
    
-                
         public PanelsPage EditChartPanels(Chart pChart)
         {
-            AddNewPanelPage addPanelPage = OpenEditPanelPopup(pChart.DisplayName);
+            AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
             addPanelPage.EditChartPanel(pChart);
             return this;
         }
