@@ -139,6 +139,7 @@ namespace SeleniumAdvProject.PageObjects
             }
 
             ConfirmDialog("OK");
+            WaitForPageLoadComplete();
             return this;
         }
    

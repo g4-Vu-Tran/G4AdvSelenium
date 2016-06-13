@@ -117,6 +117,7 @@ namespace SeleniumAdvProject.PageObjects
         public AddNewPanelPage OpenEditPanelPopup()
         {
             LnkEditPanel.Click();
+            WaitForPageLoadComplete();
             return new AddNewPanelPage(_webDriver);
 
         }
@@ -127,12 +128,15 @@ namespace SeleniumAdvProject.PageObjects
         /// <returns>Add New Panel Page</returns>
         /// <autho>Huong Huynh</autho>
         /// <date>06/03/2016</date>
+        /// <update>Tu Nguyen</update>
         public AddNewPanelPage OpenPanelConfigurationFromChoosePanel(string linkText)
         {
-
+            string tmp = "";
             BtnChoosePanel.Click();
             WaitForPageLoadComplete();
-            Link lnkDynamic = new Link(FindElement(By.XPath(string.Format("//a[.='{0}')]", CommonAction.EncodeSpace(linkText)))));
+            tmp = Regex.Replace(linkText, "Panel", "");
+            linkText = Regex.Replace(tmp, " ", "");
+            Link lnkDynamic = new Link(FindElement(By.XPath(string.Format("//a[contains(text(),'{0}')]", linkText))));
             lnkDynamic.Click();
             return new AddNewPanelPage(webDriver);
         }

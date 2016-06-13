@@ -679,7 +679,7 @@ namespace SeleniumAdvProject.TestCases
             //Post-Condition
             addPanelPopup.ClosePanelDialog("Cancel");
             panelPage.DeletePanels("All");
-
+            
         }
 
         /// <summary>
@@ -929,7 +929,7 @@ namespace SeleniumAdvProject.TestCases
             //7. Click on Add new link again.
             //8. Enter display name same with previous display name to "display name" field. 
             //9. Click on OK button
-            string actualMsg = panelPage.AddChartWithExpectedError(chart);
+           string actualMsg = panelPage.AddChartWithExpectedError(chart);
 
             //VP. Warning message: "Dupicated panel already exists. Please enter a different name" show up
             string expectedMsg = string.Format("{0} already exists. Please enter a different name.", chart.DisplayName);
@@ -1194,7 +1194,7 @@ namespace SeleniumAdvProject.TestCases
             //9 Click on any Chart panel instance
             //10 Enter integer number to 'Height *' field '299
             //11 Click OK button
-
+            
             LoginPage loginPage = new LoginPage(_webDriver);
             MainPage mainPage = loginPage.Open().Login(Constants.Repository, Constants.UserName, Constants.Password);
             mainPage.AddPage(page1);
@@ -1360,7 +1360,7 @@ namespace SeleniumAdvProject.TestCases
             //VP Observe the current page.There is message "Panel folder is incorrect"
             Assert.AreEqual("Panel folder is incorrect",
                errorMessage,
-               string.Format("Failed! Actual message is: {0}", errorMessage));
+               string.Format("Failed! Actual message is: {0}", errorMessage));            
 
             //11 Enter valid folder path
             //12 Click Ok button on Panel Configuration dialog
@@ -1464,7 +1464,7 @@ namespace SeleniumAdvProject.TestCases
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
             //3. Create a new page
-            // mainPage.AddPage(page);
+           // mainPage.AddPage(page);
 
             //4. Click Choose Panel button
             //5. Click Create New Panel button
@@ -1584,7 +1584,7 @@ namespace SeleniumAdvProject.TestCases
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
             //3. Create a new page
-            string pageName = CommonAction.GenrateRandomString(Constants.lenghtRandomString);
+            string pageName = CommonAction.GeneratePageName();
             Page page = new Page(pageName, "Select parent", 2, "Overview", false);
             mainPage.AddPage(page);
 
@@ -1592,11 +1592,11 @@ namespace SeleniumAdvProject.TestCases
             Chart chart = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "Chart@", null, null, null, "Name", null, null, null, null, false);
             PanelsPage panelPage = mainPage.OpenPanelsPage();
             panelPage.AddNewPanel(chart);
-            mainPage.GoToPage(page.PageName);
+            mainPage.ClickLinkText(page.PageName);
 
             //5. Click Choose Panel button
             //6. Click on the newly created panel link
-            mainPage.OpenPanelConfigurationFromChoosePanel(CommonAction.GeneratePanelName());
+            mainPage.OpenPanelConfigurationFromChoosePanel(chart.DisplayName);
 
             //7. Edit valid folder path
             //8. Click Ok button
@@ -1611,8 +1611,9 @@ namespace SeleniumAdvProject.TestCases
             //Post-Condition
             addPanelPage.ClosePanelDialog("Cancel");
             mainPage.DeletePage(page.PageName);
-            panelPage.DeletePanels(CommonAction.GeneratePanelName());
-
+            mainPage.OpenPanelsPage();
+            panelPage.DeletePanels(chart.DisplayName);
+            mainPage.Logout();
         }
 
         /// <summary>
@@ -1797,7 +1798,7 @@ namespace SeleniumAdvProject.TestCases
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
             //3. Create a new page
-            string pageName = CommonAction.GenrateRandomString(Constants.lenghtRandomString);
+            string pageName = CommonAction.GeneratePageName();
             Page page = new Page(pageName, "Select parent", 2, "Overview", false);
             mainPage.AddPage(page);
 
@@ -1805,11 +1806,11 @@ namespace SeleniumAdvProject.TestCases
             Chart chart = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "Chart@", null, null, null, "Name", null, null, null, null, false);
             PanelsPage panelPage = mainPage.OpenPanelsPage();
             panelPage.AddNewPanel(chart);
-            mainPage.GoToPage(page.PageName);
+            mainPage.ClickLinkText(page.PageName);
 
             //5. Click Choose Panel button
             //6. Click on the newly created panel link
-            mainPage.OpenPanelConfigurationFromChoosePanel(CommonAction.GeneratePanelName());
+            mainPage.OpenPanelConfigurationFromChoosePanel(chart.DisplayName);
 
             //7. Edit valid folder path
             //8. Click Ok button
@@ -1825,8 +1826,8 @@ namespace SeleniumAdvProject.TestCases
             //Post-Condition
             addPanelPage.ClosePanelDialog("Cancel");
             mainPage.DeletePage(page.PageName);
-            panelPage.DeletePanels(CommonAction.GeneratePanelName());
-
+            mainPage.OpenPanelsPage();
+            panelPage.DeletePanels(chart.DisplayName);
         }
 
         /// <summary>
@@ -1844,23 +1845,24 @@ namespace SeleniumAdvProject.TestCases
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
             //3. Create a new page
-            string pageName = CommonAction.GenrateRandomString(Constants.lenghtRandomString);
+            string pageName = CommonAction.GeneratePageName();
             Page page = new Page(pageName, "Select parent", 2, "Overview", false);
             mainPage.AddPage(page);
 
             //4. Create a new panel
-            Chart chart = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "Chart@", null, null, null, "Name", null, null, null, null, false);
+            Chart chart = new Chart(null, CommonAction.GeneratePanelName(), page.PageName, 400, null, "Chart@", null, null, null, "Name", null, null, null, null, false);
             AddNewPanelPage addPanelPage = new AddNewPanelPage(_webDriver);
             mainPage.OpenNewPanelPopUp(page.PageName);
             addPanelPage.AddChart(chart);
+            mainPage.ClickLinkText(page.PageName);
 
             //5. Click Choose Panel button
             //6. Click on the newly created panel link
-            mainPage.OpenPanelConfigurationFromChoosePanel(CommonAction.GeneratePanelName());
+            mainPage.OpenPanelConfigurationFromChoosePanel(chart.DisplayName);
 
             //7. Edit valid folder path
             //8. Click Ok button
-            string actualMessage = addPanelPage.SettingPanelWithExpectedError(page.PageName, 400, " ");
+            string actualMessage = addPanelPage.SettingPanelWithExpectedError(page.PageName, 400, "");
 
             //VP: User is unable to edit "Folder" field with invalid path
             Assert.AreEqual("Panel folder is incorrect",
@@ -1872,7 +1874,7 @@ namespace SeleniumAdvProject.TestCases
             addPanelPage.ClosePanelDialog("Cancel");
             mainPage.DeletePage(page.PageName);
             PanelsPage panel = mainPage.OpenPanelsPage();
-            panel.DeletePanels(CommonAction.GeneratePanelName());
+            panel.DeletePanels(chart.DisplayName);
 
         }
         /// <summary>
@@ -2046,7 +2048,7 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual(true, addNewPanelPage.ChbShowTitle.Enabled, "Failed: Show Title are disabled");
 
             newPanelPage.BtnCancel.Click();
-            panelPage.DeletePanels(chart.DisplayName).Logout();
+            panelPage.DeletePanels(chart.DisplayName).Logout();            
         }
         /// <summary>
         /// DA_PANEL_TC060 - Verify that all settings within \"Add New Panel\" and \"Edit Panel\" form stay unchanged when user switches between \"Legends\" radio buttons in \"Edit Panel\" form
@@ -2214,8 +2216,8 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual(true, addNewPanelPage.ChbShowTitle.Enabled, "Failed: Show Title are disabled");
 
             newPanelPage.BtnCancel.Click();
-            panelPage.DeletePanels(chart.DisplayName).Logout();
+            panelPage.DeletePanels(chart.DisplayName).Logout();            
         }
-
+           
     }
 }
