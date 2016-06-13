@@ -679,7 +679,7 @@ namespace SeleniumAdvProject.TestCases
             //Post-Condition
             addPanelPopup.ClosePanelDialog("Cancel");
             panelPage.DeletePanels("All");
-            
+
         }
 
         /// <summary>
@@ -929,7 +929,7 @@ namespace SeleniumAdvProject.TestCases
             //7. Click on Add new link again.
             //8. Enter display name same with previous display name to "display name" field. 
             //9. Click on OK button
-           string actualMsg = panelPage.AddChartWithExpectedError(chart);
+            string actualMsg = panelPage.AddChartWithExpectedError(chart);
 
             //VP. Warning message: "Dupicated panel already exists. Please enter a different name" show up
             string expectedMsg = string.Format("{0} already exists. Please enter a different name.", chart.DisplayName);
@@ -976,7 +976,7 @@ namespace SeleniumAdvProject.TestCases
             //VP. Verify that Data Profile list is in alphabetical order
             panelPage.OpenEditPanelPopup(chart.DisplayName);
             Assert.IsTrue(panelPage.IsDataProfileSOrder("ASC"), "Data Profile list is not in alphabetical order");
-            
+
             //Post-condition
             panelPage.CancelPanel();
             panelPage.DeletePanels("All");
@@ -1031,8 +1031,7 @@ namespace SeleniumAdvProject.TestCases
             //Post-condition
             panelPage.CancelPanel();
             panelPage.DeletePanels("All");
-
-
+            panelPage.GoToDataProfilePage().DeleteAllDataProfiles();
         }
 
         /// <summary>
@@ -1046,8 +1045,8 @@ namespace SeleniumAdvProject.TestCases
             Console.WriteLine("DA_PANEL_TC035 - Verify that no special character except '@' character is allowed to be inputted into \"Chart Title\" field");
 
             //Set variables
-            Chart chart1 = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "!#$%^&*()'", "Name", null, null, null, null, null, null, null, false);
-            Chart chart2 = new Chart(null, CommonAction.GeneratePanelName() + "@", null, 400, null, "Chart@", "Name", null, null, null, null, null, null, null, false);
+            Chart chart1 = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "!#$%^&*()'", null, null, null, "Name", null, null, null, null, false);
+            Chart chart2 = new Chart(null, CommonAction.GeneratePanelName() + "@", null, 400, null, "Chart@", null, null, null, "Name", null, null, null, null, false);
 
             //1. Navigate to Dashboard login page
             //2. Login with valid account
@@ -1064,7 +1063,7 @@ namespace SeleniumAdvProject.TestCases
             string actualMsg = panelPage.AddChartWithExpectedError(chart1);
 
             //VP. Message "Invalid display name. The name can't contain high ASCII characters or any of following characters: /:*?<>|"#{[]{};" is displayed
-            string expectedMsg = "Invalid display name. The name can't contain high ASCII characters or any of following characters: /:*?<>|\"#{[]{};";
+            string expectedMsg = "Invalid title name. The name cannot contain high ASCII characters or any of the following characters: /:*?<>|\"#[]{}=%;";
             Assert.AreEqual(expectedMsg, actualMsg, string.Format("Message incorrect {0}", actualMsg));
 
             //8. Close Warning Message box
@@ -1075,12 +1074,11 @@ namespace SeleniumAdvProject.TestCases
             //10. Enter value into Display Name field
             //11. Enter value into Chart Title field with special character is @
             //VP. The new panel is created
-            panelPage.AddNewPanel(chart1);
+            panelPage.AddNewPanel(chart2);
             Assert.IsTrue(panelPage.IsPanelExist(chart2.DisplayName), string.Format("{0} is not created successfully ", chart2.DisplayName));
 
             //Post-condition
             panelPage.DeletePanels("All");
-            mainPage.GoToDataProfilePage().DeleteAllDataProfiles();
         }
 
         /// <summary>
@@ -1094,7 +1092,7 @@ namespace SeleniumAdvProject.TestCases
             Console.WriteLine("DA_PANEL_TC036 - Verify that all chart types ( Pie, Single Bar, Stacked Bar, Group Bar, Line ) are listed correctly under \"Chart Type\" dropped down menu.");
 
             //Set variables
-            Page page = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Select page", false);
+            Page page = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
             Chart chart = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "!#$%^&*()'", "Name", null, null, null, null, null, null, null, false);
 
             //1. Navigate to Dashboard login page
@@ -1117,6 +1115,10 @@ namespace SeleniumAdvProject.TestCases
             //VP. Check that 'Chart Type' are listed 5 options: 'Pie', 'Single Bar', 'Stacked Bar', 'Group Bar' and 'Line'
             string[] chartTypeOptions = { "Pie", "Single Bar", "Stacked Bar", "Group Bar", "Line" };
             Assert.IsTrue(addNewPanelPage.IsComboboxListed(addNewPanelPage.CbbChartType, chartTypeOptions), "Chart Type combobox is not listed correcty!");
+
+            //Post-Condition
+            addNewPanelPage.BtnCancel.Click();
+            mainPage.DeletePage(page.PageName);
         }
 
         /// <summary>
@@ -1194,7 +1196,7 @@ namespace SeleniumAdvProject.TestCases
             //9 Click on any Chart panel instance
             //10 Enter integer number to 'Height *' field '299
             //11 Click OK button
-            
+
             LoginPage loginPage = new LoginPage(_webDriver);
             MainPage mainPage = loginPage.Open().Login(Constants.Repository, Constants.UserName, Constants.Password);
             mainPage.AddPage(page1);
@@ -1360,7 +1362,7 @@ namespace SeleniumAdvProject.TestCases
             //VP Observe the current page.There is message "Panel folder is incorrect"
             Assert.AreEqual("Panel folder is incorrect",
                errorMessage,
-               string.Format("Failed! Actual message is: {0}", errorMessage));            
+               string.Format("Failed! Actual message is: {0}", errorMessage));
 
             //11 Enter valid folder path
             //12 Click Ok button on Panel Configuration dialog
@@ -1385,8 +1387,8 @@ namespace SeleniumAdvProject.TestCases
             Console.WriteLine("DA_PANEL_TC047 - Verify that user is able to navigate properly to folders with \"Select Folder\" form");
 
             //Set variables
-            Chart chart = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "!#$%^&*()'", "Name", null, null, null, null, null, null, null, false);
             Page page = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+            string panelName = CommonAction.GeneratePanelName();
 
             //1. Navigate to Dashboard login page
             //2. Login with valid account
@@ -1400,16 +1402,22 @@ namespace SeleniumAdvProject.TestCases
             //5. Click Create New Panel button
             //6. Enter all required fields on Add New Panel page
             //7. Click Ok button
-            mainPage.AddNewPanel(chart);
-            AddNewPanelPage addNewPanelPage = mainPage.OpenAddNewPanelPage().FillPanelData(null, "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "3D", null, null, null, true, "Top");
+            AddNewPanelPage addNewPanelPage = mainPage.OpenAddNewPanelPage().FillPanelData(null, "Test Case Execution", panelName, "test", "on", "Pie", "3D", null, "Name", null, true, "Top");
             addNewPanelPage.BtnOk.Click();
 
             //8. Click Select Folder button on Panel Configuration dialog
             //9. Choose folder name in Folder Form
             //10. Click Ok button on Select Folder form
-            addNewPanelPage.SelectFolder("/Car Rental/Actions/Car");
+            addNewPanelPage.SelectFolder("/Car Rental/Tests");
+
             //VP. User is able to select properly folder with Select Folder form
-            Assert.AreEqual("/Car Rental/Actions/Car", addNewPanelPage.TxtFolder.Text, "Select folder is unsuccessfully");
+            Assert.AreEqual("/Car Rental/Tests", addNewPanelPage.TxtFolder.GetAttribute("value"), "Select folder is unsuccessfully");
+
+            //Post-Condition
+            addNewPanelPage.BtnOKConfigurationPanel.Click();
+            mainPage.OpenPanelsPage().DeletePanels("All");
+            mainPage.DeletePage(page.PageName);
+
         }
 
         /// <summary>
@@ -1456,7 +1464,8 @@ namespace SeleniumAdvProject.TestCases
             Console.WriteLine("DA_PANEL_TC049 - Verify that all folder paths of corresponding item type ( e.g. Actions, Test Modules) are correct in \"Select Folder\" form ");
 
             //Set variables
-            Page page = new Page("Page c3c40a23-5", "Select parent", 2, "Overview", false);
+            Page page = new Page(CommonAction.GeneratePageName(), "Select parent", 2, "Overview", false);
+            string panelName = CommonAction.GeneratePanelName();
 
             //1. Navigate to Dashboard login page
             //2. Login with valid account
@@ -1464,14 +1473,14 @@ namespace SeleniumAdvProject.TestCases
             MainPage mainPage = loginPage.Login(Constants.Repository, Constants.UserName, Constants.Password);
 
             //3. Create a new page
-           // mainPage.AddPage(page);
+            mainPage.AddPage(page);
 
             //4. Click Choose Panel button
             //5. Click Create New Panel button
             //6. Enter all required fields on Add New Panel page
             //7. Click Ok button
             mainPage.GoToPage(page.PageName);
-            AddNewPanelPage addPanelPage = mainPage.OpenAddNewPanelPageFromButton().FillPanelData(null, "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "3D", "Name", "Location", null, true, "Top");
+            AddNewPanelPage addPanelPage = mainPage.OpenAddNewPanelPageFromButton().FillPanelData(null, "Test Case Execution", panelName, "test", "on", "Pie", "3D", null, "Name", null, true, "Top");
             addPanelPage.BtnOk.Click();
 
             //8. Click Select Folder button on Panel Configuration dialog
@@ -1480,7 +1489,7 @@ namespace SeleniumAdvProject.TestCases
             //VP. Folder path is displayed correctly after selecting folder in Select Folder form
             addPanelPage.SelectFolder("/Car Rental/Tests");
             addPanelPage.BtnOKConfigurationPanel.Click();
-            Assert.AreEqual(addPanelPage.TxtFolder.Text, "/Car Rental/Tests", string.Format("Folder field displays incorrently: {0}", addPanelPage.TxtFolder.Text));
+            Assert.AreEqual("/Car Rental/Tests", addPanelPage.TxtFolder.GetAttribute("value"), string.Format("Folder field displays incorrently: {0}", addPanelPage.TxtFolder.GetAttribute("value")));
 
         }
 
@@ -1495,7 +1504,7 @@ namespace SeleniumAdvProject.TestCases
             Console.WriteLine("DA_PANEL_TC050 - Verify that user is able to successfully edit \"Display Name\" of any Panel providing that the name is not duplicated with existing Panels' name");
 
             //Set variables
-            Chart chart = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "!#$%^&*()'", "Name", null, null, null, null, null, null, null, false);
+            Chart chart = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "test", null, null, null, "Name", null, null, null, null, false);
 
             //1. Navigate to Dashboard login page
             //2. Login with valid account
@@ -1529,8 +1538,8 @@ namespace SeleniumAdvProject.TestCases
             Console.WriteLine("DA_PANEL_TC051 - Verify that all pages are listed correctly under the \"Select page *\" dropped down menu of \"Panel Configuration\" form/ control");
 
             //AppDomainSetup variable
-            Chart chart1 = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "Chart@", "Name", null, null, null, null, null, null, null, false);
-            Chart chart2 = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "Chart@", "Name", null, null, null, null, null, null, null, false);
+            Chart chart1 = new Chart(null, CommonAction.GeneratePanelName(), null, 400, null, "Chart@", null, null, null, "Name", null, null, null, null, false);
+            Chart chart2 = new Chart(null, "/:*?<>|\"#", null, 400, null, "Chart@", null, null, null, "Name", null, null, null, null, false);
 
             //1. Navigate to Dashboard login page
             //2. Login with valid account
@@ -1548,11 +1557,13 @@ namespace SeleniumAdvProject.TestCases
             //7. Click Edit link
             //8. Edit panel name with special characters
             //9. Click Ok button
-            panelPage.AddNewPanel(chart2);
+            panelPage.OpenEditPanelPopup(chart1.DisplayName);
+            panelPage.EditChartPanels(chart2);
+
             //VP. Message "Invalid display name. The name can't contain high ASCII characters or any of following characters: /:*?<>|"#{[]{};" is displayed
             //10. Close warning message box
             string actualMsg = panelPage.GetDialogText();
-            string expectedMsg = "Invalid display name. The name can't contain high ASCII characters or any of following characters: /:*?<>|\"#{[]{};";
+            string expectedMsg = "Invalid display name. The name cannot contain high ASCII characters or any of the following characters: /:*?<>|\"#[]{}=%;";
             Assert.AreEqual(expectedMsg, actualMsg, string.Format("Message incorrect {0}", actualMsg));
             panelPage.ConfirmDialog("OK");
             panelPage.CancelPanel();
@@ -1561,7 +1572,9 @@ namespace SeleniumAdvProject.TestCases
             //12. Edit panel name with special character is @
             //13. Click Ok button
             //VP. User is able to edit panel name with special characters is @
-            panelPage.AddNewPanel(chart1);
+            panelPage.OpenEditPanelPopup(chart1.DisplayName);
+            chart1.DisplayName = chart1.DisplayName + "@";
+            panelPage.EditChartPanels(chart1);
             panelPage.IsPanelExist(chart1.DisplayName);
 
             //Post-Condition
@@ -1634,17 +1647,20 @@ namespace SeleniumAdvProject.TestCases
             //3. Click Choose Panels button
             //4. Click Test Module Implementation By Priority link
             //5. Click Ok button on Panel Configuration dialog
-            mainPage.OpenPanelConfigurationFromChoosePanel("Test Module Implementation By Priority").BtnOk.Click();
+            mainPage.OpenPanelConfigurationFromChoosePanel("Test Module Implementation By Priority").BtnOKConfigurationPanel.Click();
 
             //6. Click Edit Panel icon
             //7. Enter value into Caption field for Category
             //8. Enter value into Caption field for Serius
             //9. Click Ok button
-            mainPage.ClickEditPanelIcon("Test Module Implementation By Priority").FillPanelData(null, "Test Case Execution", "Tu_Panel", "Tu_Title", "on", "Stacked Bar", "3D", null, null, null, true, "Top").BtnOk.Click();
-
+            Chart chart1 = new Chart(null, null, null, 400, null, "Chart@","Stacked Bar", "Name", "Catagory Caption", "Location","Series Caption", null, null, null, false);
+            mainPage.ClickEditPanelIcon("Test Module Implementation By Priority").EditChartPanel(chart1);
+            
             //10. Click Edit Panel icon
             //VP. Caption's values are saved
-            mainPage.ClickEditPanelIcon("Test Module Implementation By Priority");
+            AddNewPanelPage editPanelPage = mainPage.ClickEditPanelIcon("Test Module Implementation By Priority");
+            Assert.AreEqual("Catagory Caption", editPanelPage.TxtCategoryCaption.Value, string.Format("The current value is {0}", editPanelPage.TxtCategoryCaption.Value));
+            Assert.AreEqual("Series Caption", editPanelPage.TxtSeriesCaption.Value, string.Format("The current value is {0}", editPanelPage.TxtSeriesCaption.Value));
 
         }
 
@@ -1667,7 +1683,7 @@ namespace SeleniumAdvProject.TestCases
             //3. Click Choose Panels button
             //4. Click Action Implementation By Status link
             //5. Click Ok button on Panel Configuration dialog
-            mainPage.OpenPanelConfigurationFromChoosePanel("Action Implementation By Status").BtnOk.Click();
+            mainPage.OpenPanelConfigurationFromChoosePanel("Action Implementation By Status").BtnOKConfigurationPanel.Click();
 
             //6. Click Edit Panel icon
             //7. Click on Chart Type dropped down menu
@@ -1692,7 +1708,7 @@ namespace SeleniumAdvProject.TestCases
             mainPage.ClickEditPanelIcon("Action Implementation By Status");
             editPanelPage.FillPanelData(null, null, null, null, null, "Stacked Bar", null, null, null, null, false, null);
             editPanelPage.FillPanelData(null, null, null, null, null, "Pie", null, null, null, null, false, null);
-            Assert.AreEqual(editPanelPage.CbbChartType.Text, "Pie", string.Format("Current selected value is {0}", editPanelPage.CbbChartType.Text));
+            Assert.AreEqual(editPanelPage.CbbChartType.GetSelectedText(), "Pie", string.Format("Current selected value is {0}", editPanelPage.CbbChartType.GetSelectedText()));
             editPanelPage.BtnCancel.Click();
 
             //20. Click on Chart Type dropped down menu
@@ -1704,7 +1720,7 @@ namespace SeleniumAdvProject.TestCases
             mainPage.ClickEditPanelIcon("Action Implementation By Status");
             editPanelPage.FillPanelData(null, null, null, null, null, "Stacked Bar", null, null, null, null, false, null);
             editPanelPage.FillPanelData(null, null, null, null, null, "Pie", null, null, null, null, false, null);
-            Assert.AreEqual(editPanelPage.CbbChartType.Text, "Pie", string.Format("Current selected value is {0}", editPanelPage.CbbChartType.Text));
+            Assert.AreEqual(editPanelPage.CbbChartType.GetSelectedText(), "Pie", string.Format("Current selected value is {0}", editPanelPage.CbbChartType.GetSelectedText()));
             editPanelPage.BtnCancel.Click();
 
             //25. Click Edit Panel icon
@@ -1716,7 +1732,7 @@ namespace SeleniumAdvProject.TestCases
             mainPage.ClickEditPanelIcon("Action Implementation By Status");
             editPanelPage.FillPanelData(null, null, null, null, null, "Line", null, null, null, null, false, null);
             editPanelPage.FillPanelData(null, null, null, null, null, "Pie", null, null, null, null, false, null);
-            Assert.AreEqual(editPanelPage.CbbChartType.Text, "Pie", string.Format("Current selected value is {0}", editPanelPage.CbbChartType.Text));
+            Assert.AreEqual(editPanelPage.CbbChartType.GetSelectedText(), "Pie", string.Format("Current selected value is {0}", editPanelPage.CbbChartType.GetSelectedText()));
 
         }
 
@@ -2048,7 +2064,7 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual(true, addNewPanelPage.ChbShowTitle.Enabled, "Failed: Show Title are disabled");
 
             newPanelPage.BtnCancel.Click();
-            panelPage.DeletePanels(chart.DisplayName).Logout();            
+            panelPage.DeletePanels(chart.DisplayName).Logout();
         }
         /// <summary>
         /// DA_PANEL_TC060 - Verify that all settings within \"Add New Panel\" and \"Edit Panel\" form stay unchanged when user switches between \"Legends\" radio buttons in \"Edit Panel\" form
@@ -2216,8 +2232,8 @@ namespace SeleniumAdvProject.TestCases
             Assert.AreEqual(true, addNewPanelPage.ChbShowTitle.Enabled, "Failed: Show Title are disabled");
 
             newPanelPage.BtnCancel.Click();
-            panelPage.DeletePanels(chart.DisplayName).Logout();            
+            panelPage.DeletePanels(chart.DisplayName).Logout();
         }
-           
+
     }
 }
