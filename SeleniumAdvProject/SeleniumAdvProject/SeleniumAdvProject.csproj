@@ -115,6 +115,10 @@
     <Content Include="Dlls\WebDriver.dll" />
     <Content Include="Dlls\WebDriver.Support.dll" />
     <Content Include="Documents\Result 26TCs.jpg" />
+    <Content Include="Documents\Result\2Capture.JPG" />
+    <Content Include="Documents\Result\3Capture.JPG" />
+    <Content Include="Documents\Result\4Capture.JPG" />
+    <Content Include="Documents\Result\Capture.JPG" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Documents\Dashboard_Testcases.xls" />
